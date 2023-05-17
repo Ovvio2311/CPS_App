@@ -1,0 +1,71 @@
+{
+  "Serilog": {
+    "MinimumLevel": {
+      "Default": "Debug",
+      "Override": {
+        "Microsoft": "Information",
+        "Microsoft.AspNetCore": "Warning",
+        "Microsoft.Hosting.Lifetime": "Information",
+        "System.Net.Http.HttpClient": "Warning" // HttpClient Request Log
+      }
+    },
+    "WriteTo": [
+      { "Name": "Console" },
+      {
+        "Name": "File",
+        "Args": {
+          "path": "logs/log-.log",
+          "restrictedToMinimumLevel": "Debug",
+          "outputTemplate": "[{Timestamp:yyyy-MM-dd HH:mm:ss} {Level:u3}] {ThreadId} {Message:lj}{NewLine}{Exception}",
+          "rollingInterval": "Day",
+          "fileSizeLimitBytes": "10485760",
+          //"fileSizeLimitBytes": "20971520",
+          "rollOnFileSizeLimit": true,
+          "retainedFileTimeLimit": "28.00:00:00"
+          //"retainedFileCountLimit": 28
+        }
+      },
+      {
+        "Name": "Logger",
+        "Args": {
+          "configureLogger": {
+            "Filter": [
+              {
+                "Name": "ByIncludingOnly",
+                "Args": {
+                  "expression": "@l in ['Warning', 'Error', 'Fatal']"
+                }
+              }
+            ],
+            "WriteTo": [
+              {
+                "Name": "File",
+                "Args": {
+                  "path": "logs/error-.log",
+                  "outputTemplate": "[{Timestamp:yyyy-MM-dd HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}",
+                  "rollingInterval": "Day",
+                  "fileSizeLimitBytes": "10485760",
+                  "rollOnFileSizeLimit": true,
+                  "retainedFileTimeLimit": "28.00:00:00"
+                }
+              }
+            ]
+          }
+        }
+      }
+      //,
+      //{
+      //    "Name": "Seq",
+      //    "Args": {
+      //        "serverUrl": "http://10.14.3.142:5341",
+      //        "apiKey": "v1dFGR8Pssi3QoZHVHB8",
+      //        "formatter": "Serilog.Formatting.Json.JsonFormatter, Serilog, Serilog.Formatting.Compact.CompactJsonFormatter, Serilog.Formatting.Compact"
+      //    }
+      //}
+    ],
+    "Enrich": [ "FromLogContext", "WithMachineName", "WithThreadId" ],
+    "Properties": {
+      "Application": "CCS_Scheduler"
+    }
+  }
+}

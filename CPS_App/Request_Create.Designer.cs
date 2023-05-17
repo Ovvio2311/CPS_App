@@ -1,6 +1,6 @@
 ﻿namespace CPS_App
 {
-    partial class RequestCreate
+    partial class Request_Create
     {
         /// <summary>
         /// Required designer variable.
@@ -35,25 +35,19 @@
             this.label4 = new System.Windows.Forms.Label();
             this.lblQty = new System.Windows.Forms.Label();
             this.lblExpDli = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
             this.txtStaff = new System.Windows.Forms.TextBox();
             this.txtItemName = new System.Windows.Forms.TextBox();
             this.txtQty = new System.Windows.Forms.TextBox();
             this.txtItemId = new System.Windows.Forms.TextBox();
-            this.textBox7 = new System.Windows.Forms.TextBox();
-            this.textBox8 = new System.Windows.Forms.TextBox();
-            this.textBox9 = new System.Windows.Forms.TextBox();
-            this.textBox10 = new System.Windows.Forms.TextBox();
             this.btnAdd = new System.Windows.Forms.Button();
             this.btnSubmit = new System.Windows.Forms.Button();
             this.btnClear = new System.Windows.Forms.Button();
             this.panelInfo = new System.Windows.Forms.Panel();
             this.dateTimePicker = new System.Windows.Forms.DateTimePicker();
-            this.cbxLoc = new System.Windows.Forms.ComboBox();
             this.panelItem = new System.Windows.Forms.Panel();
+            this.txtremark = new System.Windows.Forms.TextBox();
+            this.lblremark = new System.Windows.Forms.Label();
+            this.txtloc = new System.Windows.Forms.TextBox();
             this.panelInfo.SuspendLayout();
             this.panelItem.SuspendLayout();
             this.SuspendLayout();
@@ -98,7 +92,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(31, 108);
+            this.label4.Location = new System.Drawing.Point(31, 79);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(66, 15);
             this.label4.TabIndex = 4;
@@ -107,7 +101,7 @@
             // lblQty
             // 
             this.lblQty.AutoSize = true;
-            this.lblQty.Location = new System.Drawing.Point(31, 169);
+            this.lblQty.Location = new System.Drawing.Point(31, 118);
             this.lblQty.Name = "lblQty";
             this.lblQty.Size = new System.Drawing.Size(53, 15);
             this.lblQty.TabIndex = 5;
@@ -116,69 +110,34 @@
             // lblExpDli
             // 
             this.lblExpDli.AutoSize = true;
-            this.lblExpDli.Location = new System.Drawing.Point(0, 174);
+            this.lblExpDli.Location = new System.Drawing.Point(31, 160);
             this.lblExpDli.Name = "lblExpDli";
             this.lblExpDli.Size = new System.Drawing.Size(127, 15);
             this.lblExpDli.TabIndex = 6;
             this.lblExpDli.Text = "Expected Delivery Date";
             // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(129, 552);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(38, 15);
-            this.label7.TabIndex = 7;
-            this.label7.Text = "label7";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(325, 518);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(38, 15);
-            this.label8.TabIndex = 8;
-            this.label8.Text = "label8";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(274, 443);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(38, 15);
-            this.label9.TabIndex = 9;
-            this.label9.Text = "label9";
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(274, 345);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(44, 15);
-            this.label10.TabIndex = 10;
-            this.label10.Text = "label10";
-            // 
             // txtStaff
             // 
             this.txtStaff.Location = new System.Drawing.Point(133, 41);
             this.txtStaff.Name = "txtStaff";
+            this.txtStaff.ReadOnly = true;
             this.txtStaff.Size = new System.Drawing.Size(121, 23);
             this.txtStaff.TabIndex = 11;
             this.txtStaff.Validating += new System.ComponentModel.CancelEventHandler(this.requiredFieldCheck);
             // 
             // txtItemName
             // 
-            this.txtItemName.Location = new System.Drawing.Point(186, 105);
+            this.txtItemName.Location = new System.Drawing.Point(186, 76);
             this.txtItemName.Name = "txtItemName";
-            this.txtItemName.Size = new System.Drawing.Size(100, 23);
+            this.txtItemName.Size = new System.Drawing.Size(200, 23);
             this.txtItemName.TabIndex = 13;
             this.txtItemName.Validating += new System.ComponentModel.CancelEventHandler(this.requiredFieldCheck);
             // 
             // txtQty
             // 
-            this.txtQty.Location = new System.Drawing.Point(186, 169);
+            this.txtQty.Location = new System.Drawing.Point(186, 118);
             this.txtQty.Name = "txtQty";
-            this.txtQty.Size = new System.Drawing.Size(100, 23);
+            this.txtQty.Size = new System.Drawing.Size(200, 23);
             this.txtQty.TabIndex = 14;
             this.txtQty.Validating += new System.ComponentModel.CancelEventHandler(this.requiredFieldCheck);
             // 
@@ -186,37 +145,9 @@
             // 
             this.txtItemId.Location = new System.Drawing.Point(186, 36);
             this.txtItemId.Name = "txtItemId";
-            this.txtItemId.Size = new System.Drawing.Size(100, 23);
+            this.txtItemId.Size = new System.Drawing.Size(200, 23);
             this.txtItemId.TabIndex = 16;
             this.txtItemId.Validating += new System.ComponentModel.CancelEventHandler(this.requiredFieldCheck);
-            // 
-            // textBox7
-            // 
-            this.textBox7.Location = new System.Drawing.Point(939, 305);
-            this.textBox7.Name = "textBox7";
-            this.textBox7.Size = new System.Drawing.Size(100, 23);
-            this.textBox7.TabIndex = 17;
-            // 
-            // textBox8
-            // 
-            this.textBox8.Location = new System.Drawing.Point(919, 383);
-            this.textBox8.Name = "textBox8";
-            this.textBox8.Size = new System.Drawing.Size(100, 23);
-            this.textBox8.TabIndex = 18;
-            // 
-            // textBox9
-            // 
-            this.textBox9.Location = new System.Drawing.Point(903, 447);
-            this.textBox9.Name = "textBox9";
-            this.textBox9.Size = new System.Drawing.Size(100, 23);
-            this.textBox9.TabIndex = 19;
-            // 
-            // textBox10
-            // 
-            this.textBox10.Location = new System.Drawing.Point(876, 530);
-            this.textBox10.Name = "textBox10";
-            this.textBox10.Size = new System.Drawing.Size(100, 23);
-            this.textBox10.TabIndex = 20;
             // 
             // btnAdd
             // 
@@ -250,9 +181,7 @@
             // 
             // panelInfo
             // 
-            this.panelInfo.Controls.Add(this.dateTimePicker);
-            this.panelInfo.Controls.Add(this.cbxLoc);
-            this.panelInfo.Controls.Add(this.lblExpDli);
+            this.panelInfo.Controls.Add(this.txtloc);
             this.panelInfo.Controls.Add(this.lblStaff);
             this.panelInfo.Controls.Add(this.txtStaff);
             this.panelInfo.Controls.Add(this.lblLoc);
@@ -263,23 +192,18 @@
             // 
             // dateTimePicker
             // 
-            this.dateTimePicker.Location = new System.Drawing.Point(136, 171);
+            this.dateTimePicker.Location = new System.Drawing.Point(186, 160);
             this.dateTimePicker.Name = "dateTimePicker";
             this.dateTimePicker.Size = new System.Drawing.Size(200, 23);
             this.dateTimePicker.TabIndex = 12;
             this.dateTimePicker.Validating += new System.ComponentModel.CancelEventHandler(this.requiredFieldCheck);
             // 
-            // cbxLoc
-            // 
-            this.cbxLoc.FormattingEnabled = true;
-            this.cbxLoc.Location = new System.Drawing.Point(133, 110);
-            this.cbxLoc.Name = "cbxLoc";
-            this.cbxLoc.Size = new System.Drawing.Size(121, 23);
-            this.cbxLoc.TabIndex = 0;
-            this.cbxLoc.Validating += new System.ComponentModel.CancelEventHandler(this.requiredFieldCheck);
-            // 
             // panelItem
             // 
+            this.panelItem.Controls.Add(this.dateTimePicker);
+            this.panelItem.Controls.Add(this.lblExpDli);
+            this.panelItem.Controls.Add(this.txtremark);
+            this.panelItem.Controls.Add(this.lblremark);
             this.panelItem.Controls.Add(this.txtItemId);
             this.panelItem.Controls.Add(this.txtQty);
             this.panelItem.Controls.Add(this.txtItemName);
@@ -288,10 +212,34 @@
             this.panelItem.Controls.Add(this.lblItem);
             this.panelItem.Location = new System.Drawing.Point(430, 80);
             this.panelItem.Name = "panelItem";
-            this.panelItem.Size = new System.Drawing.Size(330, 278);
+            this.panelItem.Size = new System.Drawing.Size(519, 278);
             this.panelItem.TabIndex = 25;
             // 
-            // RequestCreate
+            // txtremark
+            // 
+            this.txtremark.Location = new System.Drawing.Point(186, 203);
+            this.txtremark.Name = "txtremark";
+            this.txtremark.Size = new System.Drawing.Size(200, 23);
+            this.txtremark.TabIndex = 18;
+            // 
+            // lblremark
+            // 
+            this.lblremark.AutoSize = true;
+            this.lblremark.Location = new System.Drawing.Point(31, 206);
+            this.lblremark.Name = "lblremark";
+            this.lblremark.Size = new System.Drawing.Size(47, 15);
+            this.lblremark.TabIndex = 17;
+            this.lblremark.Text = "Remark";
+            // 
+            // txtloc
+            // 
+            this.txtloc.Location = new System.Drawing.Point(135, 114);
+            this.txtloc.Name = "txtloc";
+            this.txtloc.ReadOnly = true;
+            this.txtloc.Size = new System.Drawing.Size(119, 23);
+            this.txtloc.TabIndex = 12;
+            // 
+            // Request_Create
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -300,17 +248,9 @@
             this.Controls.Add(this.btnClear);
             this.Controls.Add(this.btnSubmit);
             this.Controls.Add(this.btnAdd);
-            this.Controls.Add(this.textBox10);
-            this.Controls.Add(this.textBox9);
-            this.Controls.Add(this.textBox8);
-            this.Controls.Add(this.textBox7);
-            this.Controls.Add(this.label10);
-            this.Controls.Add(this.label9);
-            this.Controls.Add(this.label8);
-            this.Controls.Add(this.label7);
             this.Controls.Add(this.lblTitle);
             this.Controls.Add(this.panelInfo);
-            this.Name = "RequestCreate";
+            this.Name = "Request_Create";
             this.Text = "RequestCreate";
             this.Load += new System.EventHandler(this.RequestCreate_Load);
             this.panelInfo.ResumeLayout(false);
@@ -331,24 +271,20 @@
         private Label label4;
         private Label lblQty;
         private Label lblExpDli;
-        private Label label7;
-        private Label label8;
-        private Label label9;
-        private Label label10;
+        
         private TextBox txtStaff;
         private TextBox txtItemName;
         private TextBox txtQty;
         private TextBox txtItemId;
-        private TextBox textBox7;
-        private TextBox textBox8;
-        private TextBox textBox9;
-        private TextBox textBox10;
+        
         private Button btnAdd;
         private Button btnSubmit;
         private Button btnClear;
         private Panel panelInfo;
         private Panel panelItem;
-        private ComboBox cbxLoc;
         private DateTimePicker dateTimePicker;
+        private TextBox txtremark;
+        private Label lblremark;
+        private TextBox txtloc;
     }
 }

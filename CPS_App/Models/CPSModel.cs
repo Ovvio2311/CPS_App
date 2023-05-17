@@ -27,6 +27,8 @@ namespace CPS_App.Models
             public string vc_staff_role { get; set; }
             public string vc_user_id { get; set; }
             public int bi_location_id { get; set; }
+            public string dt_created_date { get; set; }
+            public string dt_updated_datetime { get; set; }
         }
         public class tb_user_roles : CPSModelBase
         {
@@ -40,75 +42,74 @@ namespace CPS_App.Models
             public string vc_nor_name { get; set; }
             public string lt_concurrency_stamp { get; set; }
         }
-        public class reqObj
+        public class tb_item : CPSModel
         {
-            public string table { get; set; }
+            public int bi_item_id { get; set; }
+            public string vc_item_desc { get; set; }
+            public int bi_category_id { get; set; }
+            public string dt_created_date { get; set; }
+            public string dt_updated_datetime { get; set; }
         }
-        public class updateObj : reqObj
+       public class tb_item_vid_mapping : CPSModel
         {
-            public updateObj()
-            {
-                updater = new Dictionary<string, string>();
-                selecter = new Dictionary<string, string>();
-            }
-            public Dictionary<string, string> updater { get; set; }
-            public Dictionary<string, string> selecter { get; set; }
+            public int bi_item_id { get; set; }
+            public int bi_item_vid { get; set; }
+            public string dt_created_date { get; set; }
+            public string dt_updated_datetime { get; set; }
         }
-        public class insertObj : reqObj
+        public class tb_item_unit : CPSModel
         {
-            public insertObj()
-            {
-                inserter = new List<Dictionary<string, string>>();
-                selecter = new Dictionary<string, string>();
-            }
-            public List<Dictionary<string, string>> inserter { get; set; }
-            public Dictionary<string, string> selecter { get; set; }
-        }
-        public class selectObj : reqObj
-        {
-            public selectObj()
-            {
-                selecter = new Dictionary<string, string>();
-            }
-            public Dictionary<string, string> selecter { get; set; }
-        }
-        public class resObj
-        {
-            public dynamic result { get; set; }
-            public int resCode { get; set; }
-        }
-        public class CustomRole
-        {
-            public CustomRole()
-            {
-                Users = new();
-            }
-            public string RoleId { get; set; }
-
-            [Required(ErrorMessage = "角色名稱為必填")]
-            public string RoleName { get; set; }
-            public List<string> Users { get; set; }
+            public int bi_item_id { get; set; }
+            public int bi_location_id { get; set; }
+            public int i_uom_id { get; set; }
+            public int i_item_qty { get; set; }
+            public string dt_created_date { get; set; }
+            public string dt_updated_datetime { get; set; }
         }
 
+        //public class CustomRole
+        //{
+        //    public CustomRole()
+        //    {
+        //        Users = new();
+        //    }
+        //    public string RoleId { get; set; }
 
-        public class CustomUserRole
-        {
-            public string UserId { get; set; }
-            public string UserName { get; set; }
-            public bool IsSelected { get; set; }
-        }
+        //    [Required(ErrorMessage = "角色名稱為必填")]
+        //    public string RoleName { get; set; }
+        //    public List<string> Users { get; set; }
+        //}
+
+
+        //public class CustomUserRole
+        //{
+        //    public string UserId { get; set; }
+        //    public string UserName { get; set; }
+        //    public bool IsSelected { get; set; }
+        //}
         public class RequestCreationReq
         {
             public int i_staff_id { get; set; }
             public int bi_location_id { get; set; }
-            public DateTime dt_exp_deli_date { get; set; }
-            public List<ItemRequest> items { get; set; }
+            
+            public List<RequestionCreationItem> items { get; set; }
             public RequestCreationReq()
             {
-                items = new List<ItemRequest>();
+                items = new List<RequestionCreationItem>();
             }
-        }        
-
+        }
+        public class RequestionCreationItem
+        {
+            public int bi_req_id { get; set; }
+            public int bi_item_vid { get; set; }
+            public int bi_item_id { get; set; }
+            public int i_item_req_qty { get; set; }
+            public int i_remain_req_qty { get; set; } //need update sql
+            public int i_uom_id { get; set; } //need update sql            
+            public string vc_req_status { get; set; }
+            public string vc_remark { get; set; }
+            public DateTime dt_exp_deli_date { get; set; }
+        }
         public class RequestMappingReqObj
         {
             public int bi_req_id { get; set; }
@@ -118,11 +119,25 @@ namespace CPS_App.Models
             public string vc_location_desc { get; set; }
             public string vc_location_addr { get; set; }
             public string vc_req_status { get; set; }
-            public string i_item_req_qty { get; set; }
-            public DateTime dt_exp_deli_date { get; set; }
+            public string i_item_req_qty { get; set; }            
             public List<ItemRequest> item { get; set; }
             public string dt_created_date { get; set; }
             public string dt_updated_datetime { get; set; }
+            
+        }
+        public class ItemRequest
+        {
+            public int bi_req_id { get; set; }
+            public int bi_item_vid { get; set; }
+            public int bi_item_id { get; set; }
+            public int i_item_req_qty { get; set; }
+            public int i_remain_req_qty { get; set; } //need update sql
+            public int i_uom_id { get; set; } //need update sql
+            public string vc_item_desc { get; set; }
+            public int bi_category_id { get; set; }
+            public string vc_category_desc { get; set; }
+            public string item_req_status { get; set; }
+            public DateTime dt_exp_deli_date { get; set; }
         }
         public class POATable
         {
@@ -150,32 +165,7 @@ namespace CPS_App.Models
             public DateTime dt_created_date { get; set; }
 
         }
-        public class ItemRequest
-        {
-            public int bi_req_id { get; set; }
-            public int bi_item_vid { get; set; }
-            public int bi_item_id { get; set; }
-            public int i_item_req_qty { get; set; }
-            public int i_remain_req_qty { get; set; } //need update sql
-            public int i_uom_id { get; set; } //need update sql
-            public string vc_item_desc { get; set; }
-            public int bi_category_id { get; set; }
-            public string vc_category_desc { get; set; }
-            public string item_req_status { get; set; }
-        }
-        public class tb_item : CPSModel
-        {
-            public int bi_item_id { get; set; }
-            public string vc_item_desc { get; set; }
-            public int bi_category_id { get; set; }
-            public string dt_created_date { get; set; }
-            public string dt_updated_datetime { get; set; }
-        }
-
-        public class DbResObj
-        {
-            public dynamic result { get; set; }
-            public int response_code { get; set; }
-        }
+        
+        
     }
 }

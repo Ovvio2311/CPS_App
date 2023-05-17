@@ -14,6 +14,7 @@ using static CPS_App.Models.CPSModel;
 using static System.ComponentModel.Design.ObjectSelectorEditor;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using static CPS_App.Models.DbModels;
 
 namespace CPS_App.Services
 {

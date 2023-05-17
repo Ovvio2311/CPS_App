@@ -1,4 +1,5 @@
 ﻿using CPS_App.Services;
+using Microsoft.AspNetCore.Server.IIS.Core;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.DirectoryServices;
@@ -32,9 +33,10 @@ namespace CPS_App
         private bool _sortDirection;
         private int _previousitemIndex;
         private bool _sortitemDirection;
+        private readonly DbServices _dbServices;
 
 
-        public Dashboard(Register register, AuthService authService, RequestMapping requestMapp)
+        public Dashboard(Register register, AuthService authService, RequestMapping requestMapp, DbServices dbServices)
         {
 
             _authService = authService;
@@ -42,11 +44,12 @@ namespace CPS_App
             InitializeComponent();
             _requestMapp = requestMapp;
             defPage = new List<RequestMappingReqObj>();
+            _dbServices = dbServices;
         }
         private async void Dashboard_Load(object sender, EventArgs e)
         {
             registerToolStripMenuItem.Visible = false;
-            userIden = _authService._userClaim;
+            userIden = AuthService._userClaim;
             if (userIden != null)
             {
                 loginToolStripMenuItem.Visible = false;
@@ -55,10 +58,11 @@ namespace CPS_App
                     registerToolStripMenuItem.Visible = true;
                 }
             }
-            defPage = await _requestMapp.RequestMappingObjGetter();
-            HomePage.DataSource = defPage;
+            //defPage = await _requestMapp.RequestMappingObjGetter();
+            //HomePage.DataSource = defPage;
 
-            
+            HomePage.Dispose();
+            itemgridview.Dispose();
            
         }
 
@@ -106,6 +110,13 @@ namespace CPS_App
                 //itemgridview.DataSource = null;
                 itemgridview.DataSource = defPage.ElementAt(HomePage.CurrentRow.Index).item;
             }
+        }
+
+        private void createToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Request_Create reqForm = new Request_Create(_dbServices);
+            reqForm.MdiParent = this;
+            reqForm.Show();
         }
         //private void itemgridview_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         //{

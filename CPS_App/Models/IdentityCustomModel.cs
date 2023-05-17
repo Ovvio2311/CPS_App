@@ -16,8 +16,8 @@ namespace CPS_App.Models
         Task<IdentityRole> CreateRoleAsync(tb_roles model);
         Task<bool> EditRoleAsync(tb_roles model);
         Task<bool> DeleteRoleAsync(string roleId);
-        Task<List<CustomUserRole>> EditUsersInRoleAsync(string RoleId);
-        Task<bool> EditUsersInRoleAsync(List<CustomUserRole> model, string RoleId);
+        //Task<List<CustomUserRole>> EditUsersInRoleAsync(string RoleId);
+        //Task<bool> EditUsersInRoleAsync(List<CustomUserRole> model, string RoleId);
     }
 
     public class RolesRepository : IRolesRepository
@@ -118,70 +118,70 @@ namespace CPS_App.Models
             return true;
             
         }
-        public async Task<List<CustomUserRole>> EditUsersInRoleAsync(string roleName)
-        {
-            var role = await _roleManager.FindByNameAsync(roleName);
-            var model = new List<CustomUserRole>();
+        //public async Task<List<CustomUserRole>> EditUsersInRoleAsync(string roleName)
+        //{
+        //    var role = await _roleManager.FindByNameAsync(roleName);
+        //    var model = new List<CustomUserRole>();
 
-            foreach (var user in _userManager.Users)
-            {
-                var userRoleView = new CustomUserRole
-                {
-                    UserId = user.Id,
-                    UserName = user.UserName,
-                };
+        //    foreach (var user in _userManager.Users)
+        //    {
+        //        var userRoleView = new CustomUserRole
+        //        {
+        //            UserId = user.Id,
+        //            UserName = user.UserName,
+        //        };
 
-                if (await _userManager.IsInRoleAsync(user, role.Name))
-                {
-                    userRoleView.IsSelected = true;
-                }
-                else
-                {
-                    userRoleView.IsSelected = false;
-                }
-                model.Add(userRoleView);
-            }
-            return model;
-        }
+        //        if (await _userManager.IsInRoleAsync(user, role.Name))
+        //        {
+        //            userRoleView.IsSelected = true;
+        //        }
+        //        else
+        //        {
+        //            userRoleView.IsSelected = false;
+        //        }
+        //        model.Add(userRoleView);
+        //    }
+        //    return model;
+        //}
 
-        public async Task<bool> EditUsersInRoleAsync(List<CustomUserRole> model, string RoleName)
-        {
-            var role = await _roleManager.FindByNameAsync(RoleName);
-            foreach (var m in model)
-            {
-                var user = await _userManager.FindByIdAsync(m.UserId);
-                IdentityResult result;
-                if (m.IsSelected && !(await _userManager.IsInRoleAsync(user, role.Name)))
-                {
-                    result = await _userManager.AddToRoleAsync(user, role.Name);
-                }
-                else if (!m.IsSelected && await _userManager.IsInRoleAsync(user, role.Name))
-                {
-                    result = await _userManager.RemoveFromRoleAsync(user, role.Name);
-                }
-                else
-                {
-                    continue;
-                }
-                if (result.Succeeded)
-                {
-                    if (model.Count > 0)
-                    {
-                        continue;
-                    }
-                    else
-                    {
+        //public async Task<bool> EditUsersInRoleAsync(List<CustomUserRole> model, string RoleName)
+        //{
+        //    var role = await _roleManager.FindByNameAsync(RoleName);
+        //    foreach (var m in model)
+        //    {
+        //        var user = await _userManager.FindByIdAsync(m.UserId);
+        //        IdentityResult result;
+        //        if (m.IsSelected && !(await _userManager.IsInRoleAsync(user, role.Name)))
+        //        {
+        //            result = await _userManager.AddToRoleAsync(user, role.Name);
+        //        }
+        //        else if (!m.IsSelected && await _userManager.IsInRoleAsync(user, role.Name))
+        //        {
+        //            result = await _userManager.RemoveFromRoleAsync(user, role.Name);
+        //        }
+        //        else
+        //        {
+        //            continue;
+        //        }
+        //        if (result.Succeeded)
+        //        {
+        //            if (model.Count > 0)
+        //            {
+        //                continue;
+        //            }
+        //            else
+        //            {
                         
-                    }
-                }
-                else
-                {
+        //            }
+        //        }
+        //        else
+        //        {
                  
-                }
-            }
-            return true;
+        //        }
+        //    }
+        //    return true;
            
-        }
+        //}
         #endregion
 
       

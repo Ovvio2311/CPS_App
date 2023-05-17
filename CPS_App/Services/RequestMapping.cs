@@ -26,7 +26,7 @@ namespace CPS_App.Services
             var res = new List<RequestMappingReqObj>();
             var resObj = await _services.GetReqMappingObj();
 
-            if (resObj.response_code == 1 && resObj.result != null)
+            if (resObj.resCode == 1 && resObj.result != null)
             {
                 List<List<KeyValuePair<string, object>>> kvp = resObj.result;
                 var itemLst = new List<ItemRequest>();

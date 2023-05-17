@@ -50,8 +50,8 @@ namespace CPS_App
                             .Build();
 
             var ServiceProvider = host.Services;
-            //Application.Run(ServiceProvider.GetRequiredService<Login>());
-            Application.Run(ServiceProvider.GetRequiredService<RequestCreate>());
+            Application.Run(ServiceProvider.GetRequiredService<Login>());
+            //Application.Run(ServiceProvider.GetRequiredService<Request_Create>());
             //Application.Run(ServiceProvider.GetRequiredService<Register>());
         }
 
@@ -81,7 +81,7 @@ namespace CPS_App
 
             });
 
-            services.AddScoped<RequestCreate>();
+            services.AddScoped<Request_Create>();
             services.AddScoped<AuthService>();
             services.AddScoped<RegisterServices>();
             services.AddDbContext<ApplicationDbContext>();

@@ -13,7 +13,7 @@ namespace CPS_App.Services
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ApplicationDbContext _db;
         private readonly ClaimsManager _claimsManager;
-        public  ClaimsIdentity _userClaim;
+        public  static ClaimsIdentity _userClaim;
 
 
         public AuthService(

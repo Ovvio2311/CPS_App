@@ -33,6 +33,8 @@ namespace CPS_App
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.homeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loginToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -41,6 +43,10 @@ namespace CPS_App
             this.itemgridview = new System.Windows.Forms.DataGridView();
             this.lblDef = new System.Windows.Forms.Label();
             this.lblItem = new System.Windows.Forms.Label();
+            this.requestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.createToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.HomePage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.itemgridview)).BeginInit();
@@ -51,13 +57,13 @@ namespace CPS_App
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.homeToolStripMenuItem,
             this.loginToolStripMenuItem,
-            this.registerToolStripMenuItem});
+            this.registerToolStripMenuItem,
+            this.requestToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1201, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
-            
             // 
             // homeToolStripMenuItem
             // 
@@ -83,7 +89,16 @@ namespace CPS_App
             // 
             dataGridViewCellStyle1.BackColor = System.Drawing.Color.AliceBlue;
             this.HomePage.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.Beige;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.HomePage.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.HomePage.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.HomePage.EnableHeadersVisualStyles = false;
             this.HomePage.Location = new System.Drawing.Point(12, 61);
             this.HomePage.Name = "HomePage";
             this.HomePage.RowTemplate.Height = 25;
@@ -92,26 +107,26 @@ namespace CPS_App
             this.HomePage.TabIndex = 2;
             this.HomePage.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.HomePage_CellClick);
             this.HomePage.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.HomePage_CellContentClick);
-            this.HomePage.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
-            //this.HomePage.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.HomePage_ColumnHeaderMouseClick);
-            this.HomePage.ColumnHeadersDefaultCellStyle.BackColor = System.Drawing.Color.Beige;
-            this.HomePage.EnableHeadersVisualStyles = false;
-            
             // 
             // itemgridview
             // 
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.AliceBlue;
-            this.itemgridview.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.AliceBlue;
+            this.itemgridview.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.Beige;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.itemgridview.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.itemgridview.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.itemgridview.EnableHeadersVisualStyles = false;
             this.itemgridview.Location = new System.Drawing.Point(12, 473);
             this.itemgridview.Name = "itemgridview";
             this.itemgridview.RowTemplate.Height = 25;
             this.itemgridview.Size = new System.Drawing.Size(873, 263);
             this.itemgridview.TabIndex = 4;
-            this.itemgridview.ColumnHeadersDefaultCellStyle.BackColor = System.Drawing.Color.Beige;
-            this.itemgridview.EnableHeadersVisualStyles = false;
-            this.itemgridview.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
-            //this.itemgridview.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.itemgridview_ColumnHeaderMouseClick);
             // 
             // lblDef
             // 
@@ -134,6 +149,35 @@ namespace CPS_App
             this.lblItem.Size = new System.Drawing.Size(108, 17);
             this.lblItem.TabIndex = 7;
             this.lblItem.Text = "Request Item Table";
+            // 
+            // requestToolStripMenuItem
+            // 
+            this.requestToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.viewToolStripMenuItem,
+            this.createToolStripMenuItem,
+            this.editToolStripMenuItem});
+            this.requestToolStripMenuItem.Name = "requestToolStripMenuItem";
+            this.requestToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
+            this.requestToolStripMenuItem.Text = "Request";
+            // 
+            // viewToolStripMenuItem
+            // 
+            this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
+            this.viewToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.viewToolStripMenuItem.Text = "View";
+            // 
+            // createToolStripMenuItem
+            // 
+            this.createToolStripMenuItem.Name = "createToolStripMenuItem";
+            this.createToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.createToolStripMenuItem.Text = "Create";
+            this.createToolStripMenuItem.Click += new System.EventHandler(this.createToolStripMenuItem_Click);
+            // 
+            // editToolStripMenuItem
+            // 
+            this.editToolStripMenuItem.Name = "editToolStripMenuItem";
+            this.editToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.editToolStripMenuItem.Text = "Edit";
             // 
             // Dashboard
             // 
@@ -172,5 +216,9 @@ namespace CPS_App
         private DataGridView itemgridview;
         private Label lblDef;
         private Label lblItem;
+        private ToolStripMenuItem requestToolStripMenuItem;
+        private ToolStripMenuItem viewToolStripMenuItem;
+        private ToolStripMenuItem createToolStripMenuItem;
+        private ToolStripMenuItem editToolStripMenuItem;
     }
 }

@@ -12,6 +12,7 @@ using static System.ComponentModel.Design.ObjectSelectorEditor;
 using System.Security.Cryptography;
 using System.CodeDom;
 using System.Xml.Linq;
+using static CPS_App.Models.DbModels;
 
 namespace CPS_App.Services
 {
@@ -50,69 +51,127 @@ namespace CPS_App.Services
             }
             return res;
         }
-
-        public async Task<resObj> SelectWhereAsync(selectObj obj)
+        public async Task<DbResObj> SelectWhereAsync<T>(selectObj obj)
         {
-            var res = new resObj();
+            var res = new DbResObj();
             res.resCode = 0;
-            var wName = obj.selecter.Keys.FirstOrDefault();
-            string selectsql = $"select * from {obj.table} where {wName} = @{wName};";
-            DynamicParameters para = new DynamicParameters();
-            para.Add($"@{wName}", obj.selecter.Values.FirstOrDefault());
-            var result = await _db.QueryAsync<dynamic>(selectsql, para);
-            if (result != null)
+            try
             {
-                res.result = result;
-                res.resCode = 1;
+                var wName = obj.selecter.Keys.FirstOrDefault();
+                string sql = $"select * from {obj.table} where {wName} = @{wName};";
+                DynamicParameters para = new DynamicParameters();
+                para.Add($"@{wName}", obj.selecter.Values.FirstOrDefault());
+                var result = await _db.QueryAsync<T>(sql, para);
+
+                if (result != null)
+                {
+                    res.result = result;
+                    res.resCode = 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                res.result = null;
+                res.resCode = 0;
+                res.err_msg = ex.Message;
+            }
+
+            return res;
+        }
+        public async Task<DbResObj> SelectWhereAsync(selectObj obj)
+        {
+
+            var res = new DbResObj();
+            res.resCode = 0;
+            try
+            {
+                var wName = obj.selecter.Keys.FirstOrDefault();
+                string selectsql = $"select * from {obj.table} where {wName} = @{wName};";
+                DynamicParameters para = new DynamicParameters();
+                para.Add($"@{wName}", obj.selecter.Values.FirstOrDefault());
+                var result = await _db.QueryAsync<dynamic>(selectsql, para);
+                if (result != null)
+                {
+                    res.result = result;
+                    res.resCode = 1;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                res.result = null;
+                res.resCode = 0;
+                res.err_msg = ex.Message;
             }
             return res;
         }
-        public async Task<resObj> InsertAsync(insertObj obj)
+        public async Task<DbResObj> InsertAsync(insertObj obj)
         {
-            var res = new resObj();
+            var res = new DbResObj();
             res.resCode = 0;
-            string inserter = string.Join(",", obj.inserter.Select(x => x.Keys).ToList());
-            string insertValue = string.Join(",", obj.inserter.Select(x => $"'{x.Values}").ToList());
-
-            string insertSql = $"insert into {obj.table} ({inserter}) values ({insertValue});";
-
-            var result = await _db.ExecuteAsync<dynamic>(insertSql, null);
-            if (result != null)
+            try
             {
-                res.result = result;
-                res.resCode = 1;
+                string inserter = string.Join(",", obj.inserter.Select(x => x.Key).ToList());
+                string insertValue = string.Join(",", obj.inserter.Select(x => $"'{x.Value}").ToList());
+
+                string insertSql = $"insert into {obj.table} ({inserter}) values ({insertValue}); " +
+                                   "SELECT LAST_INSERT_ID();";
+
+                var result = await _db.ExecuteScalarAsync(insertSql, null);
+                if (result != null)
+                {
+                    res.result = result;
+                    res.resCode = 1;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                res.result = null;
+                res.resCode = 0;
+                res.err_msg = ex.Message;
             }
             return res;
         }
-        public async Task<resObj> InsertAsync<T>(T obj)
+        public async Task<DbResObj> InsertAsync<T>(T obj)
         {
-            var res = new resObj();
+            var res = new DbResObj();
             res.resCode = 0;
-
-            var properties = typeof(T).GetProperties();
-
-            string propName = string.Join(",", properties.Select(x => x.Name));
-
-            string value = string.Join(",", properties.Select(x => "@" + x.Name));
-
-            string sql = $"insert into {typeof(T).Name} " +
-                         $"({propName}) values " +
-                         $"({value});";
-
-            var result = await _db.ExecuteAsync(sql, obj);
-            if (result > 0)
+            try
             {
-                res.result = result;
-                res.resCode = 1;
+
+                var properties = typeof(T).GetProperties();
+
+                string propName = string.Join(",", properties.Select(x => x.Name));
+
+                string value = string.Join(",", properties.Select(x => "@" + x.Name));
+
+                string sql = $"insert into {typeof(T).Name} " +
+                             $"({propName}) values " +
+                             $"({value});";
+
+                var result = await _db.ExecuteAsync(sql, obj);
+                if (result > 0)
+                {
+                    res.result = result;
+                    res.resCode = 1;
+                }
             }
+            catch (Exception ex)
+            {
+                res.result = null;
+                res.resCode = 0;
+                res.err_msg = ex.Message;
+            }
+
             return res;
         }
 
-        public async Task<resObj> UpdateAsync(updateObj obj)
+        public async Task<DbResObj> UpdateAsync(updateObj obj)
         {
             try
             {
-                var res = new resObj();
+                var res = new DbResObj();
                 res.resCode = 0;
                 string updateValue = string.Join(",", obj.updater.Select(x => $"{x.Key} = \'{x.Value}\'").ToList());
                 string selecter = string.Join(",", obj.selecter.Select(x => $"{x.Key}= \'{x.Value}\'").ToList());
@@ -164,12 +223,12 @@ namespace CPS_App.Services
 
                 return new DbResObj
                 {
-                    response_code = 1,
+                    resCode = 1,
                     result = GenUtil.DbResulttoKVP(result)
                 };
 
             }
-            return new DbResObj { response_code = 0, result = null };
+            return new DbResObj { resCode = 0, result = null };
         }
         public async Task<resObj> GetBPAResult<T>(string obj)
         {
@@ -205,9 +264,9 @@ namespace CPS_App.Services
             }
             return res;
         }
-        public async Task<resObj> GetInStockQty()
+        public async Task<DbResObj> GetInStockQty()
         {
-            var res = new resObj();
+            var res = new DbResObj();
             res.resCode = 0;
 
             string sql = "";
@@ -220,20 +279,20 @@ namespace CPS_App.Services
             }
             return res;
         }
-        public async Task<resObj> GetLocationDesc<T>(T obj)
+        public async Task<DbResObj> GetLocationDesc<T>(T obj)
         {
-            var res = new resObj();
+            var res = new DbResObj();
             res.resCode = 0;
 
-            if (typeof(T) == typeof(string) || typeof(T) == typeof(string))
+            if (typeof(T) == typeof(string) || typeof(T) == typeof(int))
             {
 
                 string selectUnit = typeof(T) == typeof(int) ? "vc_location_desc" : "bi_location_id";
                 string whereclause = typeof(T) == typeof(int) ? "bi_location_id" : "vc_location_desc";
                 string sql = $"select {selectUnit} from tb_location where {whereclause} = @{whereclause}";
                 DynamicParameters para = new DynamicParameters();
-                para.Add($"@{whereclause}", obj);
-                var result = _db.QueryAsync<tb_location>(sql, para);
+                para.Add($"@{whereclause}", obj.ToString());
+                var result = await _db.QueryAsync<tb_location>(sql, para);
                 if (result != null)
                 {
                     res.result = result;
@@ -246,9 +305,37 @@ namespace CPS_App.Services
                 return res;
             }
         }
+        //public async Task<DbResObj> GetItemId(selectObj obj)
+        //{
+        //    var res = new DbResObj();
+        //    res.resCode = 0;
+        //    try
+        //    {
+        //        var wName = obj.selecter.Keys.FirstOrDefault();
+        //        string sql = $"select bi_item_id, bi_item_vid from tb_item_vid_mapping where {wName} = @{wName};";
+        //        DynamicParameters para = new DynamicParameters();
+        //        para.Add($"@{wName}", obj.selecter.Values.FirstOrDefault());
+        //        var result = await _db.QueryAsync<tb_item_vid_mapping>(sql, para);
+
+        //        if (result != null)
+        //        {
+        //            res.result = result;
+        //            res.resCode = 1;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        res.result = null;
+        //        res.resCode = 0;
+        //        res.err_msg = ex.Message;
+        //    }
+
+        //    return res;
+
+        //}
+       
 
     }
-
 }
 
 

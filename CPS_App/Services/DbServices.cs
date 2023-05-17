@@ -150,7 +150,7 @@ namespace CPS_App.Services
                              $"({propName}) values " +
                              $"({value});";
 
-                var result = await _db.ExecuteAsync(sql, obj);
+                var result = await _db.ExecuteAsync(sql, null);
                 if (result > 0)
                 {
                     res.result = result;
@@ -177,7 +177,7 @@ namespace CPS_App.Services
                 string selecter = string.Join(",", obj.selecter.Select(x => $"{x.Key}= \'{x.Value}\'").ToList());
                 string sql = $"update {obj.table} set {updateValue} where {selecter}; ";
 
-                var result = await _db.ExecuteAsync(sql, obj);
+                var result = await _db.ExecuteAsync(sql, null);
                 if (result > 0)
                 {
                     res.result = result;

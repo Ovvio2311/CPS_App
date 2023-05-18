@@ -112,7 +112,7 @@ namespace CPS_App.Services
             try
             {
                 string inserter = string.Join(",", obj.inserter.Select(x => x.Key).ToList());
-                string insertValue = string.Join(",", obj.inserter.Select(x => $"'{x.Value}").ToList());
+                string insertValue = string.Join(",", obj.inserter.Select(x => $"'{x.Value}'").ToList());
 
                 string insertSql = $"insert into {obj.table} ({inserter}) values ({insertValue}); " +
                                    "SELECT LAST_INSERT_ID();";
@@ -197,7 +197,7 @@ namespace CPS_App.Services
             string sql = $@"SELECT * FROM
                          (SELECT 
                              req.bi_req_id, req.i_staff_id, sta.vc_staff_role, sta.bi_location_id, loc.vc_location_desc, 
-                             loc.vc_location_addr, vc_req_status, dt_exp_deli_date, req.dt_created_date, req.dt_updated_datetime
+                             loc.vc_location_addr, vc_req_status, req.dt_created_date, req.dt_updated_datetime
                          FROM
                              tb_request req
                          INNER JOIN tb_staff sta ON req.i_staff_id = sta.i_staff_id
@@ -206,7 +206,7 @@ namespace CPS_App.Services
                              LEFT JOIN
                          (SELECT * FROM
                              (SELECT 
-                             det.bi_req_id, det.bi_item_id bi_item_id, det.i_item_req_qty, det.i_remain_req_qty, det.i_uom_id, uom.vc_uom_desc, mapp.bi_item_vid, det.vc_req_status item_req_status, it.vc_item_desc, it.bi_category_id, cat.vc_category_desc
+                             det.bi_req_id, det.bi_item_id bi_item_id, det.i_item_req_qty, det.i_remain_req_qty, det.i_uom_id, det.dt_exp_deli_date, uom.vc_uom_desc, mapp.bi_item_vid, det.vc_req_status item_req_status, it.vc_item_desc, it.bi_category_id, cat.vc_category_desc
                          FROM
                              tb_request_detail det
                      	 LEFT JOIN tb_item it ON det.bi_item_id = it.bi_item_id
@@ -247,7 +247,7 @@ namespace CPS_App.Services
                          inner join lut_deli_schedule_type del on ph.ti_deli_sched_id = del.ti_deli_sched_id ) a
 	                     left join (
                          select * from (
-                         select 1 as `itemInfo`, it.bi_item_id, it.vc_item_desc, it.bi_category_id, loc.vc_location_desc, cat.vc_category_desc, itu.bi_location_id, itu.i_uom_id, itu.i_item_qty
+                         select 1 as `itemInfo`, it.bi_item_id, it.vc_item_desc, it.bi_category_id, loc.vc_location_desc, cat.vc_category_desc, itu.bi_location_id, it.i_uom_id, itu.i_item_qty
                          from tb_item it
                          inner join tb_item_category cat on it.bi_category_id = cat.bi_category_id    
                          left join tb_item_unit itu on it.bi_item_id = itu.bi_item_id

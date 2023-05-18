@@ -95,7 +95,7 @@ namespace CPS_App.Services
 
                 if (true) //test
                 {
-                    await RequestMappingScheduler(res);
+                    //await RequestMappingScheduler(res);
                 }
                 //Debug.WriteLine(JsonConvert.SerializeObject(res));
                 return res;

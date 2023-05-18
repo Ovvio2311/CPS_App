@@ -150,7 +150,7 @@ namespace CPS_App.Services
                              $"({propName}) values " +
                              $"({value});";
 
-                var result = await _db.ExecuteAsync(sql, null);
+                var result = await _db.ExecuteAsync(sql, obj);
                 if (result > 0)
                 {
                     res.result = result;
@@ -305,6 +305,35 @@ namespace CPS_App.Services
                 return res;
             }
         }
+
+
+//        SELECT
+//    *
+//FROM
+//    (SELECT
+//        it.bi_item_id,
+//            vid.bi_item_vid,
+//            vc_item_desc,
+//            it.bi_category_id,
+//            cat.vc_category_desc,
+//            it.i_uom_id,
+//            uom.vc_uom_desc,
+//            uni.bi_location_id,
+//            loc.vc_location_desc,
+//            i_item_qty,
+//            it.dt_created_date,
+//            it.dt_updated_datetime
+//    FROM
+//        tb_item it
+//    INNER JOIN tb_item_category cat ON it.bi_category_id = cat.bi_category_id
+//    INNER JOIN tb_item_vid_mapping vid ON it.bi_item_id = vid.bi_item_id
+//    LEFT JOIN tb_item_unit uni ON it.bi_item_id = uni.bi_item_id
+//    INNER JOIN tb_location loc ON uni.bi_location_id = loc.bi_location_id
+//    INNER JOIN lut_uom_type uom ON it.i_uom_id = uom.i_uom_id
+//    )a;
+
+
+
         //public async Task<DbResObj> GetItemId(selectObj obj)
         //{
         //    var res = new DbResObj();

@@ -11,28 +11,16 @@ namespace CPS_App
 {
     public partial class Dashboard : Form
     {
-        //private AccountServices _accountServices { get; set; }
-        //private AuthService _authService { get; set; }
-        //private readonly Db _db;
-        //private IConfiguration _configuration;
-        //public Dashboard(AccountServices accountServices, AuthService authService, Db db, IConfiguration configuration)
-        //{
-        //    InitializeComponent();
-        //    _accountServices = accountServices;
-        //    _authService = authService;
-        //    _db = db;
-        //    _configuration = configuration;
-        //}
 
-        public Register _register { get; set; }
+        public Register _register;
         private RequestMapping _requestMapp;
         public List<RequestMappingReqObj> defPage;
-        public AuthService _authService { get; set; }
+        public AuthService _authService;
         public ClaimsIdentity userIden;
-        private int _previousIndex;
-        private bool _sortDirection;
-        private int _previousitemIndex;
-        private bool _sortitemDirection;
+        //private int _previousIndex;
+        //private bool _sortDirection;
+        //private int _previousitemIndex;
+        //private bool _sortitemDirection;
         private readonly DbServices _dbServices;
 
 
@@ -61,9 +49,7 @@ namespace CPS_App
             //defPage = await _requestMapp.RequestMappingObjGetter();
             //HomePage.DataSource = defPage;
 
-            HomePage.Dispose();
-            itemgridview.Dispose();
-           
+            
         }
 
         //private void HomePage_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
@@ -92,31 +78,37 @@ namespace CPS_App
 
         }
 
-        private void HomePage_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
+       
 
-            //foreach (DataGridViewRow row in HomePage.SelectedRows)
-            //{
-            //    MessageBox.Show(row.Cells[7].Value.ToString());
-            //}
-        }
-
-        private void HomePage_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.ColumnIndex < 0 || e.RowIndex < 0) return; // header clicked
-
-            if (e.RowIndex == HomePage.CurrentRow.Index)
-            {
-                //itemgridview.DataSource = null;
-                itemgridview.DataSource = defPage.ElementAt(HomePage.CurrentRow.Index).item;
-            }
-        }
+      
 
         private void createToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Request_Create reqForm = new Request_Create(_dbServices);
+            RequestCreate reqForm = new RequestCreate(_dbServices);
             reqForm.MdiParent = this;
             reqForm.Show();
+        }
+
+        private void viewToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            RequestView reqview = new RequestView(_authService, _dbServices, _requestMapp);
+            reqview.MdiParent = this;
+            reqview.Show();
+        }
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void toolStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
+
+        private void editToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
         //private void itemgridview_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         //{

@@ -1,6 +1,6 @@
 ﻿namespace CPS_App
 {
-    partial class Request_Create
+    partial class RequestCreate
     {
         /// <summary>
         /// Required designer variable.
@@ -43,11 +43,11 @@
             this.btnSubmit = new System.Windows.Forms.Button();
             this.btnClear = new System.Windows.Forms.Button();
             this.panelInfo = new System.Windows.Forms.Panel();
+            this.txtloc = new System.Windows.Forms.TextBox();
             this.dateTimePicker = new System.Windows.Forms.DateTimePicker();
             this.panelItem = new System.Windows.Forms.Panel();
             this.txtremark = new System.Windows.Forms.TextBox();
             this.lblremark = new System.Windows.Forms.Label();
-            this.txtloc = new System.Windows.Forms.TextBox();
             this.panelInfo.SuspendLayout();
             this.panelItem.SuspendLayout();
             this.SuspendLayout();
@@ -190,6 +190,14 @@
             this.panelInfo.Size = new System.Drawing.Size(352, 232);
             this.panelInfo.TabIndex = 24;
             // 
+            // txtloc
+            // 
+            this.txtloc.Location = new System.Drawing.Point(135, 114);
+            this.txtloc.Name = "txtloc";
+            this.txtloc.ReadOnly = true;
+            this.txtloc.Size = new System.Drawing.Size(119, 23);
+            this.txtloc.TabIndex = 12;
+            // 
             // dateTimePicker
             // 
             this.dateTimePicker.Location = new System.Drawing.Point(186, 160);
@@ -231,19 +239,11 @@
             this.lblremark.TabIndex = 17;
             this.lblremark.Text = "Remark";
             // 
-            // txtloc
-            // 
-            this.txtloc.Location = new System.Drawing.Point(135, 114);
-            this.txtloc.Name = "txtloc";
-            this.txtloc.ReadOnly = true;
-            this.txtloc.Size = new System.Drawing.Size(119, 23);
-            this.txtloc.TabIndex = 12;
-            // 
             // Request_Create
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1166, 617);
+            this.ClientSize = new System.Drawing.Size(1105, 571);
             this.Controls.Add(this.panelItem);
             this.Controls.Add(this.btnClear);
             this.Controls.Add(this.btnSubmit);

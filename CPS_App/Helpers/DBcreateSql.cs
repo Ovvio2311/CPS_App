@@ -78,7 +78,8 @@ namespace CPS_App.Helpers
 //  `bi_req_id` bigint(20) NOT NULL AUTO_INCREMENT,
 //  `i_staff_id` int(11) DEFAULT NULL,
 //  `vc_req_status` varchar(15) DEFAULT NULL,
-//  `dt_exp_deli_date` datetime DEFAULT NULL,
+//  `
+//  ` datetime DEFAULT NULL,
 //  `vc_mark` varchar(20) DEFAULT NULL,
 //  `dt_created_date` datetime NOT NULL DEFAULT current_timestamp(),
 //  `dt_updated_datetime` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp(),

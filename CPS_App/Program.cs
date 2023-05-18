@@ -81,7 +81,7 @@ namespace CPS_App
 
             });
 
-            services.AddScoped<Request_Create>();
+            services.AddScoped<RequestCreate>();
             services.AddScoped<AuthService>();
             services.AddScoped<RegisterServices>();
             services.AddDbContext<ApplicationDbContext>();

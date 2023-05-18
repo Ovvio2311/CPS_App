@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -6,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using System.ComponentModel.DataAnnotations;
 
 namespace CPS_App.Models
 {
@@ -47,6 +49,7 @@ namespace CPS_App.Models
             public int bi_item_id { get; set; }
             public string vc_item_desc { get; set; }
             public int bi_category_id { get; set; }
+            public int i_uom_id { get; set; }
             public string dt_created_date { get; set; }
             public string dt_updated_datetime { get; set; }
         }
@@ -60,8 +63,7 @@ namespace CPS_App.Models
         public class tb_item_unit : CPSModel
         {
             public int bi_item_id { get; set; }
-            public int bi_location_id { get; set; }
-            public int i_uom_id { get; set; }
+            public int bi_location_id { get; set; }            
             public int i_item_qty { get; set; }
             public string dt_created_date { get; set; }
             public string dt_updated_datetime { get; set; }
@@ -89,7 +91,9 @@ namespace CPS_App.Models
         //}
         public class RequestCreationReq
         {
+            [Display(Name = "Staff Id")]
             public int i_staff_id { get; set; }
+            [Display(Name = "bi_location_id")]
             public int bi_location_id { get; set; }
             
             public List<RequestionCreationItem> items { get; set; }
@@ -100,43 +104,73 @@ namespace CPS_App.Models
         }
         public class RequestionCreationItem
         {
+            [Display(Name = "Request Id")]
             public int bi_req_id { get; set; }
+            [Display(Name = "Item Vid")]
             public int bi_item_vid { get; set; }
+            [Display(Name = "Item Id")]
             public int bi_item_id { get; set; }
+            [Display(Name = "Request Quantity")]
             public int i_item_req_qty { get; set; }
+            [Display(Name = "Remain Quanity")]
             public int i_remain_req_qty { get; set; } //need update sql
-            public int i_uom_id { get; set; } //need update sql            
+            [Display(Name = "i_uom_id")]
+            public int i_uom_id { get; set; } //need update sql
+            [Display(Name = "Request Status")]
             public string vc_req_status { get; set; }
+            [Display(Name = "Remark")]
             public string vc_remark { get; set; }
+            [Display(Name = "Expected Delievery Date")]
             public DateTime dt_exp_deli_date { get; set; }
         }
         public class RequestMappingReqObj
         {
+            [Display(Name = "Request Id")]
             public int bi_req_id { get; set; }
+            [Display(Name = "Staff Id")]
             public int i_staff_id { get; set; }
+            [Display(Name = "Staff Role")]
             public string vc_staff_role { get; set; }
+            [Display(Name = "bi_location_id")]
             public int bi_location_id { get; set; }
+            [Display(Name = "Your Location")]
             public string vc_location_desc { get; set; }
+            [Display(Name = "Address")]
             public string vc_location_addr { get; set; }
+            [Display(Name = "Request Status")]
             public string vc_req_status { get; set; }
-            public string i_item_req_qty { get; set; }            
+            //public string i_item_req_qty { get; set; }            
             public List<ItemRequest> item { get; set; }
+            [Display(Name = "Created Date")]
             public string dt_created_date { get; set; }
+            [Display(Name = "Updated Date")]
             public string dt_updated_datetime { get; set; }
             
         }
+        
         public class ItemRequest
         {
+            [Display(Name = "Request Id")]
             public int bi_req_id { get; set; }
+            [Display(Name = "Item Vid")]
             public int bi_item_vid { get; set; }
+            [Display(Name = "Item Id")]
             public int bi_item_id { get; set; }
+            [Display(Name = "Request Quantity")]
             public int i_item_req_qty { get; set; }
+            [Display(Name = "Remain Quanity")]
             public int i_remain_req_qty { get; set; } //need update sql
+            [Display(Name = "i_uom_id")]
             public int i_uom_id { get; set; } //need update sql
+            [Display(Name = "Item Name")]
             public string vc_item_desc { get; set; }
+            [Display(Name = "bi_category_id")]
             public int bi_category_id { get; set; }
+            [Display(Name = "Category")]
             public string vc_category_desc { get; set; }
+            [Display(Name = "Request Status")]
             public string item_req_status { get; set; }
+            [Display(Name = "Expected Delievery Date")]
             public DateTime dt_exp_deli_date { get; set; }
         }
         public class POATable

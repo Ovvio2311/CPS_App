@@ -21,14 +21,13 @@ using System.Security.Cryptography;
 
 namespace CPS_App
 {
-    public partial class Request_Create : Form
+    public partial class RequestCreate : Form
     {
         private DbServices _dbServices;
         private Validator _validator = new Validator();
         public static RequestCreationReq req;
-
         public ClaimsIdentity userIden;
-        public Request_Create(DbServices dbServices)
+        public RequestCreate(DbServices dbServices)
         {
             InitializeComponent();
             _dbServices = dbServices;
@@ -43,14 +42,14 @@ namespace CPS_App
             if (userIden != null)
             {
                 txtStaff.Text = userIden.Claims.FirstOrDefault(x => x.Type == "staff_id").Value.ToString();
-                
+
                 var locdesc = await _dbServices.GetLocationDesc<int>(Convert.ToInt32(userIden.Claims.FirstOrDefault(x => x.Type == "location_id").Value));
                 if (locdesc.resCode != 1 || locdesc.result == null)
                 {
                     //_logger.LogDebug("uom Id not find");
                     MessageBox.Show("locdesc not find");
                 }
-                tb_location loca = locdesc.result[0] ;
+                tb_location loca = locdesc.result[0];
                 txtloc.Text = loca.vc_location_desc.ToString();
             }
             disableValidation();
@@ -110,6 +109,7 @@ namespace CPS_App
                 else
                 {
                     req.items.Add(item);
+                    MessageBox.Show("item added");
                 }
             }
             else
@@ -123,6 +123,12 @@ namespace CPS_App
         }
         private void requiredFieldCheck(object sender, EventArgs e)
         {
+            if (req.items.Count > 0)
+            {
+                enableValidation();
+                //MessageBox.Show($"confirm Submit with {req.items.Count} item?");
+                return;
+            }
             var datepick = dateTimePicker.Value;
 
             var avaliableItemBox = panelItem.Controls.OfType<TextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
@@ -154,7 +160,8 @@ namespace CPS_App
             tb_req.table = "tb_request";
             tb_req.inserter = new Dictionary<string, string>
             {
-                { req.i_staff_id.GetType().Name, req.i_staff_id.ToString() },
+                { nameof(req.i_staff_id), req.i_staff_id.ToString() },
+                {"vc_req_status", "pending"}
 
             };
             var res1 = await _dbServices.InsertAsync(tb_req);
@@ -171,9 +178,10 @@ namespace CPS_App
                 //find item id
 
                 var idFinder = new selectObj();
+                idFinder.table = "tb_item_vid_mapping";
                 idFinder.selecter = new Dictionary<string, string>
                 {
-                    {row.bi_item_vid.GetType().Name, row.bi_item_vid.ToString() }
+                    {nameof(row.bi_item_vid), row.bi_item_vid.ToString() }
                 };
                 var id = await _dbServices.SelectWhereAsync<tb_item_vid_mapping>(idFinder);
                 if (id.resCode != 1 || id.result == null)
@@ -185,29 +193,29 @@ namespace CPS_App
 
                 //find uom id
                 var uomFinder = new selectObj();
-                uomFinder.table = "tb_item_unit";
+                uomFinder.table = "tb_item";
                 uomFinder.selecter = new Dictionary<string, string>
                 {
-                    {row.bi_item_id.GetType().Name, itemid.bi_item_id.ToString()}
+                    {nameof(row.bi_item_id), itemid.bi_item_id.ToString()}
                 };
-                var uomid = await _dbServices.SelectWhereAsync<tb_item_unit>(uomFinder);
+                var uomid = await _dbServices.SelectWhereAsync<tb_item>(uomFinder);
                 if (uomid.resCode != 1 || uomid.result == null)
                 {
                     //_logger.LogDebug("uom Id not find");
                     MessageBox.Show("uom Id not find");
                 }
-                tb_item_unit uomId = uomid.result[0];
+                tb_item uomId = uomid.result[0];
                 var tb_detail = new insertObj();
                 tb_detail.table = "tb_request_detail";
                 tb_detail.inserter = new Dictionary<string, string>
                 {
-                    {row.bi_req_id.GetType().Name, res1.result},
-                    {row.bi_item_id.GetType().Name,  itemid.bi_item_id.ToString()},
-                    {row.i_item_req_qty.GetType().Name, row.i_item_req_qty.ToString() },
-                    {row.i_remain_req_qty.GetType().Name,row.i_item_req_qty.ToString() },
-                    {row.i_uom_id.GetType().Name, uomId.i_uom_id.ToString() },
-                    {row.vc_req_status.GetType().Name, "pending" },
-                    {row.vc_remark.GetType().Name,row.vc_remark !=null? row.vc_remark:""}
+                    {nameof(row.bi_req_id), res1.result.ToString()},
+                    {nameof(row.bi_item_id),  itemid.bi_item_id.ToString()},
+                    {nameof(row.i_item_req_qty), row.i_item_req_qty.ToString() },
+                    {nameof(row.i_remain_req_qty),row.i_item_req_qty.ToString() },
+                    {nameof(row.i_uom_id), uomId.i_uom_id.ToString() },
+                    {nameof(row.vc_req_status), "pending" },
+                    {nameof(row.vc_remark),row.vc_remark != ""? row.vc_remark:null}
                 };
 
                 var res2 = await _dbServices.InsertAsync(tb_detail);
@@ -216,6 +224,7 @@ namespace CPS_App
                     //_logger.LogDebug("insert error");
                     MessageBox.Show("insert error");
                 }
+                else { MessageBox.Show($"Your Request has been created!\nRequest Id: {res2.result.ToString()}"); }
             });
         }
     }

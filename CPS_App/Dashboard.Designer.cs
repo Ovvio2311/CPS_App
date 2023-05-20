@@ -42,6 +42,8 @@ namespace CPS_App
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.itemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.roleManagementToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -53,7 +55,8 @@ namespace CPS_App
             this.loginToolStripMenuItem,
             this.registerToolStripMenuItem,
             this.requestToolStripMenuItem,
-            this.itemToolStripMenuItem});
+            this.itemToolStripMenuItem,
+            this.settingsToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
@@ -124,6 +127,20 @@ namespace CPS_App
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
+            // settingsToolStripMenuItem
+            // 
+            this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.roleManagementToolStripMenuItem});
+            this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
+            this.settingsToolStripMenuItem.Text = "Settings";
+            // 
+            // roleManagementToolStripMenuItem
+            // 
+            this.roleManagementToolStripMenuItem.Name = "roleManagementToolStripMenuItem";
+            this.roleManagementToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.roleManagementToolStripMenuItem.Text = "Role Management";
+            // 
             // Dashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -157,5 +174,7 @@ namespace CPS_App
         private ToolStripMenuItem editToolStripMenuItem;
         private ContextMenuStrip contextMenuStrip1;
         private ToolStripMenuItem itemToolStripMenuItem;
+        private ToolStripMenuItem settingsToolStripMenuItem;
+        private ToolStripMenuItem roleManagementToolStripMenuItem;
     }
 }

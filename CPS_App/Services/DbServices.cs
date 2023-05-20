@@ -148,7 +148,8 @@ namespace CPS_App.Services
 
                 string sql = $"insert into {typeof(T).Name} " +
                              $"({propName}) values " +
-                             $"({value});";
+                             $"({value}); "+
+                             "SELECT LAST_INSERT_ID();";
 
                 var result = await _db.ExecuteAsync(sql, obj);
                 if (result > 0)
@@ -350,7 +351,38 @@ namespace CPS_App.Services
             }
             return res;
         }
+        public async Task<DbResObj> GetVidMappingObj()
+        {
+            var res = new DbResObj();
+            res.resCode = 0;
+            try
+            {
+                string sql = @"select * , group_concat(vc_item_desc separator ', ') as items_group from (
+                             select bi_item_vid, vid.bi_item_id, vc_item_desc, it.bi_category_id, vc_category_desc, uni.bi_location_id, loc.vc_location_desc
+                             from tb_item_vid_mapping vid
+                             left join tb_item it on vid.bi_item_id = it.bi_item_id
+                             left join tb_item_category cat on it.bi_category_id = cat.bi_category_id
+                             left join tb_item_unit uni on vid.bi_item_id = uni.bi_item_id
+                             left join tb_location loc on uni.bi_location_id = loc.bi_location_id)a
+                             group by bi_item_vid
+                             order by bi_item_vid;";
 
+                var result = await _db.QueryAsync<StockLevelViewObj>(sql, null);
+
+                if (result != null)
+                {
+                    res.result = result;
+                    res.resCode = 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                res.result = null;
+                res.resCode = 0;
+                res.err_msg = ex.Message;
+            }
+            return res;
+        }
         //        SELECT
         //    *
         //FROM

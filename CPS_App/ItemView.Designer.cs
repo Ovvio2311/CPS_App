@@ -71,6 +71,7 @@
             this.btncreate.TabIndex = 3;
             this.btncreate.Text = "Create";
             this.btncreate.UseVisualStyleBackColor = true;
+            this.btncreate.Click += new System.EventHandler(this.btncreate_Click);
             // 
             // btnupdate
             // 
@@ -81,13 +82,12 @@
             this.btnupdate.Text = "Update";
             this.btnupdate.UseVisualStyleBackColor = true;
             this.btnupdate.Click += new System.EventHandler(this.btnupdate_Click);
-            
             // 
             // ItemView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(851, 532);            
+            this.ClientSize = new System.Drawing.Size(851, 532);
             this.Controls.Add(this.btnupdate);
             this.Controls.Add(this.btncreate);
             this.Controls.Add(this.txtfield);

@@ -45,6 +45,7 @@
             this.txtupdate = new System.Windows.Forms.TextBox();
             this.txtuom = new System.Windows.Forms.TextBox();
             this.dataGridViewitem = new System.Windows.Forms.DataGridView();
+            this.btnmod = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewitem)).BeginInit();
             this.SuspendLayout();
             // 
@@ -124,6 +125,7 @@
             // 
             this.txtvid.Location = new System.Drawing.Point(77, 114);
             this.txtvid.Name = "txtvid";
+            this.txtvid.ReadOnly = true;
             this.txtvid.Size = new System.Drawing.Size(169, 23);
             this.txtvid.TabIndex = 8;
             // 
@@ -131,6 +133,7 @@
             // 
             this.txtcat.Location = new System.Drawing.Point(347, 114);
             this.txtcat.Name = "txtcat";
+            this.txtcat.ReadOnly = true;
             this.txtcat.Size = new System.Drawing.Size(155, 23);
             this.txtcat.TabIndex = 9;
             // 
@@ -138,6 +141,7 @@
             // 
             this.txtname.Location = new System.Drawing.Point(347, 75);
             this.txtname.Name = "txtname";
+            this.txtname.ReadOnly = true;
             this.txtname.Size = new System.Drawing.Size(155, 23);
             this.txtname.TabIndex = 10;
             // 
@@ -145,6 +149,7 @@
             // 
             this.txtid.Location = new System.Drawing.Point(77, 75);
             this.txtid.Name = "txtid";
+            this.txtid.ReadOnly = true;
             this.txtid.Size = new System.Drawing.Size(169, 23);
             this.txtid.TabIndex = 11;
             // 
@@ -159,6 +164,7 @@
             // 
             this.txtloc.Location = new System.Drawing.Point(622, 114);
             this.txtloc.Name = "txtloc";
+            this.txtloc.ReadOnly = true;
             this.txtloc.Size = new System.Drawing.Size(150, 23);
             this.txtloc.TabIndex = 13;
             // 
@@ -166,6 +172,7 @@
             // 
             this.txtupdate.Location = new System.Drawing.Point(622, 156);
             this.txtupdate.Name = "txtupdate";
+            this.txtupdate.ReadOnly = true;
             this.txtupdate.Size = new System.Drawing.Size(149, 23);
             this.txtupdate.TabIndex = 14;
             // 
@@ -173,24 +180,36 @@
             // 
             this.txtuom.Location = new System.Drawing.Point(346, 156);
             this.txtuom.Name = "txtuom";
+            this.txtuom.ReadOnly = true;
             this.txtuom.Size = new System.Drawing.Size(156, 23);
             this.txtuom.TabIndex = 15;
             // 
             // dataGridViewitem
             // 
             this.dataGridViewitem.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewitem.Location = new System.Drawing.Point(26, 224);
+            this.dataGridViewitem.Location = new System.Drawing.Point(26, 254);
             this.dataGridViewitem.Name = "dataGridViewitem";
             this.dataGridViewitem.RowTemplate.Height = 25;
             this.dataGridViewitem.Size = new System.Drawing.Size(745, 150);
             this.dataGridViewitem.TabIndex = 16;
             this.dataGridViewitem.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewitem_CellClick);
             // 
+            // btnmod
+            // 
+            this.btnmod.Location = new System.Drawing.Point(661, 202);
+            this.btnmod.Name = "btnmod";
+            this.btnmod.Size = new System.Drawing.Size(110, 29);
+            this.btnmod.TabIndex = 17;
+            this.btnmod.Text = "Modify";
+            this.btnmod.UseVisualStyleBackColor = true;
+            this.btnmod.Click += new System.EventHandler(this.btnmod_Click);
+            // 
             // ItemEdit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnmod);
             this.Controls.Add(this.dataGridViewitem);
             this.Controls.Add(this.txtuom);
             this.Controls.Add(this.txtupdate);
@@ -236,5 +255,6 @@
         private TextBox txtupdate;
         private TextBox txtuom;
         private DataGridView dataGridViewitem;
+        private Button btnmod;
     }
 }

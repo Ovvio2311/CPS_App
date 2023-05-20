@@ -41,13 +41,13 @@
             this.lblloc = new System.Windows.Forms.Label();
             this.lblvid = new System.Windows.Forms.Label();
             this.lbluom = new System.Windows.Forms.Label();
-            this.txtcat = new System.Windows.Forms.TextBox();
-            this.txtloc = new System.Windows.Forms.TextBox();
-            this.txtqty = new System.Windows.Forms.TextBox();
-            this.txtuom = new System.Windows.Forms.TextBox();
             this.pnit = new System.Windows.Forms.Panel();
             this.btnitsb = new System.Windows.Forms.Button();
             this.btnitcr = new System.Windows.Forms.Button();
+            this.cbxcat = new System.Windows.Forms.ComboBox();
+            this.cbxloc = new System.Windows.Forms.ComboBox();
+            this.cbxvid = new System.Windows.Forms.ComboBox();
+            this.cbxuom = new System.Windows.Forms.ComboBox();
             this.pncat.SuspendLayout();
             this.pnit.SuspendLayout();
             this.SuspendLayout();
@@ -112,9 +112,9 @@
             // 
             // txtitname
             // 
-            this.txtitname.Location = new System.Drawing.Point(436, 123);
+            this.txtitname.Location = new System.Drawing.Point(143, 123);
             this.txtitname.Name = "txtitname";
-            this.txtitname.Size = new System.Drawing.Size(144, 23);
+            this.txtitname.Size = new System.Drawing.Size(177, 23);
             this.txtitname.TabIndex = 2;
             this.txtitname.Validating += new System.ComponentModel.CancelEventHandler(this.requiredFieldCheck);
             // 
@@ -148,7 +148,7 @@
             // lblloc
             // 
             this.lblloc.AutoSize = true;
-            this.lblloc.Location = new System.Drawing.Point(377, 236);
+            this.lblloc.Location = new System.Drawing.Point(67, 231);
             this.lblloc.Name = "lblloc";
             this.lblloc.Size = new System.Drawing.Size(53, 15);
             this.lblloc.TabIndex = 6;
@@ -172,40 +172,14 @@
             this.lbluom.TabIndex = 8;
             this.lbluom.Text = "Unit of Measurement";
             // 
-            // txtcat
-            // 
-            this.txtcat.Location = new System.Drawing.Point(436, 174);
-            this.txtcat.Name = "txtcat";
-            this.txtcat.Size = new System.Drawing.Size(144, 23);
-            this.txtcat.TabIndex = 9;
-            this.txtcat.Validating += new System.ComponentModel.CancelEventHandler(this.requiredFieldCheck);
-            // 
-            // txtloc
-            // 
-            this.txtloc.Location = new System.Drawing.Point(436, 233);
-            this.txtloc.Name = "txtloc";
-            this.txtloc.Size = new System.Drawing.Size(144, 23);
-            this.txtloc.TabIndex = 10;
-            this.txtloc.Validating += new System.ComponentModel.CancelEventHandler(this.requiredFieldCheck);
-            // 
-            // txtqty
-            // 
-            this.txtqty.Location = new System.Drawing.Point(436, 279);
-            this.txtqty.Name = "txtqty";
-            this.txtqty.Size = new System.Drawing.Size(144, 23);
-            this.txtqty.TabIndex = 11;
-            this.txtqty.Validating += new System.ComponentModel.CancelEventHandler(this.requiredFieldCheck);
-            // 
-            // txtuom
-            // 
-            this.txtuom.Location = new System.Drawing.Point(436, 327);
-            this.txtuom.Name = "txtuom";
-            this.txtuom.Size = new System.Drawing.Size(144, 23);
-            this.txtuom.TabIndex = 12;
-            this.txtuom.Validating += new System.ComponentModel.CancelEventHandler(this.requiredFieldCheck);
-            // 
             // pnit
             // 
+            this.pnit.Controls.Add(this.cbxuom);
+            this.pnit.Controls.Add(this.cbxvid);
+            this.pnit.Controls.Add(this.lblloc);
+            this.pnit.Controls.Add(this.cbxloc);
+            this.pnit.Controls.Add(this.cbxcat);
+            this.pnit.Controls.Add(this.txtitname);
             this.pnit.Controls.Add(this.btnitsb);
             this.pnit.Controls.Add(this.btnitcr);
             this.pnit.Location = new System.Drawing.Point(308, 0);
@@ -233,22 +207,48 @@
             this.btnitcr.Text = "Clear";
             this.btnitcr.UseVisualStyleBackColor = true;
             // 
+            // cbxcat
+            // 
+            this.cbxcat.FormattingEnabled = true;
+            this.cbxcat.Location = new System.Drawing.Point(143, 177);
+            this.cbxcat.Name = "cbxcat";
+            this.cbxcat.Size = new System.Drawing.Size(177, 23);
+            this.cbxcat.TabIndex = 2;
+            // 
+            // cbxloc
+            // 
+            this.cbxloc.FormattingEnabled = true;
+            this.cbxloc.Location = new System.Drawing.Point(143, 228);
+            this.cbxloc.Name = "cbxloc";
+            this.cbxloc.Size = new System.Drawing.Size(177, 23);
+            this.cbxloc.TabIndex = 3;
+            // 
+            // cbxvid
+            // 
+            this.cbxvid.FormattingEnabled = true;
+            this.cbxvid.Location = new System.Drawing.Point(143, 279);
+            this.cbxvid.Name = "cbxvid";
+            this.cbxvid.Size = new System.Drawing.Size(177, 23);
+            this.cbxvid.TabIndex = 4;
+            // 
+            // cbxuom
+            // 
+            this.cbxuom.FormattingEnabled = true;
+            this.cbxuom.Location = new System.Drawing.Point(143, 322);
+            this.cbxuom.Name = "cbxuom";
+            this.cbxuom.Size = new System.Drawing.Size(177, 23);
+            this.cbxuom.TabIndex = 5;
+            // 
             // ItemCreate
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.txtuom);
-            this.Controls.Add(this.txtqty);
-            this.Controls.Add(this.txtloc);
-            this.Controls.Add(this.txtcat);
             this.Controls.Add(this.lbluom);
             this.Controls.Add(this.lblvid);
-            this.Controls.Add(this.lblloc);
             this.Controls.Add(this.lblcat);
             this.Controls.Add(this.lblitname);
             this.Controls.Add(this.lblcrit);
-            this.Controls.Add(this.txtitname);
             this.Controls.Add(this.pncat);
             this.Controls.Add(this.pnit);
             this.Name = "ItemCreate";
@@ -257,6 +257,7 @@
             this.pncat.ResumeLayout(false);
             this.pncat.PerformLayout();
             this.pnit.ResumeLayout(false);
+            this.pnit.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -275,14 +276,14 @@
         private Label lblloc;
         private Label lblvid;
         private Label lbluom;
-        private TextBox txtcat;
-        private TextBox txtloc;
-        private TextBox txtqty;
-        private TextBox txtuom;
         private Panel pnit;
         private Button btncatclear;
         private Button btncatsb;
         private Button btnitsb;
         private Button btnitcr;
+        private ComboBox cbxuom;
+        private ComboBox cbxvid;
+        private ComboBox cbxloc;
+        private ComboBox cbxcat;
     }
 }

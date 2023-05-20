@@ -70,6 +70,20 @@ namespace CPS_App.Models
             public string dt_updated_datetime { get; set; }
         }
 
+        public class tb_item_category : CPSModel
+        {
+            public int bi_category_id { get; set; }
+            public string vc_category_desc { get; set; }            
+            public string dt_created_date { get; set; }
+            public string dt_updated_datetime { get; set; }
+        }
+        public class lut_uom_type : CPSModel
+        {
+            public int i_uom_id { get; set; }
+            public string vc_uom_desc { get; set; }
+            public string dt_created_date { get; set; }
+            public string dt_updated_datetime { get; set; }
+        }
         //public class CustomRole
         //{
         //    public CustomRole()
@@ -192,9 +206,11 @@ namespace CPS_App.Models
             public int bi_location_id { get; set; }
             public string vc_location_desc { get; set; }
             public int i_item_qty { get; set; }
+            public string items_group { get; set; }
             public DateTime dt_created_date { get; set; }
             public DateTime dt_updated_datetime { get; set; }
         }
+        
         public class POATable
         {
             public int bi_poa_id { get; set; }

@@ -45,7 +45,7 @@ namespace CPS_App
 
         private void btnupdate_Click(object sender, EventArgs e)
         {
-            ItemEdit itemEdit = new ItemEdit(_stock);
+            ItemEdit itemEdit = new ItemEdit(_stock,_dbServices);
             //itemEdit.TopMost = true;
             itemEdit.ShowDialog();
         }
@@ -61,6 +61,10 @@ namespace CPS_App
             }
         }
 
-       
+        private void btncreate_Click(object sender, EventArgs e)
+        {
+            ItemCreate itemCreate = new ItemCreate(_dbServices);
+            itemCreate.Show();
+        }
     }
 }

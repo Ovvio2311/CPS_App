@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static CPS_App.Models.CPSModel;
+using static CPS_App.Models.DbModels;
 
 namespace CPS_App
 {
@@ -16,10 +17,12 @@ namespace CPS_App
     {
         //public int index;
         public List<StockLevelViewObj> _stock;
-        public ItemEdit(List<StockLevelViewObj> obj)
+        private DbServices _dbServices;
+        public ItemEdit(List<StockLevelViewObj> obj, DbServices dbServices)
         {
             InitializeComponent();
             _stock = obj;
+            _dbServices = dbServices;
             //this.index = index;
         }
 
@@ -49,6 +52,29 @@ namespace CPS_App
                 txtname.Text = readyToEdit.vc_item_desc.ToString();
                 txtqty.Text = readyToEdit.i_item_qty.ToString();
             }
+        }
+
+        private async void btnmod_Click(object sender, EventArgs e)
+        {
+            var reit = _stock.ToList().ElementAt(dataGridViewitem.CurrentRow.Index);
+            
+            if (txtqty.Text.Equals(string.Empty))
+            {
+                MessageBox.Show("Please enter qty");
+                return;
+            }
+            var updateObj = new updateObj();
+            updateObj.table = "tb_item_unit";
+            updateObj.updater.Add(nameof(reit.i_item_qty), txtqty.ToString());
+            updateObj.selecter.Add(nameof(reit.bi_item_id),reit.bi_item_id.ToString());
+            updateObj.selecter.Add(nameof(reit.bi_location_id),reit.bi_location_id.ToString());
+            var res = await _dbServices.UpdateAsync(updateObj);
+            if(res.resCode != 1)
+            {
+                MessageBox.Show("error");
+                return;
+            }
+            MessageBox.Show("Item updated");
         }
     }
 }

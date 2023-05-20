@@ -22,7 +22,7 @@ namespace CPS_App
         private readonly DbServices _dbServices;
         public RequestView(AuthService authService, DbServices dbServices, RequestMapping mapping)
         {
-            InitializeComponent();            
+            InitializeComponent();
             _authService = authService;
             defPage = new List<RequestMappingReqObj>();
             _dbServices = dbServices;
@@ -35,12 +35,12 @@ namespace CPS_App
             if (userIden != null)
             {
                 var userRole = userIden.Claims.FirstOrDefault(x => x.Type == "role").Value.ToString();
-                
-               
+
+
             }
             defPage = await _requestMapp.RequestMappingObjGetter();
-
-            datagridview.DataSource = defPage;
+            if (defPage != null)
+                datagridview.DataSource = defPage;
         }
         private void datagridview_CellClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -56,7 +56,8 @@ namespace CPS_App
         private void btnEdit_Click(object sender, EventArgs e)
         {
             RequestEdit reqEdit = new RequestEdit(datagridview.CurrentRow.Index, defPage);
-            reqEdit.ShowDialog();
+            //reqEdit.MdiParent = this;
+            reqEdit.Show();
         }
 
         private void txtfield_KeyPress(object sender, KeyPressEventArgs e)

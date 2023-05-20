@@ -31,6 +31,8 @@
             this.dataGridViewitem = new System.Windows.Forms.DataGridView();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.txtfield = new System.Windows.Forms.TextBox();
+            this.btncreate = new System.Windows.Forms.Button();
+            this.btnupdate = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewitem)).BeginInit();
             this.SuspendLayout();
             // 
@@ -43,6 +45,7 @@
             this.dataGridViewitem.RowTemplate.Height = 25;
             this.dataGridViewitem.Size = new System.Drawing.Size(715, 351);
             this.dataGridViewitem.TabIndex = 0;
+            this.dataGridViewitem.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewitem_CellClick);
             // 
             // comboBox1
             // 
@@ -60,11 +63,33 @@
             this.txtfield.Size = new System.Drawing.Size(218, 23);
             this.txtfield.TabIndex = 2;
             // 
+            // btncreate
+            // 
+            this.btncreate.Location = new System.Drawing.Point(564, 28);
+            this.btncreate.Name = "btncreate";
+            this.btncreate.Size = new System.Drawing.Size(93, 36);
+            this.btncreate.TabIndex = 3;
+            this.btncreate.Text = "Create";
+            this.btncreate.UseVisualStyleBackColor = true;
+            // 
+            // btnupdate
+            // 
+            this.btnupdate.Location = new System.Drawing.Point(683, 28);
+            this.btnupdate.Name = "btnupdate";
+            this.btnupdate.Size = new System.Drawing.Size(87, 36);
+            this.btnupdate.TabIndex = 4;
+            this.btnupdate.Text = "Update";
+            this.btnupdate.UseVisualStyleBackColor = true;
+            this.btnupdate.Click += new System.EventHandler(this.btnupdate_Click);
+            
+            // 
             // ItemView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(851, 532);
+            this.ClientSize = new System.Drawing.Size(851, 532);            
+            this.Controls.Add(this.btnupdate);
+            this.Controls.Add(this.btncreate);
             this.Controls.Add(this.txtfield);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.dataGridViewitem);
@@ -82,5 +107,8 @@
         private DataGridView dataGridViewitem;
         private ComboBox comboBox1;
         private TextBox txtfield;
+        private Button btncreate;
+        private Button btnupdate;
+        
     }
 }

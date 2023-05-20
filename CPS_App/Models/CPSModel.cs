@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Cryptography;
 
 namespace CPS_App.Models
 {
@@ -89,6 +90,8 @@ namespace CPS_App.Models
         //    public string UserName { get; set; }
         //    public bool IsSelected { get; set; }
         //}
+
+        //create req
         public class RequestCreationReq
         {
             [Display(Name = "Staff Id")]
@@ -123,6 +126,8 @@ namespace CPS_App.Models
             [Display(Name = "Expected Delievery Date")]
             public DateTime dt_exp_deli_date { get; set; }
         }
+
+        //req view
         public class RequestMappingReqObj
         {
             [Display(Name = "Request Id")]
@@ -172,6 +177,23 @@ namespace CPS_App.Models
             public string item_req_status { get; set; }
             [Display(Name = "Expected Delievery Date")]
             public DateTime dt_exp_deli_date { get; set; }
+        }
+
+        //item view
+        public class StockLevelViewObj
+        {
+            public int bi_item_id { get; set; }
+            public int bi_item_vid { get; set; }
+            public string vc_item_desc { get; set; }
+            public int bi_category_id { get; set; }
+            public string vc_category_desc { get; set; }
+            public int i_uom_id { get; set; }
+            public string vc_uom_desc { get; set; }
+            public int bi_location_id { get; set; }
+            public string vc_location_desc { get; set; }
+            public int i_item_qty { get; set; }
+            public DateTime dt_created_date { get; set; }
+            public DateTime dt_updated_datetime { get; set; }
         }
         public class POATable
         {

@@ -175,7 +175,7 @@ namespace CPS_App.Services
                 var res = new DbResObj();
                 res.resCode = 0;
                 string updateValue = string.Join(",", obj.updater.Select(x => $"{x.Key} = \'{x.Value}\'").ToList());
-                string selecter = string.Join(",", obj.selecter.Select(x => $"{x.Key}= \'{x.Value}\'").ToList());
+                string selecter = string.Join(" and ", obj.selecter.Select(x => $"{x.Key}= \'{x.Value}\'").ToList());
                 string sql = $"update {obj.table} set {updateValue} where {selecter}; ";
 
                 var result = await _db.ExecuteAsync(sql, null);
@@ -357,7 +357,9 @@ namespace CPS_App.Services
             res.resCode = 0;
             try
             {
-                string sql = @"select * , group_concat(vc_item_desc separator ', ') as items_group from (
+                string sql = @"set sql_mode = 'STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+                             select * , group_concat(vc_item_desc separator ', ') as items_group from (
                              select bi_item_vid, vid.bi_item_id, vc_item_desc, it.bi_category_id, vc_category_desc, uni.bi_location_id, loc.vc_location_desc
                              from tb_item_vid_mapping vid
                              left join tb_item it on vid.bi_item_id = it.bi_item_id

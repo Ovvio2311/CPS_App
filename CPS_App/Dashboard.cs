@@ -118,6 +118,13 @@ namespace CPS_App
             itemView.MdiParent = this;
             itemView.Show();
         }
+
+        private void roleManagementToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var mainView = new Maintenance(_dbServices);
+            mainView.MdiParent = this;
+            mainView.Show();
+        }
         //private void itemgridview_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         //{
         //    if (e.ColumnIndex == _previousitemIndex)

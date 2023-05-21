@@ -28,10 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.lbldate = new System.Windows.Forms.Label();
-            this.lbltime = new System.Windows.Forms.Label();
-            this.Label4 = new System.Windows.Forms.Label();
-            this.Label3 = new System.Windows.Forms.Label();
             this.Button3 = new System.Windows.Forms.Button();
             this.Button2 = new System.Windows.Forms.Button();
             this.Label2 = new System.Windows.Forms.Label();
@@ -40,46 +36,6 @@
             this.txtusername = new System.Windows.Forms.TextBox();
             this.Button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
-            // 
-            // lbldate
-            // 
-            this.lbldate.AutoSize = true;
-            this.lbldate.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lbldate.Location = new System.Drawing.Point(77, 179);
-            this.lbldate.Name = "lbldate";
-            this.lbldate.Size = new System.Drawing.Size(69, 24);
-            this.lbldate.TabIndex = 32;
-            this.lbldate.Text = "Time :";
-            // 
-            // lbltime
-            // 
-            this.lbltime.AutoSize = true;
-            this.lbltime.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lbltime.Location = new System.Drawing.Point(77, 150);
-            this.lbltime.Name = "lbltime";
-            this.lbltime.Size = new System.Drawing.Size(69, 24);
-            this.lbltime.TabIndex = 31;
-            this.lbltime.Text = "Time :";
-            // 
-            // Label4
-            // 
-            this.Label4.AutoSize = true;
-            this.Label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.Label4.Location = new System.Drawing.Point(15, 179);
-            this.Label4.Name = "Label4";
-            this.Label4.Size = new System.Drawing.Size(64, 24);
-            this.Label4.TabIndex = 29;
-            this.Label4.Text = "Date :";
-            // 
-            // Label3
-            // 
-            this.Label3.AutoSize = true;
-            this.Label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.Label3.Location = new System.Drawing.Point(15, 150);
-            this.Label3.Name = "Label3";
-            this.Label3.Size = new System.Drawing.Size(69, 24);
-            this.Label3.TabIndex = 30;
-            this.Label3.Text = "Time :";
             // 
             // Button3
             // 
@@ -157,10 +113,6 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(303, 216);
-            this.Controls.Add(this.lbldate);
-            this.Controls.Add(this.lbltime);
-            this.Controls.Add(this.Label4);
-            this.Controls.Add(this.Label3);
             this.Controls.Add(this.Button3);
             this.Controls.Add(this.Button2);
             this.Controls.Add(this.Label2);
@@ -179,11 +131,6 @@
         }
 
         #endregion
-
-        internal System.Windows.Forms.Label lbldate;
-        internal System.Windows.Forms.Label lbltime;
-        internal System.Windows.Forms.Label Label4;
-        internal System.Windows.Forms.Label Label3;
         internal System.Windows.Forms.Button Button3;
         internal System.Windows.Forms.Button Button2;
         internal System.Windows.Forms.Label Label2;

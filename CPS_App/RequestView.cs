@@ -52,7 +52,7 @@ namespace CPS_App
                 .Where(x => col.HeaderText == x.Name)
                 .Select(x => x.GetCustomAttribute<DisplayAttribute>())
                 .Where(x => x != null).Select(x => x.Name.ToString()).FirstOrDefault();
-                if (column.HeaderText == "bi_location_id Id" )
+                if (column.HeaderText == "bi_location_id" )
                 {
                     column.Visible = false;
                 }
@@ -85,7 +85,7 @@ namespace CPS_App
 
         private void btnEdit_Click(object sender, EventArgs e)
         {
-            RequestEdit reqEdit = new RequestEdit(datagridview.CurrentRow.Index, defPage);
+            RequestEdit reqEdit = new RequestEdit(datagridview.CurrentRow.Index, defPage,_dbServices);
             //reqEdit.MdiParent = this;
             reqEdit.Show();
         }

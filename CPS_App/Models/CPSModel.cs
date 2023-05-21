@@ -196,18 +196,31 @@ namespace CPS_App.Models
         //item view
         public class StockLevelViewObj
         {
+            [Display(Name = "Item Id")]
             public int bi_item_id { get; set; }
+            [Display(Name = "Item Vid")]
             public int bi_item_vid { get; set; }
+            [Display(Name = "Item Name")]
             public string vc_item_desc { get; set; }
+            [Display(Name = "bi_category_id")]
             public int bi_category_id { get; set; }
+            [Display(Name = "Category")]
             public string vc_category_desc { get; set; }
+            [Display(Name = "i_uom_id")]
             public int i_uom_id { get; set; }
+            [Display(Name = "Unit of Measurement")]
             public string vc_uom_desc { get; set; }
+            [Display(Name = "bi_location_id")]
             public int bi_location_id { get; set; }
+            [Display(Name = "Location")]
             public string vc_location_desc { get; set; }
+            [Display(Name = "Quantity")]
             public int i_item_qty { get; set; }
+            [Display(Name = "items_group")]
             public string items_group { get; set; }
+            [Display(Name = "Created Date")]
             public DateTime dt_created_date { get; set; }
+            [Display(Name = "Updated Date")]
             public DateTime dt_updated_datetime { get; set; }
         }
         

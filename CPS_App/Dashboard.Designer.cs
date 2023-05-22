@@ -8,7 +8,7 @@ namespace CPS_App
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -31,136 +31,264 @@ namespace CPS_App
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.homeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.loginToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.registerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.requestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.createToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.itemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.roleManagementToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.menuStrip1.SuspendLayout();
-            this.SuspendLayout();
+            components = new Container();
+            menuStrip1 = new MenuStrip();
+            homeToolStripMenuItem = new ToolStripMenuItem();
+            loginToolStripMenuItem = new ToolStripMenuItem();
+            registerToolStripMenuItem = new ToolStripMenuItem();
+            requestToolStripMenuItem = new ToolStripMenuItem();
+            viewToolStripMenuItem = new ToolStripMenuItem();
+            createToolStripMenuItem = new ToolStripMenuItem();
+            editToolStripMenuItem = new ToolStripMenuItem();
+            itemToolStripMenuItem = new ToolStripMenuItem();
+            settingsToolStripMenuItem = new ToolStripMenuItem();
+            roleManagementToolStripMenuItem = new ToolStripMenuItem();
+            kryptonButtonPanel1 = new Krypton.Toolkit.Suite.Extended.Panels.KryptonButtonPanel();
+            reqMenustrip = new ContextMenuStrip(components);
+            vieToolStripMenuItem = new ToolStripMenuItem();
+            createToolStripMenuItem1 = new ToolStripMenuItem();
+            editToolStripMenuItem1 = new ToolStripMenuItem();
+            itemMenuStrip = new ContextMenuStrip(components);
+            viewToolStripMenuItem1 = new ToolStripMenuItem();
+            createToolStripMenuItem2 = new ToolStripMenuItem();
+            editToolStripMenuItem2 = new ToolStripMenuItem();
+            settingMenuStrip = new ContextMenuStrip(components);
+            roleManagementToolStripMenuItem1 = new ToolStripMenuItem();
+            userManagementToolStripMenuItem = new ToolStripMenuItem();
+            btnReq = new Krypton.Toolkit.KryptonDropButton();
+            btnItem = new Krypton.Toolkit.KryptonDropButton();
+            btnsetting = new Krypton.Toolkit.KryptonDropButton();
+            btnpoa = new Krypton.Toolkit.KryptonDropButton();
+            menuStrip1.SuspendLayout();
+            reqMenustrip.SuspendLayout();
+            itemMenuStrip.SuspendLayout();
+            settingMenuStrip.SuspendLayout();
+            SuspendLayout();
             // 
             // menuStrip1
             // 
-            this.menuStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Visible;
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.homeToolStripMenuItem,
-            this.loginToolStripMenuItem,
-            this.registerToolStripMenuItem,
-            this.requestToolStripMenuItem,
-            this.itemToolStripMenuItem,
-            this.settingsToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.menuStrip1.Size = new System.Drawing.Size(1039, 24);
-            this.menuStrip1.TabIndex = 0;
-            this.menuStrip1.Text = "menuStrip1";
+            menuStrip1.GripStyle = ToolStripGripStyle.Visible;
+            menuStrip1.Items.AddRange(new ToolStripItem[] { homeToolStripMenuItem, loginToolStripMenuItem, registerToolStripMenuItem, requestToolStripMenuItem, itemToolStripMenuItem, settingsToolStripMenuItem });
+            menuStrip1.Location = new Point(200, 0);
+            menuStrip1.Name = "menuStrip1";
+            menuStrip1.RenderMode = ToolStripRenderMode.Professional;
+            menuStrip1.Size = new Size(839, 24);
+            menuStrip1.TabIndex = 0;
+            menuStrip1.Text = "menuStrip1";
             // 
             // homeToolStripMenuItem
             // 
-            this.homeToolStripMenuItem.Name = "homeToolStripMenuItem";
-            this.homeToolStripMenuItem.Size = new System.Drawing.Size(52, 20);
-            this.homeToolStripMenuItem.Text = "Home";
-            this.homeToolStripMenuItem.Click += new System.EventHandler(this.homeToolStripMenuItem_Click);
+            homeToolStripMenuItem.Name = "homeToolStripMenuItem";
+            homeToolStripMenuItem.Size = new Size(52, 20);
+            homeToolStripMenuItem.Text = "Home";
+            homeToolStripMenuItem.Click += homeToolStripMenuItem_Click;
             // 
             // loginToolStripMenuItem
             // 
-            this.loginToolStripMenuItem.Name = "loginToolStripMenuItem";
-            this.loginToolStripMenuItem.Size = new System.Drawing.Size(49, 20);
-            this.loginToolStripMenuItem.Text = "Login";
+            loginToolStripMenuItem.Name = "loginToolStripMenuItem";
+            loginToolStripMenuItem.Size = new Size(49, 20);
+            loginToolStripMenuItem.Text = "Login";
             // 
             // registerToolStripMenuItem
             // 
-            this.registerToolStripMenuItem.Name = "registerToolStripMenuItem";
-            this.registerToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
-            this.registerToolStripMenuItem.Text = "Register";
-            this.registerToolStripMenuItem.Click += new System.EventHandler(this.registerToolStripMenuItem_Click);
+            registerToolStripMenuItem.Name = "registerToolStripMenuItem";
+            registerToolStripMenuItem.Size = new Size(61, 20);
+            registerToolStripMenuItem.Text = "Register";
+            registerToolStripMenuItem.Click += registerToolStripMenuItem_Click;
             // 
             // requestToolStripMenuItem
             // 
-            this.requestToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.viewToolStripMenuItem,
-            this.createToolStripMenuItem,
-            this.editToolStripMenuItem});
-            this.requestToolStripMenuItem.Name = "requestToolStripMenuItem";
-            this.requestToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
-            this.requestToolStripMenuItem.Text = "Request";
+            requestToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { viewToolStripMenuItem, createToolStripMenuItem, editToolStripMenuItem });
+            requestToolStripMenuItem.Name = "requestToolStripMenuItem";
+            requestToolStripMenuItem.Size = new Size(61, 20);
+            requestToolStripMenuItem.Text = "Request";
             // 
             // viewToolStripMenuItem
             // 
-            this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
-            this.viewToolStripMenuItem.Size = new System.Drawing.Size(108, 22);
-            this.viewToolStripMenuItem.Text = "View";
-            this.viewToolStripMenuItem.Click += new System.EventHandler(this.viewToolStripMenuItem_Click);
+            viewToolStripMenuItem.Name = "viewToolStripMenuItem";
+            viewToolStripMenuItem.Size = new Size(108, 22);
+            viewToolStripMenuItem.Text = "View";
+            viewToolStripMenuItem.Click += viewToolStripMenuItem_Click;
             // 
             // createToolStripMenuItem
             // 
-            this.createToolStripMenuItem.Name = "createToolStripMenuItem";
-            this.createToolStripMenuItem.Size = new System.Drawing.Size(108, 22);
-            this.createToolStripMenuItem.Text = "Create";
-            this.createToolStripMenuItem.Click += new System.EventHandler(this.createToolStripMenuItem_Click);
+            createToolStripMenuItem.Name = "createToolStripMenuItem";
+            createToolStripMenuItem.Size = new Size(108, 22);
+            createToolStripMenuItem.Text = "Create";
+            createToolStripMenuItem.Click += createToolStripMenuItem_Click;
             // 
             // editToolStripMenuItem
             // 
-            this.editToolStripMenuItem.Name = "editToolStripMenuItem";
-            this.editToolStripMenuItem.Size = new System.Drawing.Size(108, 22);
-            this.editToolStripMenuItem.Text = "Edit";
-            this.editToolStripMenuItem.Click += new System.EventHandler(this.editToolStripMenuItem_Click);
+            editToolStripMenuItem.Name = "editToolStripMenuItem";
+            editToolStripMenuItem.Size = new Size(108, 22);
+            editToolStripMenuItem.Text = "Edit";
+            editToolStripMenuItem.Click += editToolStripMenuItem_Click;
             // 
             // itemToolStripMenuItem
             // 
-            this.itemToolStripMenuItem.Name = "itemToolStripMenuItem";
-            this.itemToolStripMenuItem.Size = new System.Drawing.Size(43, 20);
-            this.itemToolStripMenuItem.Text = "Item";
-            this.itemToolStripMenuItem.Click += new System.EventHandler(this.itemToolStripMenuItem_Click);
+            itemToolStripMenuItem.Name = "itemToolStripMenuItem";
+            itemToolStripMenuItem.Size = new Size(43, 20);
+            itemToolStripMenuItem.Text = "Item";
+            itemToolStripMenuItem.Click += itemToolStripMenuItem_Click;
             // 
             // settingsToolStripMenuItem
             // 
-            this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.roleManagementToolStripMenuItem});
-            this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
-            this.settingsToolStripMenuItem.Text = "Settings";
+            settingsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { roleManagementToolStripMenuItem });
+            settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
+            settingsToolStripMenuItem.Size = new Size(61, 20);
+            settingsToolStripMenuItem.Text = "Settings";
             // 
             // roleManagementToolStripMenuItem
             // 
-            this.roleManagementToolStripMenuItem.Name = "roleManagementToolStripMenuItem";
-            this.roleManagementToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.roleManagementToolStripMenuItem.Text = "Role Management";
-            this.roleManagementToolStripMenuItem.Click += new System.EventHandler(this.roleManagementToolStripMenuItem_Click);
+            roleManagementToolStripMenuItem.Name = "roleManagementToolStripMenuItem";
+            roleManagementToolStripMenuItem.Size = new Size(171, 22);
+            roleManagementToolStripMenuItem.Text = "Role Management";
+            roleManagementToolStripMenuItem.Click += roleManagementToolStripMenuItem_Click;
             // 
-            // contextMenuStrip1
+            // kryptonButtonPanel1
             // 
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
+            kryptonButtonPanel1.BackColor = Color.Transparent;
+            kryptonButtonPanel1.Buttons = null;
+            kryptonButtonPanel1.EdgeBorderStyle = Krypton.Toolkit.PaletteBorderStyle.HeaderPrimary;
+            kryptonButtonPanel1.Location = new Point(-1, 0);
+            kryptonButtonPanel1.Name = "kryptonButtonPanel1";
+            kryptonButtonPanel1.PanelPaletteBackStyle = Krypton.Toolkit.PaletteBackStyle.PanelAlternate;
+            kryptonButtonPanel1.Size = new Size(202, 596);
+            kryptonButtonPanel1.TabIndex = 10;
+            kryptonButtonPanel1.Load += kryptonButtonPanel1_Load;
+            // 
+            // reqMenustrip
+            // 
+            reqMenustrip.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            reqMenustrip.Items.AddRange(new ToolStripItem[] { vieToolStripMenuItem, createToolStripMenuItem1, editToolStripMenuItem1 });
+            reqMenustrip.Name = "reqMenustrip";
+            reqMenustrip.Size = new Size(109, 70);
+            // 
+            // vieToolStripMenuItem
+            // 
+            vieToolStripMenuItem.Name = "vieToolStripMenuItem";
+            vieToolStripMenuItem.Size = new Size(108, 22);
+            vieToolStripMenuItem.Text = "View";
+            // 
+            // createToolStripMenuItem1
+            // 
+            createToolStripMenuItem1.Name = "createToolStripMenuItem1";
+            createToolStripMenuItem1.Size = new Size(108, 22);
+            createToolStripMenuItem1.Text = "Create";
+            // 
+            // editToolStripMenuItem1
+            // 
+            editToolStripMenuItem1.Name = "editToolStripMenuItem1";
+            editToolStripMenuItem1.Size = new Size(108, 22);
+            editToolStripMenuItem1.Text = "Edit";
+            // 
+            // itemMenuStrip
+            // 
+            itemMenuStrip.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            itemMenuStrip.Items.AddRange(new ToolStripItem[] { viewToolStripMenuItem1, createToolStripMenuItem2, editToolStripMenuItem2 });
+            itemMenuStrip.Name = "contextMenuStrip1";
+            itemMenuStrip.Size = new Size(109, 70);
+            // 
+            // viewToolStripMenuItem1
+            // 
+            viewToolStripMenuItem1.Name = "viewToolStripMenuItem1";
+            viewToolStripMenuItem1.Size = new Size(108, 22);
+            viewToolStripMenuItem1.Text = "View";
+            // 
+            // createToolStripMenuItem2
+            // 
+            createToolStripMenuItem2.Name = "createToolStripMenuItem2";
+            createToolStripMenuItem2.Size = new Size(108, 22);
+            createToolStripMenuItem2.Text = "Create";
+            // 
+            // editToolStripMenuItem2
+            // 
+            editToolStripMenuItem2.Name = "editToolStripMenuItem2";
+            editToolStripMenuItem2.Size = new Size(108, 22);
+            editToolStripMenuItem2.Text = "Edit";
+            // 
+            // settingMenuStrip
+            // 
+            settingMenuStrip.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            settingMenuStrip.Items.AddRange(new ToolStripItem[] { roleManagementToolStripMenuItem1, userManagementToolStripMenuItem });
+            settingMenuStrip.Name = "settingMenuStrip";
+            settingMenuStrip.Size = new Size(172, 48);
+            // 
+            // roleManagementToolStripMenuItem1
+            // 
+            roleManagementToolStripMenuItem1.Name = "roleManagementToolStripMenuItem1";
+            roleManagementToolStripMenuItem1.Size = new Size(171, 22);
+            roleManagementToolStripMenuItem1.Text = "Role Management";
+            // 
+            // userManagementToolStripMenuItem
+            // 
+            userManagementToolStripMenuItem.Name = "userManagementToolStripMenuItem";
+            userManagementToolStripMenuItem.Size = new Size(171, 22);
+            userManagementToolStripMenuItem.Text = "User Management";
+            // 
+            // btnReq
+            // 
+            btnReq.ContextMenuStrip = reqMenustrip;
+            btnReq.Location = new Point(-1, 63);
+            btnReq.Name = "btnReq";
+            btnReq.Size = new Size(202, 71);
+            btnReq.TabIndex = 19;
+            btnReq.Values.Text = "Request Manage";
+            // 
+            // btnItem
+            // 
+            btnItem.ContextMenuStrip = itemMenuStrip;
+            btnItem.Location = new Point(-1, 140);
+            btnItem.Name = "btnItem";
+            btnItem.Size = new Size(202, 67);
+            btnItem.TabIndex = 20;
+            btnItem.Values.Text = "Item Manage";
+            // 
+            // btnsetting
+            // 
+            btnsetting.ContextMenuStrip = settingMenuStrip;
+            btnsetting.Location = new Point(-1, 213);
+            btnsetting.Name = "btnsetting";
+            btnsetting.Size = new Size(202, 73);
+            btnsetting.TabIndex = 21;
+            btnsetting.Values.Text = "Setting";
+            // 
+            // btnpoa
+            // 
+            btnpoa.Location = new Point(-1, 292);
+            btnpoa.Name = "btnpoa";
+            btnpoa.Size = new Size(202, 71);
+            btnpoa.TabIndex = 23;
+            btnpoa.Values.Text = "POA Manage";
+            btnpoa.Click += btnpoa_Click;
             // 
             // Dashboard
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1039, 589);
-            this.Controls.Add(this.menuStrip1);
-            this.IsMdiContainer = true;
-            this.MainMenuStrip = this.menuStrip1;
-            this.Name = "Dashboard";
-            this.Text = "Dashboard";
-            this.Load += new System.EventHandler(this.Dashboard_Load);
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(1039, 589);
+            Controls.Add(btnpoa);
+            Controls.Add(btnsetting);
+            Controls.Add(btnItem);
+            Controls.Add(btnReq);
+            Controls.Add(menuStrip1);
+            Controls.Add(kryptonButtonPanel1);
+            IsMdiContainer = true;
+            MainMenuStrip = menuStrip1;
+            Name = "Dashboard";
+            Padding = new Padding(200, 0, 0, 0);
+            Text = "Dashboard";
+            Load += Dashboard_Load;
+            menuStrip1.ResumeLayout(false);
+            menuStrip1.PerformLayout();
+            reqMenustrip.ResumeLayout(false);
+            itemMenuStrip.ResumeLayout(false);
+            settingMenuStrip.ResumeLayout(false);
+            ResumeLayout(false);
+            PerformLayout();
         }
 
-       
+
 
 
         #endregion
@@ -173,9 +301,25 @@ namespace CPS_App
         private ToolStripMenuItem viewToolStripMenuItem;
         private ToolStripMenuItem createToolStripMenuItem;
         private ToolStripMenuItem editToolStripMenuItem;
-        private ContextMenuStrip contextMenuStrip1;
         private ToolStripMenuItem itemToolStripMenuItem;
         private ToolStripMenuItem settingsToolStripMenuItem;
         private ToolStripMenuItem roleManagementToolStripMenuItem;
+
+        private Krypton.Toolkit.Suite.Extended.Panels.KryptonButtonPanel kryptonButtonPanel1;
+        private ContextMenuStrip reqMenustrip;
+        private ToolStripMenuItem vieToolStripMenuItem;
+        private ToolStripMenuItem createToolStripMenuItem1;
+        private ToolStripMenuItem editToolStripMenuItem1;
+        private ContextMenuStrip itemMenuStrip;
+        private ToolStripMenuItem viewToolStripMenuItem1;
+        private ToolStripMenuItem createToolStripMenuItem2;
+        private ToolStripMenuItem editToolStripMenuItem2;
+        private ContextMenuStrip settingMenuStrip;
+        private ToolStripMenuItem roleManagementToolStripMenuItem1;
+        private ToolStripMenuItem userManagementToolStripMenuItem;
+        private Krypton.Toolkit.KryptonDropButton btnReq;
+        private Krypton.Toolkit.KryptonDropButton btnItem;
+        private Krypton.Toolkit.KryptonDropButton btnsetting;
+        private Krypton.Toolkit.KryptonDropButton btnpoa;
     }
 }

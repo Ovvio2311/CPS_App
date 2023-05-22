@@ -74,7 +74,7 @@ namespace CPS_App
         private async void btnmod_Click(object sender, EventArgs e)
         {
             var reit = _stock.ToList().ElementAt(dataGridViewitem.CurrentRow.Index);
-            
+
             if (txtqty.Text.Equals(string.Empty))
             {
                 MessageBox.Show("Please enter qty");
@@ -83,10 +83,10 @@ namespace CPS_App
             var updateObj = new updateObj();
             updateObj.table = "tb_item_unit";
             updateObj.updater.Add(nameof(reit.i_item_qty), txtqty.ToString());
-            updateObj.selecter.Add(nameof(reit.bi_item_id),reit.bi_item_id.ToString());
-            updateObj.selecter.Add(nameof(reit.bi_location_id),reit.bi_location_id.ToString());
+            updateObj.selecter.Add(nameof(reit.bi_item_id), reit.bi_item_id.ToString());
+            updateObj.selecter.Add(nameof(reit.bi_location_id), reit.bi_location_id.ToString());
             var res = await _dbServices.UpdateAsync(updateObj);
-            if(res.resCode != 1)
+            if (res.resCode != 1)
             {
                 MessageBox.Show("error");
                 return;

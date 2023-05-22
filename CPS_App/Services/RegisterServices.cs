@@ -15,6 +15,7 @@ using static System.ComponentModel.Design.ObjectSelectorEditor;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using static CPS_App.Models.DbModels;
+using System.Data;
 
 namespace CPS_App.Services
 {
@@ -55,13 +56,14 @@ namespace CPS_App.Services
         public async Task<bool> CreateUserAsync(dynamic request)
         {
 
-            //var user00 = await _userManager.FindByNameAsync("User777");
-            //var tt = await _userManager.GetRolesAsync(user00);
-            //var iuser = await _userManager.FindByNameAsync("app_admin");
-            //var roleuser = await _roleManager.FindByNameAsync("User");
-            //var groupRole = await _userManager.GetUsersInRoleAsync("Admin");
-            //var rr = await _userManager.AddToRoleAsync(iuser, "Admin");
-            //var singin = _signInManager.CreateUserPrincipalAsync(iuser);
+            var user00 = await _userManager.FindByNameAsync("User777");
+            var tt = await _userManager.GetRolesAsync(user00);
+            var iuser = await _userManager.FindByNameAsync("app_admin");
+            var roleuser = await _roleManager.FindByNameAsync("User");
+            var groupRole = await _userManager.GetUsersInRoleAsync("Admin");
+            var rr = await _userManager.AddToRoleAsync(iuser, "Admin");
+        
+            var singin = _signInManager.CreateUserPrincipalAsync(iuser);
 
             var user = CreateUser();
             //var re = await _userManager.
@@ -73,6 +75,10 @@ namespace CPS_App.Services
             
             return result.Succeeded ? true : false;
 
+        }
+        public async Task<IdentityResult> CreateAsync(IdentityRole role)
+        {
+            return await _roleManager.CreateAsync(role);
         }
         private AppUsers CreateUser()
         {

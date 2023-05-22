@@ -224,33 +224,73 @@ namespace CPS_App.Models
             public DateTime dt_updated_datetime { get; set; }
         }
         
-        public class POATable
+        public class POATableObj
         {
+            [Display(Name = "Poa Id")]
             public int bi_poa_id { get; set; }
+            [Display(Name = "Poa Header Id")]
+            public int bi_poa_header_id { get; set; }
+            [Display(Name = "Type")]
             public int ti_poa_type_id { get; set; }
-            public int bi_item_id { get; set; }
-            public string vc_tc_desc { get; set; }
+            [Display(Name = "Status")]
             public string vc_poa_status { get; set; }
-            public string vc_order_revision { get; set; }
+            [Display(Name = "bi_deli_loc_id")]
             public int bi_deli_loc_id { get; set; }
-            public string vc_deli_sched_desc { get; set; }
-            public int ti_tc_id { get; set; }
+            [Display(Name = "Delivery Location")]
+            public string vc_location_desc { get; set; }
+            [Display(Name = "bi_supp_id")]
             public int bi_supp_id { get; set; }
+            [Display(Name = "Supplier")]
+            public string vc_supp_desc { get; set; }
+            [Display(Name = "currency")]
             public string vc_currency { get; set; }
-            public string bi_contract_no { get; set; }
+            [Display(Name = "ti_tc_id")]
+            public int ti_tc_id { get; set; }
+            [Display(Name = "Terms and Conditions")]
+            public string vc_tc_desc { get; set; }
+            [Display(Name = "ti_deli_sched_id")]
+            public int ti_deli_sched_id { get; set; }
+            [Display(Name = "Delivery Schedule")]
+            public string vc_deli_sched_desc { get; set; }
+            [Display(Name = "Effective Date")]
             public DateTime dt_effect_date { get; set; }
-            public DateTime dt_updated_datetime { get; set; }
-            public int dc_promise_qty { get; set; }
-            public int dc_min_qty { get; set; }
-            public int i_uom_id { get; set; }
-            public double dc_price { get; set; }
-            public double dc_amount { get; set; }
-            public string vc_reference { get; set; }
-            public string bi_quot_no { get; set; }
+            [Display(Name = "Contract No")]
+            public string bi_contract_no { get; set; }
+            [Display(Name = "Create Date")]
             public DateTime dt_created_date { get; set; }
+            [Display(Name = "Update Date")]
+            public DateTime dt_updated_datetime { get; set; }
+            [Display(Name = "itemLists")]
+            public List<PoaItemList> itemLists { get; set; }
+        }
+        public class PoaItemList
+        {
+            [Display(Name = "Poa Header Id")]
+            public int bi_poa_header_id { get; set; }
+            [Display(Name = "Item Id")]
+            public int bi_item_id { get; set; }
+            [Display(Name = "item")]
+            public string vc_item_desc { get; set; }
+            [Display(Name = "Supplier Item Id")]
+            public int bi_supp_item_id { get; set; }
+            [Display(Name = "Promise Qty")]
+            public int dc_promise_qty { get; set; }
+            [Display(Name = "i_uom_id")]
+            public int i_uom_id { get; set; }
+            [Display(Name = "Unit of Measurement")]
+            public string vc_uom_desc { get; set; }
+            [Display(Name = "Min Qty")]
+            public int dc_min_qty { get; set; }
+            [Display(Name = "Price")]
+            public double dc_price { get; set; }
+            [Display(Name = "Amount")]
+            public double dc_amount { get; set; }
+            [Display(Name = "Reference")]
+            public string vc_reference { get; set; }
+            [Display(Name = "Quotation No.")]
+            public string bi_quot_no { get; set; }
 
         }
-        
-        
+
     }
 }

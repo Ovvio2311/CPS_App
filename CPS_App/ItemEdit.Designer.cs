@@ -28,212 +28,211 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.txtvid = new System.Windows.Forms.TextBox();
-            this.txtcat = new System.Windows.Forms.TextBox();
-            this.txtname = new System.Windows.Forms.TextBox();
-            this.txtid = new System.Windows.Forms.TextBox();
-            this.txtqty = new System.Windows.Forms.TextBox();
-            this.txtloc = new System.Windows.Forms.TextBox();
-            this.txtupdate = new System.Windows.Forms.TextBox();
-            this.txtuom = new System.Windows.Forms.TextBox();
-            this.dataGridViewitem = new System.Windows.Forms.DataGridView();
-            this.btnmod = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewitem)).BeginInit();
-            this.SuspendLayout();
+            label1 = new Label();
+            label2 = new Label();
+            label3 = new Label();
+            label4 = new Label();
+            label5 = new Label();
+            label6 = new Label();
+            label7 = new Label();
+            label8 = new Label();
+            txtvid = new TextBox();
+            txtcat = new TextBox();
+            txtname = new TextBox();
+            txtid = new TextBox();
+            txtqty = new TextBox();
+            txtloc = new TextBox();
+            txtupdate = new TextBox();
+            txtuom = new TextBox();
+            dataGridViewitem = new DataGridView();
+            btnmod = new Button();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewitem).BeginInit();
+            SuspendLayout();
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(26, 78);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(45, 15);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Item ID";
+            label1.AutoSize = true;
+            label1.Location = new Point(26, 78);
+            label1.Name = "label1";
+            label1.Size = new Size(45, 15);
+            label1.TabIndex = 0;
+            label1.Text = "Item ID";
             // 
             // label2
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(19, 117);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(52, 15);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "Item VID";
+            label2.AutoSize = true;
+            label2.Location = new Point(19, 117);
+            label2.Name = "label2";
+            label2.Size = new Size(52, 15);
+            label2.TabIndex = 1;
+            label2.Text = "Item VID";
             // 
             // label3
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(264, 78);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(66, 15);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "Item Name";
+            label3.AutoSize = true;
+            label3.Location = new Point(264, 78);
+            label3.Name = "label3";
+            label3.Size = new Size(66, 15);
+            label3.TabIndex = 2;
+            label3.Text = "Item Name";
             // 
             // label4
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(264, 117);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(55, 15);
-            this.label4.TabIndex = 3;
-            this.label4.Text = "Category";
+            label4.AutoSize = true;
+            label4.Location = new Point(264, 117);
+            label4.Name = "label4";
+            label4.Size = new Size(55, 15);
+            label4.TabIndex = 3;
+            label4.Text = "Category";
             // 
             // label5
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(221, 159);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(119, 15);
-            this.label5.TabIndex = 4;
-            this.label5.Text = "Unit of Measurement";
+            label5.AutoSize = true;
+            label5.Location = new Point(221, 159);
+            label5.Name = "label5";
+            label5.Size = new Size(119, 15);
+            label5.TabIndex = 4;
+            label5.Text = "Unit of Measurement";
             // 
             // label6
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(530, 117);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(85, 15);
-            this.label6.TabIndex = 5;
-            this.label6.Text = "Stock Loaction";
+            label6.AutoSize = true;
+            label6.Location = new Point(530, 117);
+            label6.Name = "label6";
+            label6.Size = new Size(85, 15);
+            label6.TabIndex = 5;
+            label6.Text = "Stock Loaction";
             // 
             // label7
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(530, 78);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(53, 15);
-            this.label7.TabIndex = 6;
-            this.label7.Text = "Quantity";
+            label7.AutoSize = true;
+            label7.Location = new Point(530, 78);
+            label7.Name = "label7";
+            label7.Size = new Size(53, 15);
+            label7.TabIndex = 6;
+            label7.Text = "Quantity";
             // 
             // label8
             // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(510, 159);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(105, 15);
-            this.label8.TabIndex = 7;
-            this.label8.Text = "Last Updated Time";
+            label8.AutoSize = true;
+            label8.Location = new Point(510, 159);
+            label8.Name = "label8";
+            label8.Size = new Size(105, 15);
+            label8.TabIndex = 7;
+            label8.Text = "Last Updated Time";
             // 
             // txtvid
             // 
-            this.txtvid.Location = new System.Drawing.Point(77, 114);
-            this.txtvid.Name = "txtvid";
-            this.txtvid.ReadOnly = true;
-            this.txtvid.Size = new System.Drawing.Size(169, 23);
-            this.txtvid.TabIndex = 8;
+            txtvid.Location = new Point(77, 114);
+            txtvid.Name = "txtvid";
+            txtvid.ReadOnly = true;
+            txtvid.Size = new Size(169, 23);
+            txtvid.TabIndex = 8;
             // 
             // txtcat
             // 
-            this.txtcat.Location = new System.Drawing.Point(347, 114);
-            this.txtcat.Name = "txtcat";
-            this.txtcat.ReadOnly = true;
-            this.txtcat.Size = new System.Drawing.Size(155, 23);
-            this.txtcat.TabIndex = 9;
+            txtcat.Location = new Point(347, 114);
+            txtcat.Name = "txtcat";
+            txtcat.ReadOnly = true;
+            txtcat.Size = new Size(155, 23);
+            txtcat.TabIndex = 9;
             // 
             // txtname
             // 
-            this.txtname.Location = new System.Drawing.Point(347, 75);
-            this.txtname.Name = "txtname";
-            this.txtname.ReadOnly = true;
-            this.txtname.Size = new System.Drawing.Size(155, 23);
-            this.txtname.TabIndex = 10;
+            txtname.Location = new Point(347, 75);
+            txtname.Name = "txtname";
+            txtname.ReadOnly = true;
+            txtname.Size = new Size(155, 23);
+            txtname.TabIndex = 10;
             // 
             // txtid
             // 
-            this.txtid.Location = new System.Drawing.Point(77, 75);
-            this.txtid.Name = "txtid";
-            this.txtid.ReadOnly = true;
-            this.txtid.Size = new System.Drawing.Size(169, 23);
-            this.txtid.TabIndex = 11;
+            txtid.Location = new Point(77, 75);
+            txtid.Name = "txtid";
+            txtid.ReadOnly = true;
+            txtid.Size = new Size(169, 23);
+            txtid.TabIndex = 11;
             // 
             // txtqty
             // 
-            this.txtqty.Location = new System.Drawing.Point(622, 75);
-            this.txtqty.Name = "txtqty";
-            this.txtqty.Size = new System.Drawing.Size(149, 23);
-            this.txtqty.TabIndex = 12;
+            txtqty.Location = new Point(622, 75);
+            txtqty.Name = "txtqty";
+            txtqty.Size = new Size(149, 23);
+            txtqty.TabIndex = 12;
             // 
             // txtloc
             // 
-            this.txtloc.Location = new System.Drawing.Point(622, 114);
-            this.txtloc.Name = "txtloc";
-            this.txtloc.ReadOnly = true;
-            this.txtloc.Size = new System.Drawing.Size(150, 23);
-            this.txtloc.TabIndex = 13;
+            txtloc.Location = new Point(622, 114);
+            txtloc.Name = "txtloc";
+            txtloc.ReadOnly = true;
+            txtloc.Size = new Size(150, 23);
+            txtloc.TabIndex = 13;
             // 
             // txtupdate
             // 
-            this.txtupdate.Location = new System.Drawing.Point(622, 156);
-            this.txtupdate.Name = "txtupdate";
-            this.txtupdate.ReadOnly = true;
-            this.txtupdate.Size = new System.Drawing.Size(149, 23);
-            this.txtupdate.TabIndex = 14;
+            txtupdate.Location = new Point(622, 156);
+            txtupdate.Name = "txtupdate";
+            txtupdate.ReadOnly = true;
+            txtupdate.Size = new Size(149, 23);
+            txtupdate.TabIndex = 14;
             // 
             // txtuom
             // 
-            this.txtuom.Location = new System.Drawing.Point(346, 156);
-            this.txtuom.Name = "txtuom";
-            this.txtuom.ReadOnly = true;
-            this.txtuom.Size = new System.Drawing.Size(156, 23);
-            this.txtuom.TabIndex = 15;
+            txtuom.Location = new Point(346, 156);
+            txtuom.Name = "txtuom";
+            txtuom.ReadOnly = true;
+            txtuom.Size = new Size(156, 23);
+            txtuom.TabIndex = 15;
             // 
             // dataGridViewitem
             // 
-            this.dataGridViewitem.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewitem.Location = new System.Drawing.Point(26, 254);
-            this.dataGridViewitem.Name = "dataGridViewitem";
-            this.dataGridViewitem.RowTemplate.Height = 25;
-            this.dataGridViewitem.Size = new System.Drawing.Size(745, 150);
-            this.dataGridViewitem.TabIndex = 16;
-            this.dataGridViewitem.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewitem_CellClick);
+            dataGridViewitem.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewitem.Location = new Point(26, 254);
+            dataGridViewitem.Name = "dataGridViewitem";
+            dataGridViewitem.RowTemplate.Height = 25;
+            dataGridViewitem.Size = new Size(745, 150);
+            dataGridViewitem.TabIndex = 16;
+            dataGridViewitem.CellClick += dataGridViewitem_CellClick;
             // 
             // btnmod
             // 
-            this.btnmod.Location = new System.Drawing.Point(661, 202);
-            this.btnmod.Name = "btnmod";
-            this.btnmod.Size = new System.Drawing.Size(110, 29);
-            this.btnmod.TabIndex = 17;
-            this.btnmod.Text = "Modify";
-            this.btnmod.UseVisualStyleBackColor = true;
-            this.btnmod.Click += new System.EventHandler(this.btnmod_Click);
+            btnmod.Location = new Point(661, 202);
+            btnmod.Name = "btnmod";
+            btnmod.Size = new Size(110, 29);
+            btnmod.TabIndex = 17;
+            btnmod.Text = "Modify";
+            btnmod.UseVisualStyleBackColor = true;
+            btnmod.Click += btnmod_Click;
             // 
             // ItemEdit
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.btnmod);
-            this.Controls.Add(this.dataGridViewitem);
-            this.Controls.Add(this.txtuom);
-            this.Controls.Add(this.txtupdate);
-            this.Controls.Add(this.txtloc);
-            this.Controls.Add(this.txtqty);
-            this.Controls.Add(this.txtid);
-            this.Controls.Add(this.txtname);
-            this.Controls.Add(this.txtcat);
-            this.Controls.Add(this.txtvid);
-            this.Controls.Add(this.label8);
-            this.Controls.Add(this.label7);
-            this.Controls.Add(this.label6);
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
-            this.Name = "ItemEdit";
-            this.Text = "ItemEdit";
-            this.Load += new System.EventHandler(this.ItemEdit_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewitem)).EndInit();
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(800, 450);
+            Controls.Add(btnmod);
+            Controls.Add(dataGridViewitem);
+            Controls.Add(txtuom);
+            Controls.Add(txtupdate);
+            Controls.Add(txtloc);
+            Controls.Add(txtqty);
+            Controls.Add(txtid);
+            Controls.Add(txtname);
+            Controls.Add(txtcat);
+            Controls.Add(txtvid);
+            Controls.Add(label8);
+            Controls.Add(label7);
+            Controls.Add(label6);
+            Controls.Add(label5);
+            Controls.Add(label4);
+            Controls.Add(label3);
+            Controls.Add(label2);
+            Controls.Add(label1);
+            Name = "ItemEdit";
+            Text = "ItemEdit";
+            Load += ItemEdit_Load;
+            ((System.ComponentModel.ISupportInitialize)dataGridViewitem).EndInit();
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion

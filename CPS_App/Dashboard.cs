@@ -9,7 +9,7 @@ using static CPS_App.Models.CPSModel;
 
 namespace CPS_App
 {
-    public partial class Dashboard : Form
+    public partial class Dashboard : Krypton.Toolkit.KryptonForm
     {
 
         public Register _register;
@@ -23,9 +23,10 @@ namespace CPS_App
         //private bool _sortitemDirection;
         private readonly DbServices _dbServices;
         private StockLevelWorker _stockWorker;
+        private RegisterServices _registerServices;
+        private POAWorker _pOAWorker;
 
-
-        public Dashboard(Register register, AuthService authService, RequestMapping requestMapp, DbServices dbServices, StockLevelWorker stockWorker)
+        public Dashboard(Register register, AuthService authService, RequestMapping requestMapp, DbServices dbServices, StockLevelWorker stockWorker, RegisterServices registerServices, POAWorker pOAWorker)
         {
             _authService = authService;
             _register = register;
@@ -34,6 +35,8 @@ namespace CPS_App
             defPage = new List<RequestMappingReqObj>();
             _dbServices = dbServices;
             _stockWorker = stockWorker;
+            _registerServices = registerServices;
+            _pOAWorker = pOAWorker;
         }
         private async void Dashboard_Load(object sender, EventArgs e)
         {
@@ -50,7 +53,7 @@ namespace CPS_App
             //defPage = await _requestMapp.RequestMappingObjGetter();
             //HomePage.DataSource = defPage;
 
-            
+
         }
 
         //private void HomePage_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
@@ -79,9 +82,9 @@ namespace CPS_App
 
         }
 
-       
 
-      
+
+
 
         private void createToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -114,16 +117,52 @@ namespace CPS_App
 
         private void itemToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var itemView = new ItemView(_dbServices, _authService, _stockWorker);            
+            var itemView = new ItemView(_dbServices, _authService, _stockWorker);
             itemView.MdiParent = this;
             itemView.Show();
         }
 
         private void roleManagementToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var mainView = new Maintenance(_dbServices);
+            var mainView = new Maintenance(_dbServices, _registerServices);
             mainView.MdiParent = this;
             mainView.Show();
+        }
+
+        private void kryptonDropButton1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void kryptonContextMenu1_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+
+        }
+
+        private void kryptonDropButton1_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void kryptonButtonPanel1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void kryptonDropButton1_Click_2(object sender, EventArgs e)
+        {
+
+
+
+
+
+        }
+
+        private void btnpoa_Click(object sender, EventArgs e)
+        {
+            POAView poaView = new POAView(_dbServices, _pOAWorker);
+            poaView.MdiParent = this;
+            poaView.Show();
         }
         //private void itemgridview_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         //{

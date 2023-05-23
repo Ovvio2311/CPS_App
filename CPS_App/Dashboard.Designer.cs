@@ -43,7 +43,6 @@ namespace CPS_App
             itemToolStripMenuItem = new ToolStripMenuItem();
             settingsToolStripMenuItem = new ToolStripMenuItem();
             roleManagementToolStripMenuItem = new ToolStripMenuItem();
-            kryptonButtonPanel1 = new Krypton.Toolkit.Suite.Extended.Panels.KryptonButtonPanel();
             reqMenustrip = new ContextMenuStrip(components);
             vieToolStripMenuItem = new ToolStripMenuItem();
             createToolStripMenuItem1 = new ToolStripMenuItem();
@@ -59,6 +58,7 @@ namespace CPS_App
             btnItem = new Krypton.Toolkit.KryptonDropButton();
             btnsetting = new Krypton.Toolkit.KryptonDropButton();
             btnpoa = new Krypton.Toolkit.KryptonDropButton();
+            sqlCommand1 = new Microsoft.Data.SqlClient.SqlCommand();
             menuStrip1.SuspendLayout();
             reqMenustrip.SuspendLayout();
             itemMenuStrip.SuspendLayout();
@@ -144,18 +144,6 @@ namespace CPS_App
             roleManagementToolStripMenuItem.Size = new Size(171, 22);
             roleManagementToolStripMenuItem.Text = "Role Management";
             roleManagementToolStripMenuItem.Click += roleManagementToolStripMenuItem_Click;
-            // 
-            // kryptonButtonPanel1
-            // 
-            kryptonButtonPanel1.BackColor = Color.Transparent;
-            kryptonButtonPanel1.Buttons = null;
-            kryptonButtonPanel1.EdgeBorderStyle = Krypton.Toolkit.PaletteBorderStyle.HeaderPrimary;
-            kryptonButtonPanel1.Location = new Point(-1, 0);
-            kryptonButtonPanel1.Name = "kryptonButtonPanel1";
-            kryptonButtonPanel1.PanelPaletteBackStyle = Krypton.Toolkit.PaletteBackStyle.PanelAlternate;
-            kryptonButtonPanel1.Size = new Size(202, 596);
-            kryptonButtonPanel1.TabIndex = 10;
-            kryptonButtonPanel1.Load += kryptonButtonPanel1_Load;
             // 
             // reqMenustrip
             // 
@@ -262,6 +250,13 @@ namespace CPS_App
             btnpoa.Values.Text = "POA Manage";
             btnpoa.Click += btnpoa_Click;
             // 
+            // sqlCommand1
+            // 
+            sqlCommand1.CommandTimeout = 30;
+            sqlCommand1.Connection = null;
+            sqlCommand1.Notification = null;
+            sqlCommand1.Transaction = null;
+            // 
             // Dashboard
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -272,7 +267,6 @@ namespace CPS_App
             Controls.Add(btnItem);
             Controls.Add(btnReq);
             Controls.Add(menuStrip1);
-            Controls.Add(kryptonButtonPanel1);
             IsMdiContainer = true;
             MainMenuStrip = menuStrip1;
             Name = "Dashboard";
@@ -305,7 +299,7 @@ namespace CPS_App
         private ToolStripMenuItem settingsToolStripMenuItem;
         private ToolStripMenuItem roleManagementToolStripMenuItem;
 
-        private Krypton.Toolkit.Suite.Extended.Panels.KryptonButtonPanel kryptonButtonPanel1;
+        
         private ContextMenuStrip reqMenustrip;
         private ToolStripMenuItem vieToolStripMenuItem;
         private ToolStripMenuItem createToolStripMenuItem1;
@@ -321,5 +315,6 @@ namespace CPS_App
         private Krypton.Toolkit.KryptonDropButton btnItem;
         private Krypton.Toolkit.KryptonDropButton btnsetting;
         private Krypton.Toolkit.KryptonDropButton btnpoa;
+        private Microsoft.Data.SqlClient.SqlCommand sqlCommand1;
     }
 }

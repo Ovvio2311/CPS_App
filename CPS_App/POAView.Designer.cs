@@ -30,6 +30,7 @@
         {
             kryptonDataGridViewpoa = new Krypton.Toolkit.KryptonDataGridView();
             kryptonDataGridViewitem = new Krypton.Toolkit.KryptonDataGridView();
+            btnedit = new Krypton.Toolkit.KryptonButton();
             ((System.ComponentModel.ISupportInitialize)kryptonDataGridViewpoa).BeginInit();
             ((System.ComponentModel.ISupportInitialize)kryptonDataGridViewitem).BeginInit();
             SuspendLayout();
@@ -51,11 +52,22 @@
             kryptonDataGridViewitem.Size = new Size(647, 164);
             kryptonDataGridViewitem.TabIndex = 1;
             // 
+            // btnedit
+            // 
+            btnedit.CornerRoundingRadius = -1F;
+            btnedit.Location = new Point(629, 17);
+            btnedit.Name = "btnedit";
+            btnedit.Size = new Size(90, 25);
+            btnedit.TabIndex = 2;
+            btnedit.Values.Text = "Edit";
+            btnedit.Click += btnedit_Click;
+            // 
             // POAView
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(892, 541);
+            Controls.Add(btnedit);
             Controls.Add(kryptonDataGridViewitem);
             Controls.Add(kryptonDataGridViewpoa);
             Name = "POAView";
@@ -70,5 +82,6 @@
 
         private Krypton.Toolkit.KryptonDataGridView kryptonDataGridViewpoa;
         private Krypton.Toolkit.KryptonDataGridView kryptonDataGridViewitem;
+        private Krypton.Toolkit.KryptonButton btnedit;
     }
 }

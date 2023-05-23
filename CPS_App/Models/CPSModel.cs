@@ -84,6 +84,38 @@ namespace CPS_App.Models
             public string dt_created_date { get; set; }
             public string dt_updated_datetime { get; set; }
         }
+        public class lut_poa_type : CPSModel
+        {
+            public int ti_poa_type_id { get; set; }
+            public string vc_poa_type_desc { get; set; }
+            public string dt_created_date { get; set; }
+            public string dt_updated_datetime { get; set; }
+        }
+        public class tb_supplier : CPSModel
+        {
+            public int bi_supp_id { get; set; }
+            public string vc_supp_desc { get; set; }
+            public string vc_supp_addr { get; set; }
+            public string vc_supp_contact { get; set; }
+            public string vc_supp_contact_no { get; set; }
+            public string dt_created_date { get; set; }
+            public string dt_updated_datetime { get; set; }
+        }
+        public class lut_term_and_con
+        {
+            public int ti_tc_id { get; set; }
+            public string vc_tc_desc { get; set; }
+            public string dt_created_date { get; set; }
+            public string dt_updated_datetime { get; set; }
+        }
+
+        public class lut_deli_schedule_type
+        {
+            public int ti_deli_sched_id { get; set; }
+            public string vc_deli_sched_desc { get; set; }
+            public string dt_created_date { get; set; }
+            public string dt_updated_datetime { get; set; }
+        }
         //public class CustomRole
         //{
         //    public CustomRole()

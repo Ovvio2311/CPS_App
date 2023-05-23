@@ -87,5 +87,10 @@ namespace CPS_App
                 });
             }
         }
+
+        private void btnedit_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

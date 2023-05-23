@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
+using System.Reflection.PortableExecutable;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
@@ -101,6 +102,7 @@ namespace CPS_App
                 return;
             }
             var availableItem = pn1.Controls.OfType<TextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
+            int poaheaderid = 0;
             if (availableItem != 2 || poatype == null || loc == null || tc == null || delisc == null || sup == null)
             {
                 MessageBox.Show("Please completed the POA form");
@@ -147,11 +149,38 @@ namespace CPS_App
                     return;
                 }
                 MessageBox.Show($"insert completed, poa_id: {respoa.result}, poa_header_id: {resheader.result}");
+                poaheaderid = resheader.result;
             }
             //insert poa_line
-            obj.itemLists.ForEach(row =>
+            obj.itemLists.ForEach(async row =>
             {
-
+                var poa_line = new insertObj()
+                {
+                    table = "tb_poa_line",
+                    inserter = new Dictionary<string, string>
+                    {
+                        {nameof(row.bi_poa_header_id), poaheaderid.ToString() },
+                        {nameof(row.bi_item_id), row.bi_item_id.ToString() },
+                        {nameof(row.bi_supp_item_id),row.bi_supp_item_id.ToString() },
+                        {nameof(row.dc_promise_qty), row.dc_promise_qty.ToString() },
+                        {nameof(row.i_uom_id),row.i_uom_id.ToString() },
+                        {nameof(row.dc_min_qty),row.dc_min_qty.ToString() },
+                        {nameof(row.dc_price), row.dc_price.ToString() },
+                        {nameof(row.dc_amount), row.dc_amount.ToString() },
+                        {nameof(row.vc_reference), row.vc_reference.ToString() },
+                        {nameof(row.bi_quot_no),row.bi_quot_no.ToString() },
+                    }
+                };
+                var resitem = await _dbServices.InsertAsync(row);
+                if (resitem.resCode != 1 || resitem.result == null)
+                {
+                    //_logger.LogDebug("insert error");
+                    MessageBox.Show("insert error");
+                }
+                else
+                {
+                    MessageBox.Show($"poa line id: {resitem.result}");
+                }
             });
         }
         private void btnAdd_Click(object sender, EventArgs e)
@@ -183,81 +212,12 @@ namespace CPS_App
 
             };
             obj.itemLists.Add(req);
-        }
-        private void lbltype_Click(object sender, EventArgs e)
+        }                             
+
+        private void pn2_Paint(object sender, PaintEventArgs e)
         {
 
         }
-
-        private void lblloc_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void lblsup_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void lblcur_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void lbltc_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void lbldelisc_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void lblecf_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void lblcont_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void txtcur_TextChanged(object sender, EventArgs e)
-        {
-        }
-
-        private void txtcont_TextChanged(object sender, EventArgs e)
-        {
-        }
-
-
-
-        private void kryptonDateTimePickerec_ValueChanged(object sender, EventArgs e)
-        {
-        }
-
-        private void lblpoacreate_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void cbxselisc_SelectedIndexChanged(object sender, EventArgs e)
-        {
-        }
-
-        private void cbxtc_SelectedIndexChanged(object sender, EventArgs e)
-        {
-        }
-
-        private void cbxsup_SelectedIndexChanged(object sender, EventArgs e)
-        {
-        }
-
-        private void cbxloc_SelectedIndexChanged(object sender, EventArgs e)
-        {
-        }
-
-        private void cbxtype_SelectedIndexChanged(object sender, EventArgs e)
-        {
-        }
-
-
-
-
     }
 }
 

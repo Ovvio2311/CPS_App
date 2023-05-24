@@ -1,4 +1,5 @@
 ﻿using CPS_App.Services;
+using Krypton.Toolkit;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Logging;
@@ -16,10 +17,11 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using static CPS_App.Models.CPSModel;
 using static CPS_App.Models.DbModels;
+using Krypton.Toolkit;
 
 namespace CPS_App
 {
-    public partial class RequestEdit : Form
+    public partial class RequestEdit : KryptonForm
     {
         public int index;
         public List<RequestMappingReqObj> defPage;

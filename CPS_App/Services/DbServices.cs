@@ -148,9 +148,10 @@ namespace CPS_App.Services
 
                 string sql = $"insert into {typeof(T).Name} " +
                              $"({propName}) values " +
-                             $"({value});";
+                             $"({value}); "+
+                             "SELECT LAST_INSERT_ID();";
 
-                var result = await _db.ExecuteAsync(sql, null);
+                var result = await _db.ExecuteAsync(sql, obj);
                 if (result > 0)
                 {
                     res.result = result;
@@ -174,7 +175,7 @@ namespace CPS_App.Services
                 var res = new DbResObj();
                 res.resCode = 0;
                 string updateValue = string.Join(",", obj.updater.Select(x => $"{x.Key} = \'{x.Value}\'").ToList());
-                string selecter = string.Join(",", obj.selecter.Select(x => $"{x.Key}= \'{x.Value}\'").ToList());
+                string selecter = string.Join(" and ", obj.selecter.Select(x => $"{x.Key}= \'{x.Value}\'").ToList());
                 string sql = $"update {obj.table} set {updateValue} where {selecter}; ";
 
                 var result = await _db.ExecuteAsync(sql, null);
@@ -305,6 +306,148 @@ namespace CPS_App.Services
                 return res;
             }
         }
+
+        public async Task<DbResObj> GetStockLevel()
+        {
+            var res = new DbResObj();
+            res.resCode = 0;
+            try
+            {
+                string sql = @"SELECT * FROM
+                         (SELECT 
+                             it.bi_item_id,
+                                 vid.bi_item_vid,
+                                 vc_item_desc,
+                                 it.bi_category_id,
+                                 cat.vc_category_desc,
+                                 it.i_uom_id,
+                                 uom.vc_uom_desc,
+                                 uni.bi_location_id,
+                                 loc.vc_location_desc,
+                                 i_item_qty,
+                                 it.dt_created_date,
+                                 it.dt_updated_datetime
+                         FROM
+                             tb_item it
+                         INNER JOIN tb_item_category cat ON it.bi_category_id = cat.bi_category_id
+                         INNER JOIN tb_item_vid_mapping vid ON it.bi_item_id = vid.bi_item_id
+                         LEFT JOIN tb_item_unit uni ON it.bi_item_id = uni.bi_item_id
+                         INNER JOIN tb_location loc ON uni.bi_location_id = loc.bi_location_id
+                         INNER JOIN lut_uom_type uom ON it.i_uom_id = uom.i_uom_id
+                         )a;";
+                var result = await _db.QueryAsync<StockLevelViewObj>(sql, null);
+
+                if (result != null)
+                {
+                    res.result = result;
+                    res.resCode = 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                res.result = null;
+                res.resCode = 0;
+                res.err_msg = ex.Message;
+            }
+            return res;
+        }
+        public async Task<DbResObj> GetVidMappingObj()
+        {
+            var res = new DbResObj();
+            res.resCode = 0;
+            try
+            {
+                string sql = @"set sql_mode = 'STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+                             select * , group_concat(vc_item_desc separator ', ') as items_group from (
+                             select bi_item_vid, vid.bi_item_id, vc_item_desc, it.bi_category_id, vc_category_desc, uni.bi_location_id, loc.vc_location_desc
+                             from tb_item_vid_mapping vid
+                             left join tb_item it on vid.bi_item_id = it.bi_item_id
+                             left join tb_item_category cat on it.bi_category_id = cat.bi_category_id
+                             left join tb_item_unit uni on vid.bi_item_id = uni.bi_item_id
+                             left join tb_location loc on uni.bi_location_id = loc.bi_location_id)a
+                             group by bi_item_vid
+                             order by bi_item_vid;";
+
+                var result = await _db.QueryAsync<StockLevelViewObj>(sql, null);
+
+                if (result != null)
+                {
+                    res.result = result;
+                    res.resCode = 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                res.result = null;
+                res.resCode = 0;
+                res.err_msg = ex.Message;
+            }
+            return res;
+        }
+        public async Task<DbResObj> GetPoaList()
+        {
+            //var res = new DbResObj();
+
+            string sql = $@"select * from (
+                      	 select poa.bi_poa_id, poa.ti_poa_type_id, poa.vc_poa_status, hd.bi_poa_header_id,
+                          hd.bi_deli_loc_id, loc.vc_location_desc, hd.bi_supp_id, sup.vc_supp_desc, hd.vc_currency, hd.ti_tc_id, tc.vc_tc_desc, hd.ti_deli_sched_id, delisc.vc_deli_sched_desc, 
+                          hd.dt_effect_date, hd.bi_contract_no,
+                      	  ln.bi_item_id, it.vc_item_desc, ln.bi_supp_item_id, ln.dc_promise_qty, uom.vc_uom_desc, ln.i_uom_id, ln.dc_min_qty, ln.dc_price, ln.dc_amount, ln.vc_reference, ln.bi_quot_no,
+                          poa.dt_created_date, poa.dt_updated_datetime
+                          from tb_poa poa
+                          inner join tb_poa_header hd on poa.bi_poa_id = hd.bi_poa_id
+                          left join tb_poa_line ln on hd.bi_poa_header_id = ln.bi_poa_header_id
+                          inner join tb_supplier sup on hd.bi_supp_id = sup.bi_supp_id
+                          inner join lut_term_and_con tc on hd.ti_tc_id = tc.ti_tc_id
+                          inner join lut_deli_schedule_type delisc on hd.ti_deli_sched_id = delisc.ti_deli_sched_id
+                          inner join tb_item it on ln.bi_item_id = it.bi_item_id
+                          inner join lut_uom_type uom on ln.i_uom_id = uom.i_uom_id
+                          inner join lut_poa_type poatype on poa.ti_poa_type_id = poatype.ti_poa_type_id
+                          inner join tb_location loc on hd.bi_deli_loc_id = loc.bi_location_id
+                          ) a;";
+
+            var result = await _db.QueryAsync<dynamic>(sql, null);
+            if (result.Count() > 0)
+            {
+
+                return new DbResObj
+                {
+                    resCode = 1,
+                    result = GenUtil.DbResulttoKVP(result)
+                };
+
+            }
+            return new DbResObj { resCode = 0, result = null };
+        }
+
+        //        SELECT
+        //    *
+        //FROM
+        //    (SELECT
+        //        it.bi_item_id,
+        //            vid.bi_item_vid,
+        //            vc_item_desc,
+        //            it.bi_category_id,
+        //            cat.vc_category_desc,
+        //            it.i_uom_id,
+        //            uom.vc_uom_desc,
+        //            uni.bi_location_id,
+        //            loc.vc_location_desc,
+        //            i_item_qty,
+        //            it.dt_created_date,
+        //            it.dt_updated_datetime
+        //    FROM
+        //        tb_item it
+        //    INNER JOIN tb_item_category cat ON it.bi_category_id = cat.bi_category_id
+        //    INNER JOIN tb_item_vid_mapping vid ON it.bi_item_id = vid.bi_item_id
+        //    LEFT JOIN tb_item_unit uni ON it.bi_item_id = uni.bi_item_id
+        //    INNER JOIN tb_location loc ON uni.bi_location_id = loc.bi_location_id
+        //    INNER JOIN lut_uom_type uom ON it.i_uom_id = uom.i_uom_id
+        //    )a;
+
+
+
         //public async Task<DbResObj> GetItemId(selectObj obj)
         //{
         //    var res = new DbResObj();
@@ -333,7 +476,7 @@ namespace CPS_App.Services
         //    return res;
 
         //}
-       
+
 
     }
 }

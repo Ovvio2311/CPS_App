@@ -52,9 +52,9 @@
             this.txtcat = new System.Windows.Forms.TextBox();
             this.txtremain = new System.Windows.Forms.TextBox();
             this.txtqty = new System.Windows.Forms.TextBox();
-            this.txtEDD = new System.Windows.Forms.TextBox();
             this.btnchange = new System.Windows.Forms.Button();
             this.btndel = new System.Windows.Forms.Button();
+            this.dateTimePickerEDD = new System.Windows.Forms.DateTimePicker();
             ((System.ComponentModel.ISupportInitialize)(this.datagridviewitem)).BeginInit();
             this.SuspendLayout();
             // 
@@ -263,13 +263,6 @@
             this.txtqty.Size = new System.Drawing.Size(174, 23);
             this.txtqty.TabIndex = 25;
             // 
-            // txtEDD
-            // 
-            this.txtEDD.Location = new System.Drawing.Point(601, 284);
-            this.txtEDD.Name = "txtEDD";
-            this.txtEDD.Size = new System.Drawing.Size(203, 23);
-            this.txtEDD.TabIndex = 26;
-            // 
             // btnchange
             // 
             this.btnchange.Location = new System.Drawing.Point(46, 307);
@@ -290,14 +283,21 @@
             this.btndel.UseVisualStyleBackColor = true;
             this.btndel.Click += new System.EventHandler(this.btndel_Click);
             // 
+            // dateTimePickerEDD
+            // 
+            this.dateTimePickerEDD.Location = new System.Drawing.Point(620, 287);
+            this.dateTimePickerEDD.Name = "dateTimePickerEDD";
+            this.dateTimePickerEDD.Size = new System.Drawing.Size(200, 23);
+            this.dateTimePickerEDD.TabIndex = 29;
+            // 
             // RequestEdit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1067, 665);
+            this.Controls.Add(this.dateTimePickerEDD);
             this.Controls.Add(this.btndel);
             this.Controls.Add(this.btnchange);
-            this.Controls.Add(this.txtEDD);
             this.Controls.Add(this.txtqty);
             this.Controls.Add(this.txtremain);
             this.Controls.Add(this.txtcat);
@@ -357,8 +357,8 @@
         private TextBox txtcat;
         private TextBox txtremain;
         private TextBox txtqty;
-        private TextBox txtEDD;
         private Button btnchange;
         private Button btndel;
+        private DateTimePicker dateTimePickerEDD;
     }
 }

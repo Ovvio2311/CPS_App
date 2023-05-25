@@ -50,7 +50,7 @@ namespace CPS_App
                             .Build();
 
             var ServiceProvider = host.Services;
-            Application.Run(ServiceProvider.GetRequiredService<Login>());
+            Application.Run(ServiceProvider.GetRequiredService<Dashboard>());
             //Application.Run(ServiceProvider.GetRequiredService<Request_Create>());
             //Application.Run(ServiceProvider.GetRequiredService<Register>());
         }
@@ -73,6 +73,8 @@ namespace CPS_App
             services.AddSingleton<DbServices>();
             services.AddScoped<ClaimsManager>();
             services.AddScoped<RequestMapping>();
+            services.AddScoped<POAWorker>();
+            services.AddScoped<StockLevelWorker>();
             services.Configure<IdentityOptions>(options =>
             {
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);

@@ -14,6 +14,7 @@ namespace CPS_App.Helpers
 }
 
 
+
 //use cps_db;
 //CREATE TABLE `tb_users` (
 //  `vc_user_id` varchar(255) NOT NULL,
@@ -78,8 +79,6 @@ namespace CPS_App.Helpers
 //  `bi_req_id` bigint(20) NOT NULL AUTO_INCREMENT,
 //  `i_staff_id` int(11) DEFAULT NULL,
 //  `vc_req_status` varchar(15) DEFAULT NULL,
-//  `
-//  ` datetime DEFAULT NULL,
 //  `vc_mark` varchar(20) DEFAULT NULL,
 //  `dt_created_date` datetime NOT NULL DEFAULT current_timestamp(),
 //  `dt_updated_datetime` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp(),
@@ -88,7 +87,7 @@ namespace CPS_App.Helpers
 //) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = utf8mb4;
 
 //create TABLE `tb_item_category` (
-//  `bi_category_id` bigint(20) not NULL AUTO_INCREMENT,  
+//  `bi_category_id` bigint(20) not NULL AUTO_INCREMENT,
 //  `vc_category_desc` varchar(45) not NULL,    
 //  `dt_created_date` datetime NOT NULL DEFAULT current_timestamp(),
 //  `dt_updated_datetime` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp(),
@@ -98,12 +97,12 @@ namespace CPS_App.Helpers
 
 
 
-//create TABLE `lut_term_&_Con` (
-//  `ti_t&c_id` tinyint(4) NOT NULL AUTO_INCREMENT,  
-//  `vc_t&c_desc` varchar(100) DEFAULT NULL,  
+//create TABLE `lut_term_and_Con` (
+//  `ti_tc_id` tinyint(4) NOT NULL AUTO_INCREMENT,  
+//  `vc_tc_desc` varchar(100) DEFAULT NULL,  
 //  `dt_created_date` datetime NOT NULL DEFAULT current_timestamp(),
 //  `dt_updated_datetime` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-//  PRIMARY key(`ti_t&c_id`)
+//  PRIMARY key(`ti_tc_id`)
   
 //) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
 
@@ -165,7 +164,7 @@ namespace CPS_App.Helpers
 //  `bi_supp_id` bigint(20) DEFAULT NULL,
 //  `bi_deli_loc_id` bigint(20) DEFAULT NULL,  
 //  `vc_currency` varchar(10) DEFAULT NULL,  
-//  `ti_t&c_id` tinyint(4) DEFAULT NULL,
+//  `ti_tc_id` tinyint(4) DEFAULT NULL,
 //  `ti_deli_sched_id` tinyint(4) DEFAULT NULL,
 //  `dt_effect_date` datetime default NULL,  
 //  `bi_contract_no` bigint(20) DEFAULT NULL,  
@@ -174,7 +173,7 @@ namespace CPS_App.Helpers
 //  PRIMARY key(bi_poa_header_id),
 //  constraint fn_poakey11 foreign key(bi_poa_id) references tb_poa(bi_poa_id),
 //  constraint fn_suppkey22 foreign key(bi_supp_id) references tb_supplier(bi_supp_id),
-//  constraint fn_tckey33 foreign key(`ti_t&c_id`) references `lut_term_&_Con`(`ti_t&c_id`),
+//  constraint fn_tckey33 foreign key(`ti_tc_id`) references `lut_term_and_Con`(`ti_tc_id`),
 //  constraint fn_schkey44 foreign key(ti_deli_sched_id) references lut_deli_schedule_type(ti_deli_sched_id),
 //  constraint fn_deli_loc_id foreign key(bi_deli_loc_id) references tb_location(bi_location_id)
 //) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
@@ -183,10 +182,12 @@ namespace CPS_App.Helpers
 //  `bi_item_id` bigint(20) NOT NULL AUTO_INCREMENT,  
 //  `vc_item_desc` varchar(45) not NULL,  
 //  `bi_category_id` bigint(20) DEFAULT NULL,  
+//  `i_uom_id` int(11) NOT NULL,
 //  `dt_created_date` datetime NOT NULL DEFAULT current_timestamp(),
 //  `dt_updated_datetime` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp(),
 //  PRIMARY key(bi_item_id),
-//  constraint fn_catkey1 foreign key(bi_category_id) references tb_item_category(bi_category_id)
+//  constraint fn_catkey1 foreign key(bi_category_id) references tb_item_category(bi_category_id),
+//  constraint f_uomkey3 foreign key(i_uom_id) references lut_uom_type(i_uom_id)
 
 //) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
 
@@ -213,14 +214,13 @@ namespace CPS_App.Helpers
 
 //create TABLE `tb_item_unit` (
 //  `bi_item_id` bigint(20) NOT NULL,  
-//  `bi_location_id` bigint(20) NOT NULL,    
-//  `i_uom_id` int(11) DEFAULT NULL,
+//  `bi_location_id` bigint(20) NOT NULL,      
 //  `i_item_qty` int(11) DEFAULT NULL,
 //  `dt_created_date` datetime NOT NULL DEFAULT current_timestamp(),
 //  `dt_updated_datetime` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp(),
 //  constraint f_lockey1 foreign key(bi_location_id) references tb_location(bi_location_id),
 //  constraint f_itemkey2 foreign key(bi_item_id) references tb_item(bi_item_id),
-//  constraint f_uomkey3 foreign key(i_uom_id) references lut_uom_type(i_uom_id)
+  
   
 //) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
 
@@ -232,6 +232,7 @@ namespace CPS_App.Helpers
 //  `i_uom_id` int(11) DEFAULT NULL,
 //  `vc_req_status` int(11) DEFAULT NULL,
 //  `vc_remark` varchar(45) DEFAULT NULL,
+//  `dt_exp_deli_date` datetime DEFAULT NULL,
 //  `dt_created_date` datetime NOT NULL DEFAULT current_timestamp(),
 //  `dt_updated_datetime` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp(),
 //  constraint fn_item_key1 foreign key(bi_item_id) references tb_item(bi_item_id),
@@ -269,7 +270,7 @@ namespace CPS_App.Helpers
 //  `bi_deli_loc_id` bigint(20) DEFAULT NULL,  
 //  `bi_supp_id` bigint(20) DEFAULT NULL,
 //  `vc_currency` varchar(10) DEFAULT NULL,  
-//  `ti_t&c_id` tinyint(4) DEFAULT NULL,
+//  `ti_tc_id` tinyint(4) DEFAULT NULL,
 //  `dt_expect_delidate` datetime DEFAULT NULL,
 //  `dt_effect_date` datetime default NULL,      
 //  `dt_created_date` datetime NOT NULL DEFAULT current_timestamp(),
@@ -277,7 +278,7 @@ namespace CPS_App.Helpers
 //  PRIMARY key(bi_po_header_id),
 //  constraint fn_po_id foreign key(bi_po_id) references tb_po(bi_po_id),
 //  constraint fn_supp_id foreign key(bi_supp_id) references tb_supplier(bi_supp_id),
-//  constraint fn_tc_id foreign key(`ti_t&c_id`) references `lut_term_&_Con`(`ti_t&c_id`),
+//  constraint fn_tc_id foreign key(`ti_tc_id`) references `lut_term_and_Con`(`ti_tc_id`),
 //  constraint fn_loc_id foreign key(bi_deli_loc_id) references tb_location(bi_location_id)
 //) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
 

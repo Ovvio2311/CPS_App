@@ -14,6 +14,23 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Krypton.Docking" Version="70.22.11.312" />
+    <PackageReference Include="Krypton.Navigator" Version="70.22.11.312" />
+    <PackageReference Include="Krypton.Ribbon" Version="70.22.11.312" />
+    <PackageReference Include="Krypton.Toolkit" Version="70.22.11.312" />
+    <PackageReference Include="Krypton.Toolkit.Suite.Extended.Buttons" Version="70.23.1.5" />
+    <PackageReference Include="Krypton.Toolkit.Suite.Extended.ComboBox" Version="70.23.1.5" />
+    <PackageReference Include="Krypton.Toolkit.Suite.Extended.Common" Version="70.23.1.5" />
+    <PackageReference Include="Krypton.Toolkit.Suite.Extended.Controls" Version="70.23.1.5" />
+    <PackageReference Include="Krypton.Toolkit.Suite.Extended.Data.Visualisation" Version="70.23.1.5" />
+    <PackageReference Include="Krypton.Toolkit.Suite.Extended.DataGridView" Version="70.23.1.5" />
+    <PackageReference Include="Krypton.Toolkit.Suite.Extended.Developer.Utilities" Version="70.23.1.5" />
+    <PackageReference Include="Krypton.Toolkit.Suite.Extended.Forms" Version="70.23.1.5" />
+    <PackageReference Include="Krypton.Toolkit.Suite.Extended.Global.Utilities" Version="70.23.1.5" />
+    <PackageReference Include="Krypton.Toolkit.Suite.Extended.Messagebox" Version="70.23.1.5" />
+    <PackageReference Include="Krypton.Toolkit.Suite.Extended.Navigator" Version="70.23.1.5" />
+    <PackageReference Include="Krypton.Toolkit.Suite.Extended.Tool.Strip.Items" Version="70.23.1.5" />
+    <PackageReference Include="Krypton.Toolkit.Suite.Extended.Tools" Version="70.23.1.5" />
     <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="7.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.14" />

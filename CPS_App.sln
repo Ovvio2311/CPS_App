@@ -5,8 +5,6 @@ VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CPS_App", "CPS_App\CPS_App.csproj", "{42E888A4-7001-4768-B7C1-380E803C47EB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommonDBUtils", "..\CommonDBUtils\CommonDBUtils\CommonDBUtils.csproj", "{7D658721-6B3A-4FDB-AC03-74C0A599E9C8}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,10 +15,6 @@ Global
 		{42E888A4-7001-4768-B7C1-380E803C47EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{42E888A4-7001-4768-B7C1-380E803C47EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{42E888A4-7001-4768-B7C1-380E803C47EB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7D658721-6B3A-4FDB-AC03-74C0A599E9C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7D658721-6B3A-4FDB-AC03-74C0A599E9C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7D658721-6B3A-4FDB-AC03-74C0A599E9C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7D658721-6B3A-4FDB-AC03-74C0A599E9C8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

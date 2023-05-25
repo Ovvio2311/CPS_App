@@ -54,7 +54,7 @@ namespace CPS_App.Models
             public string dt_created_date { get; set; }
             public string dt_updated_datetime { get; set; }
         }
-       public class tb_item_vid_mapping : CPSModel
+        public class tb_item_vid_mapping : CPSModel
         {
             public int bi_item_id { get; set; }
             public int bi_item_vid { get; set; }
@@ -64,7 +64,7 @@ namespace CPS_App.Models
         public class tb_item_unit : CPSModel
         {
             public int bi_item_id { get; set; }
-            public int bi_location_id { get; set; }            
+            public int bi_location_id { get; set; }
             public int i_item_qty { get; set; }
             public string dt_created_date { get; set; }
             public string dt_updated_datetime { get; set; }
@@ -73,7 +73,7 @@ namespace CPS_App.Models
         public class tb_item_category : CPSModel
         {
             public int bi_category_id { get; set; }
-            public string vc_category_desc { get; set; }            
+            public string vc_category_desc { get; set; }
             public string dt_created_date { get; set; }
             public string dt_updated_datetime { get; set; }
         }
@@ -144,7 +144,7 @@ namespace CPS_App.Models
             public int i_staff_id { get; set; }
             [Display(Name = "bi_location_id")]
             public int bi_location_id { get; set; }
-            
+
             public List<RequestionCreationItem> items { get; set; }
             public RequestCreationReq()
             {
@@ -196,11 +196,12 @@ namespace CPS_App.Models
             public string dt_created_date { get; set; }
             [Display(Name = "Updated Date")]
             public string dt_updated_datetime { get; set; }
-            
+
         }
-        
+
         public class ItemRequest
         {
+
             [Display(Name = "Request Id")]
             public int bi_req_id { get; set; }
             [Display(Name = "Item Vid")]
@@ -255,9 +256,13 @@ namespace CPS_App.Models
             [Display(Name = "Updated Date")]
             public DateTime dt_updated_datetime { get; set; }
         }
-        
+
         public class POATableObj
         {
+            public POATableObj()
+            {
+                itemLists = new List<PoaItemList>();
+            }
             [Display(Name = "Poa Id")]
             public int bi_poa_id { get; set; }
             [Display(Name = "Poa Header Id")]
@@ -297,26 +302,28 @@ namespace CPS_App.Models
         }
         public class PoaItemList
         {
+            [Display(Name = "Poa line Id")]
+            public int bi_poa_line_id { get; set; }
             [Display(Name = "Poa Header Id")]
             public int bi_poa_header_id { get; set; }
             [Display(Name = "Item Id")]
             public int bi_item_id { get; set; }
-            [Display(Name = "item")]
+            [Display(Name = "Item")]
             public string vc_item_desc { get; set; }
             [Display(Name = "Supplier Item Id")]
             public int bi_supp_item_id { get; set; }
             [Display(Name = "Promise Qty")]
-            public int dc_promise_qty { get; set; }
+            public decimal dc_promise_qty { get; set; }
             [Display(Name = "i_uom_id")]
             public int i_uom_id { get; set; }
             [Display(Name = "Unit of Measurement")]
             public string vc_uom_desc { get; set; }
             [Display(Name = "Min Qty")]
-            public int dc_min_qty { get; set; }
+            public decimal dc_min_qty { get; set; }
             [Display(Name = "Price")]
-            public double dc_price { get; set; }
+            public decimal dc_price { get; set; }
             [Display(Name = "Amount")]
-            public double dc_amount { get; set; }
+            public decimal dc_amount { get; set; }
             [Display(Name = "Reference")]
             public string vc_reference { get; set; }
             [Display(Name = "Quotation No.")]

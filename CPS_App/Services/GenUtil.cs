@@ -18,6 +18,7 @@ namespace CPS_App.Services
             if (typeof(T) == typeof(string)) { return Convert.ToString(obj); }
             if (typeof(T) == typeof(int)) { return int.TryParse(obj.ToString(),out int number)? Convert.ToInt32(obj):obj; }
             if (typeof(T) == typeof(double)) { return double.TryParse(obj.ToString(), out double number) ? Convert.ToDouble(obj) : obj; }
+            if (typeof(T) == typeof(decimal)) { return decimal.TryParse(obj.ToString(), out decimal number) ? Convert.ToDecimal(obj) : obj; }
             return null;
         }
         public static bool isNull(string obj)

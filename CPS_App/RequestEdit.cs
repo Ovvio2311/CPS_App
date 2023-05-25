@@ -36,7 +36,7 @@ namespace CPS_App
 
         private void RequestEdit_Load(object sender, EventArgs e)
         {
-            if (defPage == null)
+            if (defPage.Count() == 0)
             {
                 MessageBox.Show("error");
                 return;

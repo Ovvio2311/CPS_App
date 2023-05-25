@@ -18,16 +18,14 @@ namespace CPS_App
 {
     public partial class ItemView : Form
     {
-        public ClaimsIdentity userIden;
-        public AuthService _authService;
+        public ClaimsIdentity userIden;        
         public List<StockLevelViewObj> _stock;
         private readonly DbServices _dbServices;
         private StockLevelWorker _stockWorker;
-        public ItemView(DbServices dbServices, AuthService authService, StockLevelWorker stockWorker)
+        public ItemView(DbServices dbServices, StockLevelWorker stockWorker)
         {
             InitializeComponent();
-            _dbServices = dbServices;
-            _authService = authService;
+            _dbServices = dbServices;            
             _stock = new List<StockLevelViewObj>();
             _stockWorker = stockWorker;
         }

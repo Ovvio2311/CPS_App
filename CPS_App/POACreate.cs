@@ -24,10 +24,13 @@ namespace CPS_App
         public ClaimsIdentity userIden;
         private DbServices _dbServices;
         private POATableObj obj;
-        public POACreate()
+        private List<PoaItemList> templist;
+        public POACreate(DbServices dbServices)
         {
             InitializeComponent();
             obj = new POATableObj();
+            templist= new List<PoaItemList>();
+            _dbServices = dbServices;
         }
 
         private async void POACreate_Load(object sender, EventArgs e)
@@ -98,17 +101,12 @@ namespace CPS_App
             var sup = cbxsup.SelectedItem;
             if (sup != null) { sup = sup.ToString().Split(":").ElementAt(0); }
             var ecdate = kryptonDateTimePickerec.Value;
-            if (ecdate < DateTime.Now)
-            {
-                MessageBox.Show("Effective date error");
-                return;
-            }
-            var availableItem = pn1.Controls.OfType<TextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
+
+            var availableItem = pn1.Controls.OfType<KryptonTextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
 
             if (availableItem != 2 || poatype == null || loc == null || tc == null
-                || delisc == null || sup == null || obj.itemLists.Count <= 0)
+                || delisc == null || sup == null || templist.Count() <= 0 || ecdate < DateTime.Now)
             {
-                MessageBox.Show("Please completed the POA form");
                 disableValidation();
             }
             else
@@ -164,7 +162,7 @@ namespace CPS_App
                 return;
             }
 
-            obj.bi_poa_id = respoa.result;
+            obj.bi_poa_id = GenUtil.ConvertObjtoType<int>(respoa.result);
 
             //insert tb_poa_header
             var tb_boa_header = new insertObj()
@@ -189,11 +187,12 @@ namespace CPS_App
                 MessageBox.Show("insert db_poa_header error");
                 return;
             }
-            obj.bi_poa_header_id = resheader.result;
+            obj.bi_poa_header_id = GenUtil.ConvertObjtoType<int>(resheader.result);
             MessageBox.Show($"insert completed, poa_id: {obj.bi_poa_id}, poa_header_id: {obj.bi_poa_header_id}");
 
 
             //insert poa_line
+            obj.itemLists = templist;
             obj.itemLists.ForEach(async row =>
             {
                 var poa_line = new insertObj()
@@ -235,34 +234,33 @@ namespace CPS_App
 
 
 
-            var availableItem = pn2.Controls.OfType<TextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
+            var availableItem = pn2.Controls.OfType<KryptonTextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
             if (availableItem != 7 || itemidtype == null || uomtype == null)
             {
                 MessageBox.Show("Please completed the POA form");
+                return;
             }
             PoaItemList req = new PoaItemList()
             {
-                bi_item_id = (int)itemidtype,
+                bi_item_id = GenUtil.ConvertObjtoType<int>(itemidtype),
                 bi_supp_item_id = GenUtil.ConvertObjtoType<int>(txtsupitid.Text),
-                dc_promise_qty = GenUtil.ConvertObjtoType<double>(txtproqty.Text),
-                i_uom_id = (int)uomtype,
-                dc_min_qty = GenUtil.ConvertObjtoType<double>(txtminqty.Text),
-                dc_price = GenUtil.ConvertObjtoType<double>(txtpri.Text),
-                dc_amount = GenUtil.ConvertObjtoType<double>(txtam.Text),
+                dc_promise_qty = GenUtil.ConvertObjtoType<decimal>(txtproqty.Text),
+                i_uom_id = GenUtil.ConvertObjtoType<int>(uomtype),
+                dc_min_qty = GenUtil.ConvertObjtoType<decimal>(txtminqty.Text),
+                dc_price = GenUtil.ConvertObjtoType<decimal>(txtpri.Text),
+                dc_amount = GenUtil.ConvertObjtoType<decimal>(txtam.Text),
                 vc_reference = txtref.Text,
                 bi_quot_no = txtquot.Text,
 
             };
-            obj.itemLists.Add(req);
+
+            templist.Add(req);
             MessageBox.Show("Item added");
             pn2.Controls.OfType<TextBox>().ToList().ForEach(t => t.Clear());
             pn2.Controls.OfType<ComboBox>().ToList().ForEach(t => t.SelectedIndex = 0);
         }
 
-        private void pn2_Paint(object sender, PaintEventArgs e)
-        {
 
-        }
 
         private void btnclear_Click(object sender, EventArgs e)
         {
@@ -271,6 +269,8 @@ namespace CPS_App
             pn2.Controls.OfType<TextBox>().ToList().ForEach(t => t.Clear());
             pn2.Controls.OfType<ComboBox>().ToList().ForEach(t => t.SelectedIndex = 0);
         }
+
+
     }
 }
 

@@ -45,7 +45,14 @@ namespace CPS_App.Models
             public string vc_nor_name { get; set; }
             public string lt_concurrency_stamp { get; set; }
         }
-        public class tb_item : CPSModel
+        public class tb_users : CPSModelBase
+        {
+            public string vc_user_id { get; set; }
+            public string vc_email { get; set; }
+            public string vc_user_name { get; set; }
+            public int i_access_failed_count { get; set; }
+        }
+        public class tb_item : CPSModelBase
         {
             public int bi_item_id { get; set; }
             public string vc_item_desc { get; set; }
@@ -54,14 +61,15 @@ namespace CPS_App.Models
             public string dt_created_date { get; set; }
             public string dt_updated_datetime { get; set; }
         }
-        public class tb_item_vid_mapping : CPSModel
+
+       public class tb_item_vid_mapping : CPSModelBase
         {
             public int bi_item_id { get; set; }
             public int bi_item_vid { get; set; }
             public string dt_created_date { get; set; }
             public string dt_updated_datetime { get; set; }
         }
-        public class tb_item_unit : CPSModel
+        public class tb_item_unit : CPSModelBase
         {
             public int bi_item_id { get; set; }
             public int bi_location_id { get; set; }
@@ -70,28 +78,28 @@ namespace CPS_App.Models
             public string dt_updated_datetime { get; set; }
         }
 
-        public class tb_item_category : CPSModel
+        public class tb_item_category : CPSModelBase
         {
             public int bi_category_id { get; set; }
             public string vc_category_desc { get; set; }
             public string dt_created_date { get; set; }
             public string dt_updated_datetime { get; set; }
         }
-        public class lut_uom_type : CPSModel
+        public class lut_uom_type : CPSModelBase
         {
             public int i_uom_id { get; set; }
             public string vc_uom_desc { get; set; }
             public string dt_created_date { get; set; }
             public string dt_updated_datetime { get; set; }
         }
-        public class lut_poa_type : CPSModel
+        public class lut_poa_type : CPSModelBase
         {
             public int ti_poa_type_id { get; set; }
             public string vc_poa_type_desc { get; set; }
             public string dt_created_date { get; set; }
             public string dt_updated_datetime { get; set; }
         }
-        public class tb_supplier : CPSModel
+        public class tb_supplier : CPSModelBase
         {
             public int bi_supp_id { get; set; }
             public string vc_supp_desc { get; set; }
@@ -101,7 +109,7 @@ namespace CPS_App.Models
             public string dt_created_date { get; set; }
             public string dt_updated_datetime { get; set; }
         }
-        public class lut_term_and_con
+        public class lut_term_and_con: CPSModelBase
         {
             public int ti_tc_id { get; set; }
             public string vc_tc_desc { get; set; }
@@ -109,7 +117,7 @@ namespace CPS_App.Models
             public string dt_updated_datetime { get; set; }
         }
 
-        public class lut_deli_schedule_type
+        public class lut_deli_schedule_type: CPSModelBase
         {
             public int ti_deli_sched_id { get; set; }
             public string vc_deli_sched_desc { get; set; }

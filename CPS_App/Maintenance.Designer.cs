@@ -66,7 +66,7 @@ namespace CPS_App
             lblrole.Size = new Size(35, 20);
             lblrole.TabIndex = 5;
             lblrole.Values.Text = "Role";
-            lblrole.Click += kryptonLabel2_Click;
+            
             // 
             // txtrole
             // 
@@ -122,7 +122,7 @@ namespace CPS_App
             tabPageUser.TabIndex = 1;
             tabPageUser.Text = "User";
             tabPageUser.UseVisualStyleBackColor = true;
-            tabPageUser.Click += tabPageUser_Click;
+            
             // 
             // kryptonDataGridViewUser
             // 
@@ -140,6 +140,7 @@ namespace CPS_App
             btnAddnewuser.Size = new Size(90, 25);
             btnAddnewuser.TabIndex = 2;
             btnAddnewuser.Values.Text = "+AddNew";
+            btnAddnewuser.Click += btnAddnewuser_Click;
             // 
             // txtusername
             // 

@@ -12,10 +12,11 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using static CPS_App.Models.CPSModel;
 using static CPS_App.Models.DbModels;
+using Krypton.Toolkit;
 
 namespace CPS_App
 {
-    public partial class Maintenance : Krypton.Toolkit.KryptonForm
+    public partial class Maintenance : KryptonForm
     {
         private DbServices _dbServices;
         private RegisterServices _registerServices;
@@ -30,23 +31,12 @@ namespace CPS_App
         private async void Maintenance_Load(object sender, EventArgs e)
         {
             var result = await _dbServices.SelectAllAsync<tb_roles>();
-
             kryptodatagrid.DataSource = result.result;
+
+            var userResult = await _dbServices.SelectAllAsync<tb_users>();
+            kryptonDataGridViewUser.DataSource = userResult.result;
+
             multiDetailView.Show();
-        }
-
-
-
-        private void kryptodatagrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
-
-
-        private void kryptonLabel2_Click(object sender, EventArgs e)
-        {
-
         }
 
         private async void btnAdd_Click(object sender, EventArgs e)
@@ -71,9 +61,12 @@ namespace CPS_App
             if (res.Succeeded) { MessageBox.Show("role added"); }
         }
 
-        private void tabPageUser_Click(object sender, EventArgs e)
-        {
 
+        private void btnAddnewuser_Click(object sender, EventArgs e)
+        {
+            Register regNew = new Register(_registerServices, _dbServices);
+            regNew.MdiParent = this;
+            regNew.Show();
         }
     }
 }

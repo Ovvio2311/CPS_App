@@ -5,25 +5,25 @@ using Newtonsoft.Json;
 using System.ComponentModel;
 using System.Text.RegularExpressions;
 using static CPS_App.Models.CPSModel;
+using Krypton.Toolkit;
 
 namespace CPS_App
 {
     
-    public partial class Register : Form
-    {
-        private AuthService _authService { get; set; }
+    public partial class Register : KryptonForm
+    {        
         private RegisterServices _registerServices { get; set; }
         private Validator _validator;
         private DbServices _dbServices { get; set; }
-        public Register(AuthService authService, RegisterServices registerServices, Validator validator, DbServices dbServices)
+        public Register(RegisterServices registerServices, DbServices dbServices)
         {
             
             InitializeComponent();
            
 
-            _authService = authService;
+            
             _registerServices = registerServices;
-            _validator = validator;
+            _validator = new Validator();
             _dbServices = dbServices;
             //this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
         }

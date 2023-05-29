@@ -1,11 +1,16 @@
-﻿using Newtonsoft.Json;
+﻿using Krypton.Toolkit;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Dynamic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
+using System.Reflection;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using static CPS_App.Models.DbModels;
 
 namespace CPS_App.Services
 {
@@ -78,5 +83,28 @@ namespace CPS_App.Services
                          $" where {req} = {req}";
         }
 
+        public static void dataGridAttrName<T>(KryptonDataGridView grid, List<string> invisibleList=null)
+        {
+            grid.Columns.ToDynamicList().ForEach(col =>
+            {
+                DataGridViewColumn column = col;
+                col.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                col.HeaderText = typeof(T).GetProperties().ToList()
+                .Where(x => col.HeaderText == x.Name)
+                .Select(x => x.GetCustomAttribute<DisplayAttribute>())
+                .Where(x => x != null).Select(x => x.Name.ToString()).FirstOrDefault();
+                if(invisibleList != null)
+                {
+                    foreach (var header in invisibleList)
+                    {
+                        if (column.HeaderText == header)
+                        {
+                            column.Visible = false;
+                        }
+                    }
+                }                
+            });
+        }
+        
     }
 }

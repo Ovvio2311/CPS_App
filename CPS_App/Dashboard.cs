@@ -144,8 +144,6 @@ namespace CPS_App
 
         }
 
-      
-
 
         //private void itemgridview_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         //{

@@ -31,147 +31,145 @@ namespace CPS_App
         /// </summary>
         private void InitializeComponent()
         {
-            components = new Container();
-            reqMenustrip = new ContextMenuStrip(components);
-            createToolStripMenuItem1 = new ToolStripMenuItem();
-            itemMenuStrip = new ContextMenuStrip(components);
-            createToolStripMenuItem2 = new ToolStripMenuItem();
-            settingMenuStrip = new ContextMenuStrip(components);
-            roleManagementToolStripMenuItem1 = new ToolStripMenuItem();
-            userManagementToolStripMenuItem = new ToolStripMenuItem();
-            btnReq = new Krypton.Toolkit.KryptonDropButton();
-            btnItem = new Krypton.Toolkit.KryptonDropButton();
-            btnsetting = new Krypton.Toolkit.KryptonDropButton();
-            btnpoa = new Krypton.Toolkit.KryptonDropButton();
-            POAMenuStrip = new ContextMenuStrip(components);
-            createToolStripMenuItem = new ToolStripMenuItem();
-            reqMenustrip.SuspendLayout();
-            itemMenuStrip.SuspendLayout();
-            settingMenuStrip.SuspendLayout();
-            POAMenuStrip.SuspendLayout();
-            SuspendLayout();
+            this.components = new System.ComponentModel.Container();
+            this.reqMenustrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.createToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.itemMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.createToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.settingMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.roleManagementToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.userManagementToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnReq = new Krypton.Toolkit.KryptonDropButton();
+            this.btnItem = new Krypton.Toolkit.KryptonDropButton();
+            this.btnsetting = new Krypton.Toolkit.KryptonDropButton();
+            this.btnpoa = new Krypton.Toolkit.KryptonDropButton();
+            this.POAMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.createToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.reqMenustrip.SuspendLayout();
+            this.itemMenuStrip.SuspendLayout();
+            this.settingMenuStrip.SuspendLayout();
+            this.POAMenuStrip.SuspendLayout();
+            this.SuspendLayout();
             // 
             // reqMenustrip
             // 
-            reqMenustrip.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            reqMenustrip.Items.AddRange(new ToolStripItem[] { createToolStripMenuItem1 });
-            reqMenustrip.Name = "reqMenustrip";
-            reqMenustrip.Size = new Size(109, 26);
+            this.reqMenustrip.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.reqMenustrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.createToolStripMenuItem1});
+            this.reqMenustrip.Name = "reqMenustrip";
+            this.reqMenustrip.Size = new System.Drawing.Size(109, 26);
             // 
             // createToolStripMenuItem1
             // 
-            createToolStripMenuItem1.Name = "createToolStripMenuItem1";
-            createToolStripMenuItem1.Size = new Size(108, 22);
-            createToolStripMenuItem1.Text = "Create";
-            createToolStripMenuItem1.Click += createToolStripMenuItem1_Click;
+            this.createToolStripMenuItem1.Name = "createToolStripMenuItem1";
+            this.createToolStripMenuItem1.Size = new System.Drawing.Size(108, 22);
+            this.createToolStripMenuItem1.Text = "Create";
             // 
             // itemMenuStrip
             // 
-            itemMenuStrip.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            itemMenuStrip.Items.AddRange(new ToolStripItem[] { createToolStripMenuItem2 });
-            itemMenuStrip.Name = "contextMenuStrip1";
-            itemMenuStrip.Size = new Size(109, 26);
+            this.itemMenuStrip.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.itemMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.createToolStripMenuItem2});
+            this.itemMenuStrip.Name = "contextMenuStrip1";
+            this.itemMenuStrip.Size = new System.Drawing.Size(109, 26);
             // 
             // createToolStripMenuItem2
             // 
-            createToolStripMenuItem2.Name = "createToolStripMenuItem2";
-            createToolStripMenuItem2.Size = new Size(108, 22);
-            createToolStripMenuItem2.Text = "Create";
-            createToolStripMenuItem2.Click += createToolStripMenuItem2_Click;
+            this.createToolStripMenuItem2.Name = "createToolStripMenuItem2";
+            this.createToolStripMenuItem2.Size = new System.Drawing.Size(108, 22);
+            this.createToolStripMenuItem2.Text = "Create";
             // 
             // settingMenuStrip
             // 
-            settingMenuStrip.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            settingMenuStrip.Items.AddRange(new ToolStripItem[] { roleManagementToolStripMenuItem1, userManagementToolStripMenuItem });
-            settingMenuStrip.Name = "settingMenuStrip";
-            settingMenuStrip.Size = new Size(172, 48);
+            this.settingMenuStrip.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.settingMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.roleManagementToolStripMenuItem1,
+            this.userManagementToolStripMenuItem});
+            this.settingMenuStrip.Name = "settingMenuStrip";
+            this.settingMenuStrip.Size = new System.Drawing.Size(172, 48);
             // 
             // roleManagementToolStripMenuItem1
             // 
-            roleManagementToolStripMenuItem1.Name = "roleManagementToolStripMenuItem1";
-            roleManagementToolStripMenuItem1.Size = new Size(171, 22);
-            roleManagementToolStripMenuItem1.Text = "Role Management";
-            roleManagementToolStripMenuItem1.Click += roleManagementToolStripMenuItem1_Click;
+            this.roleManagementToolStripMenuItem1.Name = "roleManagementToolStripMenuItem1";
+            this.roleManagementToolStripMenuItem1.Size = new System.Drawing.Size(171, 22);
+            this.roleManagementToolStripMenuItem1.Text = "Role Management";
             // 
             // userManagementToolStripMenuItem
             // 
-            userManagementToolStripMenuItem.Name = "userManagementToolStripMenuItem";
-            userManagementToolStripMenuItem.Size = new Size(171, 22);
-            userManagementToolStripMenuItem.Text = "User Management";
+            this.userManagementToolStripMenuItem.Name = "userManagementToolStripMenuItem";
+            this.userManagementToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.userManagementToolStripMenuItem.Text = "User Management";
             // 
             // btnReq
             // 
-            btnReq.ContextMenuStrip = reqMenustrip;
-            btnReq.Location = new Point(-1, 63);
-            btnReq.Name = "btnReq";
-            btnReq.Size = new Size(202, 71);
-            btnReq.TabIndex = 19;
-            btnReq.Values.Text = "Request Manage";
-            btnReq.Click += btnReq_Click;
+            this.btnReq.ContextMenuStrip = this.reqMenustrip;
+            this.btnReq.Location = new System.Drawing.Point(-1, 63);
+            this.btnReq.Name = "btnReq";
+            this.btnReq.Size = new System.Drawing.Size(202, 71);
+            this.btnReq.TabIndex = 19;
+            this.btnReq.Values.Text = "Request Manage";
             // 
             // btnItem
             // 
-            btnItem.ContextMenuStrip = itemMenuStrip;
-            btnItem.Location = new Point(-1, 140);
-            btnItem.Name = "btnItem";
-            btnItem.Size = new Size(202, 67);
-            btnItem.TabIndex = 20;
-            btnItem.Values.Text = "Item Manage";
-            btnItem.Click += btnItem_Click;
+            this.btnItem.ContextMenuStrip = this.itemMenuStrip;
+            this.btnItem.Location = new System.Drawing.Point(-1, 140);
+            this.btnItem.Name = "btnItem";
+            this.btnItem.Size = new System.Drawing.Size(202, 67);
+            this.btnItem.TabIndex = 20;
+            this.btnItem.Values.Text = "Item Manage";
             // 
             // btnsetting
             // 
-            btnsetting.ContextMenuStrip = settingMenuStrip;
-            btnsetting.Location = new Point(-1, 290);
-            btnsetting.Name = "btnsetting";
-            btnsetting.Size = new Size(202, 73);
-            btnsetting.TabIndex = 21;
-            btnsetting.Values.Text = "Setting";
-            btnsetting.Click += btnsetting_Click;
+            this.btnsetting.ContextMenuStrip = this.settingMenuStrip;
+            this.btnsetting.Location = new System.Drawing.Point(-1, 290);
+            this.btnsetting.Name = "btnsetting";
+            this.btnsetting.Size = new System.Drawing.Size(202, 73);
+            this.btnsetting.TabIndex = 21;
+            this.btnsetting.Values.Text = "Setting";
             // 
             // btnpoa
             // 
-            btnpoa.ContextMenuStrip = POAMenuStrip;
-            btnpoa.Location = new Point(-1, 213);
-            btnpoa.Name = "btnpoa";
-            btnpoa.Size = new Size(202, 71);
-            btnpoa.TabIndex = 23;
-            btnpoa.Values.Text = "POA Manage";
-            btnpoa.Click += btnpoa_Click;
+            this.btnpoa.ContextMenuStrip = this.POAMenuStrip;
+            this.btnpoa.Location = new System.Drawing.Point(-1, 213);
+            this.btnpoa.Name = "btnpoa";
+            this.btnpoa.Size = new System.Drawing.Size(202, 71);
+            this.btnpoa.TabIndex = 23;
+            this.btnpoa.Values.Text = "POA Manage";
             // 
             // POAMenuStrip
             // 
-            POAMenuStrip.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            POAMenuStrip.Items.AddRange(new ToolStripItem[] { createToolStripMenuItem });
-            POAMenuStrip.Name = "POAMenuStrip";
-            POAMenuStrip.Size = new Size(109, 26);
+            this.POAMenuStrip.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.POAMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.createToolStripMenuItem});
+            this.POAMenuStrip.Name = "POAMenuStrip";
+            this.POAMenuStrip.Size = new System.Drawing.Size(109, 26);
             // 
             // createToolStripMenuItem
             // 
-            createToolStripMenuItem.Name = "createToolStripMenuItem";
-            createToolStripMenuItem.Size = new Size(108, 22);
-            createToolStripMenuItem.Text = "Create";
-            createToolStripMenuItem.Click += createToolStripMenuItem_Click_1;
+            this.createToolStripMenuItem.Name = "createToolStripMenuItem";
+            this.createToolStripMenuItem.Size = new System.Drawing.Size(108, 22);
+            this.createToolStripMenuItem.Text = "Create";
             // 
             // Dashboard
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1039, 589);
-            Controls.Add(btnpoa);
-            Controls.Add(btnsetting);
-            Controls.Add(btnItem);
-            Controls.Add(btnReq);
-            IsMdiContainer = true;
-            Name = "Dashboard";
-            Padding = new Padding(200, 0, 0, 0);
-            Text = "Dashboard";
-            Load += Dashboard_Load;
-            reqMenustrip.ResumeLayout(false);
-            itemMenuStrip.ResumeLayout(false);
-            settingMenuStrip.ResumeLayout(false);
-            POAMenuStrip.ResumeLayout(false);
-            ResumeLayout(false);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(1039, 589);
+            this.Controls.Add(this.btnpoa);
+            this.Controls.Add(this.btnsetting);
+            this.Controls.Add(this.btnItem);
+            this.Controls.Add(this.btnReq);
+            this.IsMdiContainer = true;
+            this.Name = "Dashboard";
+            this.Padding = new System.Windows.Forms.Padding(200, 0, 0, 0);
+            this.Text = "Dashboard";
+            this.Load += new System.EventHandler(this.Dashboard_Load);
+            this.reqMenustrip.ResumeLayout(false);
+            this.itemMenuStrip.ResumeLayout(false);
+            this.settingMenuStrip.ResumeLayout(false);
+            this.POAMenuStrip.ResumeLayout(false);
+            this.ResumeLayout(false);
+
         }
 
 

@@ -420,7 +420,39 @@ namespace CPS_App.Services
             }
             return new DbResObj { resCode = 0, result = null };
         }
+        public async Task InsertMaintenance<T>(Dictionary<string, string> value)
+        {
+            if (value.ElementAt(0).Value == string.Empty)
+            {
+                MessageBox.Show("Name is Empty");
+                return;
+            }
+            var select = new selectObj();
+            select.table = typeof(T).Name;
+            select.selecter.Add(value.ElementAt(0).Key, value.ElementAt(0).Value.ToLower().Trim());
+            var result = await SelectWhereAsync<T>(select);
+            if (result.result.Count > 0)
+            {
+                MessageBox.Show("Name has been used");
+                return;
+            }
+            var insert = new insertObj();
 
+            insert.table = typeof(T).Name;
+            value.ToList().ForEach(row =>
+            {
+                insert.inserter.Add(row.Key, row.Value);
+            });
+            var res = await InsertAsync(insert);
+            if (res.resCode != 1)
+            {
+                MessageBox.Show("insert error");
+            }
+            else
+            {
+                MessageBox.Show($"insert ID: {res.result}");
+            }
+        }
         //        SELECT
         //    *
         //FROM

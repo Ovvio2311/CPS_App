@@ -33,8 +33,11 @@ namespace CPS_App.Models
         }
         public class tb_location : CPSModelBase
         {
+            [Display(Name = "ID")]
             public int bi_location_id { get; set; }
+            [Display(Name = "Location")]
             public string vc_location_desc { get; set; }
+            [Display(Name = "Address")]
             public string vc_location_addr { get; set; }
         }
         public class tb_staff : CPSModelBase
@@ -53,16 +56,24 @@ namespace CPS_App.Models
         }
         public class tb_roles : CPSModelBase
         {
+            [Display(Name = "ID")]
             public string vc_role_id { get; set; }
+            [Display(Name = "Name")]
             public string vc_role_name { get; set; }
+            [Display(Name = "Nor Name")]
             public string vc_nor_name { get; set; }
+            [Display(Name = "Create Date")]
             public string lt_concurrency_stamp { get; set; }
         }
         public class tb_users : CPSModelBase
         {
+            [Display(Name = "ID")]
             public string vc_user_id { get; set; }
+            [Display(Name = "Email")]
             public string vc_email { get; set; }
+            [Display(Name = "UserName")]
             public string vc_user_name { get; set; }
+            [Display(Name = "Access Fail Count")]
             public int i_access_failed_count { get; set; }
         }
         public class tb_item : CPSModelBase
@@ -100,48 +111,75 @@ namespace CPS_App.Models
         }
         public class lut_uom_type : CPSModelBase
         {
+            [Display(Name = "ID")]
             public int i_uom_id { get; set; }
+            [Display(Name = "Name")]
             public string vc_uom_desc { get; set; }
+            [Display(Name = "Create Date")]
             public string dt_created_date { get; set; }
+            [Display(Name = "Update Date")]
             public string dt_updated_datetime { get; set; }
         }
         public class lut_poa_type : CPSModelBase
         {
+            [Display(Name = "ID")]
             public int ti_poa_type_id { get; set; }
+            [Display(Name = "Name")]
             public string vc_poa_type_desc { get; set; }
+            [Display(Name = "Create Date")]
             public string dt_created_date { get; set; }
+            [Display(Name = "Update Date")]
             public string dt_updated_datetime { get; set; }
         }
         public class tb_supplier : CPSModelBase
         {
+            [Display(Name = "ID")]
             public int bi_supp_id { get; set; }
+            [Display(Name = "Name")]
             public string vc_supp_desc { get; set; }
+            [Display(Name = "Address")]
             public string vc_supp_addr { get; set; }
+            [Display(Name = "Contract")]
             public string vc_supp_contact { get; set; }
+            [Display(Name = "Contract No.")]
             public string vc_supp_contact_no { get; set; }
+            [Display(Name = "Create Date")]
             public string dt_created_date { get; set; }
+            [Display(Name = "Update Date")]
             public string dt_updated_datetime { get; set; }
         }
         public class lut_term_and_con: CPSModelBase
         {
+            [Display(Name = "ID")]
             public int ti_tc_id { get; set; }
+            [Display(Name = "Name")]
             public string vc_tc_desc { get; set; }
+            [Display(Name = "Create Date")]
             public string dt_created_date { get; set; }
+            [Display(Name = "Update Date")]
             public string dt_updated_datetime { get; set; }
         }
 
         public class lut_deli_schedule_type: CPSModelBase
         {
+            [Display(Name = "ID")]
             public int ti_deli_sched_id { get; set; }
+            [Display(Name = "Name")]
             public string vc_deli_sched_desc { get; set; }
+            [Display(Name = "Create Date")]
             public string dt_created_date { get; set; }
+            [Display(Name = "Update Date")]
             public string dt_updated_datetime { get; set; }
         }
         public class tb_po_type : CPSModelBase
         {
+            [Display(Name = "ID")]
             public int ti_po_type_id { get; set; }
+            [Display(Name = "Name")]
             public string vc_po_type_desc { get; set; }
+            [Display(Name = "Create Date")]
             public string dt_created_date { get; set; }
+            [Display(Name = "Update Date")]
             public string dt_updated_datetime { get; set; }
         }
         //public class CustomRole

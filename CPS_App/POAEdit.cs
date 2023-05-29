@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Media;
 using CPS_App.Services;
 using Krypton.Toolkit;
 using ScintillaNET;
@@ -40,20 +41,23 @@ namespace CPS_App
             }
             var editPoaLine = obj.ToList().ElementAt(index);
             kryptonDataGridViewit.DataSource = editPoaLine.itemLists;
+            var list = new List<string>() { "Item Id", "i_uom_id" };
+            
+            
+            GenUtil.dataGridAttrName<PoaItemList>(kryptonDataGridViewit,list);
+            //kryptonDataGridViewit.Columns.ToDynamicList().ForEach(col =>
+            //{
+            //    DataGridViewColumn column = col;
+            //    col.HeaderText = typeof(PoaItemList).GetProperties().ToList()
+            //    .Where(x => col.HeaderText == x.Name)
+            //    .Select(x => x.GetCustomAttribute<DisplayAttribute>())
+            //    .Where(x => x != null).Select(x => x.Name.ToString()).FirstOrDefault();
+            //    if (column.HeaderText == "Item Id" || column.HeaderText == "i_uom_id")
+            //    {
+            //        column.Visible = false;
+            //    }
 
-            kryptonDataGridViewit.Columns.ToDynamicList().ForEach(col =>
-            {
-                DataGridViewColumn column = col;
-                col.HeaderText = typeof(PoaItemList).GetProperties().ToList()
-                .Where(x => col.HeaderText == x.Name)
-                .Select(x => x.GetCustomAttribute<DisplayAttribute>())
-                .Where(x => x != null).Select(x => x.Name.ToString()).FirstOrDefault();
-                if (column.HeaderText == "Item Id" || column.HeaderText == "i_uom_id")
-                {
-                    column.Visible = false;
-                }
-
-            });
+            //});
         }
 
 
@@ -84,7 +88,7 @@ namespace CPS_App
                     {nameof(readyToEdit.bi_poa_header_id),readyToEdit.bi_poa_header_id.ToString() },
                 }
             };
-           
+
             var res = await _dbServices.UpdateAsync(updateObj);
             if (res.resCode != 1)
             {

@@ -18,10 +18,11 @@ using static CPS_App.Models.RegisterModel;
 using static CPS_App.Models.DbModels;
 using System.Security.Claims;
 using System.Security.Cryptography;
+using Krypton.Toolkit;
 
 namespace CPS_App
 {
-    public partial class RequestCreate : Form
+    public partial class RequestCreate : KryptonForm
     {
         private DbServices _dbServices;
         private Validator _validator = new Validator();

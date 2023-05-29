@@ -20,13 +20,11 @@ namespace CPS_App
     {
         public ClaimsIdentity userIden;
         private RequestMapping _requestMapp;
-        public List<RequestMappingReqObj> defPage;
-        public AuthService _authService;
+        public List<RequestMappingReqObj> defPage;        
         private readonly DbServices _dbServices;
-        public RequestView(AuthService authService, DbServices dbServices, RequestMapping mapping)
+        public RequestView(DbServices dbServices, RequestMapping mapping)
         {
-            InitializeComponent();
-            _authService = authService;
+            InitializeComponent();            
             defPage = new List<RequestMappingReqObj>();
             _dbServices = dbServices;
             _requestMapp = mapping;

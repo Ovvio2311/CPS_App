@@ -40,14 +40,14 @@ namespace CPS_App
         }
         private async void Dashboard_Load(object sender, EventArgs e)
         {
-            registerToolStripMenuItem.Visible = false;
+            
             userIden = AuthService._userClaim;
             if (userIden != null)
             {
-                loginToolStripMenuItem.Visible = false;
+                
                 if (userIden.Claims.FirstOrDefault(x => x.Type == "role").Value.ToLower() == "admin")
                 {
-                    registerToolStripMenuItem.Visible = true;
+                    
                 }
             }
             //defPage = await _requestMapp.RequestMappingObjGetter();
@@ -77,13 +77,6 @@ namespace CPS_App
             _register.MdiParent = this;
             _register.Show();
         }
-        private void homeToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
-
-
 
 
         private void createToolStripMenuItem_Click(object sender, EventArgs e)
@@ -93,70 +86,6 @@ namespace CPS_App
             reqForm.Show();
         }
 
-        private void viewToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            RequestView reqview = new RequestView(_authService, _dbServices, _requestMapp);
-            reqview.MdiParent = this;
-            reqview.Show();
-        }
-
-        private void toolStripButton1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void toolStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
-        {
-
-        }
-
-        private void editToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void itemToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            var itemView = new ItemView(_dbServices, _authService, _stockWorker);
-            itemView.MdiParent = this;
-            itemView.Show();
-        }
-
-        private void roleManagementToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            var mainView = new Maintenance(_dbServices, _registerServices);
-            mainView.MdiParent = this;
-            mainView.Show();
-        }
-
-        private void kryptonDropButton1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void kryptonContextMenu1_Opening(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-
-        }
-
-        private void kryptonDropButton1_Click_1(object sender, EventArgs e)
-        {
-
-        }
-
-        private void kryptonButtonPanel1_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void kryptonDropButton1_Click_2(object sender, EventArgs e)
-        {
-
-
-
-
-
-        }
 
         private void btnpoa_Click(object sender, EventArgs e)
         {
@@ -164,6 +93,58 @@ namespace CPS_App
             poaView.MdiParent = this;
             poaView.Show();
         }
+
+        private void btnReq_Click(object sender, EventArgs e)
+        {
+            RequestView reqView = new RequestView(_dbServices, _requestMapp); 
+            reqView.MdiParent = this; 
+            reqView.Show();
+        }
+
+        private void btnItem_Click(object sender, EventArgs e)
+        {
+            ItemView itemView = new ItemView(_dbServices, _stockWorker);
+            itemView.MdiParent = this;
+            itemView.Show();
+        }
+
+        private void btnsetting_Click(object sender, EventArgs e)
+        {
+            Maintenance main = new Maintenance(_dbServices, _registerServices);
+            main.MdiParent = this;
+            main.Show();
+        }
+
+        private void createToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            RequestCreate requestCreate= new RequestCreate(_dbServices);
+            requestCreate.MdiParent = this;
+            requestCreate.Show();
+        }
+
+        private void createToolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            ItemCreate itemCreate= new ItemCreate(_dbServices);
+            itemCreate.MdiParent = this;
+            itemCreate.Show();
+        }
+
+        private void createToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            POACreate pOACreate = new POACreate(_dbServices);
+            pOACreate.MdiParent =this;
+            pOACreate.Show();
+        }
+
+        private void roleManagementToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            Maintenance main = new Maintenance(_dbServices, _registerServices);
+            main.MdiParent = this;
+            main.Show();
+            
+        }
+
+
         //private void itemgridview_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         //{
         //    if (e.ColumnIndex == _previousitemIndex)

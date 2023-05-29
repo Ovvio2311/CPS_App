@@ -14,6 +14,19 @@ namespace CPS_App.Models
 {
     public class CPSModel
     {
+        public class MaintenanceInstance
+        {
+            public tb_location location { get; set; }
+            public tb_users users { get; set; }
+            public lut_uom_type uom { get; set; }
+            public lut_poa_type poa { get; set; }
+            public tb_po_type po { get; set; }
+            public lut_deli_schedule_type deli { get; set; }
+            public lut_term_and_con tc { get; set; }
+            public tb_supplier supplier { get; set; }
+            public tb_roles role { get; set; }
+
+        }
         public class CPSModelBase
         {
 
@@ -121,6 +134,13 @@ namespace CPS_App.Models
         {
             public int ti_deli_sched_id { get; set; }
             public string vc_deli_sched_desc { get; set; }
+            public string dt_created_date { get; set; }
+            public string dt_updated_datetime { get; set; }
+        }
+        public class tb_po_type : CPSModelBase
+        {
+            public int ti_po_type_id { get; set; }
+            public string vc_po_type_desc { get; set; }
             public string dt_created_date { get; set; }
             public string dt_updated_datetime { get; set; }
         }

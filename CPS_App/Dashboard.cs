@@ -115,34 +115,30 @@ namespace CPS_App
             main.Show();
         }
 
-        private void createToolStripMenuItem1_Click(object sender, EventArgs e)
+        private void createReq_Click(object sender, EventArgs e)
         {
             RequestCreate requestCreate = new RequestCreate(_dbServices);
             requestCreate.MdiParent = this;
             requestCreate.Show();
         }
 
-        private void createToolStripMenuItem2_Click(object sender, EventArgs e)
+        private void createItem_Click(object sender, EventArgs e)
         {
             ItemCreate itemCreate = new ItemCreate(_dbServices);
             itemCreate.MdiParent = this;
             itemCreate.Show();
         }
 
-        private void createToolStripMenuItem_Click_1(object sender, EventArgs e)
+        private void createpoa_Click(object sender, EventArgs e)
         {
             POACreate pOACreate = new POACreate(_dbServices);
             pOACreate.MdiParent = this;
             pOACreate.Show();
         }
 
-        private void roleManagementToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            Maintenance main = new Maintenance(_dbServices, _registerServices);
-            main.MdiParent = this;
-            main.Show();
 
-        }
+
+
 
 
         //private void itemgridview_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)

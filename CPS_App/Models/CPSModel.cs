@@ -248,19 +248,19 @@ namespace CPS_App.Models
             public int i_staff_id { get; set; }
             [Display(Name = "Staff Role")]
             public string vc_staff_role { get; set; }
-            [Display(Name = "bi_location_id")]
+            [Display(Name = "nil")]
             public int bi_location_id { get; set; }
             [Display(Name = "Your Location")]
             public string vc_location_desc { get; set; }
-            [Display(Name = "Address")]
+            [Display(Name = "nil")]
             public string vc_location_addr { get; set; }
             [Display(Name = "Request Status")]
             public string vc_req_status { get; set; }
             //public string i_item_req_qty { get; set; }            
             public List<ItemRequest> item { get; set; }
-            [Display(Name = "Created Date")]
+            [Display(Name = "nil")]
             public string dt_created_date { get; set; }
-            [Display(Name = "Updated Date")]
+            [Display(Name = "nil")]
             public string dt_updated_datetime { get; set; }
 
         }

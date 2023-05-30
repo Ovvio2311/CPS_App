@@ -41,14 +41,14 @@ namespace CPS_App
                 var userRole = userIden.Claims.FirstOrDefault(x => x.Type == "role").Value.ToString();
             }
             defPage = await _requestMapp.RequestMappingObjGetter();
-
+                                    
             var observableItems = new ObservableCollection<RequestMappingReqObj>(defPage);
             BindingList<RequestMappingReqObj> source = observableItems.ToBindingList();
 
             if (defPage != null)
                 datagridview.DataSource = source;
 
-            GenUtil.dataGridAttrName<RequestMappingReqObj>(datagridview, new List<string>() { "bi_location_id" });
+            GenUtil.dataGridAttrName<RequestMappingReqObj>(datagridview, new List<string>() { "nil" });
             //datagridview.Columns.ToDynamicList().ForEach(col =>
             //{
             //    DataGridViewColumn column = col;
@@ -65,7 +65,8 @@ namespace CPS_App
         }
         private void datagridview_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex < 0 || e.RowIndex < 0) {        
+            if (e.ColumnIndex < 0 || e.RowIndex < 0)
+            {
                 return;
             }  // header clicked
 
@@ -73,11 +74,11 @@ namespace CPS_App
             {
                 int selectdId = GenUtil.ConvertObjtoType<int>(datagridview.CurrentRow.Cells["bi_req_id"].Value);
                 datagridviewitem.DataSource = null;
-                List<ItemRequest> itemViewSelect = defPage.Where(x=>x.bi_req_id == selectdId).FirstOrDefault().item;
+                List<ItemRequest> itemViewSelect = defPage.Where(x => x.bi_req_id == selectdId).FirstOrDefault().item;
 
                 var observableItems = new ObservableCollection<ItemRequest>(itemViewSelect);
                 BindingList<ItemRequest> source = observableItems.ToBindingList();
-                datagridviewitem.DataSource =source;
+                datagridviewitem.DataSource = source;
                 GenUtil.dataGridAttrName<ItemRequest>(datagridviewitem, new List<string>() { "i_uom_id", "bi_category_id" });
                 //datagridviewitem.Columns.ToDynamicList().ForEach(col =>
                 //{
@@ -98,7 +99,7 @@ namespace CPS_App
         private void btnEdit_Click(object sender, EventArgs e)
         {
             int selectdId = GenUtil.ConvertObjtoType<int>(datagridview.CurrentRow.Cells["bi_req_id"].Value);
-            
+
             RequestEdit reqEdit = new RequestEdit(selectdId, defPage, _dbServices);
             //reqEdit.MdiParent = this;
             reqEdit.Show();
@@ -108,6 +109,6 @@ namespace CPS_App
         {
             //search function
         }
-        
+
     }
 }

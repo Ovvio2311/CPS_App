@@ -136,6 +136,13 @@ namespace CPS_App
             pOACreate.Show();
         }
 
+        private void vIDToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            VIDMapping newv = new VIDMapping(_requestMapp);
+            newv.MdiParent = this;
+            newv.Show();
+        }
+
 
 
 

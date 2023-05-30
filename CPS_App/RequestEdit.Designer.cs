@@ -1,4 +1,6 @@
-﻿namespace CPS_App
+﻿using Krypton.Toolkit;
+
+namespace CPS_App
 {
     partial class RequestEdit
     {
@@ -39,7 +41,7 @@
             this.txtreqst = new System.Windows.Forms.TextBox();
             this.txtcrDate = new System.Windows.Forms.TextBox();
             this.lblvid = new System.Windows.Forms.Label();
-            this.datagridviewitem = new System.Windows.Forms.DataGridView();
+            this.datagridviewitem = new KryptonDataGridView();
             this.lblqty = new System.Windows.Forms.Label();
             this.lblremain = new System.Windows.Forms.Label();
             this.lblitname = new System.Windows.Forms.Label();
@@ -344,7 +346,7 @@
         private TextBox txtreqst;
         private TextBox txtcrDate;
         private Label lblvid;
-        private DataGridView datagridviewitem;
+        private KryptonDataGridView datagridviewitem;
         private Label lblqty;
         private Label lblremain;
         private Label lblitname;

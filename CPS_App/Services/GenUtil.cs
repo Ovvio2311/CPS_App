@@ -2,6 +2,8 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Dynamic;
 using System.Linq;
@@ -10,6 +12,7 @@ using System.Reflection;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using static CPS_App.Models.CPSModel;
 using static CPS_App.Models.DbModels;
 
 namespace CPS_App.Services
@@ -84,11 +87,12 @@ namespace CPS_App.Services
         }
 
         public static void dataGridAttrName<T>(KryptonDataGridView grid, List<string> invisibleList=null)
-        {
+        {            
             grid.Columns.ToDynamicList().ForEach(col =>
             {
                 DataGridViewColumn column = col;
                 col.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                col.SortMode = DataGridViewColumnSortMode.Automatic;
                 col.HeaderText = typeof(T).GetProperties().ToList()
                 .Where(x => col.HeaderText == x.Name)
                 .Select(x => x.GetCustomAttribute<DisplayAttribute>())

@@ -1,4 +1,6 @@
-﻿namespace CPS_App
+﻿using Krypton.Toolkit;
+
+namespace CPS_App
 {
     partial class ItemView
     {
@@ -28,7 +30,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.dataGridViewitem = new System.Windows.Forms.DataGridView();
+            this.dataGridViewitem = new KryptonDataGridView();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.txtfield = new System.Windows.Forms.TextBox();
             this.btncreate = new System.Windows.Forms.Button();
@@ -104,7 +106,7 @@
 
         #endregion
 
-        private DataGridView dataGridViewitem;
+        private KryptonDataGridView dataGridViewitem;
         private ComboBox comboBox1;
         private TextBox txtfield;
         private Button btncreate;

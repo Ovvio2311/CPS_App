@@ -9,7 +9,7 @@ using static CPS_App.Models.CPSModel;
 
 namespace CPS_App
 {
-    public partial class Dashboard : Krypton.Toolkit.KryptonForm
+    public partial class Dashboard : Form
     {
 
         public Register _register;

@@ -197,26 +197,32 @@ namespace CPS_App.Services
 
             string sql = $@"SELECT * FROM
                          (SELECT 
-                             req.bi_req_id, req.i_staff_id, sta.vc_staff_role, sta.bi_location_id, loc.vc_location_desc, 
-                             loc.vc_location_addr, vc_req_status, req.dt_created_date, req.dt_updated_datetime
+                             req.bi_req_id, req.i_staff_id, sta.vc_staff_name, sta.vc_staff_role, stat.vc_status_desc vc_req_status, 
+                             sta.bi_location_id, loc.vc_location_desc, 
+                             loc.vc_location_addr, req.dt_created_date, req.dt_updated_datetime
                          FROM
                              tb_request req
                          INNER JOIN tb_staff sta ON req.i_staff_id = sta.i_staff_id
                          INNER JOIN tb_location loc ON sta.bi_location_id = loc.bi_location_id
+                         left join lut_mapping_status stat on req.i_map_stat_id = stat.i_map_stat_id
                          ) a
                              LEFT JOIN
                          (SELECT * FROM
                              (SELECT 
-                             det.bi_req_id, det.bi_item_id bi_item_id, det.i_item_req_qty, det.i_remain_req_qty, det.i_uom_id, det.dt_exp_deli_date, uom.vc_uom_desc, mapp.bi_item_vid, det.vc_req_status item_req_status, it.vc_item_desc, it.bi_category_id, cat.vc_category_desc
+                             det.bi_req_id, mapp.bi_item_vid, det.bi_item_id, det.i_item_req_qty, det.i_remain_req_qty, det.i_uom_id, 
+                             stat.vc_status_desc item_mapping_status, postat.bi_po_status_id, postat.vc_po_status_desc, det.dt_exp_deli_date, 
+                             uom.vc_uom_desc, it.vc_item_desc, 
+                             it.bi_category_id, cat.vc_category_desc
                          FROM
                              tb_request_detail det
-                     	 LEFT JOIN tb_item it ON det.bi_item_id = it.bi_item_id
+	                     LEFT JOIN tb_item it ON det.bi_item_id = it.bi_item_id
                          INNER JOIN tb_item_category cat ON it.bi_category_id = cat.bi_category_id
                          left join lut_uom_type uom on det.i_uom_id = uom.i_uom_id
+                         left join lut_mapping_status stat on det.i_map_stat_id = stat.i_map_stat_id
+                         left join lut_po_status postat on det.bi_po_status_id = postat.bi_po_status_id
                          LEFT JOIN tb_item_vid_mapping mapp ON it.bi_item_id = mapp.bi_item_id) b) c 
-                         ON a.bi_req_id = c.bi_req_id
-                         where vc_req_status != 'completed';
-                    -- GROUP BY a.bi_req_id , c.bi_item_vid";
+                         ON a.bi_req_id = c.bi_req_id;";                       
+                    
 
             var result = await _db.QueryAsync<dynamic>(sql, null);
             if (result.Count() > 0)

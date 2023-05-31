@@ -1,23 +1,10 @@
 ﻿using CPS_App.Services;
 using Krypton.Toolkit;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Linq.Dynamic.Core;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using static CPS_App.Models.CPSModel;
 using static CPS_App.Models.DbModels;
-using Krypton.Toolkit;
 using System.Collections.ObjectModel;
 using Microsoft.EntityFrameworkCore;
 
@@ -45,9 +32,9 @@ namespace CPS_App
                 MessageBox.Show("error");
                 return;
             }
-            RequestMappingReqObj edititems = defPage.ToList().Where(x=>x.bi_req_id == reqID).FirstOrDefault();
+            RequestMappingReqObj edititems = defPage.ToList().Where(x => x.bi_req_id == reqID).FirstOrDefault();
             txtreqid.Text = edititems.bi_req_id.ToString();
-            txtstaid.Text = edititems.i_staff_id.ToString();
+            txtstaName.Text = GenUtil.ConvertObjtoType<string>(edititems.vc_staff_name);
             txtloc.Text = edititems.vc_location_desc.ToString();
             txtcrDate.Text = edititems.dt_created_date.ToString();
 
@@ -56,7 +43,7 @@ namespace CPS_App
             datagridviewitem.DataSource = itemsReq;
 
             //change header name and hide column
-            GenUtil.dataGridAttrName<ItemRequest>(datagridviewitem, new List<string>() { "Item Id", "i_uom_id" , "bi_category_id" });
+            GenUtil.dataGridAttrName<ItemRequest>(datagridviewitem, new List<string>() { "Item Id", "i_uom_id", "bi_category_id" });
             //datagridviewitem.Columns.ToDynamicList().ForEach(col =>
             //{
             //    DataGridViewColumn column = col;
@@ -80,12 +67,12 @@ namespace CPS_App
             if (e.RowIndex == datagridviewitem.CurrentRow.Index)
             {
                 int selectdId = GenUtil.ConvertObjtoType<int>(datagridviewitem.CurrentRow.Cells["bi_item_id"].Value);
-                var readyToEdit = itemsReq.Where(x=>x.bi_item_id == selectdId).FirstOrDefault();                    
+                var readyToEdit = itemsReq.Where(x => x.bi_item_id == selectdId).FirstOrDefault();
                 txtvid.Text = readyToEdit.bi_item_vid.ToString();
-                txtrs.Text = readyToEdit.item_req_status.ToString();
+                txtrs.Text = GenUtil.ConvertObjtoType<string>(readyToEdit.item_mapping_status);
                 txtremain.Text = readyToEdit.i_remain_req_qty.ToString();
                 txtqty.Text = readyToEdit.i_item_req_qty.ToString();
-                dateTimePickerEDD.Value =  DateTime.Now ; // for testing only
+                dateTimePickerEDD.Value = DateTime.Now; // for testing only
                 txtitname.Text = readyToEdit.vc_item_desc.ToString();
                 txtcat.Text = readyToEdit.vc_category_desc.ToString();
             }
@@ -105,16 +92,16 @@ namespace CPS_App
                 MessageBox.Show("Remain Qty and expected delivery date haven't change");
                 return;
             }
-            if(int.TryParse(txtremain.Text, out var a))
+            if (int.TryParse(txtremain.Text, out var a))
             {
                 var updateObj = new updateObj();
                 updateObj.table = "tb_request_detail";
                 updateObj.updater.Add(nameof(readyToEdit.i_remain_req_qty), txtremain.Text.ToString());
                 updateObj.updater.Add(nameof(readyToEdit.dt_exp_deli_date), dateTimePickerEDD.Value.ToString("yyyy-MM-ddTHH:mm:ss"));
-                updateObj.selecter.Add(nameof(readyToEdit.bi_req_id),readyToEdit.bi_req_id.ToString());
+                updateObj.selecter.Add(nameof(readyToEdit.bi_req_id), readyToEdit.bi_req_id.ToString());
                 updateObj.selecter.Add(nameof(readyToEdit.bi_item_id), readyToEdit.bi_item_id.ToString());
                 var res = await _dbServices.UpdateAsync(updateObj);
-                if(res.resCode!=1)
+                if (res.resCode != 1)
                 {
                     MessageBox.Show("update error");
                 }

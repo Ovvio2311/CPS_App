@@ -40,15 +40,17 @@ namespace CPS_App
             {
                 var userRole = userIden.Claims.FirstOrDefault(x => x.Type == "role").Value.ToString();
             }
+
+            lblitem.Hide();
             defPage = await _requestMapp.RequestMappingObjGetter();
-                                    
+
             var observableItems = new ObservableCollection<RequestMappingReqObj>(defPage);
             BindingList<RequestMappingReqObj> source = observableItems.ToBindingList();
 
             if (defPage != null)
                 datagridview.DataSource = source;
 
-            GenUtil.dataGridAttrName<RequestMappingReqObj>(datagridview, new List<string>() { "nil" });
+            GenUtil.dataGridAttrName<RequestMappingReqObj>(datagridview, new List<string>() { "not_shown" });
             //datagridview.Columns.ToDynamicList().ForEach(col =>
             //{
             //    DataGridViewColumn column = col;
@@ -72,6 +74,7 @@ namespace CPS_App
 
             if (e.RowIndex == datagridview.CurrentRow.Index)
             {
+                lblitem.Show();
                 int selectdId = GenUtil.ConvertObjtoType<int>(datagridview.CurrentRow.Cells["bi_req_id"].Value);
                 datagridviewitem.DataSource = null;
                 List<ItemRequest> itemViewSelect = defPage.Where(x => x.bi_req_id == selectdId).FirstOrDefault().item;
@@ -79,7 +82,7 @@ namespace CPS_App
                 var observableItems = new ObservableCollection<ItemRequest>(itemViewSelect);
                 BindingList<ItemRequest> source = observableItems.ToBindingList();
                 datagridviewitem.DataSource = source;
-                GenUtil.dataGridAttrName<ItemRequest>(datagridviewitem, new List<string>() { "i_uom_id", "bi_category_id" });
+                GenUtil.dataGridAttrName<ItemRequest>(datagridviewitem, new List<string>() { "not_shown" });
                 //datagridviewitem.Columns.ToDynamicList().ForEach(col =>
                 //{
                 //    DataGridViewColumn column = col;
@@ -101,7 +104,7 @@ namespace CPS_App
             int selectdId = GenUtil.ConvertObjtoType<int>(datagridview.CurrentRow.Cells["bi_req_id"].Value);
 
             RequestEdit reqEdit = new RequestEdit(selectdId, defPage, _dbServices);
-            //reqEdit.MdiParent = this;
+            reqEdit.MdiParent = this.MdiParent;
             reqEdit.Show();
         }
 
@@ -110,5 +113,21 @@ namespace CPS_App
             //search function
         }
 
+        private void lblreqtable_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+            RequestCreate requestCreate = new RequestCreate(_dbServices);
+            requestCreate.MdiParent = this.MdiParent;
+            requestCreate.Show();
+        }
+
+        private void lblitem_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

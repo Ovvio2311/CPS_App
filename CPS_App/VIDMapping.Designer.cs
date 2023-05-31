@@ -28,18 +28,17 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.SuspendLayout();
+            SuspendLayout();
             // 
             // VIDMapping
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Name = "VIDMapping";
-            this.Text = "VIDMapping";
-            this.Load += new System.EventHandler(this.VIDMapping_Load);
-            this.ResumeLayout(false);
-
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(800, 448);
+            Name = "VIDMapping";
+            Text = "VIDMapping";
+            Load += VIDMapping_Load;
+            ResumeLayout(false);
         }
 
         #endregion

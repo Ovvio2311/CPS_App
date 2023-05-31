@@ -31,153 +31,141 @@ namespace CPS_App
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.reqMenustrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.createReq = new System.Windows.Forms.ToolStripMenuItem();
-            this.ItemCreate = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.createItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnReq = new Krypton.Toolkit.KryptonDropButton();
-            this.btnItem = new Krypton.Toolkit.KryptonDropButton();
-            this.btnsetting = new Krypton.Toolkit.KryptonDropButton();
-            this.btnpoa = new Krypton.Toolkit.KryptonDropButton();
-            this.POAMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.createpoa = new System.Windows.Forms.ToolStripMenuItem();
-            this.vIDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.reqMenustrip.SuspendLayout();
-            this.ItemCreate.SuspendLayout();
-            this.POAMenuStrip.SuspendLayout();
-            this.SuspendLayout();
+            components = new Container();
+            ComponentResourceManager resources = new ComponentResourceManager(typeof(Dashboard));
+            kryptonPalette1 = new Krypton.Toolkit.KryptonPalette(components);
+            stripreq = new ToolStripButton();
+            stripitem = new ToolStripButton();
+            strippoa = new ToolStripButton();
+            strippo = new ToolStripButton();
+            stripset = new ToolStripButton();
+            kryptonEnhancedToolStrip3 = new Krypton.Toolkit.Suite.Extended.Tool.Strip.Items.KryptonEnhancedToolStrip();
+            kryptonEnhancedToolStrip3.SuspendLayout();
+            SuspendLayout();
             // 
-            // reqMenustrip
+            // kryptonPalette1
             // 
-            this.reqMenustrip.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.reqMenustrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.createReq,
-            this.vIDToolStripMenuItem});
-            this.reqMenustrip.Name = "reqMenustrip";
-            this.reqMenustrip.Size = new System.Drawing.Size(181, 70);
+            kryptonPalette1.ButtonStyles.ButtonCommand.StateCommon.Content.Padding = new Padding(0);
+            kryptonPalette1.ButtonStyles.ButtonCommand.StateCommon.Content.ShortText.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point);
+            kryptonPalette1.ButtonStyles.ButtonCommon.OverrideDefault.Back.Color1 = Color.White;
+            kryptonPalette1.ButtonStyles.ButtonCommon.OverrideDefault.Back.Color2 = Color.White;
+            kryptonPalette1.ButtonStyles.ButtonCommon.OverrideDefault.Border.Color1 = Color.Transparent;
+            kryptonPalette1.ButtonStyles.ButtonCommon.OverrideDefault.Border.Color2 = Color.Transparent;
+            kryptonPalette1.ButtonStyles.ButtonCommon.OverrideDefault.Border.DrawBorders = Krypton.Toolkit.PaletteDrawBorders.Top | Krypton.Toolkit.PaletteDrawBorders.Bottom | Krypton.Toolkit.PaletteDrawBorders.Left | Krypton.Toolkit.PaletteDrawBorders.Right;
+            kryptonPalette1.ButtonStyles.ButtonCommon.StateCommon.Back.Color1 = Color.White;
+            kryptonPalette1.ButtonStyles.ButtonCommon.StateCommon.Back.Color2 = Color.White;
+            kryptonPalette1.ButtonStyles.ButtonCommon.StateCommon.Border.Color1 = Color.Transparent;
+            kryptonPalette1.ButtonStyles.ButtonCommon.StateCommon.Border.Color2 = Color.Transparent;
+            kryptonPalette1.ButtonStyles.ButtonCommon.StateCommon.Border.DrawBorders = Krypton.Toolkit.PaletteDrawBorders.Top | Krypton.Toolkit.PaletteDrawBorders.Bottom | Krypton.Toolkit.PaletteDrawBorders.Left | Krypton.Toolkit.PaletteDrawBorders.Right;
+            kryptonPalette1.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Font = new Font("Arial Unicode MS", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
             // 
-            // createReq
+            // stripreq
             // 
-            this.createReq.Name = "createReq";
-            this.createReq.Size = new System.Drawing.Size(180, 22);
-            this.createReq.Text = "Create";
-            this.createReq.Click += new System.EventHandler(this.createReq_Click);
+            stripreq.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            stripreq.Font = new Font("Arial Unicode MS", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
+            stripreq.Image = (Image)resources.GetObject("stripreq.Image");
+            stripreq.ImageTransparentColor = Color.Magenta;
+            stripreq.Name = "stripreq";
+            stripreq.Padding = new Padding(30, 5, 30, 5);
+            stripreq.Size = new Size(135, 34);
+            stripreq.Text = "Request";
+            stripreq.Click += stripreq_Click;
             // 
-            // ItemCreate
+            // stripitem
             // 
-            this.ItemCreate.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.ItemCreate.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.createItem});
-            this.ItemCreate.Name = "contextMenuStrip1";
-            this.ItemCreate.Size = new System.Drawing.Size(109, 26);
-            this.ItemCreate.Click += new System.EventHandler(this.createItem_Click);
+            stripitem.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            stripitem.Font = new Font("Arial Unicode MS", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
+            stripitem.Image = (Image)resources.GetObject("stripitem.Image");
+            stripitem.ImageTransparentColor = Color.Magenta;
+            stripitem.Name = "stripitem";
+            stripitem.Padding = new Padding(30, 5, 30, 5);
+            stripitem.Size = new Size(105, 34);
+            stripitem.Text = "Item";
+            stripitem.Click += stripitem_Click;
             // 
-            // createItem
+            // strippoa
             // 
-            this.createItem.Name = "createItem";
-            this.createItem.Size = new System.Drawing.Size(108, 22);
-            this.createItem.Text = "Create";
+            strippoa.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            strippoa.Font = new Font("Arial Unicode MS", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
+            strippoa.Image = (Image)resources.GetObject("strippoa.Image");
+            strippoa.ImageTransparentColor = Color.Magenta;
+            strippoa.Name = "strippoa";
+            strippoa.Padding = new Padding(30, 5, 30, 5);
+            strippoa.Size = new Size(108, 34);
+            strippoa.Text = "POA";
+            strippoa.Click += strippoa_Click;
             // 
-            // btnReq
+            // strippo
             // 
-            this.btnReq.ContextMenuStrip = this.reqMenustrip;
-            this.btnReq.Location = new System.Drawing.Point(-1, 63);
-            this.btnReq.Name = "btnReq";
-            this.btnReq.Size = new System.Drawing.Size(202, 71);
-            this.btnReq.TabIndex = 19;
-            this.btnReq.Values.Text = "Request Manage";
-            this.btnReq.Click += new System.EventHandler(this.btnReq_Click);
+            strippo.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            strippo.Font = new Font("Arial Unicode MS", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
+            strippo.Image = (Image)resources.GetObject("strippo.Image");
+            strippo.ImageTransparentColor = Color.Magenta;
+            strippo.Name = "strippo";
+            strippo.Padding = new Padding(30, 5, 30, 5);
+            strippo.Size = new Size(97, 34);
+            strippo.Text = "PO";
+            strippo.Click += strippo_Click;
             // 
-            // btnItem
+            // stripset
             // 
-            this.btnItem.ContextMenuStrip = this.ItemCreate;
-            this.btnItem.Location = new System.Drawing.Point(-1, 140);
-            this.btnItem.Name = "btnItem";
-            this.btnItem.Size = new System.Drawing.Size(202, 67);
-            this.btnItem.TabIndex = 20;
-            this.btnItem.Values.Text = "Item Manage";
-            this.btnItem.Click += new System.EventHandler(this.btnItem_Click);
+            stripset.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            stripset.Font = new Font("Arial Unicode MS", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
+            stripset.Image = (Image)resources.GetObject("stripset.Image");
+            stripset.ImageTransparentColor = Color.Magenta;
+            stripset.Name = "stripset";
+            stripset.Padding = new Padding(30, 5, 30, 5);
+            stripset.Size = new Size(125, 34);
+            stripset.Text = "Setting";
+            stripset.Click += stripset_Click;
             // 
-            // btnsetting
+            // kryptonEnhancedToolStrip3
             // 
-            this.btnsetting.Location = new System.Drawing.Point(-1, 290);
-            this.btnsetting.Name = "btnsetting";
-            this.btnsetting.Size = new System.Drawing.Size(202, 73);
-            this.btnsetting.TabIndex = 21;
-            this.btnsetting.Values.Text = "Setting";
-            this.btnsetting.Click += new System.EventHandler(this.btnsetting_Click);
-            // 
-            // btnpoa
-            // 
-            this.btnpoa.ContextMenuStrip = this.POAMenuStrip;
-            this.btnpoa.Location = new System.Drawing.Point(-1, 213);
-            this.btnpoa.Name = "btnpoa";
-            this.btnpoa.Size = new System.Drawing.Size(202, 71);
-            this.btnpoa.TabIndex = 23;
-            this.btnpoa.Values.Text = "POA Manage";
-            this.btnpoa.Click += new System.EventHandler(this.btnpoa_Click);
-            // 
-            // POAMenuStrip
-            // 
-            this.POAMenuStrip.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.POAMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.createpoa});
-            this.POAMenuStrip.Name = "POAMenuStrip";
-            this.POAMenuStrip.Size = new System.Drawing.Size(109, 26);
-            this.POAMenuStrip.Click += new System.EventHandler(this.createpoa_Click);
-            // 
-            // createpoa
-            // 
-            this.createpoa.Name = "createpoa";
-            this.createpoa.Size = new System.Drawing.Size(108, 22);
-            this.createpoa.Text = "Create";
-            // 
-            // vIDToolStripMenuItem
-            // 
-            this.vIDToolStripMenuItem.Name = "vIDToolStripMenuItem";
-            this.vIDToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.vIDToolStripMenuItem.Text = "VID";
-            this.vIDToolStripMenuItem.Click += new System.EventHandler(this.vIDToolStripMenuItem_Click);
+            kryptonEnhancedToolStrip3.BackColor = Color.White;
+            kryptonEnhancedToolStrip3.ClickThrough = false;
+            kryptonEnhancedToolStrip3.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            kryptonEnhancedToolStrip3.Items.AddRange(new ToolStripItem[] { stripreq, stripitem, strippoa, strippo, stripset });
+            kryptonEnhancedToolStrip3.Location = new Point(0, 0);
+            kryptonEnhancedToolStrip3.Name = "kryptonEnhancedToolStrip3";
+            kryptonEnhancedToolStrip3.RenderMode = ToolStripRenderMode.System;
+            kryptonEnhancedToolStrip3.Size = new Size(1002, 37);
+            kryptonEnhancedToolStrip3.TabIndex = 33;
+            kryptonEnhancedToolStrip3.Text = "kryptonEnhancedToolStrip3";
             // 
             // Dashboard
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1254, 749);
-            this.Controls.Add(this.btnpoa);
-            this.Controls.Add(this.btnsetting);
-            this.Controls.Add(this.btnItem);
-            this.Controls.Add(this.btnReq);
-            this.IsMdiContainer = true;
-            this.Name = "Dashboard";
-            this.Padding = new System.Windows.Forms.Padding(200, 0, 0, 0);
-            this.Text = "Dashboard";
-            this.Load += new System.EventHandler(this.Dashboard_Load);
-            this.reqMenustrip.ResumeLayout(false);
-            this.ItemCreate.ResumeLayout(false);
-            this.POAMenuStrip.ResumeLayout(false);
-            this.ResumeLayout(false);
-
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.White;
+            BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
+            BackgroundImageLayout = ImageLayout.Stretch;
+            ClientSize = new Size(1002, 529);
+            Controls.Add(kryptonEnhancedToolStrip3);
+            IsMdiContainer = true;
+            Name = "Dashboard";
+            Palette = kryptonPalette1;
+            PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            StateCommon.Back.Color1 = Color.White;
+            StateCommon.Back.Color2 = Color.White;
+            StateCommon.Back.ColorAlign = Krypton.Toolkit.PaletteRectangleAlign.Local;
+            Text = "Dashboard";
+            Load += Dashboard_Load;
+            kryptonEnhancedToolStrip3.ResumeLayout(false);
+            kryptonEnhancedToolStrip3.PerformLayout();
+            ResumeLayout(false);
+            PerformLayout();
         }
 
-
-
-
         #endregion
-
-
-        private ContextMenuStrip reqMenustrip;
-        private ToolStripMenuItem createReq;
-        private ContextMenuStrip ItemCreate;
-        private ToolStripMenuItem createItem;
         private ContextMenuStrip settingMenuStrip;
-        private Krypton.Toolkit.KryptonDropButton btnReq;
-        private Krypton.Toolkit.KryptonDropButton btnItem;
-        private Krypton.Toolkit.KryptonDropButton btnsetting;
-        private Krypton.Toolkit.KryptonDropButton btnpoa;
-        private ContextMenuStrip POAMenuStrip;
-        private ToolStripMenuItem createpoa;
-        private ToolStripMenuItem vIDToolStripMenuItem;
+        private ToolStripButton stripreq;
+        private ToolStripButton stripitem;
+        private ToolStripButton strippoa;
+        private ToolStripButton strippo;
+        private ToolStripButton stripset;
+        private Krypton.Toolkit.KryptonPalette kryptonPalette1;
+
+
+        private Krypton.Toolkit.Suite.Extended.Tool.Strip.Items.KryptonEnhancedToolStrip kryptonEnhancedToolStrip3;
     }
 }

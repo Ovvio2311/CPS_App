@@ -31,17 +31,40 @@ namespace CPS_App
             defPage = await _requestMapp.RequestMappingObjGetter();
 
             int rowIndex = 0;
-            
-            List<List<Label>> label = new List<List<Label>>();
-            List<Label> templabel = new List<Label>();
+
+
             foreach (var def in defPage)
             {
                 int colIndex = 0;
-                templabel.Clear();
+
+                if (rowIndex == 0)
+                {
+                    foreach (PropertyInfo prop in def.GetType().GetProperties())
+                    {
+                        var attName = prop.GetCustomAttribute<DisplayAttribute>();
+                        if (attName == null || attName.Name == "nil")
+                        {
+                            continue;
+                        }
+                        Label singleLab = new Label();
+                        singleLab.Name = $"lblheader{rowIndex}{colIndex}";
+                        singleLab.Size = new Size(100, 20);
+                        singleLab.ForeColor = Color.Black;
+                        singleLab.Location = new Point(colIndex * 100, rowIndex * 20);
+                        singleLab.Text = attName.Name;
+
+                        this.Controls.Add(singleLab);
+                        colIndex++;
+                    }
+
+                }
+                colIndex = 0;
+
                 foreach (PropertyInfo prop in def.GetType().GetProperties())
                 {
+
                     var attName = prop.GetCustomAttribute<DisplayAttribute>();
-                    if(attName ==null || attName.Name == "nil")
+                    if (attName == null || attName.Name == "nil")
                     {
                         continue;
                     }
@@ -49,7 +72,7 @@ namespace CPS_App
                     singleLab.Name = $"lblprop{rowIndex}{colIndex}";
                     singleLab.Size = new Size(100, 20);
                     singleLab.ForeColor = Color.Black;
-                    singleLab.Location = new Point(colIndex * 100, rowIndex * 20);
+                    singleLab.Location = new Point(colIndex * 100, (rowIndex + 1) * 20);
                     var str = prop.GetValue(def, null);
                     singleLab.Text = GenUtil.ConvertObjtoType<string>(str);
 
@@ -58,7 +81,19 @@ namespace CPS_App
                 }
 
                 rowIndex++;
+
+                var lst = this.Controls.OfType<Label>().ToList();
+                foreach (Label lbl in lst)
+                {
+                    lbl.Click += Lbl_Click;
+                }
             }
+        }
+
+        private void Lbl_Click(object? sender, EventArgs e)
+        {
+            Label lbl = sender as Label;
+            MessageBox.Show(lbl.Name);
         }
     }
 }

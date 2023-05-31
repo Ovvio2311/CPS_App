@@ -6,10 +6,11 @@ using System.DirectoryServices;
 using System.Security.Claims;
 using System.Windows.Forms;
 using static CPS_App.Models.CPSModel;
+using Krypton.Toolkit;
 
 namespace CPS_App
 {
-    public partial class Dashboard : Form
+    public partial class Dashboard : KryptonForm
     {
 
         public Register _register;
@@ -72,49 +73,6 @@ namespace CPS_App
         //        list.OrderBy(_ => _.GetType().GetProperty(column).GetValue(_)).ToList() :
         //        list.OrderByDescending(_ => _.GetType().GetProperty(column).GetValue(_)).ToList();
         //}
-        private void registerToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            _register.MdiParent = this;
-            _register.Show();
-        }
-
-
-        private void createToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            RequestCreate reqForm = new RequestCreate(_dbServices);
-            reqForm.MdiParent = this;
-            reqForm.Show();
-        }
-
-
-        private void btnpoa_Click(object sender, EventArgs e)
-        {
-            POAView poaView = new POAView(_dbServices, _pOAWorker);
-            poaView.MdiParent = this;
-            poaView.Show();
-        }
-
-        private void btnReq_Click(object sender, EventArgs e)
-        {
-            RequestView reqView = new RequestView(_dbServices, _requestMapp);
-            reqView.MdiParent = this;
-            reqView.Show();
-        }
-
-        private void btnItem_Click(object sender, EventArgs e)
-        {
-            ItemView itemView = new ItemView(_dbServices, _stockWorker);
-            itemView.MdiParent = this;
-            itemView.Show();
-        }
-
-        private void btnsetting_Click(object sender, EventArgs e)
-        {
-            Maintenance main = new Maintenance(_dbServices, _registerServices);
-            main.MdiParent = this;
-            main.Show();
-        }
-
         private void createReq_Click(object sender, EventArgs e)
         {
             RequestCreate requestCreate = new RequestCreate(_dbServices);
@@ -136,14 +94,42 @@ namespace CPS_App
             pOACreate.Show();
         }
 
-        private void vIDToolStripMenuItem_Click(object sender, EventArgs e)
+
+
+
+
+        private void stripreq_Click(object sender, EventArgs e)
         {
-            VIDMapping newv = new VIDMapping(_requestMapp);
-            newv.MdiParent = this;
-            newv.Show();
+            RequestView reqView = new RequestView(_dbServices, _requestMapp);
+            reqView.MdiParent = this;
+            reqView.Show();
         }
 
+        private void stripitem_Click(object sender, EventArgs e)
+        {
+            ItemView itemView = new ItemView(_dbServices, _stockWorker);
+            itemView.MdiParent = this;
+            itemView.Show();
+        }
 
+        private void strippoa_Click(object sender, EventArgs e)
+        {
+            POAView poaView = new POAView(_dbServices, _pOAWorker);
+            poaView.MdiParent = this;
+            poaView.Show();
+        }
+
+        private void strippo_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void stripset_Click(object sender, EventArgs e)
+        {
+            Maintenance main = new Maintenance(_dbServices, _registerServices);
+            main.MdiParent = this;
+            main.Show();
+        }
 
 
 

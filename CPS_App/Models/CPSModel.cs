@@ -7,7 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
-using System.ComponentModel.DataAnnotations;
 using System.Security.Cryptography;
 
 namespace CPS_App.Models
@@ -86,7 +85,7 @@ namespace CPS_App.Models
             public string dt_updated_datetime { get; set; }
         }
 
-       public class tb_item_vid_mapping : CPSModelBase
+        public class tb_item_vid_mapping : CPSModelBase
         {
             public int bi_item_id { get; set; }
             public int bi_item_vid { get; set; }
@@ -148,7 +147,7 @@ namespace CPS_App.Models
             [Display(Name = "Update Date")]
             public string dt_updated_datetime { get; set; }
         }
-        public class lut_term_and_con: CPSModelBase
+        public class lut_term_and_con : CPSModelBase
         {
             [Display(Name = "ID")]
             public int ti_tc_id { get; set; }
@@ -160,7 +159,7 @@ namespace CPS_App.Models
             public string dt_updated_datetime { get; set; }
         }
 
-        public class lut_deli_schedule_type: CPSModelBase
+        public class lut_deli_schedule_type : CPSModelBase
         {
             [Display(Name = "ID")]
             public int ti_deli_sched_id { get; set; }
@@ -246,48 +245,53 @@ namespace CPS_App.Models
             public int bi_req_id { get; set; }
             [Display(Name = "Staff Id")]
             public int i_staff_id { get; set; }
+            [Display(Name = "Staff Name")]
+            public string vc_staff_name { get; set; }
             [Display(Name = "Staff Role")]
             public string vc_staff_role { get; set; }
-            [Display(Name = "nil")]
+            [Display(Name = "Mapping Status")]
+            public string vc_req_status { get; set; }
+            [Display(Name = "not_shown")]
             public int bi_location_id { get; set; }
             [Display(Name = "Your Location")]
             public string vc_location_desc { get; set; }
-            [Display(Name = "nil")]
-            public string vc_location_addr { get; set; }
-            [Display(Name = "Request Status")]
-            public string vc_req_status { get; set; }
-            //public string i_item_req_qty { get; set; }            
+            [Display(Name = "not_shown")]
+            public string vc_location_addr { get; set; }            
+            [Display(Name = "not_shown")]
             public List<ItemRequest> item { get; set; }
-            [Display(Name = "nil")]
+            [Display(Name = "not_shown")]
             public string dt_created_date { get; set; }
-            [Display(Name = "nil")]
+            [Display(Name = "not_shown")]
             public string dt_updated_datetime { get; set; }
 
         }
 
         public class ItemRequest
         {
-
-            [Display(Name = "Request Id")]
+            [Display(Name = "not_shown")]
             public int bi_req_id { get; set; }
             [Display(Name = "Item Vid")]
             public int bi_item_vid { get; set; }
-            [Display(Name = "Item Id")]
+            [Display(Name = "not_shown")]
             public int bi_item_id { get; set; }
-            [Display(Name = "Request Quantity")]
+            [Display(Name = "not_shown")]
             public int i_item_req_qty { get; set; }
             [Display(Name = "Remain Quanity")]
             public int i_remain_req_qty { get; set; } //need update sql
-            [Display(Name = "i_uom_id")]
+            [Display(Name = "not_shown")]
             public int i_uom_id { get; set; } //need update sql
             [Display(Name = "Item Name")]
             public string vc_item_desc { get; set; }
-            [Display(Name = "bi_category_id")]
+            [Display(Name = "not_shown")]
             public int bi_category_id { get; set; }
             [Display(Name = "Category")]
             public string vc_category_desc { get; set; }
-            [Display(Name = "Request Status")]
-            public string item_req_status { get; set; }
+            [Display(Name = "Mapping Status")]
+            public string item_mapping_status { get; set; }
+            [Display(Name = "not_shown")]
+            public int bi_po_status_id { get; set; }
+            [Display(Name = "PO Status")]
+            public string vc_po_status_desc { get; set; }
             [Display(Name = "Expected Delievery Date")]
             public DateTime dt_exp_deli_date { get; set; }
         }

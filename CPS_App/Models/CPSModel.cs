@@ -230,8 +230,12 @@ namespace CPS_App.Models
             public int i_remain_req_qty { get; set; } //need update sql
             [Display(Name = "i_uom_id")]
             public int i_uom_id { get; set; } //need update sql
-            [Display(Name = "Request Status")]
-            public string vc_req_status { get; set; }
+            [Display(Name = "")]
+            public int bi_supp_id { get; set; }
+            [Display(Name = "Mapping Id")]
+            public int i_map_stat_id { get; set; }
+            [Display(Name = "Po Status Id")]
+            public int bi_po_status_id { get; set; }
             [Display(Name = "Remark")]
             public string vc_remark { get; set; }
             [Display(Name = "Expected Delievery Date")]

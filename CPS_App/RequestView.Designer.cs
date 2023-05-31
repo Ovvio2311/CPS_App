@@ -31,168 +31,183 @@ namespace CPS_App
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
-            createdbBindingSource = new BindingSource(components);
-            datagridview = new KryptonDataGridView();
-            datagridviewitem = new KryptonDataGridView();
-            btnEdit = new KryptonButton();
-            kryptonPalettebtn = new KryptonPalette(components);
-            txtfield = new TextBox();
-            lblsearch = new Label();
-            cbxsearch = new ComboBox();
-            btnAdd = new KryptonButton();
-            lblreqtable = new KryptonLabel();
-            kryptonPaletteheader = new KryptonPalette(components);
-            lblitem = new KryptonLabel();
-            ((System.ComponentModel.ISupportInitialize)createdbBindingSource).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)datagridview).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)datagridviewitem).BeginInit();
-            SuspendLayout();
+            this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            this.createdbBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.datagridview = new Krypton.Toolkit.KryptonDataGridView();
+            this.datagridviewitem = new Krypton.Toolkit.KryptonDataGridView();
+            this.btnEdit = new Krypton.Toolkit.KryptonButton();
+            this.kryptonPalettebtn = new Krypton.Toolkit.KryptonPalette(this.components);
+            this.txtfield = new System.Windows.Forms.TextBox();
+            this.lblsearch = new System.Windows.Forms.Label();
+            this.cbxsearch = new System.Windows.Forms.ComboBox();
+            this.btnAdd = new Krypton.Toolkit.KryptonButton();
+            this.lblreqtable = new Krypton.Toolkit.KryptonLabel();
+            this.kryptonPaletteheader = new Krypton.Toolkit.KryptonPalette(this.components);
+            this.lblitem = new Krypton.Toolkit.KryptonLabel();
+            this.btncancel = new Krypton.Toolkit.KryptonButton();
+            ((System.ComponentModel.ISupportInitialize)(this.createdbBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.datagridview)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.datagridviewitem)).BeginInit();
+            this.SuspendLayout();
             // 
             // createdbBindingSource
             // 
-            createdbBindingSource.DataSource = typeof(Migrations.createdb);
+            this.createdbBindingSource.DataSource = typeof(CPS_App.Migrations.createdb);
             // 
             // datagridview
             // 
-            datagridview.AllowUserToOrderColumns = true;
-            dataGridViewCellStyle2.BackColor = Color.AliceBlue;
-            datagridview.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
-            datagridview.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            datagridview.Location = new Point(27, 81);
-            datagridview.Name = "datagridview";
-            datagridview.ReadOnly = true;
-            datagridview.RowTemplate.Height = 25;
-            datagridview.Size = new Size(672, 225);
-            datagridview.StateCommon.Background.Color1 = Color.White;
-            datagridview.StateCommon.Background.Color2 = Color.White;
-            datagridview.StateCommon.BackStyle = PaletteBackStyle.GridBackgroundList;
-            datagridview.TabIndex = 2;
-            datagridview.CellClick += datagridview_CellClick;
+            this.datagridview.AllowUserToOrderColumns = true;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.AliceBlue;
+            this.datagridview.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            this.datagridview.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.datagridview.Location = new System.Drawing.Point(27, 81);
+            this.datagridview.Name = "datagridview";
+            this.datagridview.ReadOnly = true;
+            this.datagridview.RowTemplate.Height = 25;
+            this.datagridview.Size = new System.Drawing.Size(672, 225);
+            this.datagridview.StateCommon.Background.Color1 = System.Drawing.Color.White;
+            this.datagridview.StateCommon.Background.Color2 = System.Drawing.Color.White;
+            this.datagridview.StateCommon.BackStyle = Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
+            this.datagridview.TabIndex = 2;
+            this.datagridview.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.datagridview_CellClick);
             // 
             // datagridviewitem
             // 
-            datagridviewitem.AllowUserToOrderColumns = true;
-            datagridviewitem.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            datagridviewitem.Location = new Point(27, 350);
-            datagridviewitem.Name = "datagridviewitem";
-            datagridviewitem.ReadOnly = true;
-            datagridviewitem.RowTemplate.Height = 25;
-            datagridviewitem.Size = new Size(881, 227);
-            datagridviewitem.StateCommon.Background.Color1 = Color.White;
-            datagridviewitem.StateCommon.Background.Color2 = Color.Black;
-            datagridviewitem.StateCommon.BackStyle = PaletteBackStyle.GridBackgroundList;
-            datagridviewitem.TabIndex = 4;
+            this.datagridviewitem.AllowUserToOrderColumns = true;
+            this.datagridviewitem.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.datagridviewitem.Location = new System.Drawing.Point(27, 350);
+            this.datagridviewitem.Name = "datagridviewitem";
+            this.datagridviewitem.ReadOnly = true;
+            this.datagridviewitem.RowTemplate.Height = 25;
+            this.datagridviewitem.Size = new System.Drawing.Size(881, 227);
+            this.datagridviewitem.StateCommon.Background.Color1 = System.Drawing.Color.White;
+            this.datagridviewitem.StateCommon.Background.Color2 = System.Drawing.Color.Black;
+            this.datagridviewitem.StateCommon.BackStyle = Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
+            this.datagridviewitem.TabIndex = 4;
             // 
             // btnEdit
             // 
-            btnEdit.CornerRoundingRadius = -1F;
-            btnEdit.Location = new Point(517, 18);
-            btnEdit.Name = "btnEdit";
-            btnEdit.Palette = kryptonPalettebtn;
-            btnEdit.PaletteMode = PaletteMode.Custom;
-            btnEdit.Size = new Size(96, 37);
-            btnEdit.TabIndex = 5;
-            btnEdit.Values.Text = "Edit";
-            btnEdit.Click += btnEdit_Click;
+            this.btnEdit.CornerRoundingRadius = -1F;
+            this.btnEdit.Location = new System.Drawing.Point(517, 18);
+            this.btnEdit.Name = "btnEdit";
+            this.btnEdit.Palette = this.kryptonPalettebtn;
+            this.btnEdit.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.btnEdit.Size = new System.Drawing.Size(96, 37);
+            this.btnEdit.TabIndex = 5;
+            this.btnEdit.Values.Text = "Edit";
+            this.btnEdit.Click += new System.EventHandler(this.btnEdit_Click);
             // 
             // kryptonPalettebtn
             // 
-            kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Border.Color1 = Color.Transparent;
-            kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Border.DrawBorders = PaletteDrawBorders.Top | PaletteDrawBorders.Bottom | PaletteDrawBorders.Left | PaletteDrawBorders.Right;
-            kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Border.Rounding = 5F;
-            kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Color1 = Color.SteelBlue;
-            kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Font = new Font("Microsoft Tai Le", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
-            kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Hint = PaletteTextHint.SystemDefault;
+            this.kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Border.Color1 = System.Drawing.Color.Transparent;
+            this.kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Border.DrawBorders = ((Krypton.Toolkit.PaletteDrawBorders)((((Krypton.Toolkit.PaletteDrawBorders.Top | Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Border.Rounding = 5F;
+            this.kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Color1 = System.Drawing.Color.SteelBlue;
+            this.kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Microsoft Tai Le", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Hint = Krypton.Toolkit.PaletteTextHint.SystemDefault;
             // 
             // txtfield
             // 
-            txtfield.Location = new Point(200, 18);
-            txtfield.Name = "txtfield";
-            txtfield.PlaceholderText = "Search for Request";
-            txtfield.Size = new Size(232, 23);
-            txtfield.TabIndex = 6;
+            this.txtfield.Location = new System.Drawing.Point(200, 18);
+            this.txtfield.Name = "txtfield";
+            this.txtfield.PlaceholderText = "Search for Request";
+            this.txtfield.Size = new System.Drawing.Size(232, 23);
+            this.txtfield.TabIndex = 6;
             // 
             // lblsearch
             // 
-            lblsearch.AutoSize = true;
-            lblsearch.Location = new Point(29, 21);
-            lblsearch.Name = "lblsearch";
-            lblsearch.Size = new Size(42, 15);
-            lblsearch.TabIndex = 7;
-            lblsearch.Text = "Search";
+            this.lblsearch.AutoSize = true;
+            this.lblsearch.Location = new System.Drawing.Point(29, 21);
+            this.lblsearch.Name = "lblsearch";
+            this.lblsearch.Size = new System.Drawing.Size(42, 15);
+            this.lblsearch.TabIndex = 7;
+            this.lblsearch.Text = "Search";
             // 
             // cbxsearch
             // 
-            cbxsearch.FormattingEnabled = true;
-            cbxsearch.Location = new Point(73, 18);
-            cbxsearch.Name = "cbxsearch";
-            cbxsearch.Size = new Size(121, 23);
-            cbxsearch.TabIndex = 8;
+            this.cbxsearch.FormattingEnabled = true;
+            this.cbxsearch.Location = new System.Drawing.Point(73, 18);
+            this.cbxsearch.Name = "cbxsearch";
+            this.cbxsearch.Size = new System.Drawing.Size(121, 23);
+            this.cbxsearch.TabIndex = 8;
             // 
             // btnAdd
             // 
-            btnAdd.CornerRoundingRadius = -1F;
-            btnAdd.Location = new Point(646, 18);
-            btnAdd.Name = "btnAdd";
-            btnAdd.Palette = kryptonPalettebtn;
-            btnAdd.PaletteMode = PaletteMode.Custom;
-            btnAdd.Size = new Size(96, 37);
-            btnAdd.TabIndex = 9;
-            btnAdd.Values.Text = "Add";
-            btnAdd.Click += btnAdd_Click;
+            this.btnAdd.CornerRoundingRadius = -1F;
+            this.btnAdd.Location = new System.Drawing.Point(646, 18);
+            this.btnAdd.Name = "btnAdd";
+            this.btnAdd.Palette = this.kryptonPalettebtn;
+            this.btnAdd.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.btnAdd.Size = new System.Drawing.Size(96, 37);
+            this.btnAdd.TabIndex = 9;
+            this.btnAdd.Values.Text = "Add";
+            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
             // lblreqtable
             // 
-            lblreqtable.Location = new Point(12, 55);
-            lblreqtable.Name = "lblreqtable";
-            lblreqtable.Palette = kryptonPaletteheader;
-            lblreqtable.PaletteMode = PaletteMode.Custom;
-            lblreqtable.Size = new Size(122, 23);
-            lblreqtable.TabIndex = 10;
-            lblreqtable.Values.Text = "Request Table";
-            lblreqtable.Click += lblreqtable_Click;
+            this.lblreqtable.Location = new System.Drawing.Point(12, 55);
+            this.lblreqtable.Name = "lblreqtable";
+            this.lblreqtable.Palette = this.kryptonPaletteheader;
+            this.lblreqtable.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.lblreqtable.Size = new System.Drawing.Size(122, 23);
+            this.lblreqtable.TabIndex = 10;
+            this.lblreqtable.Values.Text = "Request Table";
             // 
             // kryptonPaletteheader
             // 
-            kryptonPaletteheader.LabelStyles.LabelCommon.StateCommon.ShortText.Color1 = Color.DarkCyan;
-            kryptonPaletteheader.LabelStyles.LabelCommon.StateCommon.ShortText.Font = new Font("Trebuchet MS", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            this.kryptonPaletteheader.LabelStyles.LabelCommon.StateCommon.ShortText.Color1 = System.Drawing.Color.DarkCyan;
+            this.kryptonPaletteheader.LabelStyles.LabelCommon.StateCommon.ShortText.Font = new System.Drawing.Font("Trebuchet MS", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             // 
             // lblitem
             // 
-            lblitem.Location = new Point(12, 321);
-            lblitem.Name = "lblitem";
-            lblitem.Palette = kryptonPaletteheader;
-            lblitem.PaletteMode = PaletteMode.Custom;
-            lblitem.Size = new Size(79, 23);
-            lblitem.TabIndex = 11;
-            lblitem.Values.Text = "Item List";
-            lblitem.Click += lblitem_Click;
+            this.lblitem.Location = new System.Drawing.Point(12, 321);
+            this.lblitem.Name = "lblitem";
+            this.lblitem.Palette = this.kryptonPaletteheader;
+            this.lblitem.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.lblitem.Size = new System.Drawing.Size(79, 23);
+            this.lblitem.TabIndex = 11;
+            this.lblitem.Values.Text = "Item List";
+            // 
+            // btncancel
+            // 
+            this.btncancel.CornerRoundingRadius = -1F;
+            this.btncancel.Location = new System.Drawing.Point(773, 18);
+            this.btncancel.Name = "btncancel";
+            this.btncancel.Palette = this.kryptonPalettebtn;
+            this.btncancel.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.btncancel.Size = new System.Drawing.Size(96, 37);
+            this.btncancel.TabIndex = 12;
+            this.btncancel.Values.Text = "Cencel";
+            this.btncancel.Click += new System.EventHandler(this.btncancel_Click);
             // 
             // RequestView
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.White;
-            ClientSize = new Size(1010, 648);
-            Controls.Add(lblitem);
-            Controls.Add(lblreqtable);
-            Controls.Add(btnAdd);
-            Controls.Add(cbxsearch);
-            Controls.Add(lblsearch);
-            Controls.Add(txtfield);
-            Controls.Add(btnEdit);
-            Controls.Add(datagridviewitem);
-            Controls.Add(datagridview);
-            Name = "RequestView";
-            Text = "RequestView";
-            Load += RequestView_Load;
-            ((System.ComponentModel.ISupportInitialize)createdbBindingSource).EndInit();
-            ((System.ComponentModel.ISupportInitialize)datagridview).EndInit();
-            ((System.ComponentModel.ISupportInitialize)datagridviewitem).EndInit();
-            ResumeLayout(false);
-            PerformLayout();
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.White;
+            this.ClientSize = new System.Drawing.Size(1010, 648);
+            this.Controls.Add(this.btncancel);
+            this.Controls.Add(this.lblitem);
+            this.Controls.Add(this.lblreqtable);
+            this.Controls.Add(this.btnAdd);
+            this.Controls.Add(this.cbxsearch);
+            this.Controls.Add(this.lblsearch);
+            this.Controls.Add(this.txtfield);
+            this.Controls.Add(this.btnEdit);
+            this.Controls.Add(this.datagridviewitem);
+            this.Controls.Add(this.datagridview);
+            this.Name = "RequestView";
+            this.Text = "RequestView";
+            this.Load += new System.EventHandler(this.RequestView_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.createdbBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.datagridview)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.datagridviewitem)).EndInit();
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
         }
 
         #endregion
@@ -208,5 +223,6 @@ namespace CPS_App
         private KryptonLabel lblitem;
         private KryptonPalette kryptonPaletteheader;
         private KryptonPalette kryptonPalettebtn;
+        private KryptonButton btncancel;
     }
 }

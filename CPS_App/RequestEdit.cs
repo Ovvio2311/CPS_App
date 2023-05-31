@@ -43,7 +43,7 @@ namespace CPS_App
             datagridviewitem.DataSource = itemsReq;
 
             //change header name and hide column
-            GenUtil.dataGridAttrName<ItemRequest>(datagridviewitem, new List<string>() { "Item Id", "i_uom_id", "bi_category_id" });
+            GenUtil.dataGridAttrName<ItemRequest>(datagridviewitem, new List<string>() { "not_shown" });
             //datagridviewitem.Columns.ToDynamicList().ForEach(col =>
             //{
             //    DataGridViewColumn column = col;
@@ -69,12 +69,13 @@ namespace CPS_App
                 int selectdId = GenUtil.ConvertObjtoType<int>(datagridviewitem.CurrentRow.Cells["bi_item_id"].Value);
                 var readyToEdit = itemsReq.Where(x => x.bi_item_id == selectdId).FirstOrDefault();
                 txtvid.Text = readyToEdit.bi_item_vid.ToString();
-                txtrs.Text = GenUtil.ConvertObjtoType<string>(readyToEdit.item_mapping_status);
+                txtrs.Text = GenUtil.ConvertObjtoType<string>(readyToEdit.bi_po_status_id);
                 txtremain.Text = readyToEdit.i_remain_req_qty.ToString();
                 txtqty.Text = readyToEdit.i_item_req_qty.ToString();
                 dateTimePickerEDD.Value = DateTime.Now; // for testing only
-                txtitname.Text = readyToEdit.vc_item_desc.ToString();
+                txtitname.Text = GenUtil.ConvertObjtoType<string>(readyToEdit.vc_item_desc);
                 txtcat.Text = readyToEdit.vc_category_desc.ToString();
+                txtreqst.Text = GenUtil.ConvertObjtoType<string>(readyToEdit.item_mapping_status);
             }
         }
 
@@ -108,8 +109,14 @@ namespace CPS_App
                 else
                 {
                     MessageBox.Show("Update Success");
+                    this.Controls.OfType<KryptonTextBox>().ToList().ForEach(x=>x.Clear());                    
                 }
             }
+        }
+
+        private void btncancel_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

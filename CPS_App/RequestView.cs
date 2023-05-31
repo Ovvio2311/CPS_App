@@ -113,10 +113,7 @@ namespace CPS_App
             //search function
         }
 
-        private void lblreqtable_Click(object sender, EventArgs e)
-        {
-
-        }
+       
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
@@ -125,9 +122,11 @@ namespace CPS_App
             requestCreate.Show();
         }
 
-        private void lblitem_Click(object sender, EventArgs e)
-        {
+     
 
+        private void btncancel_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

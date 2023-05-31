@@ -54,9 +54,11 @@ namespace CPS_App
                 txtloc.Text = loca.vc_location_desc.ToString();
             }
             disableValidation();
-            //var res = await _dbServices.SelectAllAsync<tb_location>();
-            //List<tb_location> loc = JsonConvert.DeserializeObject<List<tb_location>>(JsonConvert.SerializeObject(res.result));
-            //loc.ForEach(x => cbxLoc.Items.Add(x.vc_location_desc));
+
+            var itemType = await _dbServices.SelectAllAsync<tb_item>();
+            List<tb_item> it = JsonConvert.DeserializeObject<List<tb_item>>(JsonConvert.SerializeObject(itemType.result));
+            it.ForEach(x => cbxname.Items.Add($"{x.bi_item_id}: {x.vc_item_desc}"));
+      
         }
 
         public void enableValidation()
@@ -72,32 +74,34 @@ namespace CPS_App
         {
 
             dateTimePicker.ResetText();
-            txtItemId.Clear();
-            txtItemName.Clear();
+            
             txtQty.Clear();
             txtremark.Clear();
         }
 
         private async void btnAdd_Click(object sender, EventArgs e)
         {
-            if (!int.TryParse(txtItemId.Text, out var a) || !int.TryParse(txtQty.Text, out var b) || dateTimePicker.Value <= DateTime.Now)
+            if (cbxname.SelectedItem == null || !int.TryParse(txtQty.Text, out var b) || dateTimePicker.Value <= DateTime.Now)
             {
                 //_logger.LogDebug("Please Enter Correct Format");
                 MessageBox.Show("Please Enter Correct Format");
                 return;
             }
-
+            var itemId = cbxname.SelectedItem;
+            if (itemId != null) { itemId = itemId.ToString().Split(":").ElementAt(0); }
+            
             var item = new RequestionCreationItem
             {
-                bi_item_vid = GenUtil.ConvertObjtoType<int>(txtItemId.Text),
+                bi_item_id = GenUtil.ConvertObjtoType<int>(itemId),
                 i_item_req_qty = GenUtil.ConvertObjtoType<int>(txtQty.Text),
                 vc_remark = txtremark.Text,
-                dt_exp_deli_date = dateTimePicker.Value,
+                dt_exp_deli_date = dateTimePicker.Value,                
+
             };
             var selectObj = new selectObj();
 
             selectObj.table = "tb_item_vid_mapping";
-            selectObj.selecter.Add("bi_item_vid", txtItemId.Text);
+            selectObj.selecter.Add("bi_item_id", itemId.ToString());
 
 
             var result = await _dbServices.SelectWhereAsync(selectObj);
@@ -117,9 +121,9 @@ namespace CPS_App
             {
                 MessageBox.Show("Item ID is not Correct");
             }
-            txtItemId.Clear();
-            txtItemName.Clear();
+            txtremark.Clear();
             txtQty.Clear();
+            cbxname.SelectedIndex = 0;
 
         }
         private void requiredFieldCheck(object sender, EventArgs e)
@@ -131,10 +135,11 @@ namespace CPS_App
                 return;
             }
             var datepick = dateTimePicker.Value;
-
-            var avaliableItemBox = panelItem.Controls.OfType<TextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
-            var availableTxtBox = panelInfo.Controls.OfType<TextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
-            if (availableTxtBox != 2 || avaliableItemBox != 4 || datepick < DateTime.Now)
+            var id = cbxname.SelectedItem;
+            if (id != null) { id = id.ToString().Split(":").ElementAt(0); }
+            var avaliableItemBox = panelItem.Controls.OfType<KryptonTextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
+            var availableTxtBox = panelInfo.Controls.OfType<KryptonTextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
+            if (availableTxtBox != 2 || avaliableItemBox != 2 || datepick < DateTime.Now || id == null)
             {
 
                 disableValidation();
@@ -162,7 +167,7 @@ namespace CPS_App
             tb_req.inserter = new Dictionary<string, string>
             {
                 { nameof(req.i_staff_id), req.i_staff_id.ToString() },
-                {"vc_req_status", "pending"}
+                {"i_map_stat_id", "1"}
 
             };
             var res1 = await _dbServices.InsertAsync(tb_req);
@@ -176,28 +181,28 @@ namespace CPS_App
 
             req.items.ForEach(async row =>
             {
-                //find item id
+                //find item vid
 
                 var idFinder = new selectObj();
                 idFinder.table = "tb_item_vid_mapping";
                 idFinder.selecter = new Dictionary<string, string>
                 {
-                    {nameof(row.bi_item_vid), row.bi_item_vid.ToString() }
+                    {nameof(row.bi_item_id), row.bi_item_id.ToString() }
                 };
-                var id = await _dbServices.SelectWhereAsync<tb_item_vid_mapping>(idFinder);
-                if (id.resCode != 1 || id.result == null)
+                var vid = await _dbServices.SelectWhereAsync<tb_item_vid_mapping>(idFinder);
+                if (vid.resCode != 1 || vid.result == null)
                 {
                     //_logger.LogDebug("item Id not find");
                     MessageBox.Show("item Id not find");
                 }
-                tb_item_vid_mapping itemid = id.result[0];
+                tb_item_vid_mapping itemvid = vid.result[0];
 
                 //find uom id
                 var uomFinder = new selectObj();
                 uomFinder.table = "tb_item";
                 uomFinder.selecter = new Dictionary<string, string>
                 {
-                    {nameof(row.bi_item_id), itemid.bi_item_id.ToString()}
+                    {nameof(row.bi_item_id), itemvid.bi_item_id.ToString()}
                 };
                 var uomid = await _dbServices.SelectWhereAsync<tb_item>(uomFinder);
                 if (uomid.resCode != 1 || uomid.result == null)
@@ -206,16 +211,18 @@ namespace CPS_App
                     MessageBox.Show("uom Id not find");
                 }
                 tb_item uomId = uomid.result[0];
+
                 var tb_detail = new insertObj();
                 tb_detail.table = "tb_request_detail";
                 tb_detail.inserter = new Dictionary<string, string>
                 {
                     {nameof(row.bi_req_id), res1.result.ToString()},
-                    {nameof(row.bi_item_id),  itemid.bi_item_id.ToString()},
+                    {nameof(row.bi_item_id),  itemvid.bi_item_id.ToString()},
                     {nameof(row.i_item_req_qty), row.i_item_req_qty.ToString() },
                     {nameof(row.i_remain_req_qty),row.i_item_req_qty.ToString() },
                     {nameof(row.i_uom_id), uomId.i_uom_id.ToString() },
-                    {nameof(row.vc_req_status), "pending" },
+                    {nameof(row.i_map_stat_id), "1" },
+                    {nameof(row.bi_po_status_id), "1" },
                     {nameof(row.vc_remark),row.vc_remark != ""? row.vc_remark:null}
                 };
 
@@ -225,8 +232,13 @@ namespace CPS_App
                     //_logger.LogDebug("insert error");
                     MessageBox.Show("insert error");
                 }
-                else { MessageBox.Show($"Your Request has been created!\nRequest Id: {res2.result.ToString()}"); }
+                else { MessageBox.Show($"Your Request has been created!\nRequest Id: {res1.result}"); }
             });
+        }
+        //add vid
+        private void panelItem_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

@@ -110,6 +110,7 @@ namespace CPS_App
         {
             ItemView itemView = new ItemView(_dbServices, _stockWorker);
             itemView.MdiParent = this;
+            itemView.AutoScroll = true;
             itemView.Show();
         }
 
@@ -117,6 +118,7 @@ namespace CPS_App
         {
             POAView poaView = new POAView(_dbServices, _pOAWorker);
             poaView.MdiParent = this;
+            poaView.AutoScroll = true;
             poaView.Show();
         }
 
@@ -129,6 +131,7 @@ namespace CPS_App
         {
             Maintenance main = new Maintenance(_dbServices, _registerServices);
             main.MdiParent = this;
+            main.AutoScroll = true;
             main.Show();
         }
 

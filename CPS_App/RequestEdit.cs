@@ -109,7 +109,7 @@ namespace CPS_App
                 else
                 {
                     MessageBox.Show("Update Success");
-                    this.Controls.OfType<KryptonTextBox>().ToList().ForEach(x=>x.Clear());                    
+                    this.Controls.OfType<KryptonTextBox>().ToList().ForEach(x => x.Clear());
                 }
             }
         }

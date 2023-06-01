@@ -101,7 +101,8 @@ namespace CPS_App
         private void stripreq_Click(object sender, EventArgs e)
         {
             RequestView reqView = new RequestView(_dbServices, _requestMapp);
-            reqView.MdiParent = this;
+            reqView.MdiParent = this;            
+            reqView.AutoScroll = true;
             reqView.Show();
         }
 

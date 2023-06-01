@@ -24,6 +24,7 @@ namespace CPS_App.Services
         {
             if (typeof(T) == typeof(DateTime)) { return DateTime.Parse(obj.ToString()); }
             if (typeof(T) == typeof(string)) { return Convert.ToString(obj); }
+            if (typeof(T) == typeof(long)) { return long.TryParse(obj.ToString(), out long number) ? Convert.ToInt64(obj) : obj; }
             if (typeof(T) == typeof(int)) { return int.TryParse(obj.ToString(),out int number)? Convert.ToInt32(obj):obj; }
             if (typeof(T) == typeof(double)) { return double.TryParse(obj.ToString(), out double number) ? Convert.ToDouble(obj) : obj; }
             if (typeof(T) == typeof(decimal)) { return decimal.TryParse(obj.ToString(), out decimal number) ? Convert.ToDecimal(obj) : obj; }

@@ -1,4 +1,5 @@
-﻿namespace CPS_App
+﻿using Krypton.Toolkit;
+namespace CPS_App
 {
     partial class ItemCreate
     {
@@ -28,262 +29,317 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.lblcrcat = new System.Windows.Forms.Label();
-            this.pncat = new System.Windows.Forms.Panel();
-            this.btncatclear = new System.Windows.Forms.Button();
-            this.btncatsb = new System.Windows.Forms.Button();
-            this.txtcatname = new System.Windows.Forms.TextBox();
-            this.lblcatname = new System.Windows.Forms.Label();
-            this.txtitname = new System.Windows.Forms.TextBox();
-            this.lblcrit = new System.Windows.Forms.Label();
-            this.lblitname = new System.Windows.Forms.Label();
-            this.lblcat = new System.Windows.Forms.Label();
-            this.lblloc = new System.Windows.Forms.Label();
-            this.lblvid = new System.Windows.Forms.Label();
-            this.lbluom = new System.Windows.Forms.Label();
-            this.pnit = new System.Windows.Forms.Panel();
-            this.btnitsb = new System.Windows.Forms.Button();
-            this.btnitcr = new System.Windows.Forms.Button();
-            this.cbxcat = new System.Windows.Forms.ComboBox();
-            this.cbxloc = new System.Windows.Forms.ComboBox();
-            this.cbxvid = new System.Windows.Forms.ComboBox();
-            this.cbxuom = new System.Windows.Forms.ComboBox();
-            this.pncat.SuspendLayout();
-            this.pnit.SuspendLayout();
-            this.SuspendLayout();
-            // 
-            // lblcrcat
-            // 
-            this.lblcrcat.AutoSize = true;
-            this.lblcrcat.Location = new System.Drawing.Point(41, 54);
-            this.lblcrcat.Name = "lblcrcat";
-            this.lblcrcat.Size = new System.Drawing.Size(92, 15);
-            this.lblcrcat.TabIndex = 0;
-            this.lblcrcat.Text = "Create Category";
-            // 
-            // pncat
-            // 
-            this.pncat.Controls.Add(this.btncatclear);
-            this.pncat.Controls.Add(this.btncatsb);
-            this.pncat.Controls.Add(this.txtcatname);
-            this.pncat.Controls.Add(this.lblcatname);
-            this.pncat.Controls.Add(this.lblcrcat);
-            this.pncat.Location = new System.Drawing.Point(2, 0);
-            this.pncat.Name = "pncat";
-            this.pncat.Size = new System.Drawing.Size(300, 448);
-            this.pncat.TabIndex = 1;
-            // 
-            // btncatclear
-            // 
-            this.btncatclear.Location = new System.Drawing.Point(41, 305);
-            this.btncatclear.Name = "btncatclear";
-            this.btncatclear.Size = new System.Drawing.Size(87, 45);
-            this.btncatclear.TabIndex = 4;
-            this.btncatclear.Text = "Clear";
-            this.btncatclear.UseVisualStyleBackColor = true;
-            // 
-            // btncatsb
-            // 
-            this.btncatsb.Location = new System.Drawing.Point(159, 305);
-            this.btncatsb.Name = "btncatsb";
-            this.btncatsb.Size = new System.Drawing.Size(88, 45);
-            this.btncatsb.TabIndex = 3;
-            this.btncatsb.Text = "Submit";
-            this.btncatsb.UseVisualStyleBackColor = true;
-            this.btncatsb.Click += new System.EventHandler(this.btncatsb_Click);
-            // 
-            // txtcatname
-            // 
-            this.txtcatname.Location = new System.Drawing.Point(86, 120);
-            this.txtcatname.Name = "txtcatname";
-            this.txtcatname.Size = new System.Drawing.Size(100, 23);
-            this.txtcatname.TabIndex = 2;
-            this.txtcatname.Validating += new System.ComponentModel.CancelEventHandler(this.requiredFieldCheck);
-            // 
-            // lblcatname
-            // 
-            this.lblcatname.AutoSize = true;
-            this.lblcatname.Location = new System.Drawing.Point(41, 123);
-            this.lblcatname.Name = "lblcatname";
-            this.lblcatname.Size = new System.Drawing.Size(39, 15);
-            this.lblcatname.TabIndex = 1;
-            this.lblcatname.Text = "Name";
-            this.lblcatname.Validating += new System.ComponentModel.CancelEventHandler(this.requiredFieldCheck);
+            components = new System.ComponentModel.Container();
+            txtitname = new KryptonTextBox();
+            lblcrit = new KryptonLabel();
+            kryptonPaletteheader = new KryptonPalette(components);
+            lblitname = new KryptonLabel();
+            kryptonPalettelbl = new KryptonPalette(components);
+            lblcat = new KryptonLabel();
+            lblloc = new KryptonLabel();
+            lblvid = new KryptonLabel();
+            lbluom = new KryptonLabel();
+            pnit = new KryptonPanel();
+            cbxsup = new KryptonComboBox();
+            btnitsb = new KryptonButton();
+            kryptonPalettebtn = new KryptonPalette(components);
+            lblsup = new KryptonLabel();
+            btncancel = new KryptonButton();
+            cbxuom = new KryptonComboBox();
+            cbxvid = new KryptonComboBox();
+            cbxloc = new KryptonComboBox();
+            cbxcat = new KryptonComboBox();
+            btnitcr = new KryptonButton();
+            kryptonPalettepanel = new KryptonPalette(components);
+            lblqty = new KryptonLabel();
+            txtqty = new KryptonTextBox();
+            ((System.ComponentModel.ISupportInitialize)pnit).BeginInit();
+            pnit.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)cbxsup).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)cbxuom).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)cbxvid).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)cbxloc).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)cbxcat).BeginInit();
+            SuspendLayout();
             // 
             // txtitname
             // 
-            this.txtitname.Location = new System.Drawing.Point(143, 123);
-            this.txtitname.Name = "txtitname";
-            this.txtitname.Size = new System.Drawing.Size(177, 23);
-            this.txtitname.TabIndex = 2;
-            this.txtitname.Validating += new System.ComponentModel.CancelEventHandler(this.requiredFieldCheck);
+            txtitname.Location = new Point(184, 124);
+            txtitname.Name = "txtitname";
+            txtitname.Size = new Size(177, 23);
+            txtitname.TabIndex = 2;
+            txtitname.Validating += requiredFieldCheck;
             // 
             // lblcrit
             // 
-            this.lblcrit.AutoSize = true;
-            this.lblcrit.Location = new System.Drawing.Point(377, 54);
-            this.lblcrit.Name = "lblcrit";
-            this.lblcrit.Size = new System.Drawing.Size(68, 15);
-            this.lblcrit.TabIndex = 3;
-            this.lblcrit.Text = "Create Item";
+            lblcrit.Location = new Point(25, 62);
+            lblcrit.Name = "lblcrit";
+            lblcrit.Palette = kryptonPaletteheader;
+            lblcrit.PaletteMode = PaletteMode.Custom;
+            lblcrit.Size = new Size(103, 23);
+            lblcrit.TabIndex = 3;
+            lblcrit.Values.Text = "Create Item";
+            // 
+            // kryptonPaletteheader
+            // 
+            kryptonPaletteheader.LabelStyles.LabelCommon.StateCommon.ShortText.Color1 = Color.DarkCyan;
+            kryptonPaletteheader.LabelStyles.LabelCommon.StateCommon.ShortText.Font = new Font("Trebuchet MS", 12F, FontStyle.Bold, GraphicsUnit.Point);
             // 
             // lblitname
             // 
-            this.lblitname.AutoSize = true;
-            this.lblitname.Location = new System.Drawing.Point(391, 126);
-            this.lblitname.Name = "lblitname";
-            this.lblitname.Size = new System.Drawing.Size(39, 15);
-            this.lblitname.TabIndex = 4;
-            this.lblitname.Text = "Name";
+            lblitname.Location = new Point(81, 126);
+            lblitname.Name = "lblitname";
+            lblitname.Palette = kryptonPalettelbl;
+            lblitname.PaletteMode = PaletteMode.Custom;
+            lblitname.Size = new Size(53, 21);
+            lblitname.TabIndex = 4;
+            lblitname.Values.Text = "Name";
+            // 
+            // kryptonPalettelbl
+            // 
+            kryptonPalettelbl.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Font = new Font("Microsoft YaHei", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
+            kryptonPalettelbl.LabelStyles.LabelCommon.StateCommon.ShortText.Font = new Font("Microsoft Sans Serif", 11.25F, FontStyle.Regular, GraphicsUnit.Point);
             // 
             // lblcat
             // 
-            this.lblcat.AutoSize = true;
-            this.lblcat.Location = new System.Drawing.Point(375, 177);
-            this.lblcat.Name = "lblcat";
-            this.lblcat.Size = new System.Drawing.Size(55, 15);
-            this.lblcat.TabIndex = 5;
-            this.lblcat.Text = "Category";
+            lblcat.Location = new Point(64, 178);
+            lblcat.Name = "lblcat";
+            lblcat.Palette = kryptonPalettelbl;
+            lblcat.PaletteMode = PaletteMode.Custom;
+            lblcat.Size = new Size(74, 21);
+            lblcat.TabIndex = 5;
+            lblcat.Values.Text = "Category";
             // 
             // lblloc
             // 
-            this.lblloc.AutoSize = true;
-            this.lblloc.Location = new System.Drawing.Point(67, 231);
-            this.lblloc.Name = "lblloc";
-            this.lblloc.Size = new System.Drawing.Size(53, 15);
-            this.lblloc.TabIndex = 6;
-            this.lblloc.Text = "Location";
+            lblloc.Location = new Point(67, 231);
+            lblloc.Name = "lblloc";
+            lblloc.Palette = kryptonPalettelbl;
+            lblloc.PaletteMode = PaletteMode.Custom;
+            lblloc.Size = new Size(70, 21);
+            lblloc.TabIndex = 6;
+            lblloc.Values.Text = "Location";
             // 
             // lblvid
             // 
-            this.lblvid.AutoSize = true;
-            this.lblvid.Location = new System.Drawing.Point(377, 282);
-            this.lblvid.Name = "lblvid";
-            this.lblvid.Size = new System.Drawing.Size(25, 15);
-            this.lblvid.TabIndex = 7;
-            this.lblvid.Text = "VID";
+            lblvid.Location = new Point(83, 280);
+            lblvid.Name = "lblvid";
+            lblvid.Palette = kryptonPalettelbl;
+            lblvid.PaletteMode = PaletteMode.Custom;
+            lblvid.Size = new Size(37, 21);
+            lblvid.TabIndex = 7;
+            lblvid.Values.Text = "VID";
             // 
             // lbluom
             // 
-            this.lbluom.AutoSize = true;
-            this.lbluom.Location = new System.Drawing.Point(311, 330);
-            this.lbluom.Name = "lbluom";
-            this.lbluom.Size = new System.Drawing.Size(119, 15);
-            this.lbluom.TabIndex = 8;
-            this.lbluom.Text = "Unit of Measurement";
+            lbluom.Location = new Point(3, 322);
+            lbluom.Name = "lbluom";
+            lbluom.Palette = kryptonPalettelbl;
+            lbluom.PaletteMode = PaletteMode.Custom;
+            lbluom.Size = new Size(155, 21);
+            lbluom.TabIndex = 8;
+            lbluom.Values.Text = "Unit of Measurement";
             // 
             // pnit
             // 
-            this.pnit.Controls.Add(this.cbxuom);
-            this.pnit.Controls.Add(this.cbxvid);
-            this.pnit.Controls.Add(this.lblloc);
-            this.pnit.Controls.Add(this.cbxloc);
-            this.pnit.Controls.Add(this.cbxcat);
-            this.pnit.Controls.Add(this.txtitname);
-            this.pnit.Controls.Add(this.btnitsb);
-            this.pnit.Controls.Add(this.btnitcr);
-            this.pnit.Location = new System.Drawing.Point(308, 0);
-            this.pnit.Name = "pnit";
-            this.pnit.Size = new System.Drawing.Size(440, 448);
-            this.pnit.TabIndex = 13;
-            this.pnit.Paint += new System.Windows.Forms.PaintEventHandler(this.pnit_Paint);
+            pnit.Controls.Add(txtqty);
+            pnit.Controls.Add(lblqty);
+            pnit.Controls.Add(cbxsup);
+            pnit.Controls.Add(btnitsb);
+            pnit.Controls.Add(lblsup);
+            pnit.Controls.Add(btncancel);
+            pnit.Controls.Add(lblvid);
+            pnit.Controls.Add(lbluom);
+            pnit.Controls.Add(lblcat);
+            pnit.Controls.Add(cbxuom);
+            pnit.Controls.Add(lblitname);
+            pnit.Controls.Add(cbxvid);
+            pnit.Controls.Add(lblcrit);
+            pnit.Controls.Add(lblloc);
+            pnit.Controls.Add(cbxloc);
+            pnit.Controls.Add(cbxcat);
+            pnit.Controls.Add(txtitname);
+            pnit.Controls.Add(btnitcr);
+            pnit.Location = new Point(-5, 0);
+            pnit.Name = "pnit";
+            pnit.Palette = kryptonPalettepanel;
+            pnit.PaletteMode = PaletteMode.Custom;
+            pnit.Size = new Size(755, 448);
+            pnit.TabIndex = 13;
+            // 
+            // cbxsup
+            // 
+            cbxsup.CornerRoundingRadius = -1F;
+            cbxsup.DropDownWidth = 177;
+            cbxsup.FormattingEnabled = true;
+            cbxsup.IntegralHeight = false;
+            cbxsup.Location = new Point(479, 124);
+            cbxsup.Name = "cbxsup";
+            cbxsup.Size = new Size(177, 21);
+            cbxsup.TabIndex = 15;
             // 
             // btnitsb
             // 
-            this.btnitsb.Location = new System.Drawing.Point(226, 390);
-            this.btnitsb.Name = "btnitsb";
-            this.btnitsb.Size = new System.Drawing.Size(94, 48);
-            this.btnitsb.TabIndex = 1;
-            this.btnitsb.Text = "Submit";
-            this.btnitsb.UseVisualStyleBackColor = true;
-            this.btnitsb.Click += new System.EventHandler(this.btnitsb_Click);
+            btnitsb.CornerRoundingRadius = -1F;
+            btnitsb.Location = new Point(491, 390);
+            btnitsb.Name = "btnitsb";
+            btnitsb.Palette = kryptonPalettebtn;
+            btnitsb.PaletteMode = PaletteMode.Custom;
+            btnitsb.Size = new Size(94, 48);
+            btnitsb.TabIndex = 1;
+            btnitsb.Values.Text = "Submit";
+            btnitsb.Click += btnitsb_Click;
             // 
-            // btnitcr
+            // kryptonPalettebtn
             // 
-            this.btnitcr.Location = new System.Drawing.Point(83, 390);
-            this.btnitcr.Name = "btnitcr";
-            this.btnitcr.Size = new System.Drawing.Size(94, 48);
-            this.btnitcr.TabIndex = 0;
-            this.btnitcr.Text = "Clear";
-            this.btnitcr.UseVisualStyleBackColor = true;
+            kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Border.Color1 = Color.Transparent;
+            kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Border.DrawBorders = PaletteDrawBorders.Top | PaletteDrawBorders.Bottom | PaletteDrawBorders.Left | PaletteDrawBorders.Right;
+            kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Border.Rounding = 5F;
+            kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Color1 = Color.SteelBlue;
+            kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Font = new Font("Microsoft Tai Le", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
+            kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Hint = PaletteTextHint.SystemDefault;
             // 
-            // cbxcat
+            // lblsup
             // 
-            this.cbxcat.FormattingEnabled = true;
-            this.cbxcat.Location = new System.Drawing.Point(143, 177);
-            this.cbxcat.Name = "cbxcat";
-            this.cbxcat.Size = new System.Drawing.Size(177, 23);
-            this.cbxcat.TabIndex = 2;
+            lblsup.Location = new Point(405, 126);
+            lblsup.Name = "lblsup";
+            lblsup.Palette = kryptonPalettelbl;
+            lblsup.PaletteMode = PaletteMode.Custom;
+            lblsup.Size = new Size(68, 21);
+            lblsup.TabIndex = 14;
+            lblsup.Values.Text = "Supplier";
             // 
-            // cbxloc
+            // btncancel
             // 
-            this.cbxloc.FormattingEnabled = true;
-            this.cbxloc.Location = new System.Drawing.Point(143, 228);
-            this.cbxloc.Name = "cbxloc";
-            this.cbxloc.Size = new System.Drawing.Size(177, 23);
-            this.cbxloc.TabIndex = 3;
-            // 
-            // cbxvid
-            // 
-            this.cbxvid.FormattingEnabled = true;
-            this.cbxvid.Location = new System.Drawing.Point(143, 279);
-            this.cbxvid.Name = "cbxvid";
-            this.cbxvid.Size = new System.Drawing.Size(177, 23);
-            this.cbxvid.TabIndex = 4;
+            btncancel.CornerRoundingRadius = -1F;
+            btncancel.Location = new Point(184, 390);
+            btncancel.Name = "btncancel";
+            btncancel.Palette = kryptonPalettebtn;
+            btncancel.PaletteMode = PaletteMode.Custom;
+            btncancel.Size = new Size(94, 48);
+            btncancel.TabIndex = 16;
+            btncancel.Values.Text = "Cancel";
             // 
             // cbxuom
             // 
-            this.cbxuom.FormattingEnabled = true;
-            this.cbxuom.Location = new System.Drawing.Point(143, 322);
-            this.cbxuom.Name = "cbxuom";
-            this.cbxuom.Size = new System.Drawing.Size(177, 23);
-            this.cbxuom.TabIndex = 5;
+            cbxuom.CornerRoundingRadius = -1F;
+            cbxuom.DropDownWidth = 177;
+            cbxuom.FormattingEnabled = true;
+            cbxuom.IntegralHeight = false;
+            cbxuom.Location = new Point(184, 322);
+            cbxuom.Name = "cbxuom";
+            cbxuom.Size = new Size(177, 21);
+            cbxuom.TabIndex = 5;
+            // 
+            // cbxvid
+            // 
+            cbxvid.CornerRoundingRadius = -1F;
+            cbxvid.DropDownWidth = 177;
+            cbxvid.FormattingEnabled = true;
+            cbxvid.IntegralHeight = false;
+            cbxvid.Location = new Point(184, 280);
+            cbxvid.Name = "cbxvid";
+            cbxvid.Size = new Size(177, 21);
+            cbxvid.TabIndex = 4;
+            // 
+            // cbxloc
+            // 
+            cbxloc.CornerRoundingRadius = -1F;
+            cbxloc.DropDownWidth = 177;
+            cbxloc.FormattingEnabled = true;
+            cbxloc.IntegralHeight = false;
+            cbxloc.Location = new Point(184, 231);
+            cbxloc.Name = "cbxloc";
+            cbxloc.Size = new Size(177, 21);
+            cbxloc.TabIndex = 3;
+            // 
+            // cbxcat
+            // 
+            cbxcat.CornerRoundingRadius = -1F;
+            cbxcat.DropDownWidth = 177;
+            cbxcat.FormattingEnabled = true;
+            cbxcat.IntegralHeight = false;
+            cbxcat.Location = new Point(184, 178);
+            cbxcat.Name = "cbxcat";
+            cbxcat.Size = new Size(177, 21);
+            cbxcat.TabIndex = 2;
+            // 
+            // btnitcr
+            // 
+            btnitcr.CornerRoundingRadius = -1F;
+            btnitcr.Location = new Point(338, 390);
+            btnitcr.Name = "btnitcr";
+            btnitcr.Palette = kryptonPalettebtn;
+            btnitcr.PaletteMode = PaletteMode.Custom;
+            btnitcr.Size = new Size(94, 48);
+            btnitcr.TabIndex = 0;
+            btnitcr.Values.Text = "Clear";
+            // 
+            // kryptonPalettepanel
+            // 
+            kryptonPalettepanel.Common.StateCommon.Back.Color1 = Color.Transparent;
+            kryptonPalettepanel.Common.StateCommon.Back.Color2 = Color.Transparent;
+            // 
+            // lblqty
+            // 
+            lblqty.Location = new Point(405, 178);
+            lblqty.Name = "lblqty";
+            lblqty.Palette = kryptonPalettelbl;
+            lblqty.PaletteMode = PaletteMode.Custom;
+            lblqty.Size = new Size(69, 21);
+            lblqty.TabIndex = 17;
+            lblqty.Values.Text = "Quantity";
+            // 
+            // txtqty
+            // 
+            txtqty.Location = new Point(479, 176);
+            txtqty.Name = "txtqty";
+            txtqty.Size = new Size(177, 23);
+            txtqty.TabIndex = 18;
             // 
             // ItemCreate
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.lbluom);
-            this.Controls.Add(this.lblvid);
-            this.Controls.Add(this.lblcat);
-            this.Controls.Add(this.lblitname);
-            this.Controls.Add(this.lblcrit);
-            this.Controls.Add(this.pncat);
-            this.Controls.Add(this.pnit);
-            this.Name = "ItemCreate";
-            this.Text = "ItemCreate";
-            this.Load += new System.EventHandler(this.ItemCreate_Load);
-            this.pncat.ResumeLayout(false);
-            this.pncat.PerformLayout();
-            this.pnit.ResumeLayout(false);
-            this.pnit.PerformLayout();
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(749, 450);
+            Controls.Add(pnit);
+            Name = "ItemCreate";
+            Text = "ItemCreate";
+            Load += ItemCreate_Load;
+            ((System.ComponentModel.ISupportInitialize)pnit).EndInit();
+            pnit.ResumeLayout(false);
+            pnit.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)cbxsup).EndInit();
+            ((System.ComponentModel.ISupportInitialize)cbxuom).EndInit();
+            ((System.ComponentModel.ISupportInitialize)cbxvid).EndInit();
+            ((System.ComponentModel.ISupportInitialize)cbxloc).EndInit();
+            ((System.ComponentModel.ISupportInitialize)cbxcat).EndInit();
+            ResumeLayout(false);
         }
 
         #endregion
-
-        private Label lblcrcat;
-        private Panel pncat;
-        private TextBox txtcatname;
-        private Label lblcatname;
-        private TextBox txtitname;
-        private Label lblcrit;
-        private Label lblitname;
-        private Label lblcat;
-        private Label lblloc;
-        private Label lblvid;
-        private Label lbluom;
-        private Panel pnit;
-        private Button btncatclear;
-        private Button btncatsb;
-        private Button btnitsb;
-        private Button btnitcr;
-        private ComboBox cbxuom;
-        private ComboBox cbxvid;
-        private ComboBox cbxloc;
-        private ComboBox cbxcat;
+        private KryptonTextBox txtitname;
+        private KryptonLabel lblcrit;
+        private KryptonLabel lblitname;
+        private KryptonLabel lblcat;
+        private KryptonLabel lblloc;
+        private KryptonLabel lblvid;
+        private KryptonLabel lbluom;
+        private KryptonPanel pnit;
+        private KryptonButton btnitsb;
+        private KryptonButton btnitcr;
+        private KryptonComboBox cbxuom;
+        private KryptonComboBox cbxvid;
+        private KryptonComboBox cbxloc;
+        private KryptonComboBox cbxcat;
+        private KryptonPalette kryptonPalettebtn;
+        private KryptonPalette kryptonPaletteheader;
+        private KryptonPalette kryptonPalettepanel;
+        private KryptonPalette kryptonPalettelbl;
+        private KryptonComboBox cbxsup;
+        private KryptonLabel lblsup;
+        private KryptonButton btncancel;
+        private KryptonTextBox txtqty;
+        private KryptonLabel lblqty;
     }
 }

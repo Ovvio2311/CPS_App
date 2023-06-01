@@ -16,10 +16,11 @@ using System.Windows.Forms;
 using static CPS_App.Models.CPSModel;
 using static CPS_App.Models.DbModels;
 using static CPS_App.Models.RegisterModel;
+using Krypton.Toolkit;
 
 namespace CPS_App
 {
-    public partial class ItemCreate : Form
+    public partial class ItemCreate : KryptonForm
     {
         private DbServices _dbServices;
         private Validator _validator;
@@ -63,6 +64,10 @@ namespace CPS_App
             List<lut_uom_type> uom = JsonConvert.DeserializeObject<List<lut_uom_type>>(JsonConvert.SerializeObject(uomType.result));
             uom.ForEach(x => cbxuom.Items.Add($"{x.i_uom_id}: {x.vc_uom_desc}"));
 
+            var supType = await _dbServices.SelectAllAsync<tb_supplier>();
+            List<tb_supplier> sup = JsonConvert.DeserializeObject<List<tb_supplier>>(JsonConvert.SerializeObject(supType.result));
+            sup.ForEach(x => cbxsup.Items.Add($"{x.bi_supp_id}: {x.vc_supp_desc}"));
+
             var vidType = await _dbServices.GetVidMappingObj();
             List<StockLevelViewObj> vid = JsonConvert.DeserializeObject<List<StockLevelViewObj>>(JsonConvert.SerializeObject(vidType.result));
             vid.ForEach(x => cbxvid.Items.Add($"{x.bi_item_vid}: {x.items_group}"));
@@ -78,48 +83,48 @@ namespace CPS_App
 
         private async void btncatsb_Click(object sender, EventArgs e)
         {
-            if (txtcatname.Text == String.Empty)
-            {
-                MessageBox.Show("Please enter Category name");
-            }
-            else
-            {
-                var obj = new selectObj();
-                obj.table = "tb_item_category";
-                obj.selecter.Add("vc_category_desc", txtcatname.Text);
-                var res = await _dbServices.SelectWhereAsync(obj);
-                if (res.resCode != 1)
-                {
-                    //_logger.LogDebug("item Id not find");
-                    MessageBox.Show("error");
-                    return;
-                }
-                else if (res.resCode == 1 && res.result.Count > 0)
-                {
-                    MessageBox.Show("Category Name has been used");
-                    return;
-                }
-                else
-                {
-                    //insert into tb_caterogy
-                    var tb_cat = new insertObj();
-                    tb_cat.table = "tb_item_category";
-                    tb_cat.inserter = new Dictionary<string, string>
-                    {
-                        { nameof(req.vc_category_desc), txtcatname.Text },
-                    };
-                    var tb_cat_res = await _dbServices.InsertAsync(tb_cat);
-                    if (tb_cat_res.resCode != 1 || tb_cat_res.result.Count <= 0)
-                    {
-                        //_logger.LogDebug("insert error");
-                        MessageBox.Show("insert error");
-                    }
-                    else
-                    {
-                        MessageBox.Show($"New Category created, ID: {tb_cat_res.result}");
-                    }
-                }
-            }
+            //if (txtcatname.Text == String.Empty)
+            //{
+            //    MessageBox.Show("Please enter Category name");
+            //}
+            //else
+            //{
+            //    var obj = new selectObj();
+            //    obj.table = "tb_item_category";
+            //    obj.selecter.Add("vc_category_desc", txtcatname.Text);
+            //    var res = await _dbServices.SelectWhereAsync(obj);
+            //    if (res.resCode != 1)
+            //    {
+            //        //_logger.LogDebug("item Id not find");
+            //        MessageBox.Show("error");
+            //        return;
+            //    }
+            //    else if (res.resCode == 1 && res.result.Count > 0)
+            //    {
+            //        MessageBox.Show("Category Name has been used");
+            //        return;
+            //    }
+            //    else
+            //    {
+            //        //insert into tb_caterogy
+            //        var tb_cat = new insertObj();
+            //        tb_cat.table = "tb_item_category";
+            //        tb_cat.inserter = new Dictionary<string, string>
+            //        {
+            //            { nameof(req.vc_category_desc), txtcatname.Text },
+            //        };
+            //        var tb_cat_res = await _dbServices.InsertAsync(tb_cat);
+            //        if (tb_cat_res.resCode != 1 || tb_cat_res.result.Count <= 0)
+            //        {
+            //            //_logger.LogDebug("insert error");
+            //            MessageBox.Show("insert error");
+            //        }
+            //        else
+            //        {
+            //            MessageBox.Show($"New Category created, ID: {tb_cat_res.result}");
+            //        }
+            //    }
+            //}
         }
 
         private async void btnitsb_Click(object sender, EventArgs e)
@@ -130,43 +135,86 @@ namespace CPS_App
             if (loc != null) { loc = loc.ToString().Split(":").ElementAt(0); }
             var uom = cbxuom.SelectedItem;
             if (uom != null) { uom = uom.ToString().Split(":").ElementAt(0); }
+            var sup = cbxsup.SelectedItem;
+            if (sup != null) { sup = sup.ToString().Split(":").ElementAt(0); }
             var vid = cbxvid.SelectedItem;
             if (vid != null) { vid = vid.ToString().Split(":").ElementAt(0); }
 
-
-            var availableItem = pnit.Controls.OfType<TextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
-            if (availableItem != 5 || cat == null || loc == null || uom == null || vid == null)
+            if (!int.TryParse(txtqty.Text, out int output))
+            {
+                MessageBox.Show("Please enter integer in quantity field");
+                return;
+            }
+            var availableItem = pnit.Controls.OfType<KryptonTextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
+            if (availableItem != 2 || cat == null || loc == null || uom == null || vid == null || sup == null)
             {
                 MessageBox.Show("Please completed the item form");
             }
             else
             {
-                //insert tb_item
-                var itemObj = new tb_item()
+                DialogResult dialogResult = MessageBox.Show("Are you confirm the information to create", "Confirm", MessageBoxButtons.YesNo);
+                if (!(dialogResult == DialogResult.Yes))
                 {
-                    bi_category_id = GenUtil.ConvertObjtoType<int>(cat),
-                    vc_item_desc = txtitname.Text,
-                    i_uom_id = GenUtil.ConvertObjtoType<int>(uom),
+                    return;
+
+                }
+                //insert tb_item use insertasync<T> cannot get id successfully
+
+                var itemObj = new insertObj()
+                {
+                    table = typeof(tb_item).Name,
+                    inserter = new Dictionary<string, string>
+                    {
+                        {"bi_category_id", cat.ToString()},
+                        { "vc_item_desc" ,txtitname.Text },
+                        {"i_uom_id", uom.ToString() }
+                    }
                 };
-                var res = await _dbServices.InsertAsync<tb_item>(itemObj);
-                if(res.resCode != 1)
+
+                var res = await _dbServices.InsertAsync(itemObj);
+                if (res.resCode != 1 || res.result == null)
                 {
-                    MessageBox.Show("error");
+                    MessageBox.Show("tb_item error");
                 }
 
                 //insert tb_vid
+                //var vidObj = new insertObj()
+                //{
+                //    table = typeof(tb_item_vid_mapping).Name,
+                //    inserter = new Dictionary<string, string>
+                //    {
+                //        {"bi_item_id",res.result.ToString() },
+                //        { "bi_item_vid", vid.ToString()},
+                //    }
+                //};
                 var vidObj = new tb_item_vid_mapping()
                 {
-                    bi_item_id = res.result,
+                    bi_item_id = GenUtil.ConvertObjtoType<int>(res.result),
                     bi_item_vid = GenUtil.ConvertObjtoType<int>(vid),
+                    dt_created_date = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss")
                 };
                 var vidres = await _dbServices.InsertAsync<tb_item_vid_mapping>(vidObj);
-                if (vidres.resCode != 1)
+                if (vidres.resCode != 1 || res.result == null)
                 {
-                    MessageBox.Show("error");
+                    MessageBox.Show("vid mapping error");
                 }
                 MessageBox.Show($"New Item has been created with ID: {res.result}");
 
+                //insert tb_item_unit
+                var itemUnit = new tb_item_unit()
+                {
+                    bi_item_id = GenUtil.ConvertObjtoType<int>(res.result),
+                    bi_location_id = GenUtil.ConvertObjtoType<int>(loc),
+                    i_uom_id = GenUtil.ConvertObjtoType<int>(uom),
+                    bi_supp_id = GenUtil.ConvertObjtoType<int>(sup),
+                    i_item_qty = GenUtil.ConvertObjtoType<int>(txtqty.Text),
+                    dt_created_date = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss")
+                };
+                var iUnitres = await _dbServices.InsertAsync<tb_item_unit>(itemUnit);
+                if (iUnitres.resCode != 1)
+                {
+                    MessageBox.Show("insert tb_item_unit error");
+                }
             }
         }
     }

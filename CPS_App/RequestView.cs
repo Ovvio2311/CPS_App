@@ -51,19 +51,7 @@ namespace CPS_App
                 datagridview.DataSource = source;
 
             GenUtil.dataGridAttrName<RequestMappingReqObj>(datagridview, new List<string>() { "not_shown" });
-            //datagridview.Columns.ToDynamicList().ForEach(col =>
-            //{
-            //    DataGridViewColumn column = col;
-            //    col.HeaderText = typeof(RequestMappingReqObj).GetProperties().ToList()
-            //    .Where(x => col.HeaderText == x.Name)
-            //    .Select(x => x.GetCustomAttribute<DisplayAttribute>())
-            //    .Where(x => x != null).Select(x => x.Name.ToString()).FirstOrDefault();
-            //    if (column.HeaderText == "bi_location_id")
-            //    {
-            //        column.Visible = false;
-            //    }
 
-            //});
         }
         private void datagridview_CellClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -83,19 +71,7 @@ namespace CPS_App
                 BindingList<ItemRequest> source = observableItems.ToBindingList();
                 datagridviewitem.DataSource = source;
                 GenUtil.dataGridAttrName<ItemRequest>(datagridviewitem, new List<string>() { "not_shown" });
-                //datagridviewitem.Columns.ToDynamicList().ForEach(col =>
-                //{
-                //    DataGridViewColumn column = col;
-                //    col.HeaderText = typeof(ItemRequest).GetProperties().ToList()
-                //    .Where(x => col.HeaderText == x.Name)
-                //    .Select(x => x.GetCustomAttribute<DisplayAttribute>())
-                //    .Where(x => x != null).Select(x => x.Name.ToString()).FirstOrDefault();
-                //    if (column.HeaderText == "i_uom_id" || column.HeaderText == "bi_category_id")
-                //    {
-                //        column.Visible = false;
-                //    }
 
-                //});
             }
         }
 
@@ -113,7 +89,7 @@ namespace CPS_App
             //search function
         }
 
-       
+
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
@@ -122,7 +98,7 @@ namespace CPS_App
             requestCreate.Show();
         }
 
-     
+
 
         private void btncancel_Click(object sender, EventArgs e)
         {

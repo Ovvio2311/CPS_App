@@ -1,17 +1,8 @@
 ﻿using CPS_App.Services;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Linq.Dynamic.Core;
-using System.Reflection;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using static CPS_App.Models.CPSModel;
 using Krypton.Toolkit;
 using System.Collections.ObjectModel;
@@ -22,14 +13,15 @@ namespace CPS_App
     public partial class ItemView : KryptonForm
     {
         public ClaimsIdentity userIden;
-        public List<StockLevelViewObj> _stock;
+        public List<StockLevelViewObj> stock;
         private readonly DbServices _dbServices;
         private StockLevelWorker _stockWorker;
+        public int selectId = 0;
         public ItemView(DbServices dbServices, StockLevelWorker stockWorker)
         {
             InitializeComponent();
             _dbServices = dbServices;
-            _stock = new List<StockLevelViewObj>();
+            stock = new List<StockLevelViewObj>();
             _stockWorker = stockWorker;
         }
 
@@ -40,38 +32,29 @@ namespace CPS_App
             {
                 var userRole = userIden.Claims.FirstOrDefault(x => x.Type == "role").Value.ToString();
             }
-            _stock = await _stockWorker.GetStockLevelWorker();
-            if (_stock != null)
+            stock = await _stockWorker.GetStockLevelWorker();
+            if (stock != null)
             {
-                var observableItems = new ObservableCollection<StockLevelViewObj>(_stock);
+                var observableItems = new ObservableCollection<StockLevelViewObj>(stock);
                 BindingList<StockLevelViewObj> source = observableItems.ToBindingList();
                 dataGridViewitem.DataSource = source;
 
-                GenUtil.dataGridAttrName<StockLevelViewObj>(dataGridViewitem, new List<string>() { "bi_location_id", "items_group",
-                "i_uom_id","bi_category_id"});
-                //dataGridViewitem.Columns.ToDynamicList().ForEach(col =>
-                //{
-                //    DataGridViewColumn column = col;
-                //    col.HeaderText = typeof(StockLevelViewObj).GetProperties().ToList()
-                //    .Where(x => col.HeaderText == x.Name)
-                //    .Select(x => x.GetCustomAttribute<DisplayAttribute>())
-                //    .Where(x => x != null).Select(x => x.Name.ToString()).FirstOrDefault();
-                //    if (column.HeaderText == "bi_location_id" || column.HeaderText == "items_group"
-                //    || column.HeaderText == "i_uom_id" || column.HeaderText == "bi_category_id")
-                //    {
-                //        column.Visible = false;
-                //    }
-
-                //});
+                GenUtil.dataGridAttrName<StockLevelViewObj>(dataGridViewitem, new List<string>() { "not_shown" });
+               
             }
 
         }
 
         private void btnupdate_Click(object sender, EventArgs e)
         {
-            ItemEdit itemEdit = new ItemEdit(_stock, _dbServices);
-            //itemEdit.TopMost = true;
-            itemEdit.ShowDialog();
+            if(selectId == 0)
+            {
+                MessageBox.Show("Please select an item to update");
+                return;
+            }
+            ItemEdit itemEdit = new ItemEdit(stock, _dbServices, selectId);
+            itemEdit.MdiParent = this.MdiParent;
+            itemEdit.Show();
         }
 
         private void dataGridViewitem_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -80,6 +63,9 @@ namespace CPS_App
 
             if (e.RowIndex == dataGridViewitem.CurrentRow.Index)
             {
+                selectId = GenUtil.ConvertObjtoType<int>(dataGridViewitem.CurrentRow.Cells["bi_item_id"].Value);
+                //dataGridViewitem.DataSource = null;
+                //List<StockLevelViewObj> itemViewSelect = stock.Where(x => x.bi_item_id == selectdId).ToList();
 
 
             }
@@ -88,6 +74,7 @@ namespace CPS_App
         private void btncreate_Click(object sender, EventArgs e)
         {
             ItemCreate itemCreate = new ItemCreate(_dbServices);
+            itemCreate.MdiParent = this.MdiParent;
             itemCreate.Show();
         }
     }

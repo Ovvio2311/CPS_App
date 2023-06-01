@@ -1,23 +1,10 @@
 ﻿using CPS_App.Helpers;
 using CPS_App.Services;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Xml.Linq;
 using static CPS_App.Models.CPSModel;
-using static CPS_App.Models.RegisterModel;
 using static CPS_App.Models.DbModels;
 using System.Security.Claims;
-using System.Security.Cryptography;
 using Krypton.Toolkit;
 
 namespace CPS_App
@@ -58,7 +45,7 @@ namespace CPS_App
             var itemType = await _dbServices.SelectAllAsync<tb_item>();
             List<tb_item> it = JsonConvert.DeserializeObject<List<tb_item>>(JsonConvert.SerializeObject(itemType.result));
             it.ForEach(x => cbxname.Items.Add($"{x.bi_item_id}: {x.vc_item_desc}"));
-      
+
         }
 
         public void enableValidation()
@@ -74,7 +61,6 @@ namespace CPS_App
         {
 
             dateTimePicker.ResetText();
-            
             txtQty.Clear();
             txtremark.Clear();
         }
@@ -89,13 +75,13 @@ namespace CPS_App
             }
             var itemId = cbxname.SelectedItem;
             if (itemId != null) { itemId = itemId.ToString().Split(":").ElementAt(0); }
-            
+
             var item = new RequestionCreationItem
             {
                 bi_item_id = GenUtil.ConvertObjtoType<int>(itemId),
                 i_item_req_qty = GenUtil.ConvertObjtoType<int>(txtQty.Text),
                 vc_remark = txtremark.Text,
-                dt_exp_deli_date = dateTimePicker.Value,                
+                dt_exp_deli_date = dateTimePicker.Value,
 
             };
             var selectObj = new selectObj();
@@ -107,7 +93,7 @@ namespace CPS_App
             var result = await _dbServices.SelectWhereAsync(selectObj);
             if (result.resCode == 1 && result.result.Count > 0)
             {
-                if (req.items.Count > 0 && req.items.Select(x => x.bi_item_vid == item.bi_item_vid).FirstOrDefault())
+                if (req.items.Count > 0 && req.items.Select(x => x.bi_item_id == item.bi_item_id).FirstOrDefault())
                 {
                     MessageBox.Show("Duplicated ID");
                 }
@@ -157,83 +143,106 @@ namespace CPS_App
             //tb_location re = JsonConvert.DeserializeObject<tb_location>(JsonConvert.SerializeObject(res.result));
             //req.bi_location_id = re.bi_location_id;
 
-            await CreateRequestAsync(req);
+            if (!await CreateRequestAsync(req))
+            {
+                MessageBox.Show("Request creation error\nPlease create again");
+            };
+            req.items.Clear();
+            disableValidation();
         }
-        private async Task CreateRequestAsync(RequestCreationReq req)
+        private async Task<bool> CreateRequestAsync(RequestCreationReq req)
         {
-            //insert tb_request
-            var tb_req = new insertObj();
-            tb_req.table = "tb_request";
-            tb_req.inserter = new Dictionary<string, string>
+            DbResObj res1 = new DbResObj();
+            try
+            {
+                //insert tb_request
+                var tb_req = new insertObj();
+                tb_req.table = "tb_request";
+                tb_req.inserter = new Dictionary<string, string>
             {
                 { nameof(req.i_staff_id), req.i_staff_id.ToString() },
                 {"i_map_stat_id", "1"}
-
             };
-            var res1 = await _dbServices.InsertAsync(tb_req);
-            if (res1.resCode != 1 || res1.result == null)
-            {
-                //_logger.LogDebug("insert error");
-                MessageBox.Show("insert error");
-            }
-
-            //insert tb_request_detail
-
-            req.items.ForEach(async row =>
-            {
-                //find item vid
-
-                var idFinder = new selectObj();
-                idFinder.table = "tb_item_vid_mapping";
-                idFinder.selecter = new Dictionary<string, string>
-                {
-                    {nameof(row.bi_item_id), row.bi_item_id.ToString() }
-                };
-                var vid = await _dbServices.SelectWhereAsync<tb_item_vid_mapping>(idFinder);
-                if (vid.resCode != 1 || vid.result == null)
-                {
-                    //_logger.LogDebug("item Id not find");
-                    MessageBox.Show("item Id not find");
-                }
-                tb_item_vid_mapping itemvid = vid.result[0];
-
-                //find uom id
-                var uomFinder = new selectObj();
-                uomFinder.table = "tb_item";
-                uomFinder.selecter = new Dictionary<string, string>
-                {
-                    {nameof(row.bi_item_id), itemvid.bi_item_id.ToString()}
-                };
-                var uomid = await _dbServices.SelectWhereAsync<tb_item>(uomFinder);
-                if (uomid.resCode != 1 || uomid.result == null)
-                {
-                    //_logger.LogDebug("uom Id not find");
-                    MessageBox.Show("uom Id not find");
-                }
-                tb_item uomId = uomid.result[0];
-
-                var tb_detail = new insertObj();
-                tb_detail.table = "tb_request_detail";
-                tb_detail.inserter = new Dictionary<string, string>
-                {
-                    {nameof(row.bi_req_id), res1.result.ToString()},
-                    {nameof(row.bi_item_id),  itemvid.bi_item_id.ToString()},
-                    {nameof(row.i_item_req_qty), row.i_item_req_qty.ToString() },
-                    {nameof(row.i_remain_req_qty),row.i_item_req_qty.ToString() },
-                    {nameof(row.i_uom_id), uomId.i_uom_id.ToString() },
-                    {nameof(row.i_map_stat_id), "1" },
-                    {nameof(row.bi_po_status_id), "1" },
-                    {nameof(row.vc_remark),row.vc_remark != ""? row.vc_remark:null}
-                };
-
-                var res2 = await _dbServices.InsertAsync(tb_detail);
-                if (res2.resCode != 1 || res2.result == null)
+                res1 = await _dbServices.InsertAsync(tb_req);
+                if (res1.resCode != 1 || res1.result == null)
                 {
                     //_logger.LogDebug("insert error");
-                    MessageBox.Show("insert error");
+                    throw new Exception("insert tb_request error");
                 }
-                else { MessageBox.Show($"Your Request has been created!\nRequest Id: {res1.result}"); }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+                return false;
+            }
+
+
+            //insert tb_request_detail
+            req.items.ForEach(async row =>
+            {
+                try
+                {
+                    //find item vid
+                    var idFinder = new selectObj();
+                    idFinder.table = "tb_item_vid_mapping";
+                    idFinder.selecter = new Dictionary<string, string>
+                    {
+                        {nameof(row.bi_item_id), row.bi_item_id.ToString() }
+                    };
+                    var vid = await _dbServices.SelectWhereAsync<tb_item_vid_mapping>(idFinder);
+                    if (vid.resCode != 1 || vid.result == null)
+                    {
+                        //_logger.LogDebug("item Id not find");
+                        MessageBox.Show("item Id not find");
+                    }
+                    tb_item_vid_mapping itemvid = vid.result[0];
+
+                    //find uom id
+                    var uomFinder = new selectObj();
+                    uomFinder.table = "tb_item";
+                    uomFinder.selecter = new Dictionary<string, string>
+                    {
+                        {nameof(row.bi_item_id), itemvid.bi_item_id.ToString()}
+                    };
+                    var uomid = await _dbServices.SelectWhereAsync<tb_item>(uomFinder);
+                    if (uomid.resCode != 1 || uomid.result == null)
+                    {
+                        //_logger.LogDebug("uom Id not find");
+                        MessageBox.Show("uom Id not find");
+                    }
+                    tb_item uomId = uomid.result[0];
+
+                    var tb_detail = new insertObj();
+                    tb_detail.table = "tb_request_detail";
+                    tb_detail.inserter = new Dictionary<string, string>
+                    {
+                        {nameof(row.bi_req_id), res1.result.ToString()},
+                        {nameof(row.bi_item_id),  itemvid.bi_item_id.ToString()},
+                        {nameof(row.i_item_req_qty), row.i_item_req_qty.ToString() },
+                        {nameof(row.i_remain_req_qty),row.i_item_req_qty.ToString() },
+                        {nameof(row.i_uom_id), uomId.i_uom_id.ToString() },
+                        {nameof(row.i_map_stat_id), "1" },
+                        {nameof(row.bi_po_status_id), "1" },
+                        {nameof(row.vc_remark),row.vc_remark != ""? row.vc_remark:null},
+                        {nameof(row.dt_exp_deli_date),row.dt_exp_deli_date.ToString("yyyy-MM-ddTHH:mm:ss")}
+                    };
+
+                    var res2 = await _dbServices.InsertAsync(tb_detail);
+                    if (res2.resCode != 1 || res2.result == null)
+                    {
+                        //_logger.LogDebug("insert error");
+                        //MessageBox.Show("insert error");
+                        throw new Exception("insert error");
+                    }
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message);
+
+                }
             });
+            MessageBox.Show($"Your Request has been created!\nRequest Id: {res1.result}");
+            return true;
         }
         //add vid
         private void panelItem_Paint(object sender, PaintEventArgs e)

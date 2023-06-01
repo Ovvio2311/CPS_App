@@ -338,8 +338,8 @@ namespace CPS_App.Services
                          INNER JOIN tb_item_category cat ON it.bi_category_id = cat.bi_category_id
                          INNER JOIN tb_item_vid_mapping vid ON it.bi_item_id = vid.bi_item_id
                          LEFT JOIN tb_item_unit uni ON it.bi_item_id = uni.bi_item_id
-                         INNER JOIN tb_location loc ON uni.bi_location_id = loc.bi_location_id
-                         INNER JOIN lut_uom_type uom ON it.i_uom_id = uom.i_uom_id
+                         LEFT JOIN tb_location loc ON uni.bi_location_id = loc.bi_location_id
+                         LEFT JOIN lut_uom_type uom ON it.i_uom_id = uom.i_uom_id
                          )a;";
                 var result = await _db.QueryAsync<StockLevelViewObj>(sql, null);
 

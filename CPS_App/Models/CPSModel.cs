@@ -44,6 +44,7 @@ namespace CPS_App.Models
             public int i_staff_id { get; set; }
             public string vc_staff_role { get; set; }
             public string vc_user_id { get; set; }
+            public string vc_staff_name { get; set; }
             public int bi_location_id { get; set; }
             public string dt_created_date { get; set; }
             public string dt_updated_datetime { get; set; }
@@ -89,6 +90,7 @@ namespace CPS_App.Models
         {
             public int bi_item_id { get; set; }
             public int bi_item_vid { get; set; }
+            public string vc_prefer_loc_id { get; set; }
             public string dt_created_date { get; set; }
             public string dt_updated_datetime { get; set; }
         }
@@ -96,6 +98,8 @@ namespace CPS_App.Models
         {
             public int bi_item_id { get; set; }
             public int bi_location_id { get; set; }
+            public int i_uom_id { get; set; }
+            public int bi_supp_id { get; set; }
             public int i_item_qty { get; set; }
             public string dt_created_date { get; set; }
             public string dt_updated_datetime { get; set; }
@@ -309,25 +313,25 @@ namespace CPS_App.Models
             public int bi_item_vid { get; set; }
             [Display(Name = "Item Name")]
             public string vc_item_desc { get; set; }
-            [Display(Name = "bi_category_id")]
+            [Display(Name = "not_shown")]
             public int bi_category_id { get; set; }
             [Display(Name = "Category")]
             public string vc_category_desc { get; set; }
-            [Display(Name = "i_uom_id")]
+            [Display(Name = "not_shown")]
             public int i_uom_id { get; set; }
             [Display(Name = "Unit of Measurement")]
             public string vc_uom_desc { get; set; }
-            [Display(Name = "bi_location_id")]
+            [Display(Name = "not_shown")]
             public int bi_location_id { get; set; }
             [Display(Name = "Location")]
             public string vc_location_desc { get; set; }
             [Display(Name = "Quantity")]
             public int i_item_qty { get; set; }
-            [Display(Name = "items_group")]
+            [Display(Name = "not_shown")]
             public string items_group { get; set; }
-            [Display(Name = "Created Date")]
+            [Display(Name = "not_shown")]
             public DateTime dt_created_date { get; set; }
-            [Display(Name = "Updated Date")]
+            [Display(Name = "not_shown")]
             public DateTime dt_updated_datetime { get; set; }
         }
 

@@ -158,6 +158,13 @@ namespace CPS_App
             
             MessageBox.Show("Update Success");
         }
-      
+
+        private void btnadd_Click(object sender, EventArgs e)
+        {
+            POACreate poaCre = new POACreate(_dbServices);
+            poaCre.MdiParent = this.MdiParent;
+            poaCre.AutoScroll = true;
+            poaCre.Show();
+        }
     }
 }

@@ -28,9 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.kryptonDataGridViewpoa = new Krypton.Toolkit.KryptonDataGridView();
             this.kryptonDataGridViewitem = new Krypton.Toolkit.KryptonDataGridView();
             this.btnedit = new Krypton.Toolkit.KryptonButton();
+            this.kryptonPalettebtn = new Krypton.Toolkit.KryptonPalette(this.components);
             this.lblpoa = new Krypton.Toolkit.KryptonLabel();
             this.lbltype = new Krypton.Toolkit.KryptonLabel();
             this.kryptonLabel3 = new Krypton.Toolkit.KryptonLabel();
@@ -51,6 +53,11 @@
             this.lblConNo = new Krypton.Toolkit.KryptonLabel();
             this.kryptonDateTimePickerec = new Krypton.Toolkit.KryptonDateTimePicker();
             this.cbxdelisc = new Krypton.Toolkit.KryptonComboBox();
+            this.kryptonPalettelbl = new Krypton.Toolkit.KryptonPalette(this.components);
+            this.kryptonPaletteheader = new Krypton.Toolkit.KryptonPalette(this.components);
+            this.kryptonPalettereadonly = new Krypton.Toolkit.KryptonPalette(this.components);
+            this.kryptonPalettepanel = new Krypton.Toolkit.KryptonPalette(this.components);
+            this.btnadd = new Krypton.Toolkit.KryptonButton();
             ((System.ComponentModel.ISupportInitialize)(this.kryptonDataGridViewpoa)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.kryptonDataGridViewitem)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cbxdelisc)).BeginInit();
@@ -75,11 +82,25 @@
             // btnedit
             // 
             this.btnedit.CornerRoundingRadius = -1F;
-            this.btnedit.Location = new System.Drawing.Point(620, 144);
+            this.btnedit.Location = new System.Drawing.Point(610, 144);
             this.btnedit.Name = "btnedit";
-            this.btnedit.Size = new System.Drawing.Size(90, 25);
+            this.btnedit.Palette = this.kryptonPalettebtn;
+            this.btnedit.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.btnedit.Size = new System.Drawing.Size(100, 35);
             this.btnedit.TabIndex = 2;
             this.btnedit.Values.Text = "Edit";
+            this.btnedit.Click += new System.EventHandler(this.btnedit_Click);
+            // 
+            // kryptonPalettebtn
+            // 
+            this.kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Border.Color1 = System.Drawing.Color.Transparent;
+            this.kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Border.DrawBorders = ((Krypton.Toolkit.PaletteDrawBorders)((((Krypton.Toolkit.PaletteDrawBorders.Top | Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Border.Rounding = 5F;
+            this.kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Color1 = System.Drawing.Color.SteelBlue;
+            this.kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Microsoft Tai Le", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Hint = Krypton.Toolkit.PaletteTextHint.SystemDefault;
             // 
             // lblpoa
             // 
@@ -244,11 +265,44 @@
             this.cbxdelisc.StateCommon.ComboBox.Content.TextH = Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.cbxdelisc.TabIndex = 24;
             // 
+            // kryptonPalettelbl
+            // 
+            this.kryptonPalettelbl.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Microsoft YaHei", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.kryptonPalettelbl.LabelStyles.LabelCommon.StateCommon.ShortText.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            // 
+            // kryptonPaletteheader
+            // 
+            this.kryptonPaletteheader.LabelStyles.LabelCommon.StateCommon.ShortText.Color1 = System.Drawing.Color.DarkCyan;
+            this.kryptonPaletteheader.LabelStyles.LabelCommon.StateCommon.ShortText.Font = new System.Drawing.Font("Trebuchet MS", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            // 
+            // kryptonPalettereadonly
+            // 
+            this.kryptonPalettereadonly.Common.StateCommon.Back.Color1 = System.Drawing.SystemColors.Control;
+            this.kryptonPalettereadonly.Common.StateCommon.Back.Color2 = System.Drawing.SystemColors.Control;
+            // 
+            // kryptonPalettepanel
+            // 
+            this.kryptonPalettepanel.Common.StateCommon.Back.Color1 = System.Drawing.Color.Transparent;
+            this.kryptonPalettepanel.Common.StateCommon.Back.Color2 = System.Drawing.Color.Transparent;
+            // 
+            // btnadd
+            // 
+            this.btnadd.CornerRoundingRadius = -1F;
+            this.btnadd.Location = new System.Drawing.Point(742, 144);
+            this.btnadd.Name = "btnadd";
+            this.btnadd.Palette = this.kryptonPalettebtn;
+            this.btnadd.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.btnadd.Size = new System.Drawing.Size(100, 35);
+            this.btnadd.TabIndex = 25;
+            this.btnadd.Values.Text = "Add";
+            this.btnadd.Click += new System.EventHandler(this.btnadd_Click);
+            // 
             // POAView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(881, 638);
+            this.Controls.Add(this.btnadd);
             this.Controls.Add(this.cbxdelisc);
             this.Controls.Add(this.kryptonDateTimePickerec);
             this.Controls.Add(this.lblConNo);
@@ -308,5 +362,11 @@
         private Krypton.Toolkit.KryptonLabel lblConNo;
         private Krypton.Toolkit.KryptonDateTimePicker kryptonDateTimePickerec;
         private Krypton.Toolkit.KryptonComboBox cbxdelisc;
+        private Krypton.Toolkit.KryptonPalette kryptonPalettelbl;
+        private Krypton.Toolkit.KryptonPalette kryptonPaletteheader;
+        private Krypton.Toolkit.KryptonPalette kryptonPalettereadonly;
+        private Krypton.Toolkit.KryptonPalette kryptonPalettepanel;
+        private Krypton.Toolkit.KryptonPalette kryptonPalettebtn;
+        private Krypton.Toolkit.KryptonButton btnadd;
     }
 }

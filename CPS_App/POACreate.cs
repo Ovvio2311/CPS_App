@@ -35,6 +35,7 @@ namespace CPS_App
 
         private async void POACreate_Load(object sender, EventArgs e)
         {
+            pn2.Hide();
             userIden = AuthService._userClaim;
             if (userIden != null)
             {
@@ -270,7 +271,22 @@ namespace CPS_App
             pn2.Controls.OfType<ComboBox>().ToList().ForEach(t => t.SelectedIndex = 0);
         }
 
+      
 
+        private void pn1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void pn2_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void btnnext_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
 

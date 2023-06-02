@@ -34,7 +34,7 @@ namespace CPS_App.Helpers
             if (userInfo.resCode != 1 || userInfo.result == null)
             {
                 //_logger.LogDebug("uom Id not find");
-                MessageBox.Show("uom Id not find");
+                MessageBox.Show("Id not find");
             }
             tb_staff info = userInfo.result[0];
             var userRole = await _userManager.GetRolesAsync(user);
@@ -49,6 +49,7 @@ namespace CPS_App.Helpers
                 new Claim("staff_id",info.i_staff_id.ToString()),
                 new Claim("staff_role",info.vc_staff_role.ToString()),
                 new Claim("id", user.Id),
+                new Claim("staff_name", info.vc_staff_name.ToString()),
             };
             return new ClaimsIdentity(claims);
         }

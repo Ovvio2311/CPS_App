@@ -39,6 +39,7 @@ namespace CPS_App
             if (userIden != null)
             {
                 var userRole = userIden.Claims.FirstOrDefault(x => x.Type == "role").Value.ToString();
+                var userLoc = userIden.Claims.FirstOrDefault(x => x.Type == "location_id").Value.ToString();
             }
 
             lblitem.Hide();

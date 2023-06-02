@@ -30,6 +30,17 @@ namespace CPS_App.Models
         {
 
         }
+        public class lut_poa_status
+        {
+            [Display(Name = "ID")]
+            public int bi_poa_status_id { get; set; }
+            [Display(Name = "Name")]
+            public string vc_poa_status_desc { get; set; }
+            [Display(Name = "Create Date")]
+            public string dt_created_date { get; set; }
+            [Display(Name = "Update Date")]
+            public string dt_updated_datetime { get; set; }
+        }
         public class tb_location : CPSModelBase
         {
             [Display(Name = "ID")]
@@ -343,29 +354,31 @@ namespace CPS_App.Models
             }
             [Display(Name = "Poa Id")]
             public int bi_poa_id { get; set; }
-            [Display(Name = "Poa Header Id")]
+            [Display(Name = "not_shown")]
             public int bi_poa_header_id { get; set; }
-            [Display(Name = "Type")]
+            [Display(Name = "not_shown")]
             public int ti_poa_type_id { get; set; }
+            [Display(Name = "Type")]
+            public string vc_poa_type_desc { get; set; }
             [Display(Name = "not_shown")]
             public long bi_poa_status_id { get;set; }
             [Display(Name = "Status")]
             public string vc_poa_status { get; set; }
-            [Display(Name = "bi_deli_loc_id")]
+            [Display(Name = "not_shown")]
             public int bi_deli_loc_id { get; set; }
             [Display(Name = "Delivery Location")]
             public string vc_location_desc { get; set; }
-            [Display(Name = "bi_supp_id")]
+            [Display(Name = "not_shown")]
             public int bi_supp_id { get; set; }
             [Display(Name = "Supplier")]
             public string vc_supp_desc { get; set; }
             [Display(Name = "currency")]
             public string vc_currency { get; set; }
-            [Display(Name = "ti_tc_id")]
+            [Display(Name = "not_shown")]
             public int ti_tc_id { get; set; }
             [Display(Name = "Terms and Conditions")]
             public string vc_tc_desc { get; set; }
-            [Display(Name = "ti_deli_sched_id")]
+            [Display(Name = "not_shown")]
             public int ti_deli_sched_id { get; set; }
             [Display(Name = "Delivery Schedule")]
             public string vc_deli_sched_desc { get; set; }
@@ -373,18 +386,18 @@ namespace CPS_App.Models
             public DateTime dt_effect_date { get; set; }
             [Display(Name = "Contract No")]
             public string bi_contract_no { get; set; }
-            [Display(Name = "Create Date")]
+            [Display(Name = "not_shown")]
             public DateTime dt_created_date { get; set; }
-            [Display(Name = "Update Date")]
+            [Display(Name = "not_shown")]
             public DateTime dt_updated_datetime { get; set; }
-            [Display(Name = "itemLists")]
+            [Display(Name = "not_shown")]
             public List<PoaItemList> itemLists { get; set; }
         }
         public class PoaItemList
         {
             [Display(Name = "Poa line Id")]
             public int bi_poa_line_id { get; set; }
-            [Display(Name = "Poa Header Id")]
+            [Display(Name = "not_shown")]
             public int bi_poa_header_id { get; set; }
             [Display(Name = "Item Id")]
             public int bi_item_id { get; set; }
@@ -394,7 +407,7 @@ namespace CPS_App.Models
             public int bi_supp_item_id { get; set; }
             [Display(Name = "Promise Qty")]
             public decimal dc_promise_qty { get; set; }
-            [Display(Name = "i_uom_id")]
+            [Display(Name = "not_shown")]
             public int i_uom_id { get; set; }
             [Display(Name = "Unit of Measurement")]
             public string vc_uom_desc { get; set; }
@@ -406,7 +419,7 @@ namespace CPS_App.Models
             public decimal dc_amount { get; set; }
             [Display(Name = "Reference")]
             public string vc_reference { get; set; }
-            [Display(Name = "Quotation No.")]
+            [Display(Name = "not_shown")]
             public string bi_quot_no { get; set; }
 
         }

@@ -1,19 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Data;
-using System.Drawing;
 using System.Linq;
 using System.Linq.Dynamic.Core;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Windows.Media;
 using CPS_App.Services;
 using Krypton.Toolkit;
-using ScintillaNET;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using static CPS_App.Models.CPSModel;
 using static CPS_App.Models.DbModels;
 
@@ -32,19 +24,30 @@ namespace CPS_App
             _dbServices = dbServices;
         }
 
-        private void POAEdit_Load(object sender, EventArgs e)
+        private async void POAEdit_Load(object sender, EventArgs e)
         {
             if (obj.Count() == 0)
             {
                 MessageBox.Show("error");
                 return;
             }
-            var editPoaLine = obj.ToList().ElementAt(index);
-            kryptonDataGridViewit.DataSource = editPoaLine.itemLists;
-            var list = new List<string>() { "Item Id", "i_uom_id" };
-            
-            
-            GenUtil.dataGridAttrName<PoaItemList>(kryptonDataGridViewit,list);
+
+            var deliscType = await _dbServices.SelectAllAsync<lut_deli_schedule_type>();
+            List<lut_deli_schedule_type> sc = JsonConvert.DeserializeObject<List<lut_deli_schedule_type>>(JsonConvert.SerializeObject(deliscType.result));
+            sc.ForEach(x => cbxdelisc.Items.Add($"{x.ti_deli_sched_id}: {x.vc_deli_sched_desc}"));
+
+            var stType = await _dbServices.SelectAllAsync<lut_poa_status>();
+            List<lut_poa_status> st = JsonConvert.DeserializeObject<List<lut_poa_status>>(JsonConvert.SerializeObject(stType.result));
+            st.ForEach(x => cbxst.Items.Add($"{x.bi_poa_status_id}: {x.vc_poa_status_desc}"));
+
+            var editPoaLine = obj.ToList().Where(x => x.bi_poa_header_id == index).FirstOrDefault();
+            var observableItems = new ObservableCollection<PoaItemList>(editPoaLine.itemLists);
+            BindingList<PoaItemList> source = observableItems.ToBindingList();
+
+
+            kryptonDataGridViewit.DataSource = source;
+
+            GenUtil.dataGridAttrName<PoaItemList>(kryptonDataGridViewit, new List<string>() { "not_shown" });
             //kryptonDataGridViewit.Columns.ToDynamicList().ForEach(col =>
             //{
             //    DataGridViewColumn column = col;
@@ -63,18 +66,71 @@ namespace CPS_App
 
         private async void btnmod_Click(object sender, EventArgs e)
         {
-            var readyToEdit = obj.ToList().ElementAt(index).itemLists.ElementAt(kryptonDataGridViewit.CurrentRow.Index);
+            int selectdId = GenUtil.ConvertObjtoType<int>(kryptonDataGridViewit.CurrentRow.Cells["bi_poa_line_id"].Value);
+            var poaItem = obj.Where(x => x.bi_poa_header_id == index).FirstOrDefault();
+            var readyToEdit = obj.FirstOrDefault(x => x.bi_poa_header_id == index).itemLists
+                .Where(x => x.bi_poa_line_id == selectdId).FirstOrDefault();
+
+            var poast = cbxst.SelectedItem.ToString();
+            if (poast != null) { poast = poast.Split(":").ElementAt(0); }
+            var delisc = cbxdelisc.SelectedItem.ToString();
+            if (delisc != null) { delisc = delisc.Split(":").ElementAt(0); }
+
             if (txtpro.Text == readyToEdit.dc_promise_qty.ToString() &&
                 txtmin.Text == readyToEdit.dc_min_qty.ToString() && txtp.Text == readyToEdit.dc_price.ToString() &&
-                txtam.Text == readyToEdit.dc_amount.ToString() && txtref.Text == readyToEdit.vc_reference.ToString())
+                txtam.Text == readyToEdit.dc_amount.ToString() && txtref.Text == readyToEdit.vc_reference.ToString() &&
+                cbxst.SelectedItem.ToString().Contains(poaItem.bi_poa_status_id.ToString()) && 
+                cbxdelisc.SelectedItem.ToString().Contains(poaItem.ti_deli_sched_id.ToString()))
             {
                 MessageBox.Show("Value haven't change");
                 return;
             }
+            
+            var updatepoa = new updateObj()
+            {
+                table = "tb_poa",
+                updater = new Dictionary<string, string>
+                {
+                    {nameof(poaItem.bi_poa_status_id), poast}
+                },
+                selecter = new Dictionary<string, string>
+                {
+                    {nameof(poaItem.bi_poa_id),poaItem.bi_poa_id.ToString() }
+                }
+            };
+
+            var respoa = await _dbServices.UpdateAsync(updatepoa);
+            if (respoa.resCode != 1)
+            {
+                MessageBox.Show("update error");
+                return;
+            }
+
+            var updatepoaheader = new updateObj()
+            {
+                table = "tb_poa_header",
+                updater = new Dictionary<string, string>
+                {
+                    {nameof(poaItem.ti_deli_sched_id),delisc}
+                },
+                selecter = new Dictionary<string, string>
+                {
+                    {nameof(poaItem.bi_poa_id),poaItem.bi_poa_id.ToString() },
+
+                }
+            };
+            var respoaheader = await _dbServices.UpdateAsync(updatepoaheader);
+            if (respoaheader.resCode != 1)
+            {
+                MessageBox.Show("update error");
+                return;
+            }
+
+            //MessageBox.Show("Update Success");
 
             var updateObj = new updateObj()
             {
-                table = "tb_po_line",
+                table = "tb_poa_line",
                 updater = new Dictionary<string, string>
                     {
                         {nameof(readyToEdit.dc_promise_qty), txtpro.Text.ToString() },
@@ -107,10 +163,12 @@ namespace CPS_App
 
             if (e.RowIndex == kryptonDataGridViewit.CurrentRow.Index)
             {
-                var readyToEdit = obj.ToList().ElementAt(index).itemLists.ElementAt(e.RowIndex);
+                int selectdId = GenUtil.ConvertObjtoType<int>(kryptonDataGridViewit.CurrentRow.Cells["bi_poa_line_id"].Value);
+                var poaItem = obj.Where(x => x.bi_poa_header_id == index).FirstOrDefault();
+                var readyToEdit = obj.FirstOrDefault(x => x.bi_poa_header_id == index).itemLists
+                    .Where(x => x.bi_poa_line_id == selectdId).FirstOrDefault();
 
                 txtline.Text = readyToEdit.bi_poa_line_id.ToString();
-                txthead.Text = readyToEdit.bi_poa_header_id.ToString();
                 txtit.Text = readyToEdit.vc_item_desc.ToString();
                 txtsupid.Text = readyToEdit.bi_supp_item_id.ToString();
                 txtpro.Text = readyToEdit.dc_promise_qty.ToString();
@@ -120,6 +178,13 @@ namespace CPS_App
                 txtam.Text = readyToEdit.dc_amount.ToString();
                 txtref.Text = readyToEdit.vc_reference.ToString();
                 txtqu.Text = readyToEdit.bi_quot_no.ToString();
+                txtpoa.Text = poaItem.bi_poa_id.ToString();
+                txttype.Text = poaItem.vc_poa_type_desc.ToString();                
+                cbxst.SelectedItem = cbxst.Items.ToDynamicList<string>()
+                .Where(x => x.Contains(poaItem.bi_poa_status_id.ToString())).FirstOrDefault();
+                cbxdelisc.SelectedItem = cbxdelisc.Items.ToDynamicList<string>()
+                .Where(x => x.Contains(poaItem.ti_deli_sched_id.ToString())).FirstOrDefault();
+
             }
         }
     }

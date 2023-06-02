@@ -53,6 +53,7 @@ namespace CPS_App
             txtremark = new KryptonTextBox();
             lblremark = new KryptonLabel();
             contextMenuStrip1 = new ContextMenuStrip(components);
+            kryptonPaletteheader = new KryptonPalette(components);
             ((System.ComponentModel.ISupportInitialize)panelInfo).BeginInit();
             panelInfo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)panelItem).BeginInit();
@@ -65,7 +66,9 @@ namespace CPS_App
             lblTitle.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point);
             lblTitle.Location = new Point(50, 26);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(93, 20);
+            lblTitle.Palette = kryptonPaletteheader;
+            lblTitle.PaletteMode = PaletteMode.Custom;
+            lblTitle.Size = new Size(130, 23);
             lblTitle.TabIndex = 0;
             lblTitle.Values.Text = "Request Create";
             // 
@@ -276,11 +279,16 @@ namespace CPS_App
             contextMenuStrip1.Name = "contextMenuStrip1";
             contextMenuStrip1.Size = new Size(61, 4);
             // 
+            // kryptonPaletteheader
+            // 
+            kryptonPaletteheader.LabelStyles.LabelCommon.StateCommon.ShortText.Color1 = Color.DarkCyan;
+            kryptonPaletteheader.LabelStyles.LabelCommon.StateCommon.ShortText.Font = new Font("Trebuchet MS", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            // 
             // RequestCreate
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1105, 571);
+            ClientSize = new Size(898, 571);
             Controls.Add(panelItem);
             Controls.Add(btnClear);
             Controls.Add(btnSubmit);
@@ -327,5 +335,6 @@ namespace CPS_App
         private KryptonPalette kryptonPalettereadonly;
         private ContextMenuStrip contextMenuStrip1;
         private KryptonComboBox cbxname;
+        private KryptonPalette kryptonPaletteheader;
     }
 }

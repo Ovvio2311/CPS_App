@@ -347,6 +347,8 @@ namespace CPS_App.Models
             public int bi_poa_header_id { get; set; }
             [Display(Name = "Type")]
             public int ti_poa_type_id { get; set; }
+            [Display(Name = "not_shown")]
+            public long bi_poa_status_id { get;set; }
             [Display(Name = "Status")]
             public string vc_poa_status { get; set; }
             [Display(Name = "bi_deli_loc_id")]

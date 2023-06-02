@@ -396,22 +396,23 @@ namespace CPS_App.Services
             //var res = new DbResObj();
 
             string sql = $@"select * from (
-                      	 select poa.bi_poa_id, poa.ti_poa_type_id, poa.vc_poa_status, hd.bi_poa_header_id,
-                          hd.bi_deli_loc_id, loc.vc_location_desc, hd.bi_supp_id, sup.vc_supp_desc, hd.vc_currency, hd.ti_tc_id, tc.vc_tc_desc, hd.ti_deli_sched_id, delisc.vc_deli_sched_desc, 
-                          hd.dt_effect_date, hd.bi_contract_no,
-                      	  ln.bi_item_id, it.vc_item_desc, ln.bi_supp_item_id, ln.dc_promise_qty, uom.vc_uom_desc, ln.i_uom_id, ln.dc_min_qty, ln.dc_price, ln.dc_amount, ln.vc_reference, ln.bi_quot_no,
-                          poa.dt_created_date, poa.dt_updated_datetime
-                          from tb_poa poa
-                          inner join tb_poa_header hd on poa.bi_poa_id = hd.bi_poa_id
-                          left join tb_poa_line ln on hd.bi_poa_header_id = ln.bi_poa_header_id
-                          inner join tb_supplier sup on hd.bi_supp_id = sup.bi_supp_id
-                          inner join lut_term_and_con tc on hd.ti_tc_id = tc.ti_tc_id
-                          inner join lut_deli_schedule_type delisc on hd.ti_deli_sched_id = delisc.ti_deli_sched_id
-                          inner join tb_item it on ln.bi_item_id = it.bi_item_id
-                          inner join lut_uom_type uom on ln.i_uom_id = uom.i_uom_id
-                          inner join lut_poa_type poatype on poa.ti_poa_type_id = poatype.ti_poa_type_id
-                          inner join tb_location loc on hd.bi_deli_loc_id = loc.bi_location_id
-                          ) a;";
+	                     select poa.bi_poa_id, poa.ti_poa_type_id, poa.bi_poa_status_id, poast.vc_poa_status_desc, hd.bi_poa_header_id,
+                         hd.bi_deli_loc_id, loc.vc_location_desc, hd.bi_supp_id, sup.vc_supp_desc, hd.vc_currency, hd.ti_tc_id, tc.vc_tc_desc, hd.ti_deli_sched_id, delisc.vc_deli_sched_desc, 
+                         hd.dt_effect_date, hd.bi_contract_no,
+	                     ln.bi_item_id, it.vc_item_desc, ln.bi_supp_item_id, ln.dc_promise_qty, uom.vc_uom_desc, ln.i_uom_id, ln.dc_min_qty, ln.dc_price, ln.dc_amount, ln.vc_reference, ln.bi_quot_no,
+                         poa.dt_created_date, poa.dt_updated_datetime
+                         from tb_poa poa
+                         inner join tb_poa_header hd on poa.bi_poa_id = hd.bi_poa_id
+                         left join tb_poa_line ln on hd.bi_poa_header_id = ln.bi_poa_header_id
+                         inner join tb_supplier sup on hd.bi_supp_id = sup.bi_supp_id
+                         inner join lut_term_and_con tc on hd.ti_tc_id = tc.ti_tc_id
+                         inner join lut_deli_schedule_type delisc on hd.ti_deli_sched_id = delisc.ti_deli_sched_id
+                         inner join tb_item it on ln.bi_item_id = it.bi_item_id
+                         inner join lut_uom_type uom on ln.i_uom_id = uom.i_uom_id
+                         inner join lut_poa_type poatype on poa.ti_poa_type_id = poatype.ti_poa_type_id
+                         inner join tb_location loc on hd.bi_deli_loc_id = loc.bi_location_id
+                         left join lut_poa_status poast on poa.bi_poa_status_id = poast.bi_poa_status_id
+                         ) a;";
 
             var result = await _db.QueryAsync<dynamic>(sql, null);
             if (result.Count() > 0)

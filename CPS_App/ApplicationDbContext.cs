@@ -90,7 +90,8 @@ namespace CPS_App
             {
                 b.Property<int>("Id")
                     .ValueGeneratedOnAdd()
-                    .HasColumnType("int");
+                    .HasColumnType("int")
+                    .HasColumnName("i_claim_id");
 
                 b.Property<string>("ClaimType")
                     .HasColumnType("longtext")
@@ -109,7 +110,7 @@ namespace CPS_App
 
                 b.HasIndex("RoleId");
 
-                b.ToTable("RoleClaims", (string)null);
+                b.ToTable("tb_role_claim", (string)null);
             });
 
             modelBuilder.Entity<IdentityUser>(/*"Microsoft.AspNetCore.Identity.IdentityUser",*/ b =>
@@ -236,7 +237,7 @@ namespace CPS_App
 
                 b.HasIndex("UserId");
 
-                b.ToTable("UserClaims", (string)null);
+                b.ToTable("tb_user_claim", (string)null);
             });
 
             //modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
@@ -335,23 +336,23 @@ namespace CPS_App
                 b.HasDiscriminator().HasValue("AppUsers");
             });
 
-            //modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
-            //{
-            //    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
-            //        .WithMany()
-            //        .HasForeignKey("RoleId")
-            //        .OnDelete(DeleteBehavior.Cascade)
-            //        .IsRequired();
-            //});
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+            {
+                b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    .WithMany()
+                    .HasForeignKey("RoleId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+            });
 
-            //modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
-            //{
-            //    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
-            //        .WithMany()
-            //        .HasForeignKey("UserId")
-            //        .OnDelete(DeleteBehavior.Cascade)
-            //        .IsRequired();
-            //});
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+            {
+                b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    .WithMany()
+                    .HasForeignKey("UserId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+            });
 
             //modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
             //{

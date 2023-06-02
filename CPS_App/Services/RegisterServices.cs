@@ -1,7 +1,6 @@
 ﻿using CPS_App.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
-
 using Microsoft.VisualBasic.ApplicationServices;
 using Newtonsoft.Json.Linq;
 using System;
@@ -21,7 +20,7 @@ namespace CPS_App.Services
 {
     public class RegisterServices
     {
-        
+
         private readonly UserManager<AppUsers> _userManager;
         private readonly SignInManager<AppUsers> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
@@ -29,7 +28,9 @@ namespace CPS_App.Services
         private readonly IUserStore<AppUsers> _userStore;
         private readonly IUserEmailStore<AppUsers> _emailStore;
         private readonly DbServices _dbServices;
-        
+
+
+
         public ILogger<RegisterServices> _logger { get; set; }
 
         public RegisterServices
@@ -42,6 +43,7 @@ namespace CPS_App.Services
             DbServices dbServices,
             ILogger<RegisterServices> logger
 
+
         )
         {
             _userManager = userManager;
@@ -52,6 +54,7 @@ namespace CPS_App.Services
             _emailStore = GetEmailStore();
             _dbServices = dbServices;
             _logger = logger;
+
         }
         public async Task<bool> CreateUserAsync(dynamic request)
         {
@@ -62,7 +65,7 @@ namespace CPS_App.Services
             var roleuser = await _roleManager.FindByNameAsync("User");
             var groupRole = await _userManager.GetUsersInRoleAsync("Admin");
             var rr = await _userManager.AddToRoleAsync(iuser, "Admin");
-        
+
             var singin = _signInManager.CreateUserPrincipalAsync(iuser);
 
             var user = CreateUser();
@@ -71,8 +74,17 @@ namespace CPS_App.Services
             await _emailStore.SetEmailAsync(user, request.email, CancellationToken.None);
             var result = await _userManager.CreateAsync(user, request.password);
             await setStaffAsnyc(request.location, request.name, request.empid, request.staffRole, CancellationToken.None);
-            await SetUserRoleAsync(request.name, request.role, CancellationToken.None);                      
-            
+            await SetUserRoleAsync(request.name, request.role, CancellationToken.None);
+            AppUsers useriden = await _userManager.FindByIdAsync(request.name);
+            List<Claim> claims = new List<Claim>()
+            {
+                new Claim("user", useriden.NormalizedUserName.ToLower()),                
+                new Claim("email", useriden.Email),
+                new Claim("fail_count", GenUtil.ConvertObjtoType<string>(useriden.AccessFailedCount)),                                
+                new Claim("id", useriden.Id),                
+            };
+            var res = await _userManager.AddClaimsAsync(useriden, claims);
+
             return result.Succeeded ? true : false;
 
         }
@@ -107,8 +119,8 @@ namespace CPS_App.Services
             var user = await _userManager.FindByNameAsync(name);
             if (user == null) { return false; }
             var userID = user.Id;
-            
-            
+
+
             //find Location Id
             selectObj findLoc = new selectObj();
             findLoc.selecter.Add("vc_location_desc", location);
@@ -151,12 +163,12 @@ namespace CPS_App.Services
             var userID = user.Id;
 
 
-        
+
             //find role id
             var roleType = await _roleManager.FindByNameAsync(role);
             if (roleType == null) { return false; }
             var roleID = roleType.Id;
-         
+
             //create insert tb_user_roles object
             var insertObj = new tb_user_roles()
             {
@@ -177,6 +189,19 @@ namespace CPS_App.Services
             var result = await _dbServices.SelectWhereAsync(obj);
             if (result.resCode != 1 || result.result.Count > 0) { return false; }
             return true;
+        }
+        public async Task<bool> InsertclaimAsync(string roleName, Claim claim)
+        {
+            IdentityRole role = await _roleManager.FindByNameAsync(roleName);
+            IdentityResult res = await _roleManager.AddClaimAsync(role, claim);
+            if (res.Succeeded)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

@@ -44,20 +44,7 @@ namespace CPS_App
 
 
             GenUtil.dataGridAttrName<StockLevelViewObj>(dataGridViewitem, new List<string>() { "not_shown" });
-            //dataGridViewitem.Columns.ToDynamicList().ForEach(col =>
-            //{
-            //    DataGridViewColumn column = col;
-            //    col.HeaderText = typeof(StockLevelViewObj).GetProperties().ToList()
-            //    .Where(x => col.HeaderText == x.Name)
-            //    .Select(x => x.GetCustomAttribute<DisplayAttribute>())
-            //    .Where(x => x != null).Select(x => x.Name.ToString()).FirstOrDefault();
-            //    if (column.HeaderText == "bi_location_id" || column.HeaderText == "items_group"
-            //    || column.HeaderText == "i_uom_id" || column.HeaderText == "bi_category_id")
-            //    {
-            //        column.Visible = false;
-            //    }
-
-            //});
+           
         }
 
         private void dataGridViewitem_CellClick(object sender, DataGridViewCellEventArgs e)

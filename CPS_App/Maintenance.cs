@@ -13,7 +13,9 @@ using System.Windows.Forms;
 using static CPS_App.Models.CPSModel;
 using static CPS_App.Models.DbModels;
 using Krypton.Toolkit;
-
+using Newtonsoft.Json;
+using System.Security.Claims;
+using Krypton.Toolkit.Suite.Extended.DataGridView;
 
 namespace CPS_App
 {
@@ -31,9 +33,10 @@ namespace CPS_App
 
         private async void Maintenance_Load(object sender, EventArgs e)
         {
+            this.multiDetailView.TabPages.Remove(tabPagesup);
             var result = await _dbServices.SelectAllAsync<tb_roles>();
-            kryptodatagrid.DataSource = result.result;
-            GenUtil.dataGridAttrName<tb_roles>(kryptodatagrid);
+            kryptodatagridrole.DataSource = result.result;
+            GenUtil.dataGridAttrName<tb_roles>(kryptodatagridrole);
 
             var userResult = await _dbServices.SelectAllAsync<tb_users>();
             kryptonDataGridViewUser.DataSource = userResult.result;
@@ -67,6 +70,14 @@ namespace CPS_App
             kryptonDataGridViewsup.DataSource = sup.result;
             GenUtil.dataGridAttrName<tb_supplier>(kryptonDataGridViewsup);
 
+            var rocl = await _dbServices.SelectRoleClaim();
+            kryptonDataGridViewroleclaim.DataSource = rocl.result;
+            GenUtil.dataGridAttrName<role_claim_table>(kryptodatagridrole);
+
+            var roclType = await _dbServices.SelectAllAsync<tb_roles>();
+            List<tb_roles> roleclaim = JsonConvert.DeserializeObject<List<tb_roles>>(JsonConvert.SerializeObject(roclType.result));
+            roleclaim.ForEach(x => cbxroleinroleclaim.Items.Add($"{x.vc_role_name}"));
+
             multiDetailView.Show();
 
         }
@@ -97,8 +108,8 @@ namespace CPS_App
         private async void btnAddnewuser_Click(object sender, EventArgs e)
         {
             Register regNew = new Register(_registerServices, _dbServices);
-            //regNew.MdiParent = this;
-            regNew.ShowDialog();
+            regNew.MdiParent = this.MdiParent;
+            regNew.Show();
         }
 
         private async void btndelisc_Click(object sender, EventArgs e)
@@ -162,5 +173,26 @@ namespace CPS_App
 
         }
 
+        private void tabroleclaim_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private async void btnaddclaim_Click(object sender, EventArgs e)
+        {
+            Dictionary<string, string> value = new Dictionary<string, string>()
+            {
+                {"vc_role_name",cbxroleinroleclaim.SelectedItem.ToString()},
+                {"vc_claim_type", txtclaimt.Text },
+                {"vc_claim_value",txtclaimv.Text},
+            };
+            if(await _dbServices.CheckDuplicateClaim<role_claim_table>(value))
+            {
+                Claim claim = new Claim(txtclaimt.Text.ToLower(), txtclaimv.Text.ToLower());
+
+                var res = await _registerServices.InsertclaimAsync(cbxroleinroleclaim.SelectedItem.ToString(), claim);
+                MessageBox.Show(res ? "Claim Added" : "Error");
+            }
+        }
     }
 }

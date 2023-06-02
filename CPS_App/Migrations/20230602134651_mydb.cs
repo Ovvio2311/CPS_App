@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -6,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CPS_App.Migrations
 {
     /// <inheritdoc />
-    public partial class createdb : Migration
+    public partial class mydb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -67,6 +68,56 @@ namespace CPS_App.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "tb_role_claim",
+                columns: table => new
+                {
+                    i_claim_id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    vc_role_id = table.Column<string>(type: "varchar(255)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    vc_claim_type = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    vc_claim_value = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_tb_role_claim", x => x.i_claim_id);
+                    table.ForeignKey(
+                        name: "FK_tb_role_claim_tb_roles_vc_role_id",
+                        column: x => x.vc_role_id,
+                        principalTable: "tb_roles",
+                        principalColumn: "vc_role_id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "tb_user_claim",
+                columns: table => new
+                {
+                    i_claim_id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    vc_user_id = table.Column<string>(type: "varchar(255)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    vc_claim_type = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    vc_claim_value = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_tb_user_claim", x => x.i_claim_id);
+                    table.ForeignKey(
+                        name: "FK_tb_user_claim_tb_users_vc_user_id",
+                        column: x => x.vc_user_id,
+                        principalTable: "tb_users",
+                        principalColumn: "vc_user_id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "tb_user_roles",
                 columns: table => new
                 {
@@ -94,10 +145,20 @@ namespace CPS_App.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
+                name: "IX_tb_role_claim_vc_role_id",
+                table: "tb_role_claim",
+                column: "vc_role_id");
+
+            migrationBuilder.CreateIndex(
                 name: "RoleNameIndex",
                 table: "tb_roles",
                 column: "vc_nor_name",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_tb_user_claim_vc_user_id",
+                table: "tb_user_claim",
+                column: "vc_user_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_tb_user_roles_vc_role_id",
@@ -119,6 +180,12 @@ namespace CPS_App.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "tb_role_claim");
+
+            migrationBuilder.DropTable(
+                name: "tb_user_claim");
+
             migrationBuilder.DropTable(
                 name: "tb_user_roles");
 

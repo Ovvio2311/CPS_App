@@ -24,11 +24,25 @@ namespace CPS_App.Models
             public lut_term_and_con tc { get; set; }
             public tb_supplier supplier { get; set; }
             public tb_roles role { get; set; }
+            public role_claim_table role_Claim { get; set; }
 
         }
         public class CPSModelBase
         {
 
+        }
+        public class role_claim_table
+        {
+            [Display(Name = "ID")]
+            public int i_claim_id { get; set; }
+            [Display(Name = "Role_id")]
+            public string vc_role_id { get; set; }
+            [Display(Name = "Role Name")]
+            public string vc_role_name { get;set; }
+            [Display(Name = "Role Type")]
+            public string vc_claim_type { get; set; }
+            [Display(Name = "Role value")]
+            public string vc_claim_value { get; set; }
         }
         public class lut_poa_status
         {

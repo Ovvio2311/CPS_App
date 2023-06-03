@@ -59,13 +59,13 @@ namespace CPS_App
         private static void ConfigureServices(IServiceCollection services)
         {
             services.AddIdentity<AppUsers, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
-
+            services.AddScoped<RegisterServices>();
             services.AddTransient<Form3>();
             services.AddSingleton<GenUtil>();
             services.AddSingleton<Db>();
             services.AddSingleton<AccountServices>();
             services.AddSingleton<AppConfig>();
-            services.AddSingleton<Dashboard>();
+            services.AddScoped<Dashboard>();
             services.AddScoped<Register>();
             services.AddScoped<Login>();
             services.AddSingleton<Validator>();
@@ -85,7 +85,7 @@ namespace CPS_App
 
             services.AddScoped<RequestCreate>();
             services.AddScoped<AuthService>();
-            services.AddScoped<RegisterServices>();
+
             services.AddDbContext<ApplicationDbContext>();
 
             //services.AddAuthorization(options =>

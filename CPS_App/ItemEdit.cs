@@ -1,56 +1,50 @@
 ﻿using CPS_App.Services;
-using System;
-using System.Collections.Generic;
+using Krypton.Toolkit;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using static CPS_App.Models.CPSModel;
 using static CPS_App.Models.DbModels;
 
 namespace CPS_App
 {
-    public partial class ItemEdit : Form
+    public partial class ItemEdit : KryptonForm
     {
-        //public int index;
-        public List<StockLevelViewObj> _stock;
+        public int selectId;
+        public List<StockLevelViewObj> stock;
+        public BindingList<StockLevelViewObj> stockList;
         private DbServices _dbServices;
-        public ItemEdit(List<StockLevelViewObj> obj, DbServices dbServices)
+        public ItemEdit(List<StockLevelViewObj> obj, DbServices dbServices, int selectId)
         {
             InitializeComponent();
-            _stock = obj;
+            stock = obj;
             _dbServices = dbServices;
-            //this.index = index;
+            this.selectId = selectId;
+            stockList =new BindingList<StockLevelViewObj>();
         }
 
         private void ItemEdit_Load(object sender, EventArgs e)
         {
-            if (_stock == null)
+            if (stock == null)
             {
                 MessageBox.Show("error");
                 return;
             }
-            dataGridViewitem.DataSource = _stock;
-            dataGridViewitem.Columns.ToDynamicList().ForEach(col =>
-            {
-                DataGridViewColumn column = col;
-                col.HeaderText = typeof(StockLevelViewObj).GetProperties().ToList()
-                .Where(x => col.HeaderText == x.Name)
-                .Select(x => x.GetCustomAttribute<DisplayAttribute>())
-                .Where(x => x != null).Select(x => x.Name.ToString()).FirstOrDefault();
-                if (column.HeaderText == "bi_location_id" || column.HeaderText == "items_group"
-                || column.HeaderText == "i_uom_id" || column.HeaderText == "bi_category_id")
-                {
-                    column.Visible = false;
-                }
+            List<StockLevelViewObj> selectItems = stock.Where(x => x.bi_item_id == selectId)
+                .Select(x => x).ToList();
 
-            });
+            var observableItems = new ObservableCollection<StockLevelViewObj>(selectItems);
+            stockList = observableItems.ToBindingList();
+            dataGridViewitem.DataSource = stockList;
+
+
+            GenUtil.dataGridAttrName<StockLevelViewObj>(dataGridViewitem, new List<string>() { "not_shown" });
+           
         }
 
         private void dataGridViewitem_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -59,7 +53,11 @@ namespace CPS_App
 
             if (e.RowIndex == dataGridViewitem.CurrentRow.Index)
             {
-                var readyToEdit = _stock.ToList().ElementAt(e.RowIndex);
+                if (e.RowIndex > dataGridViewitem.RowCount) { return; }
+                //dataGridViewitem.DataSource = null;
+                int selectid = GenUtil.ConvertObjtoType<int>(dataGridViewitem.CurrentRow.Cells["bi_location_id"].Value);                                
+
+                var readyToEdit = stockList.ToList().Where(x=>x.bi_location_id == selectid).FirstOrDefault();
                 txtvid.Text = readyToEdit.bi_item_vid.ToString();
                 txtid.Text = readyToEdit.bi_item_id.ToString();
                 txtcat.Text = readyToEdit.vc_category_desc.ToString();
@@ -73,7 +71,7 @@ namespace CPS_App
 
         private async void btnmod_Click(object sender, EventArgs e)
         {
-            var reit = _stock.ToList().ElementAt(dataGridViewitem.CurrentRow.Index);
+            var reit = stock.ToList().ElementAt(dataGridViewitem.CurrentRow.Index);
 
             if (txtqty.Text.Equals(string.Empty))
             {

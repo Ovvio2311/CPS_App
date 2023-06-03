@@ -29,12 +29,15 @@ namespace CPS_App
         {
             InitializeComponent();
             obj = new POATableObj();
-            templist= new List<PoaItemList>();
+            templist = new List<PoaItemList>();
             _dbServices = dbServices;
         }
 
         private async void POACreate_Load(object sender, EventArgs e)
         {
+            pn2.Hide();
+            pn2.Controls.OfType<KryptonTextBox>().ToList().ForEach(x => x.Validating += requiredFieldCheck);
+            pn2.Controls.OfType<KryptonComboBox>().ToList().ForEach(x => x.Validating += requiredFieldCheck);
             userIden = AuthService._userClaim;
             if (userIden != null)
             {
@@ -83,29 +86,24 @@ namespace CPS_App
         public void enableValidation()
         {
             btnsubmit.Enabled = true;
+
         }
         public void disableValidation()
         {
             btnsubmit.Enabled = false;
+
         }
         private void requiredFieldCheck(object sender, EventArgs e)
         {
-            var poatype = cbxtype.SelectedItem;
-            if (poatype != null) { poatype = poatype.ToString().Split(":").ElementAt(0); }
-            var loc = cbxloc.SelectedItem;
-            if (loc != null) { loc = loc.ToString().Split(":").ElementAt(0); }
-            var tc = cbxtc.SelectedItem;
-            if (tc != null) { tc = tc.ToString().Split(":").ElementAt(0); }
-            var delisc = cbxselisc.SelectedItem;
-            if (delisc != null) { delisc = delisc.ToString().Split(":").ElementAt(0); }
-            var sup = cbxsup.SelectedItem;
-            if (sup != null) { sup = sup.ToString().Split(":").ElementAt(0); }
-            var ecdate = kryptonDateTimePickerec.Value;
+            var idtype = cbxitid.SelectedItem;
+            if (idtype != null) { idtype = idtype.ToString().Split(":").ElementAt(0); }
+            var uomtype = cbxuom.SelectedItem;
+            if (uomtype != null) { uomtype = uomtype.ToString().Split(":").ElementAt(0); }
 
-            var availableItem = pn1.Controls.OfType<KryptonTextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
 
-            if (availableItem != 2 || poatype == null || loc == null || tc == null
-                || delisc == null || sup == null || templist.Count() <= 0 || ecdate < DateTime.Now)
+            var availableItem = pn2.Controls.OfType<KryptonTextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
+
+            if (availableItem != 7 || idtype == null || uomtype == null || templist.Count() <= 0)
             {
                 disableValidation();
             }
@@ -118,41 +116,14 @@ namespace CPS_App
 
         private async void btnsubmit_Click(object sender, EventArgs e)
         {
-            var poatype = cbxtype.SelectedItem.ToString().Split(":").ElementAt(0);
-            var loc = cbxloc.SelectedItem.ToString().Split(":").ElementAt(0);
-            var tc = cbxtc.SelectedItem.ToString().Split(":").ElementAt(0);
-            var delisc = cbxselisc.SelectedItem.ToString().Split(":").ElementAt(0);
-            var sup = cbxsup.SelectedItem.ToString().Split(":").ElementAt(0);
-            var ecdate = kryptonDateTimePickerec.Value;
-            if (ecdate < DateTime.Now)
-            {
-                MessageBox.Show("Effective date error");
-                return;
-            }
-
-            int poaheaderid = 0;
-
-            obj = new POATableObj()
-            {
-                ti_poa_type_id = GenUtil.ConvertObjtoType<int>(poatype),
-                vc_poa_status = "avaliable",
-                bi_deli_loc_id = GenUtil.ConvertObjtoType<int>(loc),
-                bi_supp_id = GenUtil.ConvertObjtoType<int>(sup),
-                vc_currency = txtcur.Text,
-                ti_tc_id = GenUtil.ConvertObjtoType<int>(tc),
-                ti_deli_sched_id = GenUtil.ConvertObjtoType<int>(delisc),
-                dt_effect_date = ecdate,
-                bi_contract_no = txtcont.Text,
-            };
-
             //insert tb_poa
             var tb_poa = new insertObj()
             {
                 table = "tb_poa",
                 inserter = new Dictionary<string, string>
                     {
-                        {"ti_poa_type_id",obj.ti_poa_type_id.ToString() },
-                        {"vc_poa_status", obj.vc_poa_status }
+                        {nameof(obj.ti_poa_type_id),obj.ti_poa_type_id.ToString() },
+                        {nameof(obj.bi_poa_status_id), obj.bi_poa_status_id.ToString() }
                     },
             };
             var respoa = await _dbServices.InsertAsync(tb_poa);
@@ -169,17 +140,17 @@ namespace CPS_App
             {
                 table = "tb_poa_header",
                 inserter = new Dictionary<string, string>
-                    {
-                        { "bi_poa_id", obj.bi_poa_id.ToString() },
+                {
+                        { nameof(obj.bi_poa_id), obj.bi_poa_id.ToString() },
                         { "vc_order_revision", "0" },
-                        { "bi_supp_id", obj.bi_supp_id.ToString() },
-                        { "bi_deli_loc_id", obj.bi_deli_loc_id.ToString() },
-                        { "vc_currency", obj.vc_currency },
-                        { "ti_tc_id", obj.ti_tc_id.ToString() },
-                        { "ti_deli_sched_id", obj.ti_deli_sched_id.ToString() },
-                        { "dt_effect_date", obj.dt_effect_date.ToString("yyyy-MM-dd HH:mm:ss") },
-                        { "bi_contract_no", obj.bi_contract_no },
-                    }
+                        { nameof(obj.bi_supp_id), obj.bi_supp_id.ToString() },
+                        { nameof(obj.bi_deli_loc_id), obj.bi_deli_loc_id.ToString() },
+                        { nameof(obj.vc_currency), obj.vc_currency },
+                        { nameof(obj.ti_tc_id), obj.ti_tc_id.ToString() },
+                        { nameof(obj.ti_deli_sched_id), obj.ti_deli_sched_id.ToString() },
+                        { nameof(obj.dt_effect_date), obj.dt_effect_date.ToString("yyyy-MM-dd HH:mm:ss") },
+                        { nameof(obj.bi_contract_no), obj.bi_contract_no },
+                }
             };
             var resheader = await _dbServices.InsertAsync(tb_boa_header);
             if (resheader.resCode != 1 || resheader.result == null)
@@ -232,8 +203,6 @@ namespace CPS_App
             var uomtype = cbxuom.SelectedItem;
             if (uomtype != null) { uomtype = uomtype.ToString().Split(":").ElementAt(0); }
 
-
-
             var availableItem = pn2.Controls.OfType<KryptonTextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
             if (availableItem != 7 || itemidtype == null || uomtype == null)
             {
@@ -253,7 +222,11 @@ namespace CPS_App
                 bi_quot_no = txtquot.Text,
 
             };
-
+            if (templist.Count > 0 && templist.Select(x => x.bi_item_id == req.bi_item_id).FirstOrDefault())
+            {
+                MessageBox.Show("Item duplicate entry");
+                return;
+            }
             templist.Add(req);
             MessageBox.Show("Item added");
             pn2.Controls.OfType<TextBox>().ToList().ForEach(t => t.Clear());
@@ -271,6 +244,67 @@ namespace CPS_App
         }
 
 
+
+
+        private void btnnext_Click(object sender, EventArgs e)
+        {
+
+            var poatype = cbxtype.SelectedItem;
+            if (poatype != null) { poatype = poatype.ToString().Split(":").ElementAt(0); }
+            var loc = cbxloc.SelectedItem;
+            if (loc != null) { loc = loc.ToString().Split(":").ElementAt(0); }
+            var tc = cbxtc.SelectedItem;
+            if (tc != null) { tc = tc.ToString().Split(":").ElementAt(0); }
+            var delisc = cbxselisc.SelectedItem;
+            if (delisc != null) { delisc = delisc.ToString().Split(":").ElementAt(0); }
+            var sup = cbxsup.SelectedItem;
+            if (sup != null) { sup = sup.ToString().Split(":").ElementAt(0); }
+            var ecdate = kryptonDateTimePickerec.Value;
+            if (ecdate < DateTime.Now)
+            {
+                MessageBox.Show("Effective date error");
+                return;
+            }
+            var availableItem = pn1.Controls.OfType<KryptonTextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
+
+            if (availableItem != 2 || poatype == null || loc == null || tc == null
+                || delisc == null || sup == null || ecdate < DateTime.Now)
+            {
+                MessageBox.Show("Please enter correct info");
+                return;
+            }
+            else
+            {
+                obj = new POATableObj()
+                {
+                    ti_poa_type_id = GenUtil.ConvertObjtoType<int>(poatype),
+                    bi_poa_status_id = 1,
+                    bi_deli_loc_id = GenUtil.ConvertObjtoType<int>(loc),
+                    bi_supp_id = GenUtil.ConvertObjtoType<int>(sup),
+                    vc_currency = txtcur.Text,
+                    ti_tc_id = GenUtil.ConvertObjtoType<int>(tc),
+                    ti_deli_sched_id = GenUtil.ConvertObjtoType<int>(delisc),
+                    dt_effect_date = ecdate,
+                    bi_contract_no = txtcont.Text,
+                };
+            }
+
+            //int poaheaderid = 0;
+
+            pn1.Hide();
+            pn2.Show();
+        }
+
+        private void btncancel_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void btnback_Click(object sender, EventArgs e)
+        {
+            pn2.Hide();
+            pn1.Show();
+        }
     }
 }
 

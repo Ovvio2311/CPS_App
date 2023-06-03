@@ -1,37 +1,28 @@
 ﻿using CPS_App.Services;
 using Krypton.Toolkit;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Linq.Dynamic.Core;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using static CPS_App.Models.CPSModel;
 using static CPS_App.Models.DbModels;
-using Krypton.Toolkit;
+using System.Collections.ObjectModel;
+using Microsoft.EntityFrameworkCore;
 
 namespace CPS_App
 {
     public partial class RequestEdit : KryptonForm
     {
-        public int index;
+        public int reqID;
         public List<RequestMappingReqObj> defPage;
+        public BindingList<ItemRequest> itemsReq;
         private readonly DbServices _dbServices;
-        public RequestEdit(int index, List<RequestMappingReqObj> defPage, DbServices dbServices)
+        public RequestEdit(int reqID, List<RequestMappingReqObj> defPage, DbServices dbServices)
         {
             InitializeComponent();
-            this.index = index;
+            this.reqID = reqID;
             this.defPage = defPage;
             _dbServices = dbServices;
+            itemsReq = new BindingList<ItemRequest>();
         }
 
         private void RequestEdit_Load(object sender, EventArgs e)
@@ -41,27 +32,32 @@ namespace CPS_App
                 MessageBox.Show("error");
                 return;
             }
-            var edititems = defPage.ToList().ElementAt(index);
+            RequestMappingReqObj edititems = defPage.ToList().Where(x => x.bi_req_id == reqID).FirstOrDefault();
             txtreqid.Text = edititems.bi_req_id.ToString();
-            txtstaid.Text = edititems.i_staff_id.ToString();
+            txtstaName.Text = GenUtil.ConvertObjtoType<string>(edititems.vc_staff_name);
             txtloc.Text = edititems.vc_location_desc.ToString();
             txtcrDate.Text = edititems.dt_created_date.ToString();
-            datagridviewitem.DataSource = edititems.item;
-            //change header name and hide column
-            datagridviewitem.Columns.ToDynamicList().ForEach(col =>
-            {
-                DataGridViewColumn column = col;
-                col.HeaderText = typeof(ItemRequest).GetProperties().ToList()
-                .Where(x => col.HeaderText == x.Name)
-                .Select(x => x.GetCustomAttribute<DisplayAttribute>())
-                .Where(x => x != null).Select(x => x.Name.ToString()).FirstOrDefault();
-                if (column.HeaderText == "Item Id" || column.HeaderText == "i_uom_id" ||
-                column.HeaderText == "bi_category_id")
-                {
-                    column.Visible = false;
-                }
 
-            });
+            var observableItems = new ObservableCollection<ItemRequest>(edititems.item);
+            itemsReq = observableItems.ToBindingList();
+            datagridviewitem.DataSource = itemsReq;
+
+            //change header name and hide column
+            GenUtil.dataGridAttrName<ItemRequest>(datagridviewitem, new List<string>() { "not_shown" });
+            //datagridviewitem.Columns.ToDynamicList().ForEach(col =>
+            //{
+            //    DataGridViewColumn column = col;
+            //    col.HeaderText = typeof(ItemRequest).GetProperties().ToList()
+            //    .Where(x => col.HeaderText == x.Name)
+            //    .Select(x => x.GetCustomAttribute<DisplayAttribute>())
+            //    .Where(x => x != null).Select(x => x.Name.ToString()).FirstOrDefault();
+            //    if (column.HeaderText == "Item Id" || column.HeaderText == "i_uom_id" ||
+            //    column.HeaderText == "bi_category_id")
+            //    {
+            //        column.Visible = false;
+            //    }
+
+            //});
 
         }
         private void datagridviewitem_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -70,14 +66,16 @@ namespace CPS_App
 
             if (e.RowIndex == datagridviewitem.CurrentRow.Index)
             {
-                var readyToEdit = defPage.ToList().ElementAt(index).item.ElementAt(e.RowIndex);
+                int selectdId = GenUtil.ConvertObjtoType<int>(datagridviewitem.CurrentRow.Cells["bi_item_id"].Value);
+                var readyToEdit = itemsReq.Where(x => x.bi_item_id == selectdId).FirstOrDefault();
                 txtvid.Text = readyToEdit.bi_item_vid.ToString();
-                txtrs.Text = readyToEdit.item_req_status.ToString();
+                txtrs.Text = GenUtil.ConvertObjtoType<string>(readyToEdit.bi_po_status_id);
                 txtremain.Text = readyToEdit.i_remain_req_qty.ToString();
                 txtqty.Text = readyToEdit.i_item_req_qty.ToString();
-                dateTimePickerEDD.Value =  DateTime.Now ; // for testing only
-                txtitname.Text = readyToEdit.vc_item_desc.ToString();
+                dateTimePickerEDD.Value = DateTime.Now; // for testing only
+                txtitname.Text = GenUtil.ConvertObjtoType<string>(readyToEdit.vc_item_desc);
                 txtcat.Text = readyToEdit.vc_category_desc.ToString();
+                txtreqst.Text = GenUtil.ConvertObjtoType<string>(readyToEdit.item_mapping_status);
             }
         }
 
@@ -88,30 +86,37 @@ namespace CPS_App
 
         private async void btnchange_Click(object sender, EventArgs e)
         {
-            var readyToEdit = defPage.ToList().ElementAt(index).item.ElementAt(datagridviewitem.CurrentRow.Index);
+            int selectdId = GenUtil.ConvertObjtoType<int>(datagridviewitem.CurrentRow.Cells["bi_item_id"].Value);
+            var readyToEdit = itemsReq.Where(x => x.bi_item_id == selectdId).FirstOrDefault();
             if (txtremain.Text == readyToEdit.i_remain_req_qty.ToString() && dateTimePickerEDD.Value == readyToEdit.dt_exp_deli_date)
             {
                 MessageBox.Show("Remain Qty and expected delivery date haven't change");
                 return;
             }
-            if(int.TryParse(txtremain.Text, out var a))
+            if (int.TryParse(txtremain.Text, out var a))
             {
                 var updateObj = new updateObj();
                 updateObj.table = "tb_request_detail";
                 updateObj.updater.Add(nameof(readyToEdit.i_remain_req_qty), txtremain.Text.ToString());
                 updateObj.updater.Add(nameof(readyToEdit.dt_exp_deli_date), dateTimePickerEDD.Value.ToString("yyyy-MM-ddTHH:mm:ss"));
-                updateObj.selecter.Add(nameof(readyToEdit.bi_req_id),readyToEdit.bi_req_id.ToString());
+                updateObj.selecter.Add(nameof(readyToEdit.bi_req_id), readyToEdit.bi_req_id.ToString());
                 updateObj.selecter.Add(nameof(readyToEdit.bi_item_id), readyToEdit.bi_item_id.ToString());
                 var res = await _dbServices.UpdateAsync(updateObj);
-                if(res.resCode!=1)
+                if (res.resCode != 1)
                 {
                     MessageBox.Show("update error");
                 }
                 else
                 {
                     MessageBox.Show("Update Success");
+                    this.Controls.OfType<KryptonTextBox>().ToList().ForEach(x => x.Clear());
                 }
             }
+        }
+
+        private void btncancel_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

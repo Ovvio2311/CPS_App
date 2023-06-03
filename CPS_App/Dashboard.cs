@@ -6,10 +6,11 @@ using System.DirectoryServices;
 using System.Security.Claims;
 using System.Windows.Forms;
 using static CPS_App.Models.CPSModel;
+using Krypton.Toolkit;
 
 namespace CPS_App
 {
-    public partial class Dashboard : Krypton.Toolkit.KryptonForm
+    public partial class Dashboard : KryptonForm
     {
 
         public Register _register;
@@ -40,14 +41,14 @@ namespace CPS_App
         }
         private async void Dashboard_Load(object sender, EventArgs e)
         {
-            
+
             userIden = AuthService._userClaim;
             if (userIden != null)
             {
-                
+
                 if (userIden.Claims.FirstOrDefault(x => x.Type == "role").Value.ToLower() == "admin")
                 {
-                    
+
                 }
             }
             //defPage = await _requestMapp.RequestMappingObjGetter();
@@ -72,77 +73,69 @@ namespace CPS_App
         //        list.OrderBy(_ => _.GetType().GetProperty(column).GetValue(_)).ToList() :
         //        list.OrderByDescending(_ => _.GetType().GetProperty(column).GetValue(_)).ToList();
         //}
-        private void registerToolStripMenuItem_Click(object sender, EventArgs e)
+        private void createReq_Click(object sender, EventArgs e)
         {
-            _register.MdiParent = this;
-            _register.Show();
-        }
-
-
-        private void createToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            RequestCreate reqForm = new RequestCreate(_dbServices);
-            reqForm.MdiParent = this;
-            reqForm.Show();
-        }
-
-
-        private void btnpoa_Click(object sender, EventArgs e)
-        {
-            POAView poaView = new POAView(_dbServices, _pOAWorker);
-            poaView.MdiParent = this;
-            poaView.Show();
-        }
-
-        private void btnReq_Click(object sender, EventArgs e)
-        {
-            RequestView reqView = new RequestView(_dbServices, _requestMapp); 
-            reqView.MdiParent = this; 
-            reqView.Show();
-        }
-
-        private void btnItem_Click(object sender, EventArgs e)
-        {
-            ItemView itemView = new ItemView(_dbServices, _stockWorker);
-            itemView.MdiParent = this;
-            itemView.Show();
-        }
-
-        private void btnsetting_Click(object sender, EventArgs e)
-        {
-            Maintenance main = new Maintenance(_dbServices, _registerServices);
-            main.MdiParent = this;
-            main.Show();
-        }
-
-        private void createToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            RequestCreate requestCreate= new RequestCreate(_dbServices);
+            RequestCreate requestCreate = new RequestCreate(_dbServices);
             requestCreate.MdiParent = this;
             requestCreate.Show();
         }
 
-        private void createToolStripMenuItem2_Click(object sender, EventArgs e)
+        private void createItem_Click(object sender, EventArgs e)
         {
-            ItemCreate itemCreate= new ItemCreate(_dbServices);
+            ItemCreate itemCreate = new ItemCreate(_dbServices);
             itemCreate.MdiParent = this;
             itemCreate.Show();
         }
 
-        private void createToolStripMenuItem_Click_1(object sender, EventArgs e)
+        private void createpoa_Click(object sender, EventArgs e)
         {
             POACreate pOACreate = new POACreate(_dbServices);
-            pOACreate.MdiParent =this;
+            pOACreate.MdiParent = this;
             pOACreate.Show();
         }
 
-        private void roleManagementToolStripMenuItem1_Click(object sender, EventArgs e)
+
+
+
+
+        private void stripreq_Click(object sender, EventArgs e)
+        {
+            RequestView reqView = new RequestView(_dbServices, _requestMapp);
+            reqView.MdiParent = this;            
+            reqView.AutoScroll = true;
+            reqView.Show();
+        }
+
+        private void stripitem_Click(object sender, EventArgs e)
+        {
+            ItemView itemView = new ItemView(_dbServices, _stockWorker);
+            itemView.MdiParent = this;
+            itemView.AutoScroll = true;
+            itemView.Show();
+        }
+
+        private void strippoa_Click(object sender, EventArgs e)
+        {
+            POAView poaView = new POAView(_dbServices, _pOAWorker);
+            poaView.MdiParent = this;
+            poaView.AutoScroll = true;
+            poaView.Show();
+        }
+
+        private void strippo_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void stripset_Click(object sender, EventArgs e)
         {
             Maintenance main = new Maintenance(_dbServices, _registerServices);
             main.MdiParent = this;
+            main.AutoScroll = true;
             main.Show();
-            
         }
+
+
 
 
         //private void itemgridview_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)

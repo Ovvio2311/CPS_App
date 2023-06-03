@@ -56,11 +56,27 @@ namespace CPS_App.Services
             var res = new DbResObj();
             res.resCode = 0;
             try
-            {
-                var wName = obj.selecter.Keys.FirstOrDefault();
-                string sql = $"select * from {obj.table} where {wName} = @{wName};";
+            {                
+                string sql = $"select * from {obj.table} where ";
+
                 DynamicParameters para = new DynamicParameters();
-                para.Add($"@{wName}", obj.selecter.Values.FirstOrDefault());
+                List<string> vari = new List<string>();
+                obj.selecter.ToList().ForEach(x =>
+                {
+                    vari.Add($"{x.Key} = @{x.Key}");
+                    para.Add($"@{x.Key}", x.Value.ToString());
+                });
+                if(vari.Count > 1) 
+                {
+                    sql += string.Join(" and ", vari);
+                    sql += " ;";
+                }
+                else
+                {
+                    sql += vari[0] + " ;";
+                }
+                
+                //para.Add($"@{wName}", obj.selecter.Values.FirstOrDefault());
                 var result = await _db.QueryAsync<T>(sql, para);
 
                 if (result != null)
@@ -148,7 +164,7 @@ namespace CPS_App.Services
 
                 string sql = $"insert into {typeof(T).Name} " +
                              $"({propName}) values " +
-                             $"({value}); "+
+                             $"({value}); " +
                              "SELECT LAST_INSERT_ID();";
 
                 var result = await _db.ExecuteAsync(sql, obj);
@@ -197,26 +213,32 @@ namespace CPS_App.Services
 
             string sql = $@"SELECT * FROM
                          (SELECT 
-                             req.bi_req_id, req.i_staff_id, sta.vc_staff_role, sta.bi_location_id, loc.vc_location_desc, 
-                             loc.vc_location_addr, vc_req_status, req.dt_created_date, req.dt_updated_datetime
+                             req.bi_req_id, req.i_staff_id, sta.vc_staff_name, sta.vc_staff_role, stat.vc_status_desc vc_req_status, 
+                             sta.bi_location_id, loc.vc_location_desc, 
+                             loc.vc_location_addr, req.dt_created_date, req.dt_updated_datetime
                          FROM
                              tb_request req
                          INNER JOIN tb_staff sta ON req.i_staff_id = sta.i_staff_id
                          INNER JOIN tb_location loc ON sta.bi_location_id = loc.bi_location_id
+                         left join lut_mapping_status stat on req.i_map_stat_id = stat.i_map_stat_id
                          ) a
                              LEFT JOIN
                          (SELECT * FROM
                              (SELECT 
-                             det.bi_req_id, det.bi_item_id bi_item_id, det.i_item_req_qty, det.i_remain_req_qty, det.i_uom_id, det.dt_exp_deli_date, uom.vc_uom_desc, mapp.bi_item_vid, det.vc_req_status item_req_status, it.vc_item_desc, it.bi_category_id, cat.vc_category_desc
+                             det.bi_req_id, mapp.bi_item_vid, det.bi_item_id, det.i_item_req_qty, det.i_remain_req_qty, det.i_uom_id, 
+                             stat.vc_status_desc item_mapping_status, postat.bi_po_status_id, postat.vc_po_status_desc, det.dt_exp_deli_date, 
+                             uom.vc_uom_desc, it.vc_item_desc, 
+                             it.bi_category_id, cat.vc_category_desc
                          FROM
                              tb_request_detail det
-                     	 LEFT JOIN tb_item it ON det.bi_item_id = it.bi_item_id
+	                     LEFT JOIN tb_item it ON det.bi_item_id = it.bi_item_id
                          INNER JOIN tb_item_category cat ON it.bi_category_id = cat.bi_category_id
                          left join lut_uom_type uom on det.i_uom_id = uom.i_uom_id
+                         left join lut_mapping_status stat on det.i_map_stat_id = stat.i_map_stat_id
+                         left join lut_po_status postat on det.bi_po_status_id = postat.bi_po_status_id
                          LEFT JOIN tb_item_vid_mapping mapp ON it.bi_item_id = mapp.bi_item_id) b) c 
-                         ON a.bi_req_id = c.bi_req_id
-                         where vc_req_status != 'completed';
-                    -- GROUP BY a.bi_req_id , c.bi_item_vid";
+                         ON a.bi_req_id = c.bi_req_id;";
+
 
             var result = await _db.QueryAsync<dynamic>(sql, null);
             if (result.Count() > 0)
@@ -332,8 +354,8 @@ namespace CPS_App.Services
                          INNER JOIN tb_item_category cat ON it.bi_category_id = cat.bi_category_id
                          INNER JOIN tb_item_vid_mapping vid ON it.bi_item_id = vid.bi_item_id
                          LEFT JOIN tb_item_unit uni ON it.bi_item_id = uni.bi_item_id
-                         INNER JOIN tb_location loc ON uni.bi_location_id = loc.bi_location_id
-                         INNER JOIN lut_uom_type uom ON it.i_uom_id = uom.i_uom_id
+                         LEFT JOIN tb_location loc ON uni.bi_location_id = loc.bi_location_id
+                         LEFT JOIN lut_uom_type uom ON it.i_uom_id = uom.i_uom_id
                          )a;";
                 var result = await _db.QueryAsync<StockLevelViewObj>(sql, null);
 
@@ -390,22 +412,23 @@ namespace CPS_App.Services
             //var res = new DbResObj();
 
             string sql = $@"select * from (
-                      	 select poa.bi_poa_id, poa.ti_poa_type_id, poa.vc_poa_status, hd.bi_poa_header_id,
-                          hd.bi_deli_loc_id, loc.vc_location_desc, hd.bi_supp_id, sup.vc_supp_desc, hd.vc_currency, hd.ti_tc_id, tc.vc_tc_desc, hd.ti_deli_sched_id, delisc.vc_deli_sched_desc, 
-                          hd.dt_effect_date, hd.bi_contract_no,
-                      	  ln.bi_item_id, it.vc_item_desc, ln.bi_supp_item_id, ln.dc_promise_qty, uom.vc_uom_desc, ln.i_uom_id, ln.dc_min_qty, ln.dc_price, ln.dc_amount, ln.vc_reference, ln.bi_quot_no,
-                          poa.dt_created_date, poa.dt_updated_datetime
-                          from tb_poa poa
-                          inner join tb_poa_header hd on poa.bi_poa_id = hd.bi_poa_id
-                          left join tb_poa_line ln on hd.bi_poa_header_id = ln.bi_poa_header_id
-                          inner join tb_supplier sup on hd.bi_supp_id = sup.bi_supp_id
-                          inner join lut_term_and_con tc on hd.ti_tc_id = tc.ti_tc_id
-                          inner join lut_deli_schedule_type delisc on hd.ti_deli_sched_id = delisc.ti_deli_sched_id
-                          inner join tb_item it on ln.bi_item_id = it.bi_item_id
-                          inner join lut_uom_type uom on ln.i_uom_id = uom.i_uom_id
-                          inner join lut_poa_type poatype on poa.ti_poa_type_id = poatype.ti_poa_type_id
-                          inner join tb_location loc on hd.bi_deli_loc_id = loc.bi_location_id
-                          ) a;";
+	                     select poa.bi_poa_id, poa.ti_poa_type_id, poatype.vc_poa_type_desc, poa.bi_poa_status_id, poast.vc_poa_status_desc, hd.bi_poa_header_id,
+                         hd.bi_deli_loc_id, loc.vc_location_desc, hd.bi_supp_id, sup.vc_supp_desc, hd.vc_currency, hd.ti_tc_id, tc.vc_tc_desc, hd.ti_deli_sched_id, delisc.vc_deli_sched_desc, 
+                         hd.dt_effect_date, hd.bi_contract_no,
+	                     ln.bi_poa_line_id, ln.bi_item_id, it.vc_item_desc, ln.bi_supp_item_id, ln.dc_promise_qty, uom.vc_uom_desc, ln.i_uom_id, ln.dc_min_qty, ln.dc_price, ln.dc_amount, ln.vc_reference, ln.bi_quot_no,
+                         poa.dt_created_date, poa.dt_updated_datetime
+                         from tb_poa poa
+                         inner join tb_poa_header hd on poa.bi_poa_id = hd.bi_poa_id
+                         left join tb_poa_line ln on hd.bi_poa_header_id = ln.bi_poa_header_id
+                         inner join tb_supplier sup on hd.bi_supp_id = sup.bi_supp_id
+                         inner join lut_term_and_con tc on hd.ti_tc_id = tc.ti_tc_id
+                         inner join lut_deli_schedule_type delisc on hd.ti_deli_sched_id = delisc.ti_deli_sched_id
+                         inner join tb_item it on ln.bi_item_id = it.bi_item_id
+                         inner join lut_uom_type uom on ln.i_uom_id = uom.i_uom_id
+                         inner join lut_poa_type poatype on poa.ti_poa_type_id = poatype.ti_poa_type_id
+                         inner join tb_location loc on hd.bi_deli_loc_id = loc.bi_location_id
+                         left join lut_poa_status poast on poa.bi_poa_status_id = poast.bi_poa_status_id
+                         ) a;";
 
             var result = await _db.QueryAsync<dynamic>(sql, null);
             if (result.Count() > 0)
@@ -420,116 +443,110 @@ namespace CPS_App.Services
             }
             return new DbResObj { resCode = 0, result = null };
         }
+        public async Task InsertMaintenance<T>(Dictionary<string, string> value)
+        {
+            if (value.ElementAt(0).Value == string.Empty)
+            {
+                MessageBox.Show("Name is Empty");
+                return;
+            }
+            var select = new selectObj();
+            select.table = typeof(T).Name;
+            select.selecter.Add(value.ElementAt(0).Key, value.ElementAt(0).Value.ToLower().Trim());
 
-        //        SELECT
-        //    *
-        //FROM
-        //    (SELECT
-        //        it.bi_item_id,
-        //            vid.bi_item_vid,
-        //            vc_item_desc,
-        //            it.bi_category_id,
-        //            cat.vc_category_desc,
-        //            it.i_uom_id,
-        //            uom.vc_uom_desc,
-        //            uni.bi_location_id,
-        //            loc.vc_location_desc,
-        //            i_item_qty,
-        //            it.dt_created_date,
-        //            it.dt_updated_datetime
-        //    FROM
-        //        tb_item it
-        //    INNER JOIN tb_item_category cat ON it.bi_category_id = cat.bi_category_id
-        //    INNER JOIN tb_item_vid_mapping vid ON it.bi_item_id = vid.bi_item_id
-        //    LEFT JOIN tb_item_unit uni ON it.bi_item_id = uni.bi_item_id
-        //    INNER JOIN tb_location loc ON uni.bi_location_id = loc.bi_location_id
-        //    INNER JOIN lut_uom_type uom ON it.i_uom_id = uom.i_uom_id
-        //    )a;
+            var result = await SelectWhereAsync<T>(select);
+            if (result.result.Count > 0)
+            {
+                MessageBox.Show("Name has been used");
+                return;
+            }
+            var insert = new insertObj();
+
+            insert.table = typeof(T).Name;
+            value.ToList().ForEach(row =>
+            {
+                insert.inserter.Add(row.Key, row.Value);
+            });
+            var res = await InsertAsync(insert);
+            if (res.resCode != 1)
+            {
+                MessageBox.Show("insert error");
+            }
+            else
+            {
+                MessageBox.Show($"insert ID: {res.result}");
+            }
+        }
+        public async Task<DbResObj> SelectRoleClaim(Dictionary<string, string> value = null)
+        {
+            var res = new DbResObj();
+            res.resCode = 0;
+            try
+            {
+                string sql = @"select i_claim_id, cl.vc_role_id, vc_claim_type, vc_claim_value, vc_role_name
+                             from tb_role_claim cl
+                             left join tb_roles ro on cl.vc_role_id = ro.vc_role_id ";
+
+                DynamicParameters para = new DynamicParameters();
+                if (value != null)
+                {
+                    
+                    List<string> vari = new List<string>();
+                    value.ToList().ForEach(x =>
+                    {
+                        vari.Add($"{x.Key} = @{x.Key}");
+                        para.Add($"@{x.Key}", x.Value.ToString());
+                    });
+                    if (vari.Count > 1)
+                    {
+                        sql += " where ";
+                        sql += string.Join(" and ", vari);
+                        sql += " ;";
+                    }
+                    else
+                    {
+                        sql += " where ";
+                        sql += vari[0] + " ;";
+                    }
+                }else
+                {
+                    sql += " ;";
+                }
+                var result = await _db.QueryAsync<role_claim_table>(sql, value != null? para : null);
+                if (result != null)
+                {
+                    res.result = result;
+                    res.resCode = 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                res.result = null;
+                res.resCode = 0;
+                res.err_msg = ex.Message;
+            }
+            return res;
+        }
+        public async Task<bool> CheckDuplicateClaim<T>(Dictionary<string, string> value)
+        {
 
 
-
-        //public async Task<DbResObj> GetItemId(selectObj obj)
-        //{
-        //    var res = new DbResObj();
-        //    res.resCode = 0;
-        //    try
-        //    {
-        //        var wName = obj.selecter.Keys.FirstOrDefault();
-        //        string sql = $"select bi_item_id, bi_item_vid from tb_item_vid_mapping where {wName} = @{wName};";
-        //        DynamicParameters para = new DynamicParameters();
-        //        para.Add($"@{wName}", obj.selecter.Values.FirstOrDefault());
-        //        var result = await _db.QueryAsync<tb_item_vid_mapping>(sql, para);
-
-        //        if (result != null)
-        //        {
-        //            res.result = result;
-        //            res.resCode = 1;
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        res.result = null;
-        //        res.resCode = 0;
-        //        res.err_msg = ex.Message;
-        //    }
-
-        //    return res;
-
-        //}
-
-
+            var select = new Dictionary<string, string>
+                {
+                    {value.ElementAt(0).Key, value.ElementAt(0).Value.ToLower().Trim() },
+                    {value.ElementAt(1).Key, value.ElementAt(1).Value.ToLower().Trim() }
+                };
+            
+            
+            
+            var result = await SelectRoleClaim(select);
+            if (result.result.Count > 0)
+            {
+                MessageBox.Show("Type has been used");
+                return false;
+            }
+            return true;
+        }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-//            SELECT
-//    req.bi_req_id,
-//    req.i_staff_id,
-//    a.vc_staff_role,
-//    a.bi_location_id,
-//    a.vc_location_desc,
-//    a.vc_location_addr,
-//    vc_req_status,
-//    dt_exp_deli_date,
-//    req.dt_created_date,
-//    req.dt_updated_datetime
-//FROM
-//    tb_request req
-//        LEFT JOIN
-//    (SELECT
-//        i_staff_id,
-//            vc_staff_role,
-//            sta.bi_location_id,
-//            loc.vc_location_desc,
-//            loc.vc_location_addr
-//    FROM
-//        tb_staff sta
-//    INNER JOIN tb_location loc ON sta.bi_location_id = loc.bi_location_id) a ON a.i_staff_id = req.i_staff_id;
-
-
-//            SELECT
-//                *, vid.bi_item_vid
-//FROM
-//    (SELECT
-//        bi_item_id,
-//            vc_item_desc,
-//            it.bi_category_id,
-//            cat.vc_category_desc
-//    FROM
-//        tb_item it
-//    INNER JOIN tb_item_category cat ON it.bi_category_id = cat.bi_category_id) a
-//            LEFT JOIN
-//    tb_item_vid_mapping vid ON a.bi_item_id = vid.bi_item_id;
-//        }
-//    }
-
+        

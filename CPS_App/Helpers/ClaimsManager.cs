@@ -12,11 +12,13 @@ namespace CPS_App.Helpers
     public class ClaimsManager
     {
         private readonly UserManager<AppUsers> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly DbServices _dbServices;
-        public ClaimsManager(UserManager<AppUsers> userManager, DbServices dbServices)
+        public ClaimsManager(UserManager<AppUsers> userManager, DbServices dbServices, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _dbServices = dbServices;
+            _roleManager = roleManager;
         }
 
         public async Task<ClaimsIdentity> GetClaimsIdentity(string username)
@@ -34,23 +36,32 @@ namespace CPS_App.Helpers
             if (userInfo.resCode != 1 || userInfo.result == null)
             {
                 //_logger.LogDebug("uom Id not find");
-                MessageBox.Show("uom Id not find");
+                MessageBox.Show("Id not find");
             }
             tb_staff info = userInfo.result[0];
             var userRole = await _userManager.GetRolesAsync(user);
             if (userRole == null) { throw new Exception("User do not have role"); }
-            var claims = new List<Claim>()
-            {
-                new Claim("user", user.NormalizedUserName.ToLower()),
-                new Claim("role",userRole[0]),
-                new Claim("email", user.Email),
-                new Claim("fail_count", GenUtil.ConvertObjtoType<string>(user.AccessFailedCount)),
-                new Claim("location_id", info.bi_location_id.ToString()),
-                new Claim("staff_id",info.i_staff_id.ToString()),
-                new Claim("staff_role",info.vc_staff_role.ToString()),
-                new Claim("id", user.Id),
-            };
-            return new ClaimsIdentity(claims);
+            
+            IdentityRole role = await _roleManager.FindByNameAsync(userRole[0]);
+            var userclaims = await _roleManager.GetClaimsAsync(role);
+            userclaims.Add(new Claim("role", userRole[0]));
+            userclaims.Add(new Claim("location_id", info.bi_location_id.ToString()));
+            userclaims.Add(new Claim("staff_id", info.i_staff_id.ToString()));
+            userclaims.Add(new Claim("staff_role", info.vc_staff_role.ToString()));
+            userclaims.Add(new Claim("staff_name", info.vc_staff_name.ToString()));
+            //var claims = new List<Claim>()
+            //{
+            //    new Claim("user", user.NormalizedUserName.ToLower()),
+            //    new Claim("role",userRole[0]),
+            //    new Claim("email", user.Email),
+            //    new Claim("fail_count", GenUtil.ConvertObjtoType<string>(user.AccessFailedCount)),
+            //    new Claim("location_id", info.bi_location_id.ToString()),
+            //    new Claim("staff_id",info.i_staff_id.ToString()),
+            //    new Claim("staff_role",info.vc_staff_role.ToString()),
+            //    new Claim("id", user.Id),
+            //    new Claim("staff_name", info.vc_staff_name.ToString()),
+            //};
+            return new ClaimsIdentity(userclaims);
         }
     }
 

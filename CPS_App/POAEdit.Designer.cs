@@ -28,276 +28,437 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.lblline = new Krypton.Toolkit.KryptonLabel();
-            this.lblhead = new Krypton.Toolkit.KryptonLabel();
-            this.lblit = new Krypton.Toolkit.KryptonLabel();
-            this.lblsupid = new Krypton.Toolkit.KryptonLabel();
-            this.lblpro = new Krypton.Toolkit.KryptonLabel();
-            this.lbluom = new Krypton.Toolkit.KryptonLabel();
-            this.lblmin = new Krypton.Toolkit.KryptonLabel();
-            this.lblp = new Krypton.Toolkit.KryptonLabel();
-            this.lblam = new Krypton.Toolkit.KryptonLabel();
-            this.lblref = new Krypton.Toolkit.KryptonLabel();
-            this.lblqu = new Krypton.Toolkit.KryptonLabel();
-            this.txtline = new Krypton.Toolkit.KryptonTextBox();
-            this.txtsupid = new Krypton.Toolkit.KryptonTextBox();
-            this.txthead = new Krypton.Toolkit.KryptonTextBox();
-            this.txtit = new Krypton.Toolkit.KryptonTextBox();
-            this.txtpro = new Krypton.Toolkit.KryptonTextBox();
-            this.txtuom = new Krypton.Toolkit.KryptonTextBox();
-            this.txtmin = new Krypton.Toolkit.KryptonTextBox();
-            this.txtp = new Krypton.Toolkit.KryptonTextBox();
-            this.txtam = new Krypton.Toolkit.KryptonTextBox();
-            this.txtref = new Krypton.Toolkit.KryptonTextBox();
-            this.txtqu = new Krypton.Toolkit.KryptonTextBox();
-            this.kryptonDataGridViewit = new Krypton.Toolkit.KryptonDataGridView();
-            this.pn1 = new System.Windows.Forms.Panel();
-            this.btnmod = new Krypton.Toolkit.KryptonButton();
-            ((System.ComponentModel.ISupportInitialize)(this.kryptonDataGridViewit)).BeginInit();
-            this.pn1.SuspendLayout();
-            this.SuspendLayout();
+            components = new System.ComponentModel.Container();
+            lblline = new Krypton.Toolkit.KryptonLabel();
+            kryptonPalettelbl = new Krypton.Toolkit.KryptonPalette(components);
+            lblit = new Krypton.Toolkit.KryptonLabel();
+            lblsupid = new Krypton.Toolkit.KryptonLabel();
+            lblpro = new Krypton.Toolkit.KryptonLabel();
+            lbluom = new Krypton.Toolkit.KryptonLabel();
+            lblmin = new Krypton.Toolkit.KryptonLabel();
+            lblp = new Krypton.Toolkit.KryptonLabel();
+            lblam = new Krypton.Toolkit.KryptonLabel();
+            lblref = new Krypton.Toolkit.KryptonLabel();
+            lblqu = new Krypton.Toolkit.KryptonLabel();
+            txtline = new Krypton.Toolkit.KryptonTextBox();
+            kryptonPalettereadonly = new Krypton.Toolkit.KryptonPalette(components);
+            txtsupid = new Krypton.Toolkit.KryptonTextBox();
+            txtit = new Krypton.Toolkit.KryptonTextBox();
+            txtpro = new Krypton.Toolkit.KryptonTextBox();
+            txtuom = new Krypton.Toolkit.KryptonTextBox();
+            txtmin = new Krypton.Toolkit.KryptonTextBox();
+            txtp = new Krypton.Toolkit.KryptonTextBox();
+            txtam = new Krypton.Toolkit.KryptonTextBox();
+            txtref = new Krypton.Toolkit.KryptonTextBox();
+            txtqu = new Krypton.Toolkit.KryptonTextBox();
+            kryptonDataGridViewit = new Krypton.Toolkit.KryptonDataGridView();
+            cbxdelisc = new Krypton.Toolkit.KryptonComboBox();
+            kryptonDateTimePickerec = new Krypton.Toolkit.KryptonDateTimePicker();
+            lblec = new Krypton.Toolkit.KryptonLabel();
+            lbldelisc = new Krypton.Toolkit.KryptonLabel();
+            txttype = new Krypton.Toolkit.KryptonTextBox();
+            kryptonLabel3 = new Krypton.Toolkit.KryptonLabel();
+            lbltype = new Krypton.Toolkit.KryptonLabel();
+            txtpoa = new Krypton.Toolkit.KryptonTextBox();
+            lblpoa = new Krypton.Toolkit.KryptonLabel();
+            btnmod = new Krypton.Toolkit.KryptonButton();
+            kryptonPalettebtn = new Krypton.Toolkit.KryptonPalette(components);
+            kryptonPaletteheader = new Krypton.Toolkit.KryptonPalette(components);
+            kryptonPalettepanel = new Krypton.Toolkit.KryptonPalette(components);
+            cbxst = new Krypton.Toolkit.KryptonComboBox();
+            ((System.ComponentModel.ISupportInitialize)kryptonDataGridViewit).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)cbxdelisc).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)cbxst).BeginInit();
+            SuspendLayout();
             // 
             // lblline
             // 
-            this.lblline.Location = new System.Drawing.Point(81, 57);
-            this.lblline.Name = "lblline";
-            this.lblline.Size = new System.Drawing.Size(71, 20);
-            this.lblline.TabIndex = 0;
-            this.lblline.Values.Text = "Poa Line Id";
+            lblline.Location = new Point(33, 315);
+            lblline.Name = "lblline";
+            lblline.Palette = kryptonPalettelbl;
+            lblline.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            lblline.Size = new Size(89, 21);
+            lblline.TabIndex = 0;
+            lblline.Values.Text = "Poa Line Id";
             // 
-            // lblhead
+            // kryptonPalettelbl
             // 
-            this.lblhead.Location = new System.Drawing.Point(64, 107);
-            this.lblhead.Name = "lblhead";
-            this.lblhead.Size = new System.Drawing.Size(88, 20);
-            this.lblhead.TabIndex = 1;
-            this.lblhead.Values.Text = "Poa Header Id";
+            kryptonPalettelbl.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Font = new Font("Microsoft YaHei", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
+            kryptonPalettelbl.LabelStyles.LabelCommon.StateCommon.ShortText.Font = new Font("Microsoft Sans Serif", 11.25F, FontStyle.Regular, GraphicsUnit.Point);
             // 
             // lblit
             // 
-            this.lblit.Location = new System.Drawing.Point(117, 159);
-            this.lblit.Name = "lblit";
-            this.lblit.Size = new System.Drawing.Size(35, 20);
-            this.lblit.TabIndex = 2;
-            this.lblit.Values.Text = "Item";
+            lblit.Location = new Point(80, 357);
+            lblit.Name = "lblit";
+            lblit.Palette = kryptonPalettelbl;
+            lblit.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            lblit.Size = new Size(42, 21);
+            lblit.TabIndex = 2;
+            lblit.Values.Text = "Item";
             // 
             // lblsupid
             // 
-            this.lblsupid.Location = new System.Drawing.Point(55, 204);
-            this.lblsupid.Name = "lblsupid";
-            this.lblsupid.Size = new System.Drawing.Size(97, 20);
-            this.lblsupid.TabIndex = 3;
-            this.lblsupid.Values.Text = "Supplier Item Id";
+            lblsupid.Location = new Point(12, 402);
+            lblsupid.Name = "lblsupid";
+            lblsupid.Palette = kryptonPalettelbl;
+            lblsupid.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            lblsupid.Size = new Size(119, 21);
+            lblsupid.TabIndex = 3;
+            lblsupid.Values.Text = "Supplier Item Id";
             // 
             // lblpro
             // 
-            this.lblpro.Location = new System.Drawing.Point(381, 60);
-            this.lblpro.Name = "lblpro";
-            this.lblpro.Size = new System.Drawing.Size(77, 20);
-            this.lblpro.TabIndex = 4;
-            this.lblpro.Values.Text = "Promise Qty";
+            lblpro.Location = new Point(320, 448);
+            lblpro.Name = "lblpro";
+            lblpro.Palette = kryptonPalettelbl;
+            lblpro.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            lblpro.Size = new Size(96, 21);
+            lblpro.TabIndex = 4;
+            lblpro.Values.Text = "Promise Qty";
             // 
             // lbluom
             // 
-            this.lbluom.Location = new System.Drawing.Point(332, 107);
-            this.lbluom.Name = "lbluom";
-            this.lbluom.Size = new System.Drawing.Size(126, 20);
-            this.lbluom.TabIndex = 5;
-            this.lbluom.Values.Text = "Unit of Measurement";
+            lbluom.Location = new Point(610, 315);
+            lbluom.Name = "lbluom";
+            lbluom.Palette = kryptonPalettelbl;
+            lbluom.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            lbluom.Size = new Size(155, 21);
+            lbluom.TabIndex = 5;
+            lbluom.Values.Text = "Unit of Measurement";
             // 
             // lblmin
             // 
-            this.lblmin.Location = new System.Drawing.Point(404, 156);
-            this.lblmin.Name = "lblmin";
-            this.lblmin.Size = new System.Drawing.Size(54, 20);
-            this.lblmin.TabIndex = 6;
-            this.lblmin.Values.Text = "Min Qty";
+            lblmin.Location = new Point(700, 357);
+            lblmin.Name = "lblmin";
+            lblmin.Palette = kryptonPalettelbl;
+            lblmin.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            lblmin.Size = new Size(65, 21);
+            lblmin.TabIndex = 6;
+            lblmin.Values.Text = "Min Qty";
             // 
             // lblp
             // 
-            this.lblp.Location = new System.Drawing.Point(411, 207);
-            this.lblp.Name = "lblp";
-            this.lblp.Size = new System.Drawing.Size(37, 20);
-            this.lblp.TabIndex = 7;
-            this.lblp.Values.Text = "Price";
+            lblp.Location = new Point(367, 357);
+            lblp.Name = "lblp";
+            lblp.Palette = kryptonPalettelbl;
+            lblp.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            lblp.Size = new Size(47, 21);
+            lblp.TabIndex = 7;
+            lblp.Values.Text = "Price";
             // 
             // lblam
             // 
-            this.lblam.Location = new System.Drawing.Point(684, 60);
-            this.lblam.Name = "lblam";
-            this.lblam.Size = new System.Drawing.Size(55, 20);
-            this.lblam.TabIndex = 8;
-            this.lblam.Values.Text = "Amount";
+            lblam.Location = new Point(351, 402);
+            lblam.Name = "lblam";
+            lblam.Palette = kryptonPalettelbl;
+            lblam.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            lblam.Size = new Size(65, 21);
+            lblam.TabIndex = 8;
+            lblam.Values.Text = "Amount";
             // 
             // lblref
             // 
-            this.lblref.Location = new System.Drawing.Point(674, 110);
-            this.lblref.Name = "lblref";
-            this.lblref.Size = new System.Drawing.Size(65, 20);
-            this.lblref.TabIndex = 9;
-            this.lblref.Values.Text = "Reference";
+            lblref.Location = new Point(682, 402);
+            lblref.Name = "lblref";
+            lblref.Palette = kryptonPalettelbl;
+            lblref.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            lblref.Size = new Size(83, 21);
+            lblref.TabIndex = 9;
+            lblref.Values.Text = "Reference";
             // 
             // lblqu
             // 
-            this.lblqu.Location = new System.Drawing.Point(650, 156);
-            this.lblqu.Name = "lblqu";
-            this.lblqu.Size = new System.Drawing.Size(89, 20);
-            this.lblqu.TabIndex = 10;
-            this.lblqu.Values.Text = "Quotation No.";
+            lblqu.Location = new Point(302, 315);
+            lblqu.Name = "lblqu";
+            lblqu.Palette = kryptonPalettelbl;
+            lblqu.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            lblqu.Size = new Size(107, 21);
+            lblqu.TabIndex = 10;
+            lblqu.Values.Text = "Quotation No.";
             // 
             // txtline
             // 
-            this.txtline.Location = new System.Drawing.Point(173, 57);
-            this.txtline.Name = "txtline";
-            this.txtline.ReadOnly = true;
-            this.txtline.Size = new System.Drawing.Size(153, 23);
-            this.txtline.TabIndex = 12;
+            txtline.Location = new Point(136, 315);
+            txtline.Name = "txtline";
+            txtline.Palette = kryptonPalettereadonly;
+            txtline.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            txtline.ReadOnly = true;
+            txtline.Size = new Size(160, 23);
+            txtline.TabIndex = 12;
+            // 
+            // kryptonPalettereadonly
+            // 
+            kryptonPalettereadonly.Common.StateCommon.Back.Color1 = SystemColors.Control;
+            kryptonPalettereadonly.Common.StateCommon.Back.Color2 = SystemColors.Control;
             // 
             // txtsupid
             // 
-            this.txtsupid.Location = new System.Drawing.Point(173, 204);
-            this.txtsupid.Name = "txtsupid";
-            this.txtsupid.ReadOnly = true;
-            this.txtsupid.Size = new System.Drawing.Size(153, 23);
-            this.txtsupid.TabIndex = 13;
-            // 
-            // txthead
-            // 
-            this.txthead.Location = new System.Drawing.Point(173, 107);
-            this.txthead.Name = "txthead";
-            this.txthead.ReadOnly = true;
-            this.txthead.Size = new System.Drawing.Size(153, 23);
-            this.txthead.TabIndex = 14;
+            txtsupid.Location = new Point(137, 402);
+            txtsupid.Name = "txtsupid";
+            txtsupid.Palette = kryptonPalettereadonly;
+            txtsupid.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            txtsupid.ReadOnly = true;
+            txtsupid.Size = new Size(160, 23);
+            txtsupid.TabIndex = 13;
             // 
             // txtit
             // 
-            this.txtit.Location = new System.Drawing.Point(173, 156);
-            this.txtit.Name = "txtit";
-            this.txtit.ReadOnly = true;
-            this.txtit.Size = new System.Drawing.Size(153, 23);
-            this.txtit.TabIndex = 15;
+            txtit.Location = new Point(136, 357);
+            txtit.Name = "txtit";
+            txtit.Palette = kryptonPalettereadonly;
+            txtit.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            txtit.ReadOnly = true;
+            txtit.Size = new Size(160, 23);
+            txtit.TabIndex = 15;
             // 
             // txtpro
             // 
-            this.txtpro.Location = new System.Drawing.Point(471, 57);
-            this.txtpro.Name = "txtpro";
-            this.txtpro.Size = new System.Drawing.Size(154, 23);
-            this.txtpro.TabIndex = 16;
+            txtpro.Location = new Point(422, 448);
+            txtpro.Name = "txtpro";
+            txtpro.Size = new Size(160, 23);
+            txtpro.TabIndex = 16;
             // 
             // txtuom
             // 
-            this.txtuom.Location = new System.Drawing.Point(471, 107);
-            this.txtuom.Name = "txtuom";
-            this.txtuom.ReadOnly = true;
-            this.txtuom.Size = new System.Drawing.Size(154, 23);
-            this.txtuom.TabIndex = 17;
+            txtuom.Location = new Point(771, 315);
+            txtuom.Name = "txtuom";
+            txtuom.Palette = kryptonPalettereadonly;
+            txtuom.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            txtuom.ReadOnly = true;
+            txtuom.Size = new Size(160, 23);
+            txtuom.TabIndex = 17;
             // 
             // txtmin
             // 
-            this.txtmin.Location = new System.Drawing.Point(471, 156);
-            this.txtmin.Name = "txtmin";
-            this.txtmin.Size = new System.Drawing.Size(154, 23);
-            this.txtmin.TabIndex = 18;
+            txtmin.Location = new Point(771, 357);
+            txtmin.Name = "txtmin";
+            txtmin.Size = new Size(160, 23);
+            txtmin.TabIndex = 18;
             // 
             // txtp
             // 
-            this.txtp.Location = new System.Drawing.Point(471, 204);
-            this.txtp.Name = "txtp";
-            this.txtp.Size = new System.Drawing.Size(154, 23);
-            this.txtp.TabIndex = 19;
+            txtp.Location = new Point(422, 357);
+            txtp.Name = "txtp";
+            txtp.Size = new Size(160, 23);
+            txtp.TabIndex = 19;
             // 
             // txtam
             // 
-            this.txtam.Location = new System.Drawing.Point(770, 57);
-            this.txtam.Name = "txtam";
-            this.txtam.Size = new System.Drawing.Size(166, 23);
-            this.txtam.TabIndex = 20;
+            txtam.Location = new Point(422, 402);
+            txtam.Name = "txtam";
+            txtam.Size = new Size(160, 23);
+            txtam.TabIndex = 20;
             // 
             // txtref
             // 
-            this.txtref.Location = new System.Drawing.Point(770, 107);
-            this.txtref.Name = "txtref";
-            this.txtref.Size = new System.Drawing.Size(166, 23);
-            this.txtref.TabIndex = 21;
+            txtref.Location = new Point(771, 402);
+            txtref.Name = "txtref";
+            txtref.Size = new Size(160, 23);
+            txtref.TabIndex = 21;
             // 
             // txtqu
             // 
-            this.txtqu.Location = new System.Drawing.Point(770, 156);
-            this.txtqu.Name = "txtqu";
-            this.txtqu.ReadOnly = true;
-            this.txtqu.Size = new System.Drawing.Size(166, 23);
-            this.txtqu.TabIndex = 22;
+            txtqu.Location = new Point(422, 315);
+            txtqu.Name = "txtqu";
+            txtqu.Palette = kryptonPalettereadonly;
+            txtqu.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            txtqu.ReadOnly = true;
+            txtqu.Size = new Size(160, 23);
+            txtqu.TabIndex = 22;
             // 
             // kryptonDataGridViewit
             // 
-            this.kryptonDataGridViewit.Location = new System.Drawing.Point(55, 295);
-            this.kryptonDataGridViewit.Name = "kryptonDataGridViewit";
-            this.kryptonDataGridViewit.RowTemplate.Height = 25;
-            this.kryptonDataGridViewit.Size = new System.Drawing.Size(881, 198);
-            this.kryptonDataGridViewit.TabIndex = 24;
-            this.kryptonDataGridViewit.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.kryptonDataGridViewit_CellClick);
+            kryptonDataGridViewit.Location = new Point(50, 46);
+            kryptonDataGridViewit.Name = "kryptonDataGridViewit";
+            kryptonDataGridViewit.RowTemplate.Height = 25;
+            kryptonDataGridViewit.Size = new Size(881, 198);
+            kryptonDataGridViewit.TabIndex = 24;
+            kryptonDataGridViewit.CellClick += kryptonDataGridViewit_CellClick;
             // 
-            // pn1
+            // cbxdelisc
             // 
-            this.pn1.Controls.Add(this.btnmod);
-            this.pn1.Location = new System.Drawing.Point(0, -1);
-            this.pn1.Name = "pn1";
-            this.pn1.Size = new System.Drawing.Size(986, 290);
-            this.pn1.TabIndex = 25;
+            cbxdelisc.CornerRoundingRadius = -1F;
+            cbxdelisc.DropDownWidth = 121;
+            cbxdelisc.IntegralHeight = false;
+            cbxdelisc.Location = new Point(771, 448);
+            cbxdelisc.Name = "cbxdelisc";
+            cbxdelisc.Size = new Size(160, 21);
+            cbxdelisc.StateCommon.ComboBox.Content.TextH = Krypton.Toolkit.PaletteRelativeAlign.Near;
+            cbxdelisc.TabIndex = 28;
+            // 
+            // kryptonDateTimePickerec
+            // 
+            kryptonDateTimePickerec.CornerRoundingRadius = -1F;
+            kryptonDateTimePickerec.Enabled = false;
+            kryptonDateTimePickerec.Location = new Point(771, 270);
+            kryptonDateTimePickerec.Name = "kryptonDateTimePickerec";
+            kryptonDateTimePickerec.Palette = kryptonPalettereadonly;
+            kryptonDateTimePickerec.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            kryptonDateTimePickerec.Size = new Size(160, 21);
+            kryptonDateTimePickerec.TabIndex = 27;
+            // 
+            // lblec
+            // 
+            lblec.Location = new Point(650, 270);
+            lblec.Name = "lblec";
+            lblec.Palette = kryptonPalettelbl;
+            lblec.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            lblec.Size = new Size(108, 21);
+            lblec.TabIndex = 26;
+            lblec.Values.Text = "Effective Date";
+            // 
+            // lbldelisc
+            // 
+            lbldelisc.Location = new Point(622, 448);
+            lbldelisc.Name = "lbldelisc";
+            lbldelisc.Palette = kryptonPalettelbl;
+            lbldelisc.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            lbldelisc.Size = new Size(136, 21);
+            lbldelisc.TabIndex = 25;
+            lbldelisc.Values.Text = "Delivery Schedule";
+            // 
+            // txttype
+            // 
+            txttype.Location = new Point(422, 270);
+            txttype.Name = "txttype";
+            txttype.Palette = kryptonPalettereadonly;
+            txttype.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            txttype.ReadOnly = true;
+            txttype.Size = new Size(160, 23);
+            txttype.TabIndex = 17;
+            // 
+            // kryptonLabel3
+            // 
+            kryptonLabel3.Location = new Point(66, 448);
+            kryptonLabel3.Name = "kryptonLabel3";
+            kryptonLabel3.Palette = kryptonPalettelbl;
+            kryptonLabel3.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            kryptonLabel3.Size = new Size(55, 21);
+            kryptonLabel3.TabIndex = 16;
+            kryptonLabel3.Values.Text = "Status";
+            // 
+            // lbltype
+            // 
+            lbltype.Location = new Point(368, 270);
+            lbltype.Name = "lbltype";
+            lbltype.Palette = kryptonPalettelbl;
+            lbltype.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            lbltype.Size = new Size(46, 21);
+            lbltype.TabIndex = 15;
+            lbltype.Values.Text = "Type";
+            // 
+            // txtpoa
+            // 
+            txtpoa.Location = new Point(136, 270);
+            txtpoa.Name = "txtpoa";
+            txtpoa.Palette = kryptonPalettereadonly;
+            txtpoa.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            txtpoa.ReadOnly = true;
+            txtpoa.Size = new Size(160, 23);
+            txtpoa.TabIndex = 14;
+            // 
+            // lblpoa
+            // 
+            lblpoa.Location = new Point(66, 270);
+            lblpoa.Name = "lblpoa";
+            lblpoa.Palette = kryptonPalettelbl;
+            lblpoa.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            lblpoa.Size = new Size(56, 21);
+            lblpoa.TabIndex = 13;
+            lblpoa.Values.Text = "Poa Id";
             // 
             // btnmod
             // 
-            this.btnmod.CornerRoundingRadius = -1F;
-            this.btnmod.Location = new System.Drawing.Point(770, 246);
-            this.btnmod.Name = "btnmod";
-            this.btnmod.Size = new System.Drawing.Size(133, 41);
-            this.btnmod.TabIndex = 0;
-            this.btnmod.Values.Text = "Modify";
-            this.btnmod.Click += new System.EventHandler(this.btnmod_Click);
+            btnmod.CornerRoundingRadius = -1F;
+            btnmod.Location = new Point(798, 495);
+            btnmod.Name = "btnmod";
+            btnmod.Palette = kryptonPalettebtn;
+            btnmod.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            btnmod.Size = new Size(133, 41);
+            btnmod.TabIndex = 0;
+            btnmod.Values.Text = "Update";
+            btnmod.Click += btnmod_Click;
+            // 
+            // kryptonPalettebtn
+            // 
+            kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Border.Color1 = Color.Transparent;
+            kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Border.DrawBorders = Krypton.Toolkit.PaletteDrawBorders.Top | Krypton.Toolkit.PaletteDrawBorders.Bottom | Krypton.Toolkit.PaletteDrawBorders.Left | Krypton.Toolkit.PaletteDrawBorders.Right;
+            kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Border.Rounding = 5F;
+            kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Color1 = Color.SteelBlue;
+            kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Font = new Font("Microsoft Tai Le", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
+            kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Hint = Krypton.Toolkit.PaletteTextHint.SystemDefault;
+            // 
+            // kryptonPaletteheader
+            // 
+            kryptonPaletteheader.LabelStyles.LabelCommon.StateCommon.ShortText.Color1 = Color.DarkCyan;
+            kryptonPaletteheader.LabelStyles.LabelCommon.StateCommon.ShortText.Font = new Font("Trebuchet MS", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            // 
+            // kryptonPalettepanel
+            // 
+            kryptonPalettepanel.Common.StateCommon.Back.Color1 = Color.Transparent;
+            kryptonPalettepanel.Common.StateCommon.Back.Color2 = Color.Transparent;
+            // 
+            // cbxst
+            // 
+            cbxst.CornerRoundingRadius = -1F;
+            cbxst.DropDownWidth = 121;
+            cbxst.IntegralHeight = false;
+            cbxst.Location = new Point(137, 450);
+            cbxst.Name = "cbxst";
+            cbxst.Size = new Size(160, 21);
+            cbxst.StateCommon.ComboBox.Content.TextH = Krypton.Toolkit.PaletteRelativeAlign.Near;
+            cbxst.TabIndex = 29;
             // 
             // POAEdit
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(984, 606);
-            this.Controls.Add(this.kryptonDataGridViewit);
-            this.Controls.Add(this.txtqu);
-            this.Controls.Add(this.txtref);
-            this.Controls.Add(this.txtam);
-            this.Controls.Add(this.txtp);
-            this.Controls.Add(this.txtmin);
-            this.Controls.Add(this.txtuom);
-            this.Controls.Add(this.txtpro);
-            this.Controls.Add(this.txtit);
-            this.Controls.Add(this.txthead);
-            this.Controls.Add(this.txtsupid);
-            this.Controls.Add(this.txtline);
-            this.Controls.Add(this.lblqu);
-            this.Controls.Add(this.lblref);
-            this.Controls.Add(this.lblam);
-            this.Controls.Add(this.lblp);
-            this.Controls.Add(this.lblmin);
-            this.Controls.Add(this.lbluom);
-            this.Controls.Add(this.lblpro);
-            this.Controls.Add(this.lblsupid);
-            this.Controls.Add(this.lblit);
-            this.Controls.Add(this.lblhead);
-            this.Controls.Add(this.lblline);
-            this.Controls.Add(this.pn1);
-            this.Name = "POAEdit";
-            this.Text = "POAEdit";
-            this.Load += new System.EventHandler(this.POAEdit_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.kryptonDataGridViewit)).EndInit();
-            this.pn1.ResumeLayout(false);
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(984, 606);
+            Controls.Add(cbxst);
+            Controls.Add(lbldelisc);
+            Controls.Add(cbxdelisc);
+            Controls.Add(kryptonDataGridViewit);
+            Controls.Add(lblec);
+            Controls.Add(kryptonDateTimePickerec);
+            Controls.Add(txtqu);
+            Controls.Add(txtref);
+            Controls.Add(txtam);
+            Controls.Add(btnmod);
+            Controls.Add(lblmin);
+            Controls.Add(lbluom);
+            Controls.Add(txtp);
+            Controls.Add(txttype);
+            Controls.Add(kryptonLabel3);
+            Controls.Add(txtmin);
+            Controls.Add(lbltype);
+            Controls.Add(txtuom);
+            Controls.Add(txtpro);
+            Controls.Add(txtpoa);
+            Controls.Add(lblpoa);
+            Controls.Add(txtit);
+            Controls.Add(txtsupid);
+            Controls.Add(txtline);
+            Controls.Add(lblqu);
+            Controls.Add(lblref);
+            Controls.Add(lblam);
+            Controls.Add(lblp);
+            Controls.Add(lblpro);
+            Controls.Add(lblsupid);
+            Controls.Add(lblit);
+            Controls.Add(lblline);
+            Name = "POAEdit";
+            Text = "POAEdit";
+            Load += POAEdit_Load;
+            ((System.ComponentModel.ISupportInitialize)kryptonDataGridViewit).EndInit();
+            ((System.ComponentModel.ISupportInitialize)cbxdelisc).EndInit();
+            ((System.ComponentModel.ISupportInitialize)cbxst).EndInit();
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
 
         private Krypton.Toolkit.KryptonLabel lblline;
-        private Krypton.Toolkit.KryptonLabel lblhead;
         private Krypton.Toolkit.KryptonLabel lblit;
         private Krypton.Toolkit.KryptonLabel lblsupid;
         private Krypton.Toolkit.KryptonLabel lblpro;
@@ -309,7 +470,6 @@
         private Krypton.Toolkit.KryptonLabel lblqu;
         private Krypton.Toolkit.KryptonTextBox txtline;
         private Krypton.Toolkit.KryptonTextBox txtsupid;
-        private Krypton.Toolkit.KryptonTextBox txthead;
         private Krypton.Toolkit.KryptonTextBox txtit;
         private Krypton.Toolkit.KryptonTextBox txtpro;
         private Krypton.Toolkit.KryptonTextBox txtuom;
@@ -319,7 +479,21 @@
         private Krypton.Toolkit.KryptonTextBox txtref;
         private Krypton.Toolkit.KryptonTextBox txtqu;
         private Krypton.Toolkit.KryptonDataGridView kryptonDataGridViewit;
-        private Panel pn1;
         private Krypton.Toolkit.KryptonButton btnmod;
+        private Krypton.Toolkit.KryptonTextBox txtpoa;
+        private Krypton.Toolkit.KryptonLabel lblpoa;
+        private Krypton.Toolkit.KryptonPalette kryptonPalettelbl;
+        private Krypton.Toolkit.KryptonPalette kryptonPaletteheader;
+        private Krypton.Toolkit.KryptonPalette kryptonPalettereadonly;
+        private Krypton.Toolkit.KryptonPalette kryptonPalettepanel;
+        private Krypton.Toolkit.KryptonPalette kryptonPalettebtn;
+        private Krypton.Toolkit.KryptonTextBox txttype;
+        private Krypton.Toolkit.KryptonLabel kryptonLabel3;
+        private Krypton.Toolkit.KryptonLabel lbltype;
+        private Krypton.Toolkit.KryptonComboBox cbxdelisc;
+        private Krypton.Toolkit.KryptonDateTimePicker kryptonDateTimePickerec;
+        private Krypton.Toolkit.KryptonLabel lblec;
+        private Krypton.Toolkit.KryptonLabel lbldelisc;
+        private Krypton.Toolkit.KryptonComboBox cbxst;
     }
 }

@@ -1,4 +1,5 @@
-﻿namespace CPS_App
+﻿using Krypton.Toolkit;
+namespace CPS_App
 {
     partial class ItemEdit
     {
@@ -28,232 +29,295 @@
         /// </summary>
         private void InitializeComponent()
         {
-            label1 = new Label();
-            label2 = new Label();
-            label3 = new Label();
-            label4 = new Label();
-            label5 = new Label();
-            label6 = new Label();
-            label7 = new Label();
-            label8 = new Label();
-            txtvid = new TextBox();
-            txtcat = new TextBox();
-            txtname = new TextBox();
-            txtid = new TextBox();
-            txtqty = new TextBox();
-            txtloc = new TextBox();
-            txtupdate = new TextBox();
-            txtuom = new TextBox();
-            dataGridViewitem = new DataGridView();
-            btnmod = new Button();
-            ((System.ComponentModel.ISupportInitialize)dataGridViewitem).BeginInit();
-            SuspendLayout();
+            this.components = new System.ComponentModel.Container();
+            this.lblid = new Krypton.Toolkit.KryptonLabel();
+            this.kryptonPalettelbl = new Krypton.Toolkit.KryptonPalette(this.components);
+            this.lblvid = new Krypton.Toolkit.KryptonLabel();
+            this.lblname = new Krypton.Toolkit.KryptonLabel();
+            this.lblcat = new Krypton.Toolkit.KryptonLabel();
+            this.lbluom = new Krypton.Toolkit.KryptonLabel();
+            this.lblloc = new Krypton.Toolkit.KryptonLabel();
+            this.lblqty = new Krypton.Toolkit.KryptonLabel();
+            this.lbluptime = new Krypton.Toolkit.KryptonLabel();
+            this.txtvid = new Krypton.Toolkit.KryptonTextBox();
+            this.kryptonPalettereadonly = new Krypton.Toolkit.KryptonPalette(this.components);
+            this.txtcat = new Krypton.Toolkit.KryptonTextBox();
+            this.txtname = new Krypton.Toolkit.KryptonTextBox();
+            this.txtid = new Krypton.Toolkit.KryptonTextBox();
+            this.txtqty = new Krypton.Toolkit.KryptonTextBox();
+            this.txtloc = new Krypton.Toolkit.KryptonTextBox();
+            this.txtupdate = new Krypton.Toolkit.KryptonTextBox();
+            this.txtuom = new Krypton.Toolkit.KryptonTextBox();
+            this.dataGridViewitem = new Krypton.Toolkit.KryptonDataGridView();
+            this.btnmod = new Krypton.Toolkit.KryptonButton();
+            this.kryptonPalettebtn = new Krypton.Toolkit.KryptonPalette(this.components);
+            this.kryptonPaletteheader = new Krypton.Toolkit.KryptonPalette(this.components);
+            this.kryptonPalettepanel = new Krypton.Toolkit.KryptonPalette(this.components);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewitem)).BeginInit();
+            this.SuspendLayout();
             // 
-            // label1
+            // lblid
             // 
-            label1.AutoSize = true;
-            label1.Location = new Point(26, 78);
-            label1.Name = "label1";
-            label1.Size = new Size(45, 15);
-            label1.TabIndex = 0;
-            label1.Text = "Item ID";
+            this.lblid.Location = new System.Drawing.Point(29, 223);
+            this.lblid.Name = "lblid";
+            this.lblid.Palette = this.kryptonPalettelbl;
+            this.lblid.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.lblid.Size = new System.Drawing.Size(61, 21);
+            this.lblid.TabIndex = 0;
+            this.lblid.Values.Text = "Item ID";
             // 
-            // label2
+            // kryptonPalettelbl
             // 
-            label2.AutoSize = true;
-            label2.Location = new Point(19, 117);
-            label2.Name = "label2";
-            label2.Size = new Size(52, 15);
-            label2.TabIndex = 1;
-            label2.Text = "Item VID";
+            this.kryptonPalettelbl.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Microsoft YaHei", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.kryptonPalettelbl.LabelStyles.LabelCommon.StateCommon.ShortText.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             // 
-            // label3
+            // lblvid
             // 
-            label3.AutoSize = true;
-            label3.Location = new Point(264, 78);
-            label3.Name = "label3";
-            label3.Size = new Size(66, 15);
-            label3.TabIndex = 2;
-            label3.Text = "Item Name";
+            this.lblvid.Location = new System.Drawing.Point(22, 262);
+            this.lblvid.Name = "lblvid";
+            this.lblvid.Palette = this.kryptonPalettelbl;
+            this.lblvid.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.lblvid.Size = new System.Drawing.Size(71, 21);
+            this.lblvid.TabIndex = 1;
+            this.lblvid.Values.Text = "Item VID";
             // 
-            // label4
+            // lblname
             // 
-            label4.AutoSize = true;
-            label4.Location = new Point(264, 117);
-            label4.Name = "label4";
-            label4.Size = new Size(55, 15);
-            label4.TabIndex = 3;
-            label4.Text = "Category";
+            this.lblname.Location = new System.Drawing.Point(254, 223);
+            this.lblname.Name = "lblname";
+            this.lblname.Palette = this.kryptonPalettelbl;
+            this.lblname.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.lblname.Size = new System.Drawing.Size(87, 21);
+            this.lblname.TabIndex = 2;
+            this.lblname.Values.Text = "Item Name";
             // 
-            // label5
+            // lblcat
             // 
-            label5.AutoSize = true;
-            label5.Location = new Point(221, 159);
-            label5.Name = "label5";
-            label5.Size = new Size(119, 15);
-            label5.TabIndex = 4;
-            label5.Text = "Unit of Measurement";
+            this.lblcat.Location = new System.Drawing.Point(267, 262);
+            this.lblcat.Name = "lblcat";
+            this.lblcat.Palette = this.kryptonPalettelbl;
+            this.lblcat.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.lblcat.Size = new System.Drawing.Size(74, 21);
+            this.lblcat.TabIndex = 3;
+            this.lblcat.Values.Text = "Category";
             // 
-            // label6
+            // lbluom
             // 
-            label6.AutoSize = true;
-            label6.Location = new Point(530, 117);
-            label6.Name = "label6";
-            label6.Size = new Size(85, 15);
-            label6.TabIndex = 5;
-            label6.Text = "Stock Loaction";
+            this.lbluom.Location = new System.Drawing.Point(188, 304);
+            this.lbluom.Name = "lbluom";
+            this.lbluom.Palette = this.kryptonPalettelbl;
+            this.lbluom.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.lbluom.Size = new System.Drawing.Size(155, 21);
+            this.lbluom.TabIndex = 4;
+            this.lbluom.Values.Text = "Unit of Measurement";
             // 
-            // label7
+            // lblloc
             // 
-            label7.AutoSize = true;
-            label7.Location = new Point(530, 78);
-            label7.Name = "label7";
-            label7.Size = new Size(53, 15);
-            label7.TabIndex = 6;
-            label7.Text = "Quantity";
+            this.lblloc.Location = new System.Drawing.Point(533, 262);
+            this.lblloc.Name = "lblloc";
+            this.lblloc.Palette = this.kryptonPalettelbl;
+            this.lblloc.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.lblloc.Size = new System.Drawing.Size(113, 21);
+            this.lblloc.TabIndex = 5;
+            this.lblloc.Values.Text = "Stock Loaction";
             // 
-            // label8
+            // lblqty
             // 
-            label8.AutoSize = true;
-            label8.Location = new Point(510, 159);
-            label8.Name = "label8";
-            label8.Size = new Size(105, 15);
-            label8.TabIndex = 7;
-            label8.Text = "Last Updated Time";
+            this.lblqty.Location = new System.Drawing.Point(533, 223);
+            this.lblqty.Name = "lblqty";
+            this.lblqty.Palette = this.kryptonPalettelbl;
+            this.lblqty.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.lblqty.Size = new System.Drawing.Size(69, 21);
+            this.lblqty.TabIndex = 6;
+            this.lblqty.Values.Text = "Quantity";
+            // 
+            // lbluptime
+            // 
+            this.lbluptime.Location = new System.Drawing.Point(513, 304);
+            this.lbluptime.Name = "lbluptime";
+            this.lbluptime.Palette = this.kryptonPalettelbl;
+            this.lbluptime.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.lbluptime.Size = new System.Drawing.Size(142, 21);
+            this.lbluptime.TabIndex = 7;
+            this.lbluptime.Values.Text = "Last Updated Time";
             // 
             // txtvid
             // 
-            txtvid.Location = new Point(77, 114);
-            txtvid.Name = "txtvid";
-            txtvid.ReadOnly = true;
-            txtvid.Size = new Size(169, 23);
-            txtvid.TabIndex = 8;
+            this.txtvid.Location = new System.Drawing.Point(96, 259);
+            this.txtvid.Name = "txtvid";
+            this.txtvid.Palette = this.kryptonPalettereadonly;
+            this.txtvid.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.txtvid.ReadOnly = true;
+            this.txtvid.Size = new System.Drawing.Size(120, 23);
+            this.txtvid.TabIndex = 8;
+            // 
+            // kryptonPalettereadonly
+            // 
+            this.kryptonPalettereadonly.Common.StateCommon.Back.Color1 = System.Drawing.SystemColors.Control;
+            this.kryptonPalettereadonly.Common.StateCommon.Back.Color2 = System.Drawing.SystemColors.Control;
             // 
             // txtcat
             // 
-            txtcat.Location = new Point(347, 114);
-            txtcat.Name = "txtcat";
-            txtcat.ReadOnly = true;
-            txtcat.Size = new Size(155, 23);
-            txtcat.TabIndex = 9;
+            this.txtcat.Location = new System.Drawing.Point(350, 259);
+            this.txtcat.Name = "txtcat";
+            this.txtcat.Palette = this.kryptonPalettereadonly;
+            this.txtcat.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.txtcat.ReadOnly = true;
+            this.txtcat.Size = new System.Drawing.Size(120, 23);
+            this.txtcat.TabIndex = 9;
             // 
             // txtname
             // 
-            txtname.Location = new Point(347, 75);
-            txtname.Name = "txtname";
-            txtname.ReadOnly = true;
-            txtname.Size = new Size(155, 23);
-            txtname.TabIndex = 10;
+            this.txtname.Location = new System.Drawing.Point(350, 220);
+            this.txtname.Name = "txtname";
+            this.txtname.Palette = this.kryptonPalettereadonly;
+            this.txtname.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.txtname.ReadOnly = true;
+            this.txtname.Size = new System.Drawing.Size(120, 23);
+            this.txtname.TabIndex = 10;
             // 
             // txtid
             // 
-            txtid.Location = new Point(77, 75);
-            txtid.Name = "txtid";
-            txtid.ReadOnly = true;
-            txtid.Size = new Size(169, 23);
-            txtid.TabIndex = 11;
+            this.txtid.Location = new System.Drawing.Point(96, 220);
+            this.txtid.Name = "txtid";
+            this.txtid.Palette = this.kryptonPalettereadonly;
+            this.txtid.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.txtid.ReadOnly = true;
+            this.txtid.Size = new System.Drawing.Size(120, 23);
+            this.txtid.TabIndex = 11;
             // 
             // txtqty
             // 
-            txtqty.Location = new Point(622, 75);
-            txtqty.Name = "txtqty";
-            txtqty.Size = new Size(149, 23);
-            txtqty.TabIndex = 12;
+            this.txtqty.Location = new System.Drawing.Point(653, 220);
+            this.txtqty.Name = "txtqty";
+            this.txtqty.Size = new System.Drawing.Size(120, 23);
+            this.txtqty.TabIndex = 12;
             // 
             // txtloc
             // 
-            txtloc.Location = new Point(622, 114);
-            txtloc.Name = "txtloc";
-            txtloc.ReadOnly = true;
-            txtloc.Size = new Size(150, 23);
-            txtloc.TabIndex = 13;
+            this.txtloc.Location = new System.Drawing.Point(653, 259);
+            this.txtloc.Name = "txtloc";
+            this.txtloc.ReadOnly = true;
+            this.txtloc.Size = new System.Drawing.Size(120, 23);
+            this.txtloc.TabIndex = 13;
             // 
             // txtupdate
             // 
-            txtupdate.Location = new Point(622, 156);
-            txtupdate.Name = "txtupdate";
-            txtupdate.ReadOnly = true;
-            txtupdate.Size = new Size(149, 23);
-            txtupdate.TabIndex = 14;
+            this.txtupdate.Location = new System.Drawing.Point(653, 301);
+            this.txtupdate.Name = "txtupdate";
+            this.txtupdate.Palette = this.kryptonPalettereadonly;
+            this.txtupdate.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.txtupdate.ReadOnly = true;
+            this.txtupdate.Size = new System.Drawing.Size(120, 23);
+            this.txtupdate.TabIndex = 14;
             // 
             // txtuom
             // 
-            txtuom.Location = new Point(346, 156);
-            txtuom.Name = "txtuom";
-            txtuom.ReadOnly = true;
-            txtuom.Size = new Size(156, 23);
-            txtuom.TabIndex = 15;
+            this.txtuom.Location = new System.Drawing.Point(349, 301);
+            this.txtuom.Name = "txtuom";
+            this.txtuom.Palette = this.kryptonPalettereadonly;
+            this.txtuom.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.txtuom.ReadOnly = true;
+            this.txtuom.Size = new System.Drawing.Size(120, 23);
+            this.txtuom.TabIndex = 15;
             // 
             // dataGridViewitem
             // 
-            dataGridViewitem.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewitem.Location = new Point(26, 254);
-            dataGridViewitem.Name = "dataGridViewitem";
-            dataGridViewitem.RowTemplate.Height = 25;
-            dataGridViewitem.Size = new Size(745, 150);
-            dataGridViewitem.TabIndex = 16;
-            dataGridViewitem.CellClick += dataGridViewitem_CellClick;
+            this.dataGridViewitem.AllowUserToAddRows = false;
+            this.dataGridViewitem.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewitem.Location = new System.Drawing.Point(29, 39);
+            this.dataGridViewitem.Name = "dataGridViewitem";
+            this.dataGridViewitem.RowTemplate.Height = 25;
+            this.dataGridViewitem.Size = new System.Drawing.Size(745, 150);
+            this.dataGridViewitem.TabIndex = 16;
             // 
             // btnmod
             // 
-            btnmod.Location = new Point(661, 202);
-            btnmod.Name = "btnmod";
-            btnmod.Size = new Size(110, 29);
-            btnmod.TabIndex = 17;
-            btnmod.Text = "Modify";
-            btnmod.UseVisualStyleBackColor = true;
-            btnmod.Click += btnmod_Click;
+            this.btnmod.CornerRoundingRadius = -1F;
+            this.btnmod.Location = new System.Drawing.Point(664, 347);
+            this.btnmod.Name = "btnmod";
+            this.btnmod.Palette = this.kryptonPalettebtn;
+            this.btnmod.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.btnmod.Size = new System.Drawing.Size(110, 29);
+            this.btnmod.TabIndex = 17;
+            this.btnmod.Values.Text = "Modify";
+            // 
+            // kryptonPalettebtn
+            // 
+            this.kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Border.Color1 = System.Drawing.Color.Transparent;
+            this.kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Border.DrawBorders = ((Krypton.Toolkit.PaletteDrawBorders)((((Krypton.Toolkit.PaletteDrawBorders.Top | Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Border.Rounding = 5F;
+            this.kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Color1 = System.Drawing.Color.SteelBlue;
+            this.kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Microsoft Tai Le", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Hint = Krypton.Toolkit.PaletteTextHint.SystemDefault;
+            // 
+            // kryptonPaletteheader
+            // 
+            this.kryptonPaletteheader.LabelStyles.LabelCommon.StateCommon.ShortText.Color1 = System.Drawing.Color.DarkCyan;
+            this.kryptonPaletteheader.LabelStyles.LabelCommon.StateCommon.ShortText.Font = new System.Drawing.Font("Trebuchet MS", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            // 
+            // kryptonPalettepanel
+            // 
+            this.kryptonPalettepanel.Common.StateCommon.Back.Color1 = System.Drawing.Color.Transparent;
+            this.kryptonPalettepanel.Common.StateCommon.Back.Color2 = System.Drawing.Color.Transparent;
             // 
             // ItemEdit
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
-            Controls.Add(btnmod);
-            Controls.Add(dataGridViewitem);
-            Controls.Add(txtuom);
-            Controls.Add(txtupdate);
-            Controls.Add(txtloc);
-            Controls.Add(txtqty);
-            Controls.Add(txtid);
-            Controls.Add(txtname);
-            Controls.Add(txtcat);
-            Controls.Add(txtvid);
-            Controls.Add(label8);
-            Controls.Add(label7);
-            Controls.Add(label6);
-            Controls.Add(label5);
-            Controls.Add(label4);
-            Controls.Add(label3);
-            Controls.Add(label2);
-            Controls.Add(label1);
-            Name = "ItemEdit";
-            Text = "ItemEdit";
-            Load += ItemEdit_Load;
-            ((System.ComponentModel.ISupportInitialize)dataGridViewitem).EndInit();
-            ResumeLayout(false);
-            PerformLayout();
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(800, 477);
+            this.Controls.Add(this.btnmod);
+            this.Controls.Add(this.dataGridViewitem);
+            this.Controls.Add(this.txtuom);
+            this.Controls.Add(this.txtupdate);
+            this.Controls.Add(this.txtloc);
+            this.Controls.Add(this.txtqty);
+            this.Controls.Add(this.txtid);
+            this.Controls.Add(this.txtname);
+            this.Controls.Add(this.txtcat);
+            this.Controls.Add(this.txtvid);
+            this.Controls.Add(this.lbluptime);
+            this.Controls.Add(this.lblqty);
+            this.Controls.Add(this.lblloc);
+            this.Controls.Add(this.lbluom);
+            this.Controls.Add(this.lblcat);
+            this.Controls.Add(this.lblname);
+            this.Controls.Add(this.lblvid);
+            this.Controls.Add(this.lblid);
+            this.Name = "ItemEdit";
+            this.Text = "ItemEdit";
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewitem)).EndInit();
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
         }
 
         #endregion
 
-        private Label label1;
-        private Label label2;
-        private Label label3;
-        private Label label4;
-        private Label label5;
-        private Label label6;
-        private Label label7;
-        private Label label8;
-        private TextBox txtvid;
-        private TextBox txtcat;
-        private TextBox txtname;
-        private TextBox txtid;
-        private TextBox txtqty;
-        private TextBox txtloc;
-        private TextBox txtupdate;
-        private TextBox txtuom;
-        private DataGridView dataGridViewitem;
-        private Button btnmod;
+        private KryptonLabel lblid;
+        private KryptonLabel lblvid;
+        private KryptonLabel lblname;
+        private KryptonLabel lblcat;
+        private KryptonLabel lbluom;
+        private KryptonLabel lblloc;
+        private KryptonLabel lblqty;
+        private KryptonLabel lbluptime;
+        private KryptonTextBox txtvid;
+        private KryptonTextBox txtcat;
+        private KryptonTextBox txtname;
+        private KryptonTextBox txtid;
+        private KryptonTextBox txtqty;
+        private KryptonTextBox txtloc;
+        private KryptonTextBox txtupdate;
+        private KryptonTextBox txtuom;
+        private KryptonDataGridView dataGridViewitem;
+        private KryptonButton btnmod;
+        private KryptonPalette kryptonPalettelbl;
+        private KryptonPalette kryptonPaletteheader;
+        private KryptonPalette kryptonPalettebtn;
+        private KryptonPalette kryptonPalettepanel;
+        private KryptonPalette kryptonPalettereadonly;
     }
 }

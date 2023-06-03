@@ -51,9 +51,9 @@ namespace CPS_App
                 .HasAnnotation("ProductVersion", "7.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64)
                 .Ignore<IdentityUserToken<string>>()
-                .Ignore<IdentityUserLogin<string>>()
-                .Ignore<IdentityUserClaim<string>>()
-                .Ignore<IdentityRoleClaim<string>>();
+                .Ignore<IdentityUserLogin<string>>();
+                //.Ignore<IdentityUserClaim<string>>()
+                //.Ignore<IdentityRoleClaim<string>>();
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
             {
@@ -86,28 +86,32 @@ namespace CPS_App
                 b.ToTable("tb_roles", (string)null);
             });
 
-            //modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
-            //{
-            //    b.Property<int>("Id")
-            //        .ValueGeneratedOnAdd()
-            //        .HasColumnType("int");
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("int")
+                    .HasColumnName("i_claim_id");
 
-            //    b.Property<string>("ClaimType")
-            //        .HasColumnType("longtext");
+                b.Property<string>("ClaimType")
+                    .HasColumnType("longtext")
+                .HasColumnName("vc_claim_type");
 
-            //    b.Property<string>("ClaimValue")
-            //        .HasColumnType("longtext");
+                b.Property<string>("ClaimValue")
+                    .HasColumnType("longtext")
+                    .HasColumnName("vc_claim_value");
 
-            //    b.Property<string>("RoleId")
-            //        .IsRequired()
-            //        .HasColumnType("varchar(255)");
+                b.Property<string>("RoleId")
+                    .IsRequired()
+                    .HasColumnType("varchar(255)")
+                    .HasColumnName("vc_role_id");
 
-            //    b.HasKey("Id");
+                b.HasKey("Id");
 
-            //    b.HasIndex("RoleId");
+                b.HasIndex("RoleId");
 
-            //    b.ToTable("RoleClaims", (string)null);
-            //});
+                b.ToTable("tb_role_claim", (string)null);
+            });
 
             modelBuilder.Entity<IdentityUser>(/*"Microsoft.AspNetCore.Identity.IdentityUser",*/ b =>
             {
@@ -209,28 +213,32 @@ namespace CPS_App
                                                 .Ignore(u => u.PhoneNumberConfirmed)
                                                 .Ignore(u => u.PhoneNumber);
 
-            //modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
-            //{
-            //    b.Property<int>("Id")
-            //        .ValueGeneratedOnAdd()
-            //        .HasColumnType("int");
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("int")
+                    .HasColumnName("i_claim_id");
 
-            //    b.Property<string>("ClaimType")
-            //        .HasColumnType("longtext");
+                b.Property<string>("ClaimType")
+                    .HasColumnType("longtext")
+                    .HasColumnName("vc_claim_type");
 
-            //    b.Property<string>("ClaimValue")
-            //        .HasColumnType("longtext");
+                b.Property<string>("ClaimValue")
+                    .HasColumnType("longtext")
+                    .HasColumnName("vc_claim_value");
 
-            //    b.Property<string>("UserId")
-            //        .IsRequired()
-            //        .HasColumnType("varchar(255)");
+                b.Property<string>("UserId")
+                    .IsRequired()
+                    .HasColumnType("varchar(255)")
+                    .HasColumnName("vc_user_id");
 
-            //    b.HasKey("Id");
+                b.HasKey("Id");
 
-            //    b.HasIndex("UserId");
+                b.HasIndex("UserId");
 
-            //    b.ToTable("UserClaims", (string)null);
-            //});
+                b.ToTable("tb_user_claim", (string)null);
+            });
 
             //modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
             //{
@@ -328,23 +336,23 @@ namespace CPS_App
                 b.HasDiscriminator().HasValue("AppUsers");
             });
 
-            //modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
-            //{
-            //    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
-            //        .WithMany()
-            //        .HasForeignKey("RoleId")
-            //        .OnDelete(DeleteBehavior.Cascade)
-            //        .IsRequired();
-            //});
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+            {
+                b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    .WithMany()
+                    .HasForeignKey("RoleId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+            });
 
-            //modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
-            //{
-            //    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
-            //        .WithMany()
-            //        .HasForeignKey("UserId")
-            //        .OnDelete(DeleteBehavior.Cascade)
-            //        .IsRequired();
-            //});
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+            {
+                b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    .WithMany()
+                    .HasForeignKey("UserId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+            });
 
             //modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
             //{

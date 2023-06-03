@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CPS_App.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230330073951_createdb")]
+    [Migration("20230603030800_createdb")]
     partial class createdb
     {
         /// <inheritdoc />
@@ -50,6 +50,33 @@ namespace CPS_App.Migrations
                         .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("tb_roles", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("i_claim_id");
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("longtext")
+                        .HasColumnName("vc_claim_type");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("longtext")
+                        .HasColumnName("vc_claim_value");
+
+                    b.Property<string>("RoleId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("vc_role_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("tb_role_claim", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
@@ -129,6 +156,33 @@ namespace CPS_App.Migrations
                     b.UseTphMappingStrategy();
                 });
 
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("i_claim_id");
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("longtext")
+                        .HasColumnName("vc_claim_type");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("longtext")
+                        .HasColumnName("vc_claim_value");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("vc_user_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("tb_user_claim", (string)null);
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
                     b.Property<string>("UserId")
@@ -151,6 +205,24 @@ namespace CPS_App.Migrations
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
                     b.HasDiscriminator().HasValue("AppUsers");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>

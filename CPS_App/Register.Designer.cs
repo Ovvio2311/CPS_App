@@ -49,6 +49,8 @@
             this.lblLocation = new System.Windows.Forms.Label();
             this.txtEmpID = new System.Windows.Forms.TextBox();
             this.lblEmpID = new System.Windows.Forms.Label();
+            this.lblstaffname = new System.Windows.Forms.Label();
+            this.txtstaffname = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.errorProviderClick)).BeginInit();
             this.grpBasic.SuspendLayout();
             this.SuspendLayout();
@@ -117,7 +119,7 @@
             // 
             // submit
             // 
-            this.submit.Location = new System.Drawing.Point(314, 387);
+            this.submit.Location = new System.Drawing.Point(316, 458);
             this.submit.Name = "submit";
             this.submit.Size = new System.Drawing.Size(97, 47);
             this.submit.TabIndex = 8;
@@ -128,7 +130,7 @@
             // clear
             // 
             this.clear.CausesValidation = false;
-            this.clear.Location = new System.Drawing.Point(122, 387);
+            this.clear.Location = new System.Drawing.Point(124, 458);
             this.clear.Name = "clear";
             this.clear.Size = new System.Drawing.Size(109, 47);
             this.clear.TabIndex = 9;
@@ -168,6 +170,8 @@
             // 
             // grpBasic
             // 
+            this.grpBasic.Controls.Add(this.txtstaffname);
+            this.grpBasic.Controls.Add(this.lblstaffname);
             this.grpBasic.Controls.Add(this.txtStaffRole);
             this.grpBasic.Controls.Add(this.lblStaffRole);
             this.grpBasic.Controls.Add(this.locDesc);
@@ -186,7 +190,7 @@
             this.grpBasic.Controls.Add(this.Uname);
             this.grpBasic.Location = new System.Drawing.Point(48, 26);
             this.grpBasic.Name = "grpBasic";
-            this.grpBasic.Size = new System.Drawing.Size(441, 355);
+            this.grpBasic.Size = new System.Drawing.Size(441, 403);
             this.grpBasic.TabIndex = 19;
             // 
             // txtStaffRole
@@ -241,12 +245,28 @@
             this.lblEmpID.TabIndex = 13;
             this.lblEmpID.Text = "Employee ID";
             // 
+            // lblstaffname
+            // 
+            this.lblstaffname.AutoSize = true;
+            this.lblstaffname.Location = new System.Drawing.Point(50, 366);
+            this.lblstaffname.Name = "lblstaffname";
+            this.lblstaffname.Size = new System.Drawing.Size(66, 15);
+            this.lblstaffname.TabIndex = 19;
+            this.lblstaffname.Text = "Staff Name";
+            // 
+            // txtstaffname
+            // 
+            this.txtstaffname.Location = new System.Drawing.Point(186, 363);
+            this.txtstaffname.Name = "txtstaffname";
+            this.txtstaffname.Size = new System.Drawing.Size(217, 23);
+            this.txtstaffname.TabIndex = 20;
+            // 
             // Register
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
-            this.ClientSize = new System.Drawing.Size(521, 476);
+            this.ClientSize = new System.Drawing.Size(521, 561);
             this.Controls.Add(this.grpBasic);
             this.Controls.Add(this.clear);
             this.Controls.Add(this.submit);
@@ -257,7 +277,7 @@
             this.grpBasic.ResumeLayout(false);
             this.grpBasic.PerformLayout();
             this.ResumeLayout(false);
-            
+
         }
         
         #endregion
@@ -282,5 +302,7 @@
         private ComboBox locDesc;
         private TextBox txtStaffRole;
         private Label lblStaffRole;
+        private TextBox txtstaffname;
+        private Label lblstaffname;
     }
 }

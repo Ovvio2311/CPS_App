@@ -38,6 +38,12 @@ namespace CPS_App
             userIden = AuthService._userClaim;
             if (userIden != null)
             {
+                var criteria = new Dictionary<string, string>()
+                {
+                    {"request","write" },
+                    {"location","" }
+                };
+                await AuthService.UserAuthCheck(userIden,);
                 var userRole = userIden.Claims.FirstOrDefault(x => x.Type == "role").Value.ToString();
                 var userLoc = userIden.Claims.FirstOrDefault(x => x.Type == "location_id").Value.ToString();
             }

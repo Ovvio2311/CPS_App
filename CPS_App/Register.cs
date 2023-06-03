@@ -76,7 +76,7 @@ namespace CPS_App
         }
         private async void submit_Click(object sender, EventArgs e)
         {
-            
+
             //dynamic request = new
             //{
             //    name = txtName.Text,
@@ -87,17 +87,19 @@ namespace CPS_App
             //    empid = txtEmpID.Text,
             //    staffRole = txtStaffRole.Text,
             //    location = locDesc.SelectedItem,
+            //    staffName = txtstaffname.Text
             //};
             dynamic request = new
             {
-                name = "admin1",
+                name = "itadmin",
                 password = "123456Aa!",
                 re_password = "123456Aa!",
                 role = "Admin",
                 email = "233@ddd.com",
-                empid = "1234",
+                empid = "1209",
                 location = "East Anthony",
-                staffRole = "admin"
+                staffRole = "admin",
+                staffName = "Louise"
 
 ,
             };
@@ -113,7 +115,8 @@ namespace CPS_App
                 empid = "int",
                 staffRole = "Required",
                 location = "Required",
-                
+                staffName = "Required"
+
             });
             if (!validator.passes())
             {

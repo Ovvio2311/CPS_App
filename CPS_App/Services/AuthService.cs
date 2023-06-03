@@ -196,7 +196,10 @@ namespace CPS_App.Services
 
         #endregion
 
+        public static async Task UserAuthCheck(ClaimsIdentity identity)
+        {
 
+        }
 
 
         public async Task<bool> IsUserActive(string email)

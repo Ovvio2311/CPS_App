@@ -39,9 +39,17 @@ namespace CPS_App
         private async void POAView_Load(object sender, EventArgs e)
         {
             userIden = AuthService._userClaim;
-            if (userIden != null)
+            if (userIden == null)
             {
-                var userRole = userIden.Claims.FirstOrDefault(x => x.Type == "role").Value.ToString();
+                //throw new Exception("user claim is null");                
+            }
+            if (!await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "poa", "write" } }))
+            {
+                btnadd.Hide();
+            }
+            if (!await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "poa", "update" } }))
+            {
+                btnedit.Hide();
             }
             obj = await _pOAWorker.GetPoaWorker();
             if (obj != null)

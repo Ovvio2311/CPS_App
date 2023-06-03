@@ -20,11 +20,12 @@ namespace CPS_App.Services
             _services = services;
             _logger = logger;
         }
-        public async Task<List<RequestMappingReqObj>> RequestMappingObjGetter()
+        public async Task<List<RequestMappingReqObj>> RequestMappingObjGetter(string userLoc = null)
         {
             var reqMappingObj = new List<RequestMappingReqObj>();
             var res = new List<RequestMappingReqObj>();
-            var resObj = await _services.GetReqMappingObj();
+            
+            var resObj = await _services.GetReqMappingObj(userLoc);
 
             if (resObj.resCode == 1 && resObj.result != null)
             {

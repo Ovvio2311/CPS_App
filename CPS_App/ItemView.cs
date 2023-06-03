@@ -28,11 +28,21 @@ namespace CPS_App
         private async void ItemView_Load(object sender, EventArgs e)
         {
             userIden = AuthService._userClaim;
-            if (userIden != null)
+            if (userIden == null)
             {
-                var userRole = userIden.Claims.FirstOrDefault(x => x.Type == "role").Value.ToString();
+                //throw new Exception("user claim is null");
+                
             }
-            stock = await _stockWorker.GetStockLevelWorker();
+            if (!await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "item", "write" } }))
+            {
+                btncreate.Hide();
+            }
+            if (!await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "item", "update" } }))
+            {
+                btnupdate.Hide();
+            }
+            var userLoc = userIden.Claims.FirstOrDefault(x => x.Type == "location_id").Value.ToString();
+            stock = await _stockWorker.GetStockLevelWorker(userLoc);
             if (stock != null)
             {
                 var observableItems = new ObservableCollection<StockLevelViewObj>(stock);

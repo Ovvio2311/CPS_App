@@ -19,14 +19,14 @@ namespace CPS_App.Services
             _logger = logger;
         }
 
-        public async Task<List<StockLevelViewObj>> GetStockLevelWorker()
+        public async Task<List<StockLevelViewObj>> GetStockLevelWorker(string userLoc = null)
         {
             var res = new DbResObj();
             res.resCode = 0;
             //var result = new List<StockLevelViewObj>();
             try
             {
-                res = await _services.GetStockLevel();
+                res = await _services.GetStockLevel(userLoc);
 
                 if (res.resCode == 1 && res.result != null)
                 {

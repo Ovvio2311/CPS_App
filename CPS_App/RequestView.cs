@@ -36,20 +36,25 @@ namespace CPS_App
         private async void RequestView_Load(object sender, EventArgs e)
         {
             userIden = AuthService._userClaim;
-            if (userIden != null)
+            if (userIden == null)
             {
-                var criteria = new Dictionary<string, string>()
-                {
-                    {"request","write" },
-                    {"location","" }
-                };
-                await AuthService.UserAuthCheck(userIden,);
-                var userRole = userIden.Claims.FirstOrDefault(x => x.Type == "role").Value.ToString();
-                var userLoc = userIden.Claims.FirstOrDefault(x => x.Type == "location_id").Value.ToString();
+                //throw new Exception("user claim is null");
             }
+            if (!await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "request", "write" } }))
+            {
+                btnAdd.Hide();
+            }
+            if (!await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "request", "update" } }))
+            {                
+                btnEdit.Hide();
+            }
+            //var userRole = userIden.Claims.FirstOrDefault(x => x.Type == "role").Value.ToString();
+            string userLoc = null;
+             userLoc = userIden.Claims.FirstOrDefault(x => x.Type == "location_id").Value.ToString();
+
 
             lblitem.Hide();
-            defPage = await _requestMapp.RequestMappingObjGetter();
+            defPage = await _requestMapp.RequestMappingObjGetter(userLoc);
 
             var observableItems = new ObservableCollection<RequestMappingReqObj>(defPage);
             BindingList<RequestMappingReqObj> source = observableItems.ToBindingList();
@@ -111,5 +116,6 @@ namespace CPS_App
         {
             this.Close();
         }
+        
     }
 }

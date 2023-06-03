@@ -1,64 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<root>
-  <!--
-    Microsoft ResX Schema 
-
-    Version 2.0
-
-    The primary goals of this format is to allow a simple XML format
-    that is mostly human readable. The generation and parsing of the
-    various data types are done through the TypeConverter classes
-    associated with the data types.
-
-    Example:
-
-    ... ado.net/XML headers & schema ...
-    <resheader name="resmimetype">text/microsoft-resx</resheader>
-    <resheader name="version">2.0</resheader>
-    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
-    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
-    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
-    <data name="Color1" type="System.Drawing.Color, System.Drawing"">Blue</data>
-    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
-        <value>[base64 mime encoded serialized .NET Framework object]</value>
-    </data>
-    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
-        <comment>This is a comment</comment>
-    </data>
-
-    There are any number of "resheader" rows that contain simple
-    name/value pairs.
-
-    Each data row contains a name, and value. The row also contains a
-    type or mimetype. Type corresponds to a .NET class that support
-    text/value conversion through the TypeConverter architecture.
-    Classes that don't support this are serialized and stored with the
-    mimetype set.
-
-    The mimetype is used for serialized objects, and tells the
-    ResXResourceReader how to depersist the object. This is currently not
-    extensible. For a given mimetype the value must be set accordingly:
-
-    Note - application/x-microsoft.net.object.binary.base64 is the format
-    that the ResXResourceWriter will generate, however the reader can
-    read any of the formats listed below.
-
-    mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with
-            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
-            : and then encoded with base64 encoding.
-    
-    mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with
-            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
-            : and then encoded with base64 encoding.
-
-    mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array
-            : using a System.ComponentModel.TypeConverter
-            : and then encoded with base64 encoding.
-    -->
+﻿<root>
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
@@ -118,18 +58,128 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <metadata name="createdbBindingSource.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>558, 19</value>
+  </metadata>
+  <metadata name="kryptonPalettebtn.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>364, 17</value>
+  </metadata>
+  <metadata name="kryptonPalettebtn.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>364, 17</value>
+  </metadata>
+  <metadata name="kryptonPalettelbl.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
-  <metadata name="kryptonPalettebtn.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>364, 17</value>
-  </metadata>
-  <metadata name="kryptonPalettebtn.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>364, 17</value>
+  <metadata name="kryptonPalettelbl.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
   </metadata>
   <metadata name="kryptonPaletteheader.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>195, 17</value>
   </metadata>
   <metadata name="kryptonPaletteheader.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>195, 17</value>
+  </metadata>
+  <metadata name="notifyIcon1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>736, 19</value>
+  </metadata>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="notifyIcon1.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAABAAEAIB8AAAEAIAAkEAAAFgAAACgAAAAgAAAAPgAAAAEAIAAAAAAAgA8AAAAAAAAAAAAAAAAAAAAA
+        AAD/////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////7+/v/7+/v//////3h4
+        eP8JCQn/cnJy////////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////+/v7/+/v7////
+        //99fX3/AAAA/wICAv8AAAD/////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////////////////v7+//v7
+        +///////enp6/wAAAP8HBwf/AAAA/3Z2dv//////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////7+
+        /v/7+/v//////3t7e/8AAAD/CQkJ/wAAAP98fHz/////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////
+        ///+/v7/+/v7//////97e3v/AAAA/wkJCf8AAAD/eXl5///////7+/v/////////////////////////
+        /////////////////////////v7+//39/f/9/f3//f39//7+/v//////////////////////////////
+        //////////////39/f//////e3t7/wAAAP8JCQn/AAAA/3p6ev//////+/v7//7+/v//////////////
+        ///////////////////+/v7/+/v7//39/f////////////////////////////7+/v/7+/v//f39////
+        ///////////////////9/f3/+/v7/3x8fP8AAAD/CQkJ/wAAAP96enr///////v7+//+/v7/////////
+        /////////////////////////Pz8//////////////////T09P/c3Nz/0dHR/9nZ2f/v7+//////////
+        /////////Pz8//7+/v///////f39//39/f/j4+P/AAAA/wMDA/8AAAD/enp6///////7+/v//v7+////
+        /////////////////////////v7+//7+/v//////7e3t/5GRkf83Nzf/BAQE/wAAAP8AAAD/AAAA/wAA
+        AP8pKSn/fX19/9/f3/////////////39/f/6+vr//////52dnf8AAAD/BAQE/3t7e///////+/v7//7+
+        /v////////////////////////////39/f///////////4+Pj/8JCQn/AAAA/zIyMv94eHj/o6Oj/7Oz
+        s/+pqan/goKC/0BAQP8AAAD/AAAA/3Fxcf/09PT///////////+kpKT/AAAA/5+fn//a2tr///////39
+        /f/+/v7////////////////////////////9/f3//////+/v7/9JSUn/AAAA/1NTU//R0dH/////////
+        /////////////////////////////+Hh4f9vb2//AAAA/ycnJ//g4OD/p6en/wAAAP+mpqb/////////
+        ///9/f3//////////////////////////////////v7+//39/f/y8vL/NTU1/wAAAP+pqan/////////
+        ///9/f3/+/v7//v7+//8/Pz/+/v7//v7+//9/f3////////////Hx8f/FhYW/xAQEP8TExP/pqam////
+        ///6+vr//f39///////////////////////////////////////8/Pz//////09PT/8AAAD/wsLC////
+        ///7+/v//f39///////////////////////////////////////9/f3/+vr6///////g4OD/FhYW/yMj
+        I///////+/v7//7+/v////////////////////////////////////////////////+lpaX/AAAA/6Cg
+        oP//////+fn5////////////////////////////////////////////////////////////+vr6////
+        ///Ly8v/AAAA/2xsbP///////Pz8////////////////////////////////////////////+Pj4/xoa
+        Gv89PT3///////v7+///////////////////////////////////////////////////////////////
+        ////////+vr6//////9vb2//AAAA/+Hh4f///////f39////////////////////////////////////
+        //+qqqr/AAAA/8HBwf/+/v7//Pz8////////////////////////////////////////////////////
+        ///////////////////9/f3//v7+/+np6f8DAwP/enp6///////7+/v/////////////////////////
+        /////////////0pKSv8YGBj//f39//7+/v//////////////////////////////////////////////
+        ///////////////////////////////////8/Pz//////0FBQf8iIiL///////7+/v//////////////
+        ////////////////////////DQ0N/1RUVP///////Pz8////////////////////////////////////
+        //////////////////////////////////////////////v7+//+/v7/iYmJ/wAAAP/t7e3///////7+
+        /v////////////////////////////////8AAAD/e3t7///////7+/v/////////////////////////
+        ///////////////////////////////////////////////////9/f3/+vr6//////+urq7/AAAA/9TU
+        1P///////f39/////////////////////////////////wEBAf+Hh4f///////v7+///////////////
+        /////////////////////////////////////////////////////////////////////////////7i4
+        uP8AAAD/zc3N///////8/Pz/////////////////////////////////AAAA/3Z2dv//////+/v7////
+        //////////////////////////////////////////////////////////////39/f//////y8vL/76+
+        vv//////qKio/wAAAP/Y2Nj///////39/f////////////////////////////////8VFRX/SkpK////
+        ///8/Pz/////////////////////////////////////////////////////////////////+/v7//7+
+        /v9tbW3/gICA//7+/v97e3v/AgIC//Ly8v///////v7+/////////////////////////////////1lZ
+        Wf8QEBD/+Pj4//7+/v/+/v7/////////////////////////////////////////////////////////
+        ///8/Pz//////z09Pf/R0dH//////zExMf8vLy////////39/f//////////////////////////////
+        ////////u7u7/wAAAP+tra3///////v7+///////////////////////////////////////////////
+        ///+/v7/+fn5//////+ioqL/RkZG///////Z2dn/AAAA/42Njf//////+/v7////////////////////
+        ///////////////////9/f3/LCws/ycnJ///////+/v7//7+/v//////////////////////////////
+        ///9/f3//Pz8////////////yMjI/x8fH//V1dX//////1NTU/8ICAj/7e3t///////+/v7/////////
+        //////////////////////////////////++vr7/AAAA/39/f///////+vr6//7+/v//////////////
+        ////////////////////////8vLy/42Njf8kJCT/vb29//////+srKz/AAAA/4yMjP///////Pz8////
+        /////////////////////////////////////////Pz8//////9wcHD/AAAA/56env///////v7+//v7
+        +//+/v7///////39/f//////urq6/1RUVP88PDz/XFxc/+Hh4f//////wsLC/wEBAf9ERET//v7+//z8
+        /P/+/v7////////////////////////////////////////////+/v7//Pz8//////9ZWVn/AAAA/4CA
+        gP/+/v7////////////8/Pz/+vr6//v7+//T09P/sbGx/+np6f///////////5+fn/8AAAD/MjIy/+/v
+        7//+/v7//v7+///////////////////////////////////////////////////////+/v7//f39////
+        //9xcXH/AAAA/ycnJ/+pqan/9fX1/////////////////////////////////7q6uv8/Pz//AAAA/05O
+        Tv/w8PD///////39/f//////////////////////////////////////////////////////////////
+        ///+/v7//v7+//////+5ubn/MDAw/wAAAP8QEBD/SUlJ/3R0dP+FhYX/eHh4/1FRUf8aGhr/AAAA/xsb
+        G/+fn5/////////////9/f3/////////////////////////////////////////////////////////
+        /////////////////////////Pz8////////////uLi4/1tbW/8YGBj/AAAA/wAAAP8AAAD/EBAQ/0tL
+        S/+mpqb/+Pj4///////+/v7//v7+////////////////////////////////////////////////////
+        /////////////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAA=
+</value>
+  </data>
+  <data name="kryptonButton1.Values.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAfCAYAAACGVs+MAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAQISURBVFhHvVZZK3ZRFD6GwoVSInGhUFLKUHJDKCkUiRvx
+        E8iQZIyUpEh+gCEzoeTGEMUNJRdCIYVcuRCJMq/ve57efdreXucc75fvqdPZa++113rWWnsyxA3v7++u
+        lsjKyopUVFRIRESEGIZhfiEhIVJYWChTU1Py/PxM3c/PT34/hUlAN7C6uirJycmms/z8fGloaJDu7m5p
+        amqSkpISiYyM5HhUVJSMjIxwHvDx8eFqOQMJwLGaWFdXR8Px8fEyOzsrT09P7PeEtbU1ycrKon5RUZHc
+        39+z/yckDDhXaS8vL6exzs7OL+nE+Ovrq7y9vcnh4aEsLS3Jzc2Na1SYAcxLTU2Vu7u7L9m0g6Gc19bW
+        0sjw8DBlGIBDZUhFhajLysokIyNDKisr5erqiv3b29vi4+Mjubm5nAO7TkiwBJubm3Te0dHBTkRrN/nh
+        4UH6+/slLi5ONjY22Dc/P087fX19lPUF/R0MRJaYmMiaA3rUngB93fDu7q5ER0fL8fEx5dLSUgkMDJTb
+        21vKdoEY6+vrZL2wsMAOEHACGH55eWF7bGxM8vLy2D49PaU9ZAews2dg4WGrYT/DqB1jd6hsZGZmysHB
+        AdspKSmSlJTEtt2OMMLCwqSgoICCk5q5Q5Wsurra3D2tra3i6+vLdQJYBfU3W4Y0NjZScJp+HSrCvb09
+        LmZgZmaGZTg5OaFslQUDW6enp4eCNwQ8AUc4COzv71O2yiwzgJQB/0IAUWL7AouLiyRwdHRE2TIDwcHB
+        PFgAb9aADrUeent7ScDJVjSwAHHbgaWVohOoAHJyciQmJoZtO5vG3Nwc2W5tbVHZ2yyoAHBH+Pn5SUtL
+        C/vtympg/+NqxT4GvF0Hqv41NTUMSN0RVvUHeBdMTk5y0ujoKDvVCecUyjm2IuxUVVVRdpJN8zYsLi7m
+        ZNxqADJhxx7jyvnl5aWEh4dLbGwsZbUg7cD3AAzh1EpLSyMJPEQUMAZj+EBWtXVyOzs7dI4jPTQ0lE81
+        AOTsgmAJlBIeE3h+gQRuNXW2fwfUWdUctymyMD09TVmRAKxImG9CXWlgYECCgoJoCK8cvAPHx8dleXmZ
+        2enq6pLs7GyO48Mz7vHx0TVbZGJigv14KZ2dnbEP9j2VxCQAQEEp4RAZHByU9PR08ff3N52pLyEhQdrb
+        2+Xi4oL6AJyoNTE0NEQ9zNVPWncSXwgouK9eRHd+fs6S4L5HqXRAXxkGCXzX19ckgDMBf/1c0El4JABA
+        yX2x6bAaRx/G2tra6FyV0xOJbwnogLKKDJ8ewXdQxJB+KxKOCHgDlSHAnURzczP7Mf5rBAArEigP8KsE
+        AJ0E0g/nAQEB/OMl9usEAJ0Eti6c482I/38hAOgkcLChFPX19fIHimKxpWKSjWIAAAAASUVORK5CYII=
+</value>
+  </data>
+  <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>91</value>
   </metadata>
 </root>

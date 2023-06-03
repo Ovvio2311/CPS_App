@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CPS_App.Migrations
 {
     /// <inheritdoc />
-    public partial class mydb : Migration
+    public partial class createdb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

@@ -53,7 +53,7 @@ namespace CPS_App
             // 
             // createdbBindingSource
             // 
-            createdbBindingSource.DataSource = typeof(Migrations.mydb);
+            createdbBindingSource.DataSource = typeof(Migrations.createdb);
             // 
             // datagridview
             // 

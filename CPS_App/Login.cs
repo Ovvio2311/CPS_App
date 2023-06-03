@@ -50,7 +50,7 @@ namespace CPS_App
                     Usename = txtusername.Text,
                     Password = txtpass.Text
                 };
-                if(await _authService.Login("app_admin"/*loginRequest.Usename*/, "Aa91859551!"/*loginRequest.Password)*/))
+                if(await _authService.Login("admin"/*loginRequest.Usename*/, "123456Aa!"/*loginRequest.Password)*/))
                 {
                     MessageBox.Show("login Success");
                     //Form3 form3 = new Form3(_configuration,_db);

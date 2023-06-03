@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CPS_App.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230602134651_mydb")]
-    partial class mydb
+    [Migration("20230603030800_createdb")]
+    partial class createdb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

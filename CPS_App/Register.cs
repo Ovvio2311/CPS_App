@@ -48,7 +48,7 @@ namespace CPS_App
                 re_password = "123456Aa!",
                 role = "Admin",
                 email = "233@ddd.com",
-                empid = "674",
+                empid = "1234",
                 location = "South Ellie",
                 staffRole = "admin"
 
@@ -66,7 +66,8 @@ namespace CPS_App
             if (availableTxtBox != 6 || role == null || location == null)
             {
 
-                disableValidation();
+                //disableValidation();
+                enableValidation();
             }
             else
             {
@@ -76,16 +77,29 @@ namespace CPS_App
         private async void submit_Click(object sender, EventArgs e)
         {
             
+            //dynamic request = new
+            //{
+            //    name = txtName.Text,
+            //    password = txtPassword.Text,
+            //    re_password = txtRePw.Text,
+            //    role = GroupType.SelectedItem,
+            //    email = txtEmail.Text,
+            //    empid = txtEmpID.Text,
+            //    staffRole = txtStaffRole.Text,
+            //    location = locDesc.SelectedItem,
+            //};
             dynamic request = new
             {
-                name = txtName.Text,
-                password = txtPassword.Text,
-                re_password = txtRePw.Text,
-                role = GroupType.SelectedItem,
-                email = txtEmail.Text,
-                empid = txtEmpID.Text,
-                staffRole = txtStaffRole.Text,
-                location = locDesc.SelectedItem,
+                name = "admin1",
+                password = "123456Aa!",
+                re_password = "123456Aa!",
+                role = "Admin",
+                email = "233@ddd.com",
+                empid = "1234",
+                location = "East Anthony",
+                staffRole = "admin"
+
+,
             };
             Validator validator = new Validator();
             validator.make(request,

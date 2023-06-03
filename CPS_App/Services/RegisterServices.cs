@@ -59,14 +59,13 @@ namespace CPS_App.Services
         public async Task<bool> CreateUserAsync(dynamic request)
         {
 
-            var user00 = await _userManager.FindByNameAsync("User777");
-            var tt = await _userManager.GetRolesAsync(user00);
-            var iuser = await _userManager.FindByNameAsync("app_admin");
-            var roleuser = await _roleManager.FindByNameAsync("User");
-            var groupRole = await _userManager.GetUsersInRoleAsync("Admin");
-            var rr = await _userManager.AddToRoleAsync(iuser, "Admin");
-
-            var singin = _signInManager.CreateUserPrincipalAsync(iuser);
+            //var user00 = await _userManager.FindByNameAsync("User777");
+            //var tt = await _userManager.GetRolesAsync(user00);
+            //var iuser = await _userManager.FindByNameAsync("app_admin");
+            //var roleuser = await _roleManager.FindByNameAsync("User");
+            //var groupRole = await _userManager.GetUsersInRoleAsync("Admin");
+            //var rr = await _userManager.AddToRoleAsync(iuser, "Admin");
+            //var singin = _signInManager.CreateUserPrincipalAsync(iuser);
 
             var user = CreateUser();
             //var re = await _userManager.
@@ -75,7 +74,7 @@ namespace CPS_App.Services
             var result = await _userManager.CreateAsync(user, request.password);
             await setStaffAsnyc(request.location, request.name, request.empid, request.staffRole, CancellationToken.None);
             await SetUserRoleAsync(request.name, request.role, CancellationToken.None);
-            AppUsers useriden = await _userManager.FindByIdAsync(request.name);
+            AppUsers useriden = await _userManager.FindByNameAsync(request.name);
             List<Claim> claims = new List<Claim>()
             {
                 new Claim("user", useriden.NormalizedUserName.ToLower()),                
@@ -128,6 +127,10 @@ namespace CPS_App.Services
             var findLocid = await _dbServices.SelectWhereAsync(findLoc);
             if (findLocid.resCode != 1 || findLocid.result.Count == 0)
             {
+                if(findLocid.err_msg != null)
+                {
+                    MessageBox.Show(findLocid.err_msg);
+                }
                 _logger.LogDebug("Location not find");
                 return false;
             }
@@ -151,7 +154,12 @@ namespace CPS_App.Services
             };
 
             var result = await _dbServices.InsertAsync<tb_staff>(insertObj);
-            if (result.resCode != 1) { return false; }
+            if (result.resCode != 1) {
+                if (result.err_msg != null)
+                {
+                    MessageBox.Show(result.err_msg);
+                }
+                return false; }
 
             return true;
         }

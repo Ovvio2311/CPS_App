@@ -45,7 +45,7 @@ namespace CPS_App
         }
         private async void Dashboard_Load(object sender, EventArgs e)
         {
-
+            
             userIden = AuthService._userClaim;
             if (userIden != null)
             {

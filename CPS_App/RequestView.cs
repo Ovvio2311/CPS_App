@@ -17,6 +17,7 @@ using Krypton.Toolkit;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
 using Newtonsoft.Json;
+using static CPS_App.Models.DbModels;
 
 namespace CPS_App
 {
@@ -27,6 +28,7 @@ namespace CPS_App
         public List<RequestMappingReqObj> defPage;
         private readonly DbServices _dbServices;
         private SearchFunc _searchFunc;
+        private Dictionary<string, string> searchWords;
         public RequestView(DbServices dbServices, RequestMapping mapping, SearchFunc searchFunc)
         {
             InitializeComponent();
@@ -34,10 +36,12 @@ namespace CPS_App
             _dbServices = dbServices;
             _requestMapp = mapping;
             _searchFunc = searchFunc;
+            searchWords = new Dictionary<string, string>();
         }
 
         private async void RequestView_Load(object sender, EventArgs e)
         {
+            await _searchFunc.insertJsonString();
             userIden = AuthService._userClaim;
             if (userIden == null)
             {
@@ -55,6 +59,7 @@ namespace CPS_App
             string userLoc = null;
             userLoc = userIden.Claims.FirstOrDefault(x => x.Type == "location_id").Value.ToString();
 
+            await GetSearchWords(userIden);
 
             lblitem.Hide();
             defPage = await _requestMapp.RequestMappingObjGetter(userLoc);
@@ -124,21 +129,47 @@ namespace CPS_App
         {
             if (userIden.Claims.Any())
             {
-                var obj = new Dictionary<string, string>();
-                userIden.Claims.Where(x => x.Type == "role_id").ToList().ForEach(x =>
+                if (cbxsearch1.SelectedItem == cbxsearch2.SelectedItem)
                 {
-                    obj = new Dictionary<string, string>
-                   {
-                        {x.Type,x.Value }
-                   };
-                });
-                //var searchWords =  await _searchFunc.SearchParaGenerator(obj);
-                var searchWords = JsonConvert.DeserializeObject<List<string>>(await _searchFunc.SearchParaGenerator(obj));
+                    MessageBox.Show("Duplicate Search criteria");
+                }
+                var search1key = searchWords.FirstOrDefault(x => x.Key == cbxsearch1.SelectedItem.ToString()).Value;
+                var search2key = searchWords.FirstOrDefault(x => x.Key == cbxsearch2.SelectedItem.ToString()).Value;
+
+                var obj = new searchObj()
+                {
+                    searchWords = new Dictionary<string, string>()
+                    {
+                        {search1key,txtsearch1.Text},
+                        {search2key,txtsearch2.Text},
+                    }
+                };
             }
         }
-        private async Task GetSearchWords()
+        private async Task GetSearchWords(ClaimsIdentity identity)
         {
-            await _searchFunc.SearchParaGenerator(userIden);
+
+            IEnumerable<tb_search_gen> searchString = await _searchFunc.SearchParaGenerator(identity);
+            Dictionary<string, string> words = JsonConvert.DeserializeObject<Dictionary<string, string>>(searchString.ElementAt(0).js_search_para);
+            //words.ForEach(x =>
+            //{
+            //    cbxsearch1.Items.Add(x);
+            //    cbxsearch2.Items.Add(x);
+            //});
+            searchWords = words;
+            cbxsearch1.DataSource = words.Keys.ToList();
+            cbxsearch2.DataSource = words.Keys.ToList();
+        }
+
+        private void cbxsearch2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //cbxsearch2.DataSource = searchWords.Where(x => x != cbxsearch2.SelectedItem).ToList();
+        }
+
+        private void cbxsearch1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+            //cbxsearch2.DataSource = searchWords.Where(x=>x != cbxsearch1.SelectedItem).ToList();
         }
     }
 }

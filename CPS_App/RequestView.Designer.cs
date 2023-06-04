@@ -32,7 +32,7 @@ namespace CPS_App
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RequestView));
             this.createdbBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.datagridview = new Krypton.Toolkit.KryptonDataGridView();
@@ -67,8 +67,8 @@ namespace CPS_App
             // 
             this.datagridview.AllowUserToAddRows = false;
             this.datagridview.AllowUserToOrderColumns = true;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.AliceBlue;
-            this.datagridview.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.AliceBlue;
+            this.datagridview.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
             this.datagridview.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.datagridview.Location = new System.Drawing.Point(12, 132);
             this.datagridview.Name = "datagridview";
@@ -144,6 +144,7 @@ namespace CPS_App
             this.cbxsearch1.Name = "cbxsearch1";
             this.cbxsearch1.Size = new System.Drawing.Size(121, 21);
             this.cbxsearch1.TabIndex = 8;
+            this.cbxsearch1.SelectedIndexChanged += new System.EventHandler(this.cbxsearch1_SelectedIndexChanged);
             // 
             // btnAdd
             // 
@@ -221,6 +222,7 @@ namespace CPS_App
             this.cbxsearch2.Name = "cbxsearch2";
             this.cbxsearch2.Size = new System.Drawing.Size(121, 21);
             this.cbxsearch2.TabIndex = 15;
+            this.cbxsearch2.SelectedIndexChanged += new System.EventHandler(this.cbxsearch2_SelectedIndexChanged);
             // 
             // txtsearch1
             // 
@@ -242,7 +244,7 @@ namespace CPS_App
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1167, 514);
+            this.ClientSize = new System.Drawing.Size(1201, 514);
             this.Controls.Add(this.txtsearch2);
             this.Controls.Add(this.txtsearch1);
             this.Controls.Add(this.cbxsearch2);

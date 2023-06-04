@@ -63,8 +63,17 @@
   <metadata name="kryptonPalettebtn.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>364, 17</value>
   </metadata>
+  <metadata name="kryptonPalettebtn.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>364, 17</value>
+  </metadata>
   <metadata name="kryptonPalettelbl.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
+  </metadata>
+  <metadata name="kryptonPalettelbl.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <metadata name="kryptonPaletteheader.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>195, 17</value>
   </metadata>
   <metadata name="kryptonPaletteheader.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>195, 17</value>
@@ -150,7 +159,7 @@
   <data name="btnsearch.Values.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAACAAAAAfCAYAAACGVs+MAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        wgAADsIBFShKgAAABAhJREFUWEe9VlkrdlEUPobChVIicaFQUspQckMoKRSJG/ETyJBkjJSkSH6AITOh
+        wQAADsEBuJFr7QAABAhJREFUWEe9VlkrdlEUPobChVIicaFQUspQckMoKRSJG/ETyJBkjJSkSH6AITOh
         5MYQxQ0lF0IhhVy5EIkyr+97nt592t5e5xzvl++p09lr77XXetZaezLEDe/v766WyMrKilRUVEhERIQY
         hmF+ISEhUlhYKFNTU/L8/Ezdz89Pfj+FSUA3sLq6KsnJyaaz/Px8aWhokO7ubmlqapKSkhKJjIzkeFRU
         lIyMjHAe8PHx4Wo5AwnAsZpYV1dHw/Hx8TI7OytPT0/s94S1tTXJysqiflFRkdzf37P/JyQMOFdpLy8v

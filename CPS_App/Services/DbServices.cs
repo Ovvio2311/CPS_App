@@ -212,7 +212,7 @@ namespace CPS_App.Services
                 throw new Exception(ex.Message);
             }
         }
-        public async Task<DbResObj> GetReqMappingObj(string userLoc = null)
+        public async Task<DbResObj> GetReqMappingObj(searchObj obj = null)
         {
             //var res = new DbResObj();
 

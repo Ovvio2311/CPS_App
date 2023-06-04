@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using static CPS_App.Models.CPSModel;
@@ -16,33 +17,32 @@ namespace CPS_App.Services
         {
             _services = dbServices;
         }
-        public async Task<string> SearchParaGenerator(Dictionary<string, string> role)
+        public async Task<IEnumerable<tb_search_gen>> SearchParaGenerator(ClaimsIdentity identity)
         {
             var res = new DbResObj();
-            if (role.Count == 0)
+            if (identity.Claims.Count() == 0)
             {
                 return null;
             }
             try
             {
-
-                var roleValue = role.Values.FirstOrDefault();
+                var roleId = identity.Claims.FirstOrDefault(x => x.Type == "role_id").Value;
                 var obj = new selectObj()
                 {
                     table = nameof(tb_search_gen),
                     selecter = new Dictionary<string, string>
                     {
-                        {"vc_role_id",roleValue }
+                        {"vc_role_id",roleId }
                     }
                 };
-                 res = await _services.SelectWhereAsync<tb_search_gen>(obj);
+                res = await _services.SelectWhereAsync<tb_search_gen>(obj);
                 if (res.resCode != 1)
                 {
                     return null;
                 }
-                return res.result.js_search_para;
+                return res.result;
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 throw new Exception(res.err_msg);
             }
@@ -53,9 +53,14 @@ namespace CPS_App.Services
             {
                 JsonResponse jsonObj = new JsonResponse()
                 {
-                    jsonRes = new List<string>()
+                    jsonRes = new Dictionary<string, string>
                 {
-                    "Request Id", "Location", "Item Name", "Category Type","Expected Delievery Date","Staff Name"
+                        { "Request Id", "bi_req_id" },
+                        { "Location","bi_location_id" },
+                        { "Item Name", "vc_item_desc" },
+                        { "Category Type", "vc_category_desc" },
+                        { "Expected Delievery Date","dt_exp_deli_date" },
+                        { "Staff Name","vc_staff_name" }
                 },
                 };
                 tb_search_gen obj = new tb_search_gen()

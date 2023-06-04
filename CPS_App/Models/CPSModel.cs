@@ -225,7 +225,7 @@ namespace CPS_App.Models
         }
         public class JsonResponse : CPSModelBase
         {
-            public List<string> jsonRes { get; set; }
+            public Dictionary<string,string> jsonRes { get; set; }
         }
         //public class CustomRole
         //{

@@ -32,7 +32,7 @@ namespace CPS_App
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RequestView));
             this.createdbBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.datagridview = new Krypton.Toolkit.KryptonDataGridView();
@@ -67,8 +67,8 @@ namespace CPS_App
             // 
             this.datagridview.AllowUserToAddRows = false;
             this.datagridview.AllowUserToOrderColumns = true;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.AliceBlue;
-            this.datagridview.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.AliceBlue;
+            this.datagridview.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.datagridview.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.datagridview.Location = new System.Drawing.Point(12, 132);
             this.datagridview.Name = "datagridview";
@@ -207,8 +207,9 @@ namespace CPS_App
             this.btnsearch.Name = "btnsearch";
             this.btnsearch.Size = new System.Drawing.Size(25, 21);
             this.btnsearch.TabIndex = 14;
-            this.btnsearch.Values.Image = ((System.Drawing.Image)(resources.GetObject("kryptonButton1.Values.Image")));
+            this.btnsearch.Values.Image = ((System.Drawing.Image)(resources.GetObject("btnsearch.Values.Image")));
             this.btnsearch.Values.Text = "";
+            this.btnsearch.Click += new System.EventHandler(this.btnsearch_Click);
             // 
             // cbxsearch2
             // 
@@ -241,7 +242,7 @@ namespace CPS_App
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1133, 514);
+            this.ClientSize = new System.Drawing.Size(1167, 514);
             this.Controls.Add(this.txtsearch2);
             this.Controls.Add(this.txtsearch1);
             this.Controls.Add(this.cbxsearch2);

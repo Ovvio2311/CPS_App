@@ -79,7 +79,7 @@ namespace CPS_App.Services
                 //para.Add($"@{wName}", obj.selecter.Values.FirstOrDefault());
                 var result = await _db.QueryAsync<T>(sql, para);
 
-                if (result.Count()>0)
+                if (result.Count() > 0)
                 {
                     res.result = result;
                     res.resCode = 1;
@@ -87,7 +87,7 @@ namespace CPS_App.Services
                 else
                 {
                     res.result = null;
-                    res.resCode = 0;    
+                    res.resCode = 0;
                 }
             }
             catch (Exception ex)

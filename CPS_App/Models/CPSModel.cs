@@ -217,11 +217,15 @@ namespace CPS_App.Models
             [Display(Name = "Role Id")]
             public string vc_role_id { get; set; }
             [Display(Name = "Json")]
-            public string js_search_para { get; set; }
+            public string js_search_para { get; set; }            
             [Display(Name = "Create Date")]
             public string dt_created_date { get; set; }
             [Display(Name = "Update Date")]
             public string dt_updated_datetime { get; set; }
+        }
+        public class JsonResponse : CPSModelBase
+        {
+            public List<string> jsonRes { get; set; }
         }
         //public class CustomRole
         //{
@@ -299,7 +303,7 @@ namespace CPS_App.Models
             public string vc_req_status { get; set; }
             [Display(Name = "not_shown")]
             public int bi_location_id { get; set; }
-            [Display(Name = "Your Location")]
+            [Display(Name = "Location")]
             public string vc_location_desc { get; set; }
             [Display(Name = "not_shown")]
             public string vc_location_addr { get; set; }            

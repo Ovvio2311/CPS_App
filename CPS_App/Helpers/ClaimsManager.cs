@@ -45,6 +45,7 @@ namespace CPS_App.Helpers
             IdentityRole role = await _roleManager.FindByNameAsync(userRole[0]);
             var userclaims = await _roleManager.GetClaimsAsync(role);
             userclaims.Add(new Claim("role", userRole[0]));
+            userclaims.Add(new Claim("role_id", role.Id));
             userclaims.Add(new Claim("location_id", info.bi_location_id.ToString()));
             userclaims.Add(new Claim("staff_id", info.i_staff_id.ToString()));
             userclaims.Add(new Claim("staff_role", info.vc_staff_role.ToString()));

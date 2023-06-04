@@ -63,17 +63,8 @@
   <metadata name="kryptonPalettebtn.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>364, 17</value>
   </metadata>
-  <metadata name="kryptonPalettebtn.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>364, 17</value>
-  </metadata>
   <metadata name="kryptonPalettelbl.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
-  </metadata>
-  <metadata name="kryptonPalettelbl.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
-  <metadata name="kryptonPaletteheader.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>195, 17</value>
   </metadata>
   <metadata name="kryptonPaletteheader.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>195, 17</value>
@@ -156,27 +147,27 @@
         AAAAAAAAAAAAAAAAAAA=
 </value>
   </data>
-  <data name="kryptonButton1.Values.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="btnsearch.Values.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAfCAYAAACGVs+MAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAQISURBVFhHvVZZK3ZRFD6GwoVSInGhUFLKUHJDKCkUiRvx
-        E8iQZIyUpEh+gCEzoeTGEMUNJRdCIYVcuRCJMq/ve57efdreXucc75fvqdPZa++113rWWnsyxA3v7++u
-        lsjKyopUVFRIRESEGIZhfiEhIVJYWChTU1Py/PxM3c/PT34/hUlAN7C6uirJycmms/z8fGloaJDu7m5p
-        amqSkpISiYyM5HhUVJSMjIxwHvDx8eFqOQMJwLGaWFdXR8Px8fEyOzsrT09P7PeEtbU1ycrKon5RUZHc
-        39+z/yckDDhXaS8vL6exzs7OL+nE+Ovrq7y9vcnh4aEsLS3Jzc2Na1SYAcxLTU2Vu7u7L9m0g6Gc19bW
-        0sjw8DBlGIBDZUhFhajLysokIyNDKisr5erqiv3b29vi4+Mjubm5nAO7TkiwBJubm3Te0dHBTkRrN/nh
-        4UH6+/slLi5ONjY22Dc/P087fX19lPUF/R0MRJaYmMiaA3rUngB93fDu7q5ER0fL8fEx5dLSUgkMDJTb
-        21vKdoEY6+vrZL2wsMAOEHACGH55eWF7bGxM8vLy2D49PaU9ZAews2dg4WGrYT/DqB1jd6hsZGZmysHB
-        AdspKSmSlJTEtt2OMMLCwqSgoICCk5q5Q5Wsurra3D2tra3i6+vLdQJYBfU3W4Y0NjZScJp+HSrCvb09
-        LmZgZmaGZTg5OaFslQUDW6enp4eCNwQ8AUc4COzv71O2yiwzgJQB/0IAUWL7AouLiyRwdHRE2TIDwcHB
-        PFgAb9aADrUeent7ScDJVjSwAHHbgaWVohOoAHJyciQmJoZtO5vG3Nwc2W5tbVHZ2yyoAHBH+Pn5SUtL
-        C/vtympg/+NqxT4GvF0Hqv41NTUMSN0RVvUHeBdMTk5y0ujoKDvVCecUyjm2IuxUVVVRdpJN8zYsLi7m
-        ZNxqADJhxx7jyvnl5aWEh4dLbGwsZbUg7cD3AAzh1EpLSyMJPEQUMAZj+EBWtXVyOzs7dI4jPTQ0lE81
-        AOTsgmAJlBIeE3h+gQRuNXW2fwfUWdUctymyMD09TVmRAKxImG9CXWlgYECCgoJoCK8cvAPHx8dleXmZ
-        2enq6pLs7GyO48Mz7vHx0TVbZGJigv14KZ2dnbEP9j2VxCQAQEEp4RAZHByU9PR08ff3N52pLyEhQdrb
-        2+Xi4oL6AJyoNTE0NEQ9zNVPWncSXwgouK9eRHd+fs6S4L5HqXRAXxkGCXzX19ckgDMBf/1c0El4JABA
-        yX2x6bAaRx/G2tra6FyV0xOJbwnogLKKDJ8ewXdQxJB+KxKOCHgDlSHAnURzczP7Mf5rBAArEigP8KsE
-        AJ0E0g/nAQEB/OMl9usEAJ0Eti6c482I/38hAOgkcLChFPX19fIHimKxpWKSjWIAAAAASUVORK5CYII=
+        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
 </value>
   </data>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">

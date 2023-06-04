@@ -80,7 +80,7 @@ namespace CPS_App.Services
                 new Claim("user", useriden.NormalizedUserName.ToLower()),                
                 new Claim("email", useriden.Email),
                 new Claim("fail_count", GenUtil.ConvertObjtoType<string>(useriden.AccessFailedCount)),                                
-                new Claim("id", useriden.Id),                
+                new Claim("user_id", useriden.Id),                
             };
             var res = await _userManager.AddClaimsAsync(useriden, claims);
 

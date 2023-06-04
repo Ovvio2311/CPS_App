@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,11 +16,12 @@ namespace CPS_App.Services
         {
             _services = dbServices;
         }
-        public async Task SearchParaGenerator(Dictionary<string, string> role)
+        public async Task<string> SearchParaGenerator(Dictionary<string, string> role)
         {
+            var res = new DbResObj();
             if (role.Count == 0)
             {
-                return;
+                return null;
             }
             try
             {
@@ -33,14 +35,46 @@ namespace CPS_App.Services
                         {"vc_role_id",roleValue }
                     }
                 };
-                 var res = await _services.SelectWhereAsync<tb_search_gen>(obj);
-                if( res.resCode != 1)
+                 res = await _services.SelectWhereAsync<tb_search_gen>(obj);
+                if (res.resCode != 1)
                 {
-                    return;
-                } 
+                    return null;
+                }
+                return res.result.js_search_para;
             }
-            catch (Exception ex) { }
+            catch (Exception ex) 
+            {
+                throw new Exception(res.err_msg);
+            }
         }
+        public async Task insertJsonString()
+        {
+            try
+            {
+                JsonResponse jsonObj = new JsonResponse()
+                {
+                    jsonRes = new List<string>()
+                {
+                    "Request Id", "Location", "Item Name", "Category Type","Expected Delievery Date","Staff Name"
+                },
+                };
+                tb_search_gen obj = new tb_search_gen()
+                {
+                    vc_role_id = "5ac89490-fdb3-4cfa-9adb-a3959e63524a",
+                    js_search_para = JsonConvert.SerializeObject(jsonObj.jsonRes),
+                    dt_created_date = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss")
+                };
+                var res = await _services.InsertAsync<tb_search_gen>(obj);
+                if (res.resCode != 1 || res.err_msg != null)
+                {
+                    MessageBox.Show($"insert error\n{res.err_msg}");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
 
+        }
     }
 }

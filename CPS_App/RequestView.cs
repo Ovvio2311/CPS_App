@@ -16,6 +16,7 @@ using static CPS_App.Models.CPSModel;
 using Krypton.Toolkit;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
+using Newtonsoft.Json;
 
 namespace CPS_App
 {
@@ -25,12 +26,14 @@ namespace CPS_App
         private RequestMapping _requestMapp;
         public List<RequestMappingReqObj> defPage;
         private readonly DbServices _dbServices;
-        public RequestView(DbServices dbServices, RequestMapping mapping)
+        private SearchFunc _searchFunc;
+        public RequestView(DbServices dbServices, RequestMapping mapping, SearchFunc searchFunc)
         {
             InitializeComponent();
             defPage = new List<RequestMappingReqObj>();
             _dbServices = dbServices;
             _requestMapp = mapping;
+            _searchFunc = searchFunc;
         }
 
         private async void RequestView_Load(object sender, EventArgs e)
@@ -45,12 +48,12 @@ namespace CPS_App
                 btnAdd.Hide();
             }
             if (!await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "request", "update" } }))
-            {                
+            {
                 btnEdit.Hide();
             }
             //var userRole = userIden.Claims.FirstOrDefault(x => x.Type == "role").Value.ToString();
             string userLoc = null;
-             userLoc = userIden.Claims.FirstOrDefault(x => x.Type == "location_id").Value.ToString();
+            userLoc = userIden.Claims.FirstOrDefault(x => x.Type == "location_id").Value.ToString();
 
 
             lblitem.Hide();
@@ -116,6 +119,26 @@ namespace CPS_App
         {
             this.Close();
         }
-        
+
+        private async void btnsearch_Click(object sender, EventArgs e)
+        {
+            if (userIden.Claims.Any())
+            {
+                var obj = new Dictionary<string, string>();
+                userIden.Claims.Where(x => x.Type == "role_id").ToList().ForEach(x =>
+                {
+                    obj = new Dictionary<string, string>
+                   {
+                        {x.Type,x.Value }
+                   };
+                });
+                //var searchWords =  await _searchFunc.SearchParaGenerator(obj);
+                var searchWords = JsonConvert.DeserializeObject<List<string>>(await _searchFunc.SearchParaGenerator(obj));
+            }
+        }
+        private async Task GetSearchWords()
+        {
+            await _searchFunc.SearchParaGenerator(userIden);
+        }
     }
 }

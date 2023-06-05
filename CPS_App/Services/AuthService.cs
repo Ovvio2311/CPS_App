@@ -13,7 +13,7 @@ namespace CPS_App.Services
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ApplicationDbContext _db;
         private readonly ClaimsManager _claimsManager;
-        public  static ClaimsIdentity _userClaim;
+        public static ClaimsIdentity _userClaim;
 
 
         public AuthService(
@@ -22,7 +22,7 @@ namespace CPS_App.Services
             RoleManager<IdentityRole> roleManager,
             ApplicationDbContext db,
             ClaimsManager claimsManager
-            
+
             )
         {
             _userManager = userManager;
@@ -82,14 +82,14 @@ namespace CPS_App.Services
             }
         }
 
-       
+
         public async Task<bool> Login(string userName, string password)
         {
             try
             {
-                
+
                 var user = await _userManager.FindByNameAsync(userName);
-                
+
                 var result = await _signInManager.CheckPasswordSignInAsync(user, password, true);
                 //var check = await _userManager.CheckPasswordAsync(user, password);
                 if (result.Succeeded)
@@ -196,7 +196,23 @@ namespace CPS_App.Services
 
         #endregion
 
+        public static async Task<bool> UserAuthCheck(ClaimsIdentity identity, Dictionary<string, string> keyValue)
+        {
+            try
+            {
+                if(identity == null)
+                {
+                    return false;
+                }
+                var claimValue = identity.Claims.FirstOrDefault(x => x.Type == keyValue.ElementAt(0).Key).Value;
+                return claimValue.ToLower().Trim() == keyValue.ElementAt(0).Value.ToLower().Trim();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
 
+        }
 
 
         public async Task<bool> IsUserActive(string email)
@@ -262,6 +278,6 @@ namespace CPS_App.Services
                 return "";
             }
         }
-        
+
     }
 }

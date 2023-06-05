@@ -91,7 +91,8 @@ namespace CPS_App.Helpers
             {
                 return false;
             }
-            return value == "User" || value == "Admin";
+            return value == "User" || value == "Admin" || value == "Restaurant" || value == "Category" || value == "Purchase" ||
+             value == "Warehouse";
         }
         private dynamic getSize(string attribute, dynamic value)
         {

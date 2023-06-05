@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using static CPS_App.Models.CPSModel;
+using static CPS_App.Models.DbModels;
 
 namespace CPS_App.Services
 {
@@ -20,11 +21,12 @@ namespace CPS_App.Services
             _services = services;
             _logger = logger;
         }
-        public async Task<List<RequestMappingReqObj>> RequestMappingObjGetter()
+        public async Task<List<RequestMappingReqObj>> RequestMappingObjGetter(string userloc=null, searchObj obj = null)
         {
             var reqMappingObj = new List<RequestMappingReqObj>();
             var res = new List<RequestMappingReqObj>();
-            var resObj = await _services.GetReqMappingObj();
+            
+            var resObj = await _services.GetReqMappingObj(userloc,obj);
 
             if (resObj.resCode == 1 && resObj.result != null)
             {

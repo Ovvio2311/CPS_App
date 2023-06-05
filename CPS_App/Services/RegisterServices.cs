@@ -72,7 +72,7 @@ namespace CPS_App.Services
             await _userStore.SetUserNameAsync(user, request.name, CancellationToken.None);
             await _emailStore.SetEmailAsync(user, request.email, CancellationToken.None);
             var result = await _userManager.CreateAsync(user, request.password);
-            await setStaffAsnyc(request.location, request.name, request.empid, request.staffRole, CancellationToken.None);
+            await setStaffAsnyc(request.location, request.name, request.empid, request.staffRole, request.staffName, CancellationToken.None);
             await SetUserRoleAsync(request.name, request.role, CancellationToken.None);
             AppUsers useriden = await _userManager.FindByNameAsync(request.name);
             List<Claim> claims = new List<Claim>()
@@ -80,7 +80,7 @@ namespace CPS_App.Services
                 new Claim("user", useriden.NormalizedUserName.ToLower()),                
                 new Claim("email", useriden.Email),
                 new Claim("fail_count", GenUtil.ConvertObjtoType<string>(useriden.AccessFailedCount)),                                
-                new Claim("id", useriden.Id),                
+                new Claim("user_id", useriden.Id),                
             };
             var res = await _userManager.AddClaimsAsync(useriden, claims);
 
@@ -112,7 +112,7 @@ namespace CPS_App.Services
             }
             return (IUserEmailStore<AppUsers>)_userStore;
         }
-        private async Task<bool> setStaffAsnyc(string location, string name, string empID, string staffRole, CancellationToken token)
+        private async Task<bool> setStaffAsnyc(string location, string name, string empID, string staffRole,string staffName, CancellationToken token)
         {
             //find user id
             var user = await _userManager.FindByNameAsync(name);
@@ -150,7 +150,8 @@ namespace CPS_App.Services
                 i_staff_id = GenUtil.ConvertObjtoType<int>(empID),
                 vc_staff_role = staffRole,
                 vc_user_id = userID,
-                bi_location_id = GenUtil.ConvertObjtoType<int>(LocId)
+                bi_location_id = GenUtil.ConvertObjtoType<int>(LocId),
+                vc_staff_name = staffName 
             };
 
             var result = await _dbServices.InsertAsync<tb_staff>(insertObj);

@@ -28,120 +28,134 @@
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
-            kryptonDataGridViewpoa = new Krypton.Toolkit.KryptonDataGridView();
-            kryptonDataGridViewitem = new Krypton.Toolkit.KryptonDataGridView();
-            btnedit = new Krypton.Toolkit.KryptonButton();
-            kryptonPalettebtn = new Krypton.Toolkit.KryptonPalette(components);
-            kryptonPalettelbl = new Krypton.Toolkit.KryptonPalette(components);
-            kryptonPaletteheader = new Krypton.Toolkit.KryptonPalette(components);
-            kryptonPalettereadonly = new Krypton.Toolkit.KryptonPalette(components);
-            kryptonPalettepanel = new Krypton.Toolkit.KryptonPalette(components);
-            btnadd = new Krypton.Toolkit.KryptonButton();
-            btncancel = new Krypton.Toolkit.KryptonButton();
-            ((System.ComponentModel.ISupportInitialize)kryptonDataGridViewpoa).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)kryptonDataGridViewitem).BeginInit();
-            SuspendLayout();
+            this.components = new System.ComponentModel.Container();
+            this.kryptonDataGridViewpoa = new Krypton.Toolkit.KryptonDataGridView();
+            this.kryptonDataGridViewitem = new Krypton.Toolkit.KryptonDataGridView();
+            this.btnedit = new Krypton.Toolkit.KryptonButton();
+            this.kryptonPalettebtn = new Krypton.Toolkit.KryptonPalette(this.components);
+            this.kryptonPalettelbl = new Krypton.Toolkit.KryptonPalette(this.components);
+            this.kryptonPaletteheader = new Krypton.Toolkit.KryptonPalette(this.components);
+            this.kryptonPalettereadonly = new Krypton.Toolkit.KryptonPalette(this.components);
+            this.kryptonPalettepanel = new Krypton.Toolkit.KryptonPalette(this.components);
+            this.btnadd = new Krypton.Toolkit.KryptonButton();
+            this.btncancel = new Krypton.Toolkit.KryptonButton();
+            this.kryptonPalettedatagridview = new Krypton.Toolkit.KryptonPalette(this.components);
+            ((System.ComponentModel.ISupportInitialize)(this.kryptonDataGridViewpoa)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.kryptonDataGridViewitem)).BeginInit();
+            this.SuspendLayout();
             // 
             // kryptonDataGridViewpoa
             // 
-            kryptonDataGridViewpoa.AllowUserToAddRows = false;
-            kryptonDataGridViewpoa.Location = new Point(72, 97);
-            kryptonDataGridViewpoa.Name = "kryptonDataGridViewpoa";
-            kryptonDataGridViewpoa.RowTemplate.Height = 25;
-            kryptonDataGridViewpoa.Size = new Size(647, 221);
-            kryptonDataGridViewpoa.TabIndex = 0;
-            kryptonDataGridViewpoa.CellClick += kryptonDataGridViewpoa_CellClick;
+            this.kryptonDataGridViewpoa.AllowUserToAddRows = false;
+            this.kryptonDataGridViewpoa.Location = new System.Drawing.Point(72, 97);
+            this.kryptonDataGridViewpoa.Name = "kryptonDataGridViewpoa";
+            this.kryptonDataGridViewpoa.Palette = this.kryptonPalettedatagridview;
+            this.kryptonDataGridViewpoa.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.kryptonDataGridViewpoa.RowTemplate.Height = 25;
+            this.kryptonDataGridViewpoa.Size = new System.Drawing.Size(647, 221);
+            this.kryptonDataGridViewpoa.TabIndex = 0;
+            this.kryptonDataGridViewpoa.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.kryptonDataGridViewpoa_CellClick);
             // 
             // kryptonDataGridViewitem
             // 
-            kryptonDataGridViewitem.AllowUserToAddRows = false;
-            kryptonDataGridViewitem.Location = new Point(72, 365);
-            kryptonDataGridViewitem.Name = "kryptonDataGridViewitem";
-            kryptonDataGridViewitem.RowTemplate.Height = 25;
-            kryptonDataGridViewitem.Size = new Size(647, 164);
-            kryptonDataGridViewitem.TabIndex = 1;
+            this.kryptonDataGridViewitem.AllowUserToAddRows = false;
+            this.kryptonDataGridViewitem.Location = new System.Drawing.Point(72, 365);
+            this.kryptonDataGridViewitem.Name = "kryptonDataGridViewitem";
+            this.kryptonDataGridViewitem.Palette = this.kryptonPalettedatagridview;
+            this.kryptonDataGridViewitem.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.kryptonDataGridViewitem.RowTemplate.Height = 25;
+            this.kryptonDataGridViewitem.Size = new System.Drawing.Size(647, 164);
+            this.kryptonDataGridViewitem.TabIndex = 1;
             // 
             // btnedit
             // 
-            btnedit.CornerRoundingRadius = -1F;
-            btnedit.Location = new Point(190, 56);
-            btnedit.Name = "btnedit";
-            btnedit.Palette = kryptonPalettebtn;
-            btnedit.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
-            btnedit.Size = new Size(100, 35);
-            btnedit.TabIndex = 2;
-            btnedit.Values.Text = "Edit";
-            btnedit.Click += btnedit_Click;
+            this.btnedit.CornerRoundingRadius = -1F;
+            this.btnedit.Location = new System.Drawing.Point(190, 56);
+            this.btnedit.Name = "btnedit";
+            this.btnedit.Palette = this.kryptonPalettebtn;
+            this.btnedit.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.btnedit.Size = new System.Drawing.Size(100, 35);
+            this.btnedit.TabIndex = 2;
+            this.btnedit.Values.Text = "Update";
+            this.btnedit.Click += new System.EventHandler(this.btnedit_Click);
             // 
             // kryptonPalettebtn
             // 
-            kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Border.Color1 = Color.Transparent;
-            kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Border.DrawBorders = Krypton.Toolkit.PaletteDrawBorders.Top | Krypton.Toolkit.PaletteDrawBorders.Bottom | Krypton.Toolkit.PaletteDrawBorders.Left | Krypton.Toolkit.PaletteDrawBorders.Right;
-            kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Border.Rounding = 5F;
-            kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Color1 = Color.SteelBlue;
-            kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Font = new Font("Microsoft Tai Le", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
-            kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Hint = Krypton.Toolkit.PaletteTextHint.SystemDefault;
+            this.kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Border.Color1 = System.Drawing.Color.Transparent;
+            this.kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Border.DrawBorders = ((Krypton.Toolkit.PaletteDrawBorders)((((Krypton.Toolkit.PaletteDrawBorders.Top | Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Border.Rounding = 5F;
+            this.kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Color1 = System.Drawing.Color.SteelBlue;
+            this.kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Microsoft Tai Le", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Hint = Krypton.Toolkit.PaletteTextHint.SystemDefault;
             // 
             // kryptonPalettelbl
             // 
-            kryptonPalettelbl.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Font = new Font("Microsoft YaHei", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
-            kryptonPalettelbl.LabelStyles.LabelCommon.StateCommon.ShortText.Font = new Font("Microsoft Sans Serif", 11.25F, FontStyle.Regular, GraphicsUnit.Point);
+            this.kryptonPalettelbl.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Microsoft YaHei", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.kryptonPalettelbl.LabelStyles.LabelCommon.StateCommon.ShortText.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             // 
             // kryptonPaletteheader
             // 
-            kryptonPaletteheader.LabelStyles.LabelCommon.StateCommon.ShortText.Color1 = Color.DarkCyan;
-            kryptonPaletteheader.LabelStyles.LabelCommon.StateCommon.ShortText.Font = new Font("Trebuchet MS", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            this.kryptonPaletteheader.LabelStyles.LabelCommon.StateCommon.ShortText.Color1 = System.Drawing.Color.DarkCyan;
+            this.kryptonPaletteheader.LabelStyles.LabelCommon.StateCommon.ShortText.Font = new System.Drawing.Font("Trebuchet MS", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             // 
             // kryptonPalettereadonly
             // 
-            kryptonPalettereadonly.Common.StateCommon.Back.Color1 = SystemColors.Control;
-            kryptonPalettereadonly.Common.StateCommon.Back.Color2 = SystemColors.Control;
+            this.kryptonPalettereadonly.Common.StateCommon.Back.Color1 = System.Drawing.SystemColors.Control;
+            this.kryptonPalettereadonly.Common.StateCommon.Back.Color2 = System.Drawing.SystemColors.Control;
             // 
             // kryptonPalettepanel
             // 
-            kryptonPalettepanel.Common.StateCommon.Back.Color1 = Color.Transparent;
-            kryptonPalettepanel.Common.StateCommon.Back.Color2 = Color.Transparent;
+            this.kryptonPalettepanel.Common.StateCommon.Back.Color1 = System.Drawing.Color.Transparent;
+            this.kryptonPalettepanel.Common.StateCommon.Back.Color2 = System.Drawing.Color.Transparent;
             // 
             // btnadd
             // 
-            btnadd.CornerRoundingRadius = -1F;
-            btnadd.Location = new Point(72, 56);
-            btnadd.Name = "btnadd";
-            btnadd.Palette = kryptonPalettebtn;
-            btnadd.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
-            btnadd.Size = new Size(100, 35);
-            btnadd.TabIndex = 25;
-            btnadd.Values.Text = "Add";
-            btnadd.Click += btnadd_Click;
+            this.btnadd.CornerRoundingRadius = -1F;
+            this.btnadd.Location = new System.Drawing.Point(72, 56);
+            this.btnadd.Name = "btnadd";
+            this.btnadd.Palette = this.kryptonPalettebtn;
+            this.btnadd.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.btnadd.Size = new System.Drawing.Size(100, 35);
+            this.btnadd.TabIndex = 25;
+            this.btnadd.Values.Text = "Add";
+            this.btnadd.Click += new System.EventHandler(this.btnadd_Click);
             // 
             // btncancel
             // 
-            btncancel.CornerRoundingRadius = -1F;
-            btncancel.Location = new Point(619, 56);
-            btncancel.Name = "btncancel";
-            btncancel.Palette = kryptonPalettebtn;
-            btncancel.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
-            btncancel.Size = new Size(100, 35);
-            btncancel.TabIndex = 27;
-            btncancel.Values.Text = "Cancel";
+            this.btncancel.CornerRoundingRadius = -1F;
+            this.btncancel.Location = new System.Drawing.Point(619, 56);
+            this.btncancel.Name = "btncancel";
+            this.btncancel.Palette = this.kryptonPalettebtn;
+            this.btncancel.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.btncancel.Size = new System.Drawing.Size(100, 35);
+            this.btncancel.TabIndex = 27;
+            this.btncancel.Values.Text = "Cancel";
+            this.btncancel.Click += new System.EventHandler(this.btncancel_Click);
+            // 
+            // kryptonPalettedatagridview
+            // 
+            this.kryptonPalettedatagridview.Common.StateCommon.Back.Color1 = System.Drawing.Color.Transparent;
+            this.kryptonPalettedatagridview.Common.StateCommon.Back.Color2 = System.Drawing.Color.Transparent;
             // 
             // POAView
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(881, 638);
-            Controls.Add(btncancel);
-            Controls.Add(btnadd);
-            Controls.Add(btnedit);
-            Controls.Add(kryptonDataGridViewitem);
-            Controls.Add(kryptonDataGridViewpoa);
-            Name = "POAView";
-            Text = "POAView";
-            Load += POAView_Load;
-            ((System.ComponentModel.ISupportInitialize)kryptonDataGridViewpoa).EndInit();
-            ((System.ComponentModel.ISupportInitialize)kryptonDataGridViewitem).EndInit();
-            ResumeLayout(false);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(881, 638);
+            this.Controls.Add(this.btncancel);
+            this.Controls.Add(this.btnadd);
+            this.Controls.Add(this.btnedit);
+            this.Controls.Add(this.kryptonDataGridViewitem);
+            this.Controls.Add(this.kryptonDataGridViewpoa);
+            this.Name = "POAView";
+            this.Text = "POAView";
+            this.Load += new System.EventHandler(this.POAView_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.kryptonDataGridViewpoa)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.kryptonDataGridViewitem)).EndInit();
+            this.ResumeLayout(false);
+
         }
 
         #endregion
@@ -156,5 +170,6 @@
         private Krypton.Toolkit.KryptonPalette kryptonPalettebtn;
         private Krypton.Toolkit.KryptonButton btnadd;
         private Krypton.Toolkit.KryptonButton btncancel;
+        private Krypton.Toolkit.KryptonPalette kryptonPalettedatagridview;
     }
 }

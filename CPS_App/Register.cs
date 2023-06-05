@@ -58,25 +58,25 @@ namespace CPS_App
             //submit_Click(sender, e);
            // await _registerServices.CreateUserAsync(request);
         }
-        private void requiredFieldCheck(object sender, EventArgs e)
-        {
-            var role = GroupType.SelectedItem;
-            var location = locDesc.SelectedItem;
-            var availableTxtBox = grpBasic.Controls.OfType<TextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
-            if (availableTxtBox != 6 || role == null || location == null)
-            {
+        //private void requiredFieldCheck(object sender, EventArgs e)
+        //{
+        //    var role = GroupType.SelectedItem;
+        //    var location = locDesc.SelectedItem;
+        //    var availableTxtBox = grpBasic.Controls.OfType<TextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
+        //    if (availableTxtBox != 6 || role == null || location == null)
+        //    {
 
-                //disableValidation();
-                enableValidation();
-            }
-            else
-            {
-                enableValidation();
-            }
-        }
+        //        //disableValidation();
+        //        enableValidation();
+        //    }
+        //    else
+        //    {
+        //        enableValidation();
+        //    }
+        //}
         private async void submit_Click(object sender, EventArgs e)
         {
-            
+
             //dynamic request = new
             //{
             //    name = txtName.Text,
@@ -87,17 +87,19 @@ namespace CPS_App
             //    empid = txtEmpID.Text,
             //    staffRole = txtStaffRole.Text,
             //    location = locDesc.SelectedItem,
+            //    staffName = txtstaffname.Text
             //};
             dynamic request = new
             {
-                name = "admin1",
+                name = "LoChunFai",
                 password = "123456Aa!",
                 re_password = "123456Aa!",
-                role = "Admin",
-                email = "233@ddd.com",
-                empid = "1234",
-                location = "East Anthony",
-                staffRole = "admin"
+                role = "Restaurant",
+                email = "LoChunFai@yummy.com",
+                empid = "358",
+                location = "Tai Po Road",
+                staffRole = "Manager",
+                staffName = "LoChunFai"
 
 ,
             };
@@ -113,7 +115,8 @@ namespace CPS_App
                 empid = "int",
                 staffRole = "Required",
                 location = "Required",
-                
+                staffName = "Required"
+
             });
             if (!validator.passes())
             {
@@ -155,5 +158,21 @@ namespace CPS_App
 
         }
 
+        private void requiredFieldCheck(object sender, CancelEventArgs e)
+        {
+            var role = GroupType.SelectedItem;
+            var location = locDesc.SelectedItem;
+            var availableTxtBox = grpBasic.Controls.OfType<TextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
+            if (availableTxtBox != 7 || role == null || location == null)
+            {
+
+                //disableValidation();
+                enableValidation();
+            }
+            else
+            {
+                enableValidation();
+            }
+        }
     }
 }

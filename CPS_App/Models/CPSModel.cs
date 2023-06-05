@@ -210,6 +210,23 @@ namespace CPS_App.Models
             [Display(Name = "Update Date")]
             public string dt_updated_datetime { get; set; }
         }
+        public class tb_search_gen : CPSModelBase
+        {
+            [Display(Name = "ID")]
+            public int i_search_id { get; set; }
+            [Display(Name = "Role Id")]
+            public string vc_role_id { get; set; }
+            [Display(Name = "Json")]
+            public string js_search_para { get; set; }            
+            [Display(Name = "Create Date")]
+            public string dt_created_date { get; set; }
+            [Display(Name = "Update Date")]
+            public string dt_updated_datetime { get; set; }
+        }
+        public class JsonResponse : CPSModelBase
+        {
+            public Dictionary<string,string> jsonRes { get; set; }
+        }
         //public class CustomRole
         //{
         //    public CustomRole()
@@ -286,7 +303,7 @@ namespace CPS_App.Models
             public string vc_req_status { get; set; }
             [Display(Name = "not_shown")]
             public int bi_location_id { get; set; }
-            [Display(Name = "Your Location")]
+            [Display(Name = "Location")]
             public string vc_location_desc { get; set; }
             [Display(Name = "not_shown")]
             public string vc_location_addr { get; set; }            
@@ -375,9 +392,9 @@ namespace CPS_App.Models
             [Display(Name = "Type")]
             public string vc_poa_type_desc { get; set; }
             [Display(Name = "not_shown")]
-            public long bi_poa_status_id { get;set; }
+            public long bi_poa_status_id { get; set; }
             [Display(Name = "Status")]
-            public string vc_poa_status { get; set; }
+            public string vc_poa_status_desc { get; set; }
             [Display(Name = "not_shown")]
             public int bi_deli_loc_id { get; set; }
             [Display(Name = "Delivery Location")]
@@ -412,7 +429,7 @@ namespace CPS_App.Models
             [Display(Name = "Poa line Id")]
             public int bi_poa_line_id { get; set; }
             [Display(Name = "not_shown")]
-            public int bi_poa_header_id { get; set; }
+            public int bi_poa_header_id { get; set; }          
             [Display(Name = "Item Id")]
             public int bi_item_id { get; set; }
             [Display(Name = "Item")]

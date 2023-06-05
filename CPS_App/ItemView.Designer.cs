@@ -30,97 +30,135 @@ namespace CPS_App
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
-            dataGridViewitem = new KryptonDataGridView();
-            comboBox1 = new KryptonComboBox();
-            txtfield = new KryptonTextBox();
-            btncreate = new KryptonButton();
-            btnupdate = new KryptonButton();
-            kryptonPalettebtn = new KryptonPalette(components);
-            ((System.ComponentModel.ISupportInitialize)dataGridViewitem).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)comboBox1).BeginInit();
-            SuspendLayout();
+            this.components = new System.ComponentModel.Container();
+            this.dataGridViewitem = new Krypton.Toolkit.KryptonDataGridView();
+            this.comboBox1 = new Krypton.Toolkit.KryptonComboBox();
+            this.txtfield = new Krypton.Toolkit.KryptonTextBox();
+            this.btncreate = new Krypton.Toolkit.KryptonButton();
+            this.kryptonPalettebtn = new Krypton.Toolkit.KryptonPalette(this.components);
+            this.btnupdate = new Krypton.Toolkit.KryptonButton();
+            this.lblnoresult = new Krypton.Toolkit.KryptonLabel();
+            this.btncancel = new Krypton.Toolkit.KryptonButton();
+            this.kryptonPalettedatagridview = new Krypton.Toolkit.KryptonPalette(this.components);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewitem)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.comboBox1)).BeginInit();
+            this.SuspendLayout();
             // 
             // dataGridViewitem
             // 
-            dataGridViewitem.AllowUserToOrderColumns = true;
-            dataGridViewitem.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewitem.Location = new Point(55, 81);
-            dataGridViewitem.Name = "dataGridViewitem";
-            dataGridViewitem.RowTemplate.Height = 25;
-            dataGridViewitem.Size = new Size(715, 351);
-            dataGridViewitem.TabIndex = 0;
-            dataGridViewitem.AllowUserToAddRows = false;
-            dataGridViewitem.CellClick += dataGridViewitem_CellClick;
+            this.dataGridViewitem.AllowUserToAddRows = false;
+            this.dataGridViewitem.AllowUserToOrderColumns = true;
+            this.dataGridViewitem.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewitem.Location = new System.Drawing.Point(55, 81);
+            this.dataGridViewitem.Name = "dataGridViewitem";
+            this.dataGridViewitem.Palette = this.kryptonPalettedatagridview;
+            this.dataGridViewitem.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.dataGridViewitem.RowTemplate.Height = 25;
+            this.dataGridViewitem.Size = new System.Drawing.Size(715, 351);
+            this.dataGridViewitem.StateCommon.Background.Color1 = System.Drawing.Color.Transparent;
+            this.dataGridViewitem.StateCommon.Background.Color2 = System.Drawing.Color.Transparent;
+            this.dataGridViewitem.StateCommon.BackStyle = Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
+            this.dataGridViewitem.TabIndex = 0;
+            this.dataGridViewitem.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewitem_CellClick);
             // 
             // comboBox1
             // 
-            comboBox1.CornerRoundingRadius = -1F;
-            comboBox1.DropDownWidth = 121;
-            comboBox1.FormattingEnabled = true;
-            comboBox1.IntegralHeight = false;
-            comboBox1.Location = new Point(55, 29);
-            comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(121, 21);
-            comboBox1.TabIndex = 1;
+            this.comboBox1.CornerRoundingRadius = -1F;
+            this.comboBox1.DropDownWidth = 121;
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.IntegralHeight = false;
+            this.comboBox1.Location = new System.Drawing.Point(55, 29);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(121, 21);
+            this.comboBox1.TabIndex = 1;
             // 
             // txtfield
             // 
-            txtfield.Location = new Point(182, 29);
-            txtfield.Name = "txtfield";
-            txtfield.Size = new Size(218, 23);
-            txtfield.TabIndex = 2;
+            this.txtfield.Location = new System.Drawing.Point(182, 29);
+            this.txtfield.Name = "txtfield";
+            this.txtfield.Size = new System.Drawing.Size(218, 23);
+            this.txtfield.TabIndex = 2;
             // 
             // btncreate
             // 
-            btncreate.CornerRoundingRadius = -1F;
-            btncreate.Location = new Point(564, 28);
-            btncreate.Name = "btncreate";
-            btncreate.Palette = kryptonPalettebtn;
-            btncreate.PaletteMode = PaletteMode.Custom;
-            btncreate.Size = new Size(93, 36);
-            btncreate.TabIndex = 3;
-            btncreate.Values.Text = "Create";
-            btncreate.Click += btncreate_Click;
-            // 
-            // btnupdate
-            // 
-            btnupdate.CornerRoundingRadius = -1F;
-            btnupdate.Location = new Point(683, 28);
-            btnupdate.Name = "btnupdate";
-            btnupdate.Palette = kryptonPalettebtn;
-            btnupdate.PaletteMode = PaletteMode.Custom;
-            btnupdate.Size = new Size(87, 36);
-            btnupdate.TabIndex = 4;
-            btnupdate.Values.Text = "Update";
-            btnupdate.Click += btnupdate_Click;
+            this.btncreate.CornerRoundingRadius = -1F;
+            this.btncreate.Location = new System.Drawing.Point(470, 28);
+            this.btncreate.Name = "btncreate";
+            this.btncreate.Palette = this.kryptonPalettebtn;
+            this.btncreate.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.btncreate.Size = new System.Drawing.Size(93, 36);
+            this.btncreate.TabIndex = 3;
+            this.btncreate.Values.Text = "Create";
+            this.btncreate.Click += new System.EventHandler(this.btncreate_Click);
             // 
             // kryptonPalettebtn
             // 
-            kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Border.Color1 = Color.Transparent;
-            kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Border.DrawBorders = PaletteDrawBorders.Top | PaletteDrawBorders.Bottom | PaletteDrawBorders.Left | PaletteDrawBorders.Right;
-            kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Border.Rounding = 5F;
-            kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Color1 = Color.SteelBlue;
-            kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Font = new Font("Microsoft Tai Le", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
-            kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Hint = PaletteTextHint.SystemDefault;
+            this.kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Border.Color1 = System.Drawing.Color.Transparent;
+            this.kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Border.DrawBorders = ((Krypton.Toolkit.PaletteDrawBorders)((((Krypton.Toolkit.PaletteDrawBorders.Top | Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Border.Rounding = 5F;
+            this.kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Color1 = System.Drawing.Color.SteelBlue;
+            this.kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Microsoft Tai Le", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Hint = Krypton.Toolkit.PaletteTextHint.SystemDefault;
+            // 
+            // btnupdate
+            // 
+            this.btnupdate.CornerRoundingRadius = -1F;
+            this.btnupdate.Location = new System.Drawing.Point(601, 28);
+            this.btnupdate.Name = "btnupdate";
+            this.btnupdate.Palette = this.kryptonPalettebtn;
+            this.btnupdate.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.btnupdate.Size = new System.Drawing.Size(87, 36);
+            this.btnupdate.TabIndex = 4;
+            this.btnupdate.Values.Text = "Update";
+            this.btnupdate.Click += new System.EventHandler(this.btnupdate_Click);
+            // 
+            // lblnoresult
+            // 
+            this.lblnoresult.Location = new System.Drawing.Point(55, 55);
+            this.lblnoresult.Name = "lblnoresult";
+            this.lblnoresult.Size = new System.Drawing.Size(64, 20);
+            this.lblnoresult.TabIndex = 19;
+            this.lblnoresult.Values.Text = "No Result";
+            // 
+            // btncancel
+            // 
+            this.btncancel.CornerRoundingRadius = -1F;
+            this.btncancel.Location = new System.Drawing.Point(728, 28);
+            this.btncancel.Name = "btncancel";
+            this.btncancel.Palette = this.kryptonPalettebtn;
+            this.btncancel.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.btncancel.Size = new System.Drawing.Size(87, 36);
+            this.btncancel.TabIndex = 20;
+            this.btncancel.Values.Text = "Cancel";
+            this.btncancel.Click += new System.EventHandler(this.btncancel_Click);
+            // 
+            // kryptonPalettedatagridview
+            // 
+            this.kryptonPalettedatagridview.Common.StateCommon.Back.Color1 = System.Drawing.Color.Transparent;
+            this.kryptonPalettedatagridview.Common.StateCommon.Back.Color2 = System.Drawing.Color.Transparent;
             // 
             // ItemView
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(851, 532);
-            Controls.Add(btnupdate);
-            Controls.Add(btncreate);
-            Controls.Add(txtfield);
-            Controls.Add(comboBox1);
-            Controls.Add(dataGridViewitem);
-            Name = "ItemView";
-            Text = "ItemView";
-            Load += ItemView_Load;
-            ((System.ComponentModel.ISupportInitialize)dataGridViewitem).EndInit();
-            ((System.ComponentModel.ISupportInitialize)comboBox1).EndInit();
-            ResumeLayout(false);
-            PerformLayout();
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(851, 532);
+            this.Controls.Add(this.btncancel);
+            this.Controls.Add(this.lblnoresult);
+            this.Controls.Add(this.btnupdate);
+            this.Controls.Add(this.btncreate);
+            this.Controls.Add(this.txtfield);
+            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.dataGridViewitem);
+            this.Name = "ItemView";
+            this.Text = "ItemView";
+            this.Load += new System.EventHandler(this.ItemView_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewitem)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.comboBox1)).EndInit();
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
         }
 
         #endregion
@@ -131,6 +169,8 @@ namespace CPS_App
         private KryptonButton btncreate;
         private KryptonButton btnupdate;
         private KryptonPalette kryptonPalettebtn;
-
+        private KryptonLabel lblnoresult;
+        private KryptonButton btncancel;
+        private KryptonPalette kryptonPalettedatagridview;
     }
 }

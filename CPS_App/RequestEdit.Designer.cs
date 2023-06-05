@@ -30,385 +30,396 @@ namespace CPS_App
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
-            lblreqid = new KryptonLabel();
-            kryptonPalette1 = new KryptonPalette(components);
-            lblstaffName = new KryptonLabel();
-            lblloc = new KryptonLabel();
-            lblreqSta = new KryptonLabel();
-            lblCrDate = new KryptonLabel();
-            txtreqid = new KryptonTextBox();
-            kryptonPalettereadonly = new KryptonPalette(components);
-            txtstaName = new KryptonTextBox();
-            txtloc = new KryptonTextBox();
-            txtreqst = new KryptonTextBox();
-            txtcrDate = new KryptonTextBox();
-            lblvid = new KryptonLabel();
-            datagridviewitem = new KryptonDataGridView();
-            lblqty = new KryptonLabel();
-            lblremain = new KryptonLabel();
-            lblitname = new KryptonLabel();
-            lblcat = new KryptonLabel();
-            lblrs = new KryptonLabel();
-            lblEDD = new KryptonLabel();
-            txtvid = new KryptonTextBox();
-            txtitname = new KryptonTextBox();
-            txtrs = new KryptonTextBox();
-            txtcat = new KryptonTextBox();
-            txtremain = new KryptonTextBox();
-            txtqty = new KryptonTextBox();
-            btnchange = new KryptonButton();
-            kryptonPalettebtn = new KryptonPalette(components);
-            btndel = new KryptonButton();
-            dateTimePickerEDD = new DateTimePicker();
-            btncancel = new KryptonButton();
-            ((System.ComponentModel.ISupportInitialize)datagridviewitem).BeginInit();
-            SuspendLayout();
+            this.components = new System.ComponentModel.Container();
+            this.lblreqid = new Krypton.Toolkit.KryptonLabel();
+            this.kryptonPalette1 = new Krypton.Toolkit.KryptonPalette(this.components);
+            this.lblstaffName = new Krypton.Toolkit.KryptonLabel();
+            this.lblloc = new Krypton.Toolkit.KryptonLabel();
+            this.lblreqSta = new Krypton.Toolkit.KryptonLabel();
+            this.lblCrDate = new Krypton.Toolkit.KryptonLabel();
+            this.txtreqid = new Krypton.Toolkit.KryptonTextBox();
+            this.kryptonPalettereadonly = new Krypton.Toolkit.KryptonPalette(this.components);
+            this.txtstaName = new Krypton.Toolkit.KryptonTextBox();
+            this.txtloc = new Krypton.Toolkit.KryptonTextBox();
+            this.txtreqst = new Krypton.Toolkit.KryptonTextBox();
+            this.txtcrDate = new Krypton.Toolkit.KryptonTextBox();
+            this.lblvid = new Krypton.Toolkit.KryptonLabel();
+            this.datagridviewitem = new Krypton.Toolkit.KryptonDataGridView();
+            this.lblqty = new Krypton.Toolkit.KryptonLabel();
+            this.lblremain = new Krypton.Toolkit.KryptonLabel();
+            this.lblitname = new Krypton.Toolkit.KryptonLabel();
+            this.lblcat = new Krypton.Toolkit.KryptonLabel();
+            this.lblrs = new Krypton.Toolkit.KryptonLabel();
+            this.lblEDD = new Krypton.Toolkit.KryptonLabel();
+            this.txtvid = new Krypton.Toolkit.KryptonTextBox();
+            this.txtitname = new Krypton.Toolkit.KryptonTextBox();
+            this.txtrs = new Krypton.Toolkit.KryptonTextBox();
+            this.txtcat = new Krypton.Toolkit.KryptonTextBox();
+            this.txtremain = new Krypton.Toolkit.KryptonTextBox();
+            this.txtqty = new Krypton.Toolkit.KryptonTextBox();
+            this.btnchange = new Krypton.Toolkit.KryptonButton();
+            this.kryptonPalettebtn = new Krypton.Toolkit.KryptonPalette(this.components);
+            this.btndel = new Krypton.Toolkit.KryptonButton();
+            this.dateTimePickerEDD = new System.Windows.Forms.DateTimePicker();
+            this.btncancel = new Krypton.Toolkit.KryptonButton();
+            this.kryptonPalettedatagridview = new Krypton.Toolkit.KryptonPalette(this.components);
+            ((System.ComponentModel.ISupportInitialize)(this.datagridviewitem)).BeginInit();
+            this.SuspendLayout();
             // 
             // lblreqid
             // 
-            lblreqid.Location = new Point(44, 390);
-            lblreqid.Name = "lblreqid";
-            lblreqid.Palette = kryptonPalette1;
-            lblreqid.PaletteMode = PaletteMode.Custom;
-            lblreqid.Size = new Size(89, 21);
-            lblreqid.TabIndex = 0;
-            lblreqid.Values.Text = "Request ID";
+            this.lblreqid.Location = new System.Drawing.Point(44, 390);
+            this.lblreqid.Name = "lblreqid";
+            this.lblreqid.Palette = this.kryptonPalette1;
+            this.lblreqid.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.lblreqid.Size = new System.Drawing.Size(89, 21);
+            this.lblreqid.TabIndex = 0;
+            this.lblreqid.Values.Text = "Request ID";
             // 
             // kryptonPalette1
             // 
-            kryptonPalette1.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Font = new Font("Microsoft YaHei", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
-            kryptonPalette1.LabelStyles.LabelCommon.StateCommon.ShortText.Font = new Font("Microsoft Sans Serif", 11.25F, FontStyle.Regular, GraphicsUnit.Point);
+            this.kryptonPalette1.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Microsoft YaHei", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.kryptonPalette1.LabelStyles.LabelCommon.StateCommon.ShortText.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             // 
             // lblstaffName
             // 
-            lblstaffName.Location = new Point(257, 390);
-            lblstaffName.Name = "lblstaffName";
-            lblstaffName.Palette = kryptonPalette1;
-            lblstaffName.PaletteMode = PaletteMode.Custom;
-            lblstaffName.Size = new Size(89, 21);
-            lblstaffName.TabIndex = 1;
-            lblstaffName.Values.Text = "Staff Name";
+            this.lblstaffName.Location = new System.Drawing.Point(257, 390);
+            this.lblstaffName.Name = "lblstaffName";
+            this.lblstaffName.Palette = this.kryptonPalette1;
+            this.lblstaffName.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.lblstaffName.Size = new System.Drawing.Size(89, 21);
+            this.lblstaffName.TabIndex = 1;
+            this.lblstaffName.Values.Text = "Staff Name";
             // 
             // lblloc
             // 
-            lblloc.Location = new Point(51, 443);
-            lblloc.Name = "lblloc";
-            lblloc.Palette = kryptonPalette1;
-            lblloc.PaletteMode = PaletteMode.Custom;
-            lblloc.Size = new Size(70, 21);
-            lblloc.TabIndex = 2;
-            lblloc.Values.Text = "Location";
+            this.lblloc.Location = new System.Drawing.Point(51, 443);
+            this.lblloc.Name = "lblloc";
+            this.lblloc.Palette = this.kryptonPalette1;
+            this.lblloc.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.lblloc.Size = new System.Drawing.Size(70, 21);
+            this.lblloc.TabIndex = 2;
+            this.lblloc.Values.Text = "Location";
             // 
             // lblreqSta
             // 
-            lblreqSta.Location = new Point(243, 444);
-            lblreqSta.Name = "lblreqSta";
-            lblreqSta.Palette = kryptonPalette1;
-            lblreqSta.PaletteMode = PaletteMode.Custom;
-            lblreqSta.Size = new Size(119, 21);
-            lblreqSta.TabIndex = 3;
-            lblreqSta.Values.Text = "Mapping Status";
+            this.lblreqSta.Location = new System.Drawing.Point(243, 444);
+            this.lblreqSta.Name = "lblreqSta";
+            this.lblreqSta.Palette = this.kryptonPalette1;
+            this.lblreqSta.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.lblreqSta.Size = new System.Drawing.Size(119, 21);
+            this.lblreqSta.TabIndex = 3;
+            this.lblreqSta.Values.Text = "Mapping Status";
             // 
             // lblCrDate
             // 
-            lblCrDate.Location = new Point(600, 390);
-            lblCrDate.Name = "lblCrDate";
-            lblCrDate.Palette = kryptonPalette1;
-            lblCrDate.PaletteMode = PaletteMode.Custom;
-            lblCrDate.Size = new Size(95, 21);
-            lblCrDate.TabIndex = 4;
-            lblCrDate.Values.Text = "Create Date";
+            this.lblCrDate.Location = new System.Drawing.Point(600, 390);
+            this.lblCrDate.Name = "lblCrDate";
+            this.lblCrDate.Palette = this.kryptonPalette1;
+            this.lblCrDate.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.lblCrDate.Size = new System.Drawing.Size(95, 21);
+            this.lblCrDate.TabIndex = 4;
+            this.lblCrDate.Values.Text = "Create Date";
             // 
             // txtreqid
             // 
-            txtreqid.Location = new Point(130, 390);
-            txtreqid.Name = "txtreqid";
-            txtreqid.Palette = kryptonPalettereadonly;
-            txtreqid.PaletteMode = PaletteMode.Custom;
-            txtreqid.ReadOnly = true;
-            txtreqid.Size = new Size(100, 23);
-            txtreqid.TabIndex = 6;
+            this.txtreqid.Location = new System.Drawing.Point(130, 390);
+            this.txtreqid.Name = "txtreqid";
+            this.txtreqid.Palette = this.kryptonPalettereadonly;
+            this.txtreqid.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.txtreqid.ReadOnly = true;
+            this.txtreqid.Size = new System.Drawing.Size(100, 23);
+            this.txtreqid.TabIndex = 6;
             // 
             // kryptonPalettereadonly
             // 
-            kryptonPalettereadonly.Common.StateCommon.Back.Color1 = SystemColors.Control;
-            kryptonPalettereadonly.Common.StateCommon.Back.Color2 = SystemColors.Control;
+            this.kryptonPalettereadonly.Common.StateCommon.Back.Color1 = System.Drawing.SystemColors.Control;
+            this.kryptonPalettereadonly.Common.StateCommon.Back.Color2 = System.Drawing.SystemColors.Control;
             // 
             // txtstaName
             // 
-            txtstaName.Location = new Point(365, 390);
-            txtstaName.Name = "txtstaName";
-            txtstaName.Palette = kryptonPalettereadonly;
-            txtstaName.PaletteMode = PaletteMode.Custom;
-            txtstaName.ReadOnly = true;
-            txtstaName.Size = new Size(100, 23);
-            txtstaName.StateCommon.Back.Color1 = SystemColors.Control;
-            txtstaName.StateDisabled.Back.Color1 = Color.LightGray;
-            txtstaName.StateNormal.Back.Color1 = Color.DarkGray;
-            txtstaName.TabIndex = 7;
+            this.txtstaName.Location = new System.Drawing.Point(365, 390);
+            this.txtstaName.Name = "txtstaName";
+            this.txtstaName.Palette = this.kryptonPalettereadonly;
+            this.txtstaName.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.txtstaName.ReadOnly = true;
+            this.txtstaName.Size = new System.Drawing.Size(100, 23);
+            this.txtstaName.StateCommon.Back.Color1 = System.Drawing.SystemColors.Control;
+            this.txtstaName.StateDisabled.Back.Color1 = System.Drawing.Color.LightGray;
+            this.txtstaName.StateNormal.Back.Color1 = System.Drawing.Color.DarkGray;
+            this.txtstaName.TabIndex = 7;
             // 
             // txtloc
             // 
-            txtloc.Location = new Point(130, 444);
-            txtloc.Name = "txtloc";
-            txtloc.Palette = kryptonPalettereadonly;
-            txtloc.PaletteMode = PaletteMode.Custom;
-            txtloc.ReadOnly = true;
-            txtloc.Size = new Size(100, 23);
-            txtloc.TabIndex = 8;
+            this.txtloc.Location = new System.Drawing.Point(130, 444);
+            this.txtloc.Name = "txtloc";
+            this.txtloc.Palette = this.kryptonPalettereadonly;
+            this.txtloc.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.txtloc.ReadOnly = true;
+            this.txtloc.Size = new System.Drawing.Size(100, 23);
+            this.txtloc.TabIndex = 8;
             // 
             // txtreqst
             // 
-            txtreqst.Location = new Point(365, 445);
-            txtreqst.Name = "txtreqst";
-            txtreqst.Palette = kryptonPalettereadonly;
-            txtreqst.PaletteMode = PaletteMode.Custom;
-            txtreqst.ReadOnly = true;
-            txtreqst.Size = new Size(100, 23);
-            txtreqst.TabIndex = 9;
+            this.txtreqst.Location = new System.Drawing.Point(365, 445);
+            this.txtreqst.Name = "txtreqst";
+            this.txtreqst.Palette = this.kryptonPalettereadonly;
+            this.txtreqst.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.txtreqst.ReadOnly = true;
+            this.txtreqst.Size = new System.Drawing.Size(100, 23);
+            this.txtreqst.TabIndex = 9;
             // 
             // txtcrDate
             // 
-            txtcrDate.Location = new Point(701, 391);
-            txtcrDate.Name = "txtcrDate";
-            txtcrDate.Palette = kryptonPalettereadonly;
-            txtcrDate.PaletteMode = PaletteMode.Custom;
-            txtcrDate.ReadOnly = true;
-            txtcrDate.Size = new Size(158, 23);
-            txtcrDate.StateCommon.Back.Color1 = SystemColors.Control;
-            txtcrDate.TabIndex = 10;
+            this.txtcrDate.Location = new System.Drawing.Point(701, 391);
+            this.txtcrDate.Name = "txtcrDate";
+            this.txtcrDate.Palette = this.kryptonPalettereadonly;
+            this.txtcrDate.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.txtcrDate.ReadOnly = true;
+            this.txtcrDate.Size = new System.Drawing.Size(158, 23);
+            this.txtcrDate.StateCommon.Back.Color1 = System.Drawing.SystemColors.Control;
+            this.txtcrDate.TabIndex = 10;
             // 
             // lblvid
             // 
-            lblvid.Location = new Point(39, 510);
-            lblvid.Name = "lblvid";
-            lblvid.Palette = kryptonPalette1;
-            lblvid.PaletteMode = PaletteMode.Custom;
-            lblvid.Size = new Size(68, 21);
-            lblvid.TabIndex = 11;
-            lblvid.Values.Text = "Item Vid";
+            this.lblvid.Location = new System.Drawing.Point(39, 510);
+            this.lblvid.Name = "lblvid";
+            this.lblvid.Palette = this.kryptonPalette1;
+            this.lblvid.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.lblvid.Size = new System.Drawing.Size(68, 21);
+            this.lblvid.TabIndex = 11;
+            this.lblvid.Values.Text = "Item Vid";
             // 
             // datagridviewitem
             // 
-            datagridviewitem.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            datagridviewitem.Location = new Point(51, 29);
-            datagridviewitem.Name = "datagridviewitem";
-            datagridviewitem.RowTemplate.Height = 25;
-            datagridviewitem.Size = new Size(783, 252);
-            datagridviewitem.TabIndex = 13;
-            datagridviewitem.AllowUserToAddRows = false;
-            datagridviewitem.CellClick += datagridviewitem_CellClick;
+            this.datagridviewitem.AllowUserToAddRows = false;
+            this.datagridviewitem.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.datagridviewitem.Location = new System.Drawing.Point(51, 29);
+            this.datagridviewitem.Name = "datagridviewitem";
+            this.datagridviewitem.Palette = this.kryptonPalettedatagridview;
+            this.datagridviewitem.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.datagridviewitem.RowTemplate.Height = 25;
+            this.datagridviewitem.Size = new System.Drawing.Size(783, 252);
+            this.datagridviewitem.TabIndex = 13;
+            this.datagridviewitem.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.datagridviewitem_CellClick);
             // 
             // lblqty
             // 
-            lblqty.Location = new Point(564, 510);
-            lblqty.Name = "lblqty";
-            lblqty.Palette = kryptonPalette1;
-            lblqty.PaletteMode = PaletteMode.Custom;
-            lblqty.Size = new Size(131, 21);
-            lblqty.TabIndex = 14;
-            lblqty.Values.Text = "Request Quantity";
+            this.lblqty.Location = new System.Drawing.Point(564, 510);
+            this.lblqty.Name = "lblqty";
+            this.lblqty.Palette = this.kryptonPalette1;
+            this.lblqty.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.lblqty.Size = new System.Drawing.Size(131, 21);
+            this.lblqty.TabIndex = 14;
+            this.lblqty.Values.Text = "Request Quantity";
             // 
             // lblremain
             // 
-            lblremain.Location = new Point(564, 560);
-            lblremain.Name = "lblremain";
-            lblremain.Palette = kryptonPalette1;
-            lblremain.PaletteMode = PaletteMode.Custom;
-            lblremain.Size = new Size(122, 21);
-            lblremain.TabIndex = 15;
-            lblremain.Values.Text = "Remain Quanity";
+            this.lblremain.Location = new System.Drawing.Point(564, 560);
+            this.lblremain.Name = "lblremain";
+            this.lblremain.Palette = this.kryptonPalette1;
+            this.lblremain.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.lblremain.Size = new System.Drawing.Size(122, 21);
+            this.lblremain.TabIndex = 15;
+            this.lblremain.Values.Text = "Remain Quanity";
             // 
             // lblitname
             // 
-            lblitname.Location = new Point(20, 560);
-            lblitname.Name = "lblitname";
-            lblitname.Palette = kryptonPalette1;
-            lblitname.PaletteMode = PaletteMode.Custom;
-            lblitname.Size = new Size(87, 21);
-            lblitname.TabIndex = 16;
-            lblitname.Values.Text = "Item Name";
+            this.lblitname.Location = new System.Drawing.Point(20, 560);
+            this.lblitname.Name = "lblitname";
+            this.lblitname.Palette = this.kryptonPalette1;
+            this.lblitname.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.lblitname.Size = new System.Drawing.Size(87, 21);
+            this.lblitname.TabIndex = 16;
+            this.lblitname.Values.Text = "Item Name";
             // 
             // lblcat
             // 
-            lblcat.Location = new Point(297, 560);
-            lblcat.Name = "lblcat";
-            lblcat.Palette = kryptonPalette1;
-            lblcat.PaletteMode = PaletteMode.Custom;
-            lblcat.Size = new Size(74, 21);
-            lblcat.TabIndex = 17;
-            lblcat.Values.Text = "Category";
+            this.lblcat.Location = new System.Drawing.Point(297, 560);
+            this.lblcat.Name = "lblcat";
+            this.lblcat.Palette = this.kryptonPalette1;
+            this.lblcat.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.lblcat.Size = new System.Drawing.Size(74, 21);
+            this.lblcat.TabIndex = 17;
+            this.lblcat.Values.Text = "Category";
             // 
             // lblrs
             // 
-            lblrs.Location = new Point(289, 510);
-            lblrs.Name = "lblrs";
-            lblrs.Palette = kryptonPalette1;
-            lblrs.PaletteMode = PaletteMode.Custom;
-            lblrs.Size = new Size(82, 21);
-            lblrs.TabIndex = 18;
-            lblrs.Values.Text = "PO Status";
+            this.lblrs.Location = new System.Drawing.Point(289, 510);
+            this.lblrs.Name = "lblrs";
+            this.lblrs.Palette = this.kryptonPalette1;
+            this.lblrs.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.lblrs.Size = new System.Drawing.Size(82, 21);
+            this.lblrs.TabIndex = 18;
+            this.lblrs.Values.Text = "PO Status";
             // 
             // lblEDD
             // 
-            lblEDD.Location = new Point(471, 444);
-            lblEDD.Name = "lblEDD";
-            lblEDD.Palette = kryptonPalette1;
-            lblEDD.PaletteMode = PaletteMode.Custom;
-            lblEDD.Size = new Size(181, 21);
-            lblEDD.TabIndex = 19;
-            lblEDD.Values.Text = "Expected Delievery Date";
+            this.lblEDD.Location = new System.Drawing.Point(471, 444);
+            this.lblEDD.Name = "lblEDD";
+            this.lblEDD.Palette = this.kryptonPalette1;
+            this.lblEDD.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.lblEDD.Size = new System.Drawing.Size(181, 21);
+            this.lblEDD.TabIndex = 19;
+            this.lblEDD.Values.Text = "Expected Delievery Date";
             // 
             // txtvid
             // 
-            txtvid.Location = new Point(113, 510);
-            txtvid.Name = "txtvid";
-            txtvid.Palette = kryptonPalettereadonly;
-            txtvid.PaletteMode = PaletteMode.Custom;
-            txtvid.ReadOnly = true;
-            txtvid.Size = new Size(158, 23);
-            txtvid.TabIndex = 20;
+            this.txtvid.Location = new System.Drawing.Point(113, 510);
+            this.txtvid.Name = "txtvid";
+            this.txtvid.Palette = this.kryptonPalettereadonly;
+            this.txtvid.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.txtvid.ReadOnly = true;
+            this.txtvid.Size = new System.Drawing.Size(158, 23);
+            this.txtvid.TabIndex = 20;
             // 
             // txtitname
             // 
-            txtitname.Location = new Point(113, 560);
-            txtitname.Name = "txtitname";
-            txtitname.Palette = kryptonPalettereadonly;
-            txtitname.PaletteMode = PaletteMode.Custom;
-            txtitname.ReadOnly = true;
-            txtitname.Size = new Size(158, 23);
-            txtitname.TabIndex = 21;
+            this.txtitname.Location = new System.Drawing.Point(113, 560);
+            this.txtitname.Name = "txtitname";
+            this.txtitname.Palette = this.kryptonPalettereadonly;
+            this.txtitname.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.txtitname.ReadOnly = true;
+            this.txtitname.Size = new System.Drawing.Size(158, 23);
+            this.txtitname.TabIndex = 21;
             // 
             // txtrs
             // 
-            txtrs.Location = new Point(388, 510);
-            txtrs.Name = "txtrs";
-            txtrs.Palette = kryptonPalettereadonly;
-            txtrs.PaletteMode = PaletteMode.Custom;
-            txtrs.ReadOnly = true;
-            txtrs.Size = new Size(158, 23);
-            txtrs.TabIndex = 22;
+            this.txtrs.Location = new System.Drawing.Point(388, 510);
+            this.txtrs.Name = "txtrs";
+            this.txtrs.Palette = this.kryptonPalettereadonly;
+            this.txtrs.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.txtrs.ReadOnly = true;
+            this.txtrs.Size = new System.Drawing.Size(158, 23);
+            this.txtrs.TabIndex = 22;
             // 
             // txtcat
             // 
-            txtcat.Location = new Point(388, 560);
-            txtcat.Name = "txtcat";
-            txtcat.Palette = kryptonPalettereadonly;
-            txtcat.PaletteMode = PaletteMode.Custom;
-            txtcat.ReadOnly = true;
-            txtcat.Size = new Size(158, 23);
-            txtcat.TabIndex = 23;
+            this.txtcat.Location = new System.Drawing.Point(388, 560);
+            this.txtcat.Name = "txtcat";
+            this.txtcat.Palette = this.kryptonPalettereadonly;
+            this.txtcat.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.txtcat.ReadOnly = true;
+            this.txtcat.Size = new System.Drawing.Size(158, 23);
+            this.txtcat.TabIndex = 23;
             // 
             // txtremain
             // 
-            txtremain.Location = new Point(701, 560);
-            txtremain.Name = "txtremain";
-            txtremain.Size = new Size(158, 23);
-            txtremain.TabIndex = 24;
+            this.txtremain.Location = new System.Drawing.Point(701, 560);
+            this.txtremain.Name = "txtremain";
+            this.txtremain.Size = new System.Drawing.Size(158, 23);
+            this.txtremain.TabIndex = 24;
             // 
             // txtqty
             // 
-            txtqty.Location = new Point(701, 510);
-            txtqty.Name = "txtqty";
-            txtqty.Palette = kryptonPalettereadonly;
-            txtqty.PaletteMode = PaletteMode.Custom;
-            txtqty.ReadOnly = true;
-            txtqty.Size = new Size(158, 23);
-            txtqty.TabIndex = 25;
+            this.txtqty.Location = new System.Drawing.Point(701, 510);
+            this.txtqty.Name = "txtqty";
+            this.txtqty.Palette = this.kryptonPalettereadonly;
+            this.txtqty.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.txtqty.ReadOnly = true;
+            this.txtqty.Size = new System.Drawing.Size(158, 23);
+            this.txtqty.TabIndex = 25;
             // 
             // btnchange
             // 
-            btnchange.CornerRoundingRadius = -1F;
-            btnchange.Location = new Point(51, 307);
-            btnchange.Name = "btnchange";
-            btnchange.Palette = kryptonPalettebtn;
-            btnchange.PaletteMode = PaletteMode.Custom;
-            btnchange.Size = new Size(95, 40);
-            btnchange.TabIndex = 27;
-            btnchange.Values.Text = "Modify";
-            btnchange.Click += btnchange_Click;
+            this.btnchange.CornerRoundingRadius = -1F;
+            this.btnchange.Location = new System.Drawing.Point(51, 307);
+            this.btnchange.Name = "btnchange";
+            this.btnchange.Palette = this.kryptonPalettebtn;
+            this.btnchange.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.btnchange.Size = new System.Drawing.Size(95, 40);
+            this.btnchange.TabIndex = 27;
+            this.btnchange.Values.Text = "Update";
+            this.btnchange.Click += new System.EventHandler(this.btnchange_Click);
             // 
             // kryptonPalettebtn
             // 
-            kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Border.Color1 = Color.Transparent;
-            kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Border.DrawBorders = PaletteDrawBorders.Top | PaletteDrawBorders.Bottom | PaletteDrawBorders.Left | PaletteDrawBorders.Right;
-            kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Border.Rounding = 5F;
-            kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Color1 = Color.SteelBlue;
-            kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Font = new Font("Microsoft Tai Le", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
-            kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Hint = PaletteTextHint.SystemDefault;
+            this.kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Border.Color1 = System.Drawing.Color.Transparent;
+            this.kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Border.DrawBorders = ((Krypton.Toolkit.PaletteDrawBorders)((((Krypton.Toolkit.PaletteDrawBorders.Top | Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Border.Rounding = 5F;
+            this.kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Color1 = System.Drawing.Color.SteelBlue;
+            this.kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Microsoft Tai Le", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Hint = Krypton.Toolkit.PaletteTextHint.SystemDefault;
             // 
             // btndel
             // 
-            btndel.CornerRoundingRadius = -1F;
-            btndel.Location = new Point(169, 307);
-            btndel.Name = "btndel";
-            btndel.Palette = kryptonPalettebtn;
-            btndel.PaletteMode = PaletteMode.Custom;
-            btndel.Size = new Size(102, 40);
-            btndel.TabIndex = 28;
-            btndel.Values.Text = "Delete Item";
-            btndel.Click += btndel_Click;
+            this.btndel.CornerRoundingRadius = -1F;
+            this.btndel.Location = new System.Drawing.Point(169, 307);
+            this.btndel.Name = "btndel";
+            this.btndel.Palette = this.kryptonPalettebtn;
+            this.btndel.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.btndel.Size = new System.Drawing.Size(102, 40);
+            this.btndel.TabIndex = 28;
+            this.btndel.Values.Text = "Delete";
+            this.btndel.Click += new System.EventHandler(this.btndel_Click);
             // 
             // dateTimePickerEDD
             // 
-            dateTimePickerEDD.Location = new Point(659, 444);
-            dateTimePickerEDD.Name = "dateTimePickerEDD";
-            dateTimePickerEDD.Size = new Size(200, 23);
-            dateTimePickerEDD.TabIndex = 29;
+            this.dateTimePickerEDD.Location = new System.Drawing.Point(659, 444);
+            this.dateTimePickerEDD.Name = "dateTimePickerEDD";
+            this.dateTimePickerEDD.Size = new System.Drawing.Size(200, 23);
+            this.dateTimePickerEDD.TabIndex = 29;
             // 
             // btncancel
             // 
-            btncancel.CornerRoundingRadius = -1F;
-            btncancel.Location = new Point(297, 307);
-            btncancel.Name = "btncancel";
-            btncancel.Palette = kryptonPalettebtn;
-            btncancel.PaletteMode = PaletteMode.Custom;
-            btncancel.Size = new Size(102, 40);
-            btncancel.TabIndex = 30;
-            btncancel.Values.Text = "Cancel";
-            btncancel.Click += btncancel_Click;
+            this.btncancel.CornerRoundingRadius = -1F;
+            this.btncancel.Location = new System.Drawing.Point(297, 307);
+            this.btncancel.Name = "btncancel";
+            this.btncancel.Palette = this.kryptonPalettebtn;
+            this.btncancel.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.btncancel.Size = new System.Drawing.Size(102, 40);
+            this.btncancel.TabIndex = 30;
+            this.btncancel.Values.Text = "Cancel";
+            this.btncancel.Click += new System.EventHandler(this.btncancel_Click);
+            // 
+            // kryptonPalettedatagridview
+            // 
+            this.kryptonPalettedatagridview.Common.StateCommon.Back.Color1 = System.Drawing.Color.Transparent;
+            this.kryptonPalettedatagridview.Common.StateCommon.Back.Color2 = System.Drawing.Color.Transparent;
             // 
             // RequestEdit
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
-            BackColor = SystemColors.Control;
-            ClientSize = new Size(935, 743);
-            Controls.Add(btncancel);
-            Controls.Add(dateTimePickerEDD);
-            Controls.Add(btndel);
-            Controls.Add(btnchange);
-            Controls.Add(txtqty);
-            Controls.Add(txtremain);
-            Controls.Add(txtcat);
-            Controls.Add(txtrs);
-            Controls.Add(txtitname);
-            Controls.Add(txtvid);
-            Controls.Add(lblEDD);
-            Controls.Add(lblrs);
-            Controls.Add(lblcat);
-            Controls.Add(lblitname);
-            Controls.Add(lblremain);
-            Controls.Add(lblqty);
-            Controls.Add(datagridviewitem);
-            Controls.Add(lblvid);
-            Controls.Add(txtcrDate);
-            Controls.Add(txtreqst);
-            Controls.Add(txtloc);
-            Controls.Add(txtstaName);
-            Controls.Add(txtreqid);
-            Controls.Add(lblCrDate);
-            Controls.Add(lblreqSta);
-            Controls.Add(lblloc);
-            Controls.Add(lblstaffName);
-            Controls.Add(lblreqid);
-            Name = "RequestEdit";
-            Text = "RequestEdit";
-            Load += RequestEdit_Load;
-            ((System.ComponentModel.ISupportInitialize)datagridviewitem).EndInit();
-            ResumeLayout(false);
-            PerformLayout();
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.Control;
+            this.ClientSize = new System.Drawing.Size(935, 743);
+            this.Controls.Add(this.btncancel);
+            this.Controls.Add(this.dateTimePickerEDD);
+            this.Controls.Add(this.btndel);
+            this.Controls.Add(this.btnchange);
+            this.Controls.Add(this.txtqty);
+            this.Controls.Add(this.txtremain);
+            this.Controls.Add(this.txtcat);
+            this.Controls.Add(this.txtrs);
+            this.Controls.Add(this.txtitname);
+            this.Controls.Add(this.txtvid);
+            this.Controls.Add(this.lblEDD);
+            this.Controls.Add(this.lblrs);
+            this.Controls.Add(this.lblcat);
+            this.Controls.Add(this.lblitname);
+            this.Controls.Add(this.lblremain);
+            this.Controls.Add(this.lblqty);
+            this.Controls.Add(this.datagridviewitem);
+            this.Controls.Add(this.lblvid);
+            this.Controls.Add(this.txtcrDate);
+            this.Controls.Add(this.txtreqst);
+            this.Controls.Add(this.txtloc);
+            this.Controls.Add(this.txtstaName);
+            this.Controls.Add(this.txtreqid);
+            this.Controls.Add(this.lblCrDate);
+            this.Controls.Add(this.lblreqSta);
+            this.Controls.Add(this.lblloc);
+            this.Controls.Add(this.lblstaffName);
+            this.Controls.Add(this.lblreqid);
+            this.Name = "RequestEdit";
+            this.Text = "RequestEdit";
+            this.Load += new System.EventHandler(this.RequestEdit_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.datagridviewitem)).EndInit();
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
         }
 
         #endregion
@@ -444,5 +455,6 @@ namespace CPS_App
         private KryptonPalette kryptonPalettebtn;
         private KryptonPalette kryptonPalettereadonly;
         private KryptonButton btncancel;
+        private KryptonPalette kryptonPalettedatagridview;
     }
 }

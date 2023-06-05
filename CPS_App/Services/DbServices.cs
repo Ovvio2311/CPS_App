@@ -56,7 +56,7 @@ namespace CPS_App.Services
             var res = new DbResObj();
             res.resCode = 0;
             try
-            {                
+            {
                 string sql = $"select * from {obj.table} where ";
 
                 DynamicParameters para = new DynamicParameters();
@@ -66,7 +66,7 @@ namespace CPS_App.Services
                     vari.Add($"{x.Key} = @{x.Key}");
                     para.Add($"@{x.Key}", x.Value.ToString());
                 });
-                if(vari.Count > 1) 
+                if (vari.Count > 1)
                 {
                     sql += string.Join(" and ", vari);
                     sql += " ;";
@@ -75,14 +75,19 @@ namespace CPS_App.Services
                 {
                     sql += vari[0] + " ;";
                 }
-                
+
                 //para.Add($"@{wName}", obj.selecter.Values.FirstOrDefault());
                 var result = await _db.QueryAsync<T>(sql, para);
 
-                if (result != null)
+                if (result.Count() > 0)
                 {
                     res.result = result;
                     res.resCode = 1;
+                }
+                else
+                {
+                    res.result = null;
+                    res.resCode = 0;
                 }
             }
             catch (Exception ex)
@@ -207,7 +212,7 @@ namespace CPS_App.Services
                 throw new Exception(ex.Message);
             }
         }
-        public async Task<DbResObj> GetReqMappingObj()
+        public async Task<DbResObj> GetReqMappingObj(string userloc = null, searchObj obj = null)
         {
             //var res = new DbResObj();
 
@@ -225,7 +230,7 @@ namespace CPS_App.Services
                              LEFT JOIN
                          (SELECT * FROM
                              (SELECT 
-                             det.bi_req_id, mapp.bi_item_vid, det.bi_item_id, det.i_item_req_qty, det.i_remain_req_qty, det.i_uom_id, 
+                             det.bi_req_id det_bi_req_id, mapp.bi_item_vid, det.bi_item_id, det.i_item_req_qty, det.i_remain_req_qty, det.i_uom_id, 
                              stat.vc_status_desc item_mapping_status, postat.bi_po_status_id, postat.vc_po_status_desc, det.dt_exp_deli_date, 
                              uom.vc_uom_desc, it.vc_item_desc, 
                              it.bi_category_id, cat.vc_category_desc
@@ -237,21 +242,45 @@ namespace CPS_App.Services
                          left join lut_mapping_status stat on det.i_map_stat_id = stat.i_map_stat_id
                          left join lut_po_status postat on det.bi_po_status_id = postat.bi_po_status_id
                          LEFT JOIN tb_item_vid_mapping mapp ON it.bi_item_id = mapp.bi_item_id) b) c 
-                         ON a.bi_req_id = c.bi_req_id;";
-
-
-            var result = await _db.QueryAsync<dynamic>(sql, null);
-            if (result.Count() > 0)
+                         ON a.bi_req_id = det_bi_req_id ";
+            if (obj != null)
             {
+                string seasrchList = string.Join(" and ", obj.searchWords.Select(x => $"{x.Key}= \'{x.Value}\'").ToList());
+                sql += $"where {seasrchList} ";
+            }
+            if (userloc != null)
+            {
+                sql += $"order by bi_location_id = '{userloc}' desc; ";
+            }
+            else
+            {
+                sql += ";";
+            }
 
-                return new DbResObj
+
+
+            try
+            {
+                var result = await _db.QueryAsync<dynamic>(sql, null);
+                if (result.Count() > 0)
                 {
-                    resCode = 1,
-                    result = GenUtil.DbResulttoKVP(result)
-                };
+
+                    return new DbResObj
+                    {
+                        resCode = 1,
+                        result = GenUtil.DbResulttoKVP(result)
+                    };
+                }
+                else
+                {
+                    return new DbResObj { resCode = 0, result = null };
+                }
 
             }
-            return new DbResObj { resCode = 0, result = null };
+            catch (Exception e)
+            {
+                return new DbResObj { resCode = 0, result = null, err_msg = e.Message };
+            }
         }
         public async Task<resObj> GetBPAResult<T>(string obj)
         {
@@ -329,7 +358,7 @@ namespace CPS_App.Services
             }
         }
 
-        public async Task<DbResObj> GetStockLevel()
+        public async Task<DbResObj> GetStockLevel(string userloc = null, searchObj obj = null)
         {
             var res = new DbResObj();
             res.resCode = 0;
@@ -356,13 +385,31 @@ namespace CPS_App.Services
                          LEFT JOIN tb_item_unit uni ON it.bi_item_id = uni.bi_item_id
                          LEFT JOIN tb_location loc ON uni.bi_location_id = loc.bi_location_id
                          LEFT JOIN lut_uom_type uom ON it.i_uom_id = uom.i_uom_id
-                         )a;";
+                         )a ";
+                if (obj != null)
+                {
+                    string seasrchList = string.Join(" and ", obj.searchWords.Select(x => $"{x.Key}= \'{x.Value}\'").ToList());
+                    sql += $"where {seasrchList} ";
+                }
+                if (userloc != null)
+                {
+                    sql += $"order by bi_location_id = '{userloc}' desc; ";
+                }
+                else
+                {
+                    sql += ";";
+                }
                 var result = await _db.QueryAsync<StockLevelViewObj>(sql, null);
 
-                if (result != null)
+                if (result.Count() > 0)
                 {
                     res.result = result;
                     res.resCode = 1;
+                }
+                else
+                {
+                    res.resCode = 0;
+                    res.result = null;
                 }
             }
             catch (Exception ex)
@@ -423,25 +470,44 @@ namespace CPS_App.Services
                          inner join tb_supplier sup on hd.bi_supp_id = sup.bi_supp_id
                          inner join lut_term_and_con tc on hd.ti_tc_id = tc.ti_tc_id
                          inner join lut_deli_schedule_type delisc on hd.ti_deli_sched_id = delisc.ti_deli_sched_id
-                         inner join tb_item it on ln.bi_item_id = it.bi_item_id
-                         inner join lut_uom_type uom on ln.i_uom_id = uom.i_uom_id
-                         inner join lut_poa_type poatype on poa.ti_poa_type_id = poatype.ti_poa_type_id
+                         left join tb_item it on ln.bi_item_id = it.bi_item_id
+                         left join lut_uom_type uom on ln.i_uom_id = uom.i_uom_id
+                         left join lut_poa_type poatype on poa.ti_poa_type_id = poatype.ti_poa_type_id
                          inner join tb_location loc on hd.bi_deli_loc_id = loc.bi_location_id
                          left join lut_poa_status poast on poa.bi_poa_status_id = poast.bi_poa_status_id
                          ) a;";
-
-            var result = await _db.QueryAsync<dynamic>(sql, null);
-            if (result.Count() > 0)
+            try
             {
+                var result = await _db.QueryAsync<dynamic>(sql, null);
+                if (result.Count() > 0)
+                {
 
+                    return new DbResObj
+                    {
+                        resCode = 1,
+                        result = GenUtil.DbResulttoKVP(result)
+                    };
+
+                }
+                else
+                {
+                    return new DbResObj
+                    {
+                        resCode = 0,
+                        result = null
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
                 return new DbResObj
                 {
-                    resCode = 1,
-                    result = GenUtil.DbResulttoKVP(result)
+                    resCode = 0,
+                    result = null,
+                    err_msg = ex.Message
                 };
-
             }
-            return new DbResObj { resCode = 0, result = null };
+
         }
         public async Task InsertMaintenance<T>(Dictionary<string, string> value)
         {
@@ -490,7 +556,7 @@ namespace CPS_App.Services
                 DynamicParameters para = new DynamicParameters();
                 if (value != null)
                 {
-                    
+
                     List<string> vari = new List<string>();
                     value.ToList().ForEach(x =>
                     {
@@ -508,11 +574,12 @@ namespace CPS_App.Services
                         sql += " where ";
                         sql += vari[0] + " ;";
                     }
-                }else
+                }
+                else
                 {
                     sql += " ;";
                 }
-                var result = await _db.QueryAsync<role_claim_table>(sql, value != null? para : null);
+                var result = await _db.QueryAsync<role_claim_table>(sql, value != null ? para : null);
                 if (result != null)
                 {
                     res.result = result;
@@ -536,9 +603,9 @@ namespace CPS_App.Services
                     {value.ElementAt(0).Key, value.ElementAt(0).Value.ToLower().Trim() },
                     {value.ElementAt(1).Key, value.ElementAt(1).Value.ToLower().Trim() }
                 };
-            
-            
-            
+
+
+
             var result = await SelectRoleClaim(select);
             if (result.result.Count > 0)
             {
@@ -549,4 +616,3 @@ namespace CPS_App.Services
         }
     }
 }
-        

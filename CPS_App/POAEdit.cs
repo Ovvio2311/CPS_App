@@ -187,5 +187,10 @@ namespace CPS_App
 
             }
         }
+
+        private void btncancel_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }

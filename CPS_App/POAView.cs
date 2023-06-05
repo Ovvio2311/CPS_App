@@ -39,9 +39,18 @@ namespace CPS_App
         private async void POAView_Load(object sender, EventArgs e)
         {
             userIden = AuthService._userClaim;
-            if (userIden != null)
+            if (userIden == null)
             {
-                var userRole = userIden.Claims.FirstOrDefault(x => x.Type == "role").Value.ToString();
+                //throw new Exception("user claim is null");                
+            }
+            if (await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "poa", "update" } }))
+            {
+                btnadd.Hide();
+                btnedit.Hide();
+            }
+            else if (await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "poa", "read" } }))
+            {
+                btnadd.Hide();
             }
             obj = await _pOAWorker.GetPoaWorker();
             if (obj != null)
@@ -126,6 +135,11 @@ namespace CPS_App
             poaCre.MdiParent = this.MdiParent;
             poaCre.AutoScroll = true;
             poaCre.Show();
+        }
+
+        private void btncancel_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

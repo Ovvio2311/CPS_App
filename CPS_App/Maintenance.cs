@@ -82,27 +82,27 @@ namespace CPS_App
 
         }
 
-        private async void btnAdd_Click(object sender, EventArgs e)
-        {
-            if (txtrole.Text == string.Empty)
-            {
-                MessageBox.Show("Role is Empty");
-                return;
-            }
-            var select = new selectObj();
-            select.table = typeof(tb_roles).Name;
-            select.selecter.Add("vc_role_name", txtrole.Text.ToLower().Trim());
-            var result = await _dbServices.SelectWhereAsync<tb_roles>(select);
-            if (result.result.Count > 0)
-            {
-                MessageBox.Show("Role has been used");
-                return;
-            }
-            IdentityRole role = new IdentityRole();
-            role.Name = txtrole.Text;
-            IdentityResult res = await _registerServices.CreateAsync(role);
-            if (res.Succeeded) { MessageBox.Show("role added"); }
-        }
+        //private async void btnAdd_Click(object sender, EventArgs e)
+        //{
+        //    if (txtrole.Text == string.Empty)
+        //    {
+        //        MessageBox.Show("Role is Empty");
+        //        return;
+        //    }
+        //    var select = new selectObj();
+        //    select.table = typeof(tb_roles).Name;
+        //    select.selecter.Add("vc_role_name", txtrole.Text.ToLower().Trim());
+        //    var result = await _dbServices.SelectWhereAsync<tb_roles>(select);
+        //    if (result.result.Count > 0)
+        //    {
+        //        MessageBox.Show("Role has been used");
+        //        return;
+        //    }
+        //    IdentityRole role = new IdentityRole();
+        //    role.Name = txtrole.Text;
+        //    IdentityResult res = await _registerServices.CreateAsync(role);
+        //    if (res.Succeeded) { MessageBox.Show("role added"); }
+        //}
 
 
         private async void btnAddnewuser_Click(object sender, EventArgs e)
@@ -193,6 +193,28 @@ namespace CPS_App
                 var res = await _registerServices.InsertclaimAsync(cbxroleinroleclaim.SelectedItem.ToString(), claim);
                 MessageBox.Show(res ? "Claim Added" : "Error");
             }
+        }
+
+        private async void btnroleadd_Click(object sender, EventArgs e)
+        {
+            if (txtrole.Text == string.Empty)
+            {
+                MessageBox.Show("Role is Empty");
+                return;
+            }
+            var select = new selectObj();
+            select.table = typeof(tb_roles).Name;
+            select.selecter.Add("vc_role_name", txtrole.Text.ToLower().Trim());
+            var result = await _dbServices.SelectWhereAsync<tb_roles>(select);
+            if (result.result.Count > 0)
+            {
+                MessageBox.Show("Role has been used");
+                return;
+            }
+            IdentityRole role = new IdentityRole();
+            role.Name = txtrole.Text;
+            IdentityResult res = await _registerServices.CreateAsync(role);
+            if (res.Succeeded) { MessageBox.Show("role added"); }
         }
     }
 }

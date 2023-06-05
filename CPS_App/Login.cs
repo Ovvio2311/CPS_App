@@ -17,21 +17,21 @@ namespace CPS_App
 
     public partial class Login : Form
     {
-        private AccountServices _accountServices { get; set; }
+        
         private AuthService _authService { get; set; }
-        private readonly Db _db;
+        
         private IConfiguration _configuration;
         public Dashboard _dashboard { get; set; }
-        public RequestMapping _requestMapping { get; set; }
-        public Login(AccountServices accountServices, Db db, IConfiguration configuration, AuthService authService, Dashboard dashboard, RequestMapping requestMapping)
+        
+        public Login(IConfiguration configuration, AuthService authService, Dashboard dashboard)
         {
             InitializeComponent();
-            _accountServices = accountServices;
-            _db = db;
+            
+            
             _configuration = configuration;
             _authService = authService;
             _dashboard = dashboard;
-            _requestMapping = requestMapping;
+            
         }
 
 
@@ -50,7 +50,7 @@ namespace CPS_App
                     Usename = txtusername.Text,
                     Password = txtpass.Text
                 };
-                if(await _authService.Login("admin"/*loginRequest.Usename*/, "123456Aa!"/*loginRequest.Password)*/))
+                if(await _authService.Login("LoChunFai"/*loginRequest.Usename*/, "123456Aa!"/*loginRequest.Password)*/))
                 {
                     MessageBox.Show("login Success");
                     //Form3 form3 = new Form3(_configuration,_db);

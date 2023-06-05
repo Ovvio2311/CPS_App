@@ -7,6 +7,7 @@ using System.Security.Claims;
 using System.Windows.Forms;
 using static CPS_App.Models.CPSModel;
 using Krypton.Toolkit;
+using Microsoft.Extensions.Configuration;
 
 namespace CPS_App
 {
@@ -18,16 +19,17 @@ namespace CPS_App
         public List<RequestMappingReqObj> defPage;
         public AuthService _authService;
         public ClaimsIdentity userIden;
-        //private int _previousIndex;
-        //private bool _sortDirection;
-        //private int _previousitemIndex;
-        //private bool _sortitemDirection;
         private readonly DbServices _dbServices;
         private StockLevelWorker _stockWorker;
         private RegisterServices _registerServices;
         private POAWorker _pOAWorker;
+        private SearchFunc _searchFunc;
+        private IConfiguration _configuration;
 
-        public Dashboard(Register register, AuthService authService, RequestMapping requestMapp, DbServices dbServices, StockLevelWorker stockWorker, RegisterServices registerServices, POAWorker pOAWorker)
+        public Dashboard(Register register, AuthService authService, 
+            RequestMapping requestMapp, DbServices dbServices, 
+            StockLevelWorker stockWorker, RegisterServices registerServices, 
+            POAWorker pOAWorker, SearchFunc searchFunc, IConfiguration configuration)
         {
             _authService = authService;
             _register = register;
@@ -38,14 +40,17 @@ namespace CPS_App
             _stockWorker = stockWorker;
             _registerServices = registerServices;
             _pOAWorker = pOAWorker;
+            _searchFunc = searchFunc;
+            _configuration = configuration;
         }
         private async void Dashboard_Load(object sender, EventArgs e)
         {
-
+            
             userIden = AuthService._userClaim;
             if (userIden != null)
             {
-
+                var staName = userIden.Claims.FirstOrDefault(x => x.Type == "staff_name").Value;
+                striplblwelcome.Text = $"Welcome Back {staName}";
                 if (userIden.Claims.FirstOrDefault(x => x.Type == "role").Value.ToLower() == "admin")
                 {
 
@@ -73,26 +78,7 @@ namespace CPS_App
         //        list.OrderBy(_ => _.GetType().GetProperty(column).GetValue(_)).ToList() :
         //        list.OrderByDescending(_ => _.GetType().GetProperty(column).GetValue(_)).ToList();
         //}
-        private void createReq_Click(object sender, EventArgs e)
-        {
-            RequestCreate requestCreate = new RequestCreate(_dbServices);
-            requestCreate.MdiParent = this;
-            requestCreate.Show();
-        }
-
-        private void createItem_Click(object sender, EventArgs e)
-        {
-            ItemCreate itemCreate = new ItemCreate(_dbServices);
-            itemCreate.MdiParent = this;
-            itemCreate.Show();
-        }
-
-        private void createpoa_Click(object sender, EventArgs e)
-        {
-            POACreate pOACreate = new POACreate(_dbServices);
-            pOACreate.MdiParent = this;
-            pOACreate.Show();
-        }
+       
 
 
 
@@ -100,7 +86,7 @@ namespace CPS_App
 
         private void stripreq_Click(object sender, EventArgs e)
         {
-            RequestView reqView = new RequestView(_dbServices, _requestMapp);
+            RequestView reqView = new RequestView(_dbServices, _requestMapp,_searchFunc);
             reqView.MdiParent = this;            
             reqView.AutoScroll = true;
             reqView.Show();
@@ -133,6 +119,18 @@ namespace CPS_App
             main.MdiParent = this;
             main.AutoScroll = true;
             main.Show();
+        }
+
+        private async void striplogout_Click(object sender, EventArgs e)
+        {
+            DialogResult dialogResult= MessageBox.Show("Are You sure want to Logout?", "Confirm",MessageBoxButtons.YesNo);
+            if(dialogResult == DialogResult.Yes)
+            {
+                userIden = null;
+                this.Close();
+                Login login = new Login(_configuration, _authService, this);
+                login.Show();
+            }
         }
 
 

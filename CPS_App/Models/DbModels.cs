@@ -46,6 +46,14 @@ namespace CPS_App.Models
             }
 
         }
+        public class searchObj
+        {
+            public searchObj()
+            {
+                searchWords = new Dictionary<string, string>();
+            }
+            public Dictionary<string, string> searchWords { get; set; }
+        }
         public class resObj
         {
             public dynamic result { get; set; }

@@ -41,12 +41,7 @@ namespace CPS_App
             userIden = AuthService._userClaim;
             if (userIden != null)
             {
-
-                if (!(userIden.Claims.FirstOrDefault(x => x.Type == "role").Value.ToLower() == "admin"))//warehouse admin
-                {
-                    MessageBox.Show("You are not the warehouse admin");
-                    return;
-                }
+                //throw new Exception("user claim is null");                
             }
 
             disableValidation();
@@ -93,28 +88,27 @@ namespace CPS_App
             btnsubmit.Enabled = false;
 
         }
-        private void requiredFieldCheck(object sender, EventArgs e)
-        {
-            var idtype = cbxitid.SelectedItem;
-            if (idtype != null) { idtype = idtype.ToString().Split(":").ElementAt(0); }
-            var uomtype = cbxuom.SelectedItem;
-            if (uomtype != null) { uomtype = uomtype.ToString().Split(":").ElementAt(0); }
+        //private void requiredFieldCheck(object sender, EventArgs e)
+        //{
+        //    var idtype = cbxitid.SelectedItem;
+        //    if (idtype != null) { idtype = idtype.ToString().Split(":").ElementAt(0); }
+        //    var uomtype = cbxuom.SelectedItem;
+        //    if (uomtype != null) { uomtype = uomtype.ToString().Split(":").ElementAt(0); }
 
 
-            var availableItem = pn2.Controls.OfType<KryptonTextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
+        //    var availableItem = pn2.Controls.OfType<KryptonTextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
 
-            if (availableItem != 7 || idtype == null || uomtype == null || templist.Count() <= 0)
-            {
-                disableValidation();
-            }
-            else
-            {
-                enableValidation();
-            }
+        //    if (availableItem != 7 || idtype == null || uomtype == null || templist.Count() <= 0)
+        //    {
+        //        disableValidation();
+        //    }
+        //    else
+        //    {
+        //        enableValidation();
+        //    }
 
-        }
-
-        private async void btnsubmit_Click(object sender, EventArgs e)
+        //}
+        private async Task InsertTableHeader()
         {
             //insert tb_poa
             var tb_poa = new insertObj()
@@ -160,6 +154,55 @@ namespace CPS_App
             }
             obj.bi_poa_header_id = GenUtil.ConvertObjtoType<int>(resheader.result);
             MessageBox.Show($"insert completed, poa_id: {obj.bi_poa_id}, poa_header_id: {obj.bi_poa_header_id}");
+
+        }
+        private async void btnsubmit_Click(object sender, EventArgs e)
+        {
+            await InsertTableHeader();
+            ////insert tb_poa
+            //var tb_poa = new insertObj()
+            //{
+            //    table = "tb_poa",
+            //    inserter = new Dictionary<string, string>
+            //        {
+            //            {nameof(obj.ti_poa_type_id),obj.ti_poa_type_id.ToString() },
+            //            {nameof(obj.bi_poa_status_id), obj.bi_poa_status_id.ToString() }
+            //        },
+            //};
+            //var respoa = await _dbServices.InsertAsync(tb_poa);
+            //if (respoa.resCode != 1 || respoa.result == null)
+            //{
+            //    MessageBox.Show("insert tb_poa error");
+            //    return;
+            //}
+
+            //obj.bi_poa_id = GenUtil.ConvertObjtoType<int>(respoa.result);
+
+            ////insert tb_poa_header
+            //var tb_boa_header = new insertObj()
+            //{
+            //    table = "tb_poa_header",
+            //    inserter = new Dictionary<string, string>
+            //    {
+            //            { nameof(obj.bi_poa_id), obj.bi_poa_id.ToString() },
+            //            { "vc_order_revision", "0" },
+            //            { nameof(obj.bi_supp_id), obj.bi_supp_id.ToString() },
+            //            { nameof(obj.bi_deli_loc_id), obj.bi_deli_loc_id.ToString() },
+            //            { nameof(obj.vc_currency), obj.vc_currency },
+            //            { nameof(obj.ti_tc_id), obj.ti_tc_id.ToString() },
+            //            { nameof(obj.ti_deli_sched_id), obj.ti_deli_sched_id.ToString() },
+            //            { nameof(obj.dt_effect_date), obj.dt_effect_date.ToString("yyyy-MM-dd HH:mm:ss") },
+            //            { nameof(obj.bi_contract_no), obj.bi_contract_no },
+            //    }
+            //};
+            //var resheader = await _dbServices.InsertAsync(tb_boa_header);
+            //if (resheader.resCode != 1 || resheader.result == null)
+            //{
+            //    MessageBox.Show("insert db_poa_header error");
+            //    return;
+            //}
+            //obj.bi_poa_header_id = GenUtil.ConvertObjtoType<int>(resheader.result);
+            //MessageBox.Show($"insert completed, poa_id: {obj.bi_poa_id}, poa_header_id: {obj.bi_poa_header_id}");
 
 
             //insert poa_line
@@ -235,7 +278,11 @@ namespace CPS_App
 
 
 
-        private void btnclear_Click(object sender, EventArgs e)
+        private async void btnclear_Click(object sender, EventArgs e)
+        {
+            await ClearContent();
+        }
+        private async Task ClearContent()
         {
             pn1.Controls.OfType<TextBox>().ToList().ForEach(t => t.Clear());
             pn1.Controls.OfType<ComboBox>().ToList().ForEach(t => t.SelectedIndex = 0);
@@ -245,8 +292,7 @@ namespace CPS_App
 
 
 
-
-        private void btnnext_Click(object sender, EventArgs e)
+        private async void btnnext_Click(object sender, EventArgs e)
         {
 
             var poatype = cbxtype.SelectedItem;
@@ -289,7 +335,12 @@ namespace CPS_App
                 };
             }
 
-            //int poaheaderid = 0;
+            if(obj.ti_poa_type_id != 1) 
+            {
+                await InsertTableHeader();
+
+                return;
+            }
 
             pn1.Hide();
             pn2.Show();
@@ -304,6 +355,26 @@ namespace CPS_App
         {
             pn2.Hide();
             pn1.Show();
+        }
+
+        private void requiredFieldCheck(object sender, CancelEventArgs e)
+        {
+            var idtype = cbxitid.SelectedItem;
+            if (idtype != null) { idtype = idtype.ToString().Split(":").ElementAt(0); }
+            var uomtype = cbxuom.SelectedItem;
+            if (uomtype != null) { uomtype = uomtype.ToString().Split(":").ElementAt(0); }
+
+
+            var availableItem = pn2.Controls.OfType<KryptonTextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
+
+            if (availableItem != 7 || idtype == null || uomtype == null || templist.Count() <= 0)
+            {
+                disableValidation();
+            }
+            else
+            {
+                enableValidation();
+            }
         }
     }
 }

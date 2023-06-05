@@ -428,7 +428,8 @@ namespace CPS_App.Services
             {
                 string sql = @"set sql_mode = 'STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
-                             select * , group_concat(vc_item_desc separator ', ') as items_group from (
+                             select * , group_concat(concat('bi_item_id',':',bi_item_id,',','bi_location_id',':',bi_location_id) separator ';') as items_group 
+                             from (
                              select bi_item_vid, vid.bi_item_id, vc_item_desc, it.bi_category_id, vc_category_desc, uni.bi_location_id, loc.vc_location_desc
                              from tb_item_vid_mapping vid
                              left join tb_item it on vid.bi_item_id = it.bi_item_id

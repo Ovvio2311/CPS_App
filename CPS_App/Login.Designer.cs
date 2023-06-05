@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.Button3 = new System.Windows.Forms.Button();
-            this.Button2 = new System.Windows.Forms.Button();
+            this.btnclose = new System.Windows.Forms.Button();
+            this.btnclear = new System.Windows.Forms.Button();
             this.Label2 = new System.Windows.Forms.Label();
             this.Label1 = new System.Windows.Forms.Label();
             this.txtpass = new System.Windows.Forms.TextBox();
@@ -37,25 +37,27 @@
             this.Button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // Button3
+            // btnclose
             // 
-            this.Button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.Button3.Location = new System.Drawing.Point(177, 110);
-            this.Button3.Name = "Button3";
-            this.Button3.Size = new System.Drawing.Size(75, 27);
-            this.Button3.TabIndex = 28;
-            this.Button3.Text = "Close";
-            this.Button3.UseVisualStyleBackColor = true;
+            this.btnclose.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.btnclose.Location = new System.Drawing.Point(177, 110);
+            this.btnclose.Name = "btnclose";
+            this.btnclose.Size = new System.Drawing.Size(75, 27);
+            this.btnclose.TabIndex = 28;
+            this.btnclose.Text = "Close";
+            this.btnclose.UseVisualStyleBackColor = true;
+            this.btnclose.Click += new System.EventHandler(this.btnclose_Click);
             // 
-            // Button2
+            // btnclear
             // 
-            this.Button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.Button2.Location = new System.Drawing.Point(96, 110);
-            this.Button2.Name = "Button2";
-            this.Button2.Size = new System.Drawing.Size(75, 27);
-            this.Button2.TabIndex = 27;
-            this.Button2.Text = "Clear";
-            this.Button2.UseVisualStyleBackColor = true;
+            this.btnclear.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.btnclear.Location = new System.Drawing.Point(96, 110);
+            this.btnclear.Name = "btnclear";
+            this.btnclear.Size = new System.Drawing.Size(75, 27);
+            this.btnclear.TabIndex = 27;
+            this.btnclear.Text = "Clear";
+            this.btnclear.UseVisualStyleBackColor = true;
+            this.btnclear.Click += new System.EventHandler(this.btnclear_Click);
             // 
             // Label2
             // 
@@ -113,8 +115,8 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(303, 216);
-            this.Controls.Add(this.Button3);
-            this.Controls.Add(this.Button2);
+            this.Controls.Add(this.btnclose);
+            this.Controls.Add(this.btnclear);
             this.Controls.Add(this.Label2);
             this.Controls.Add(this.Label1);
             this.Controls.Add(this.txtpass);
@@ -131,8 +133,8 @@
         }
 
         #endregion
-        internal System.Windows.Forms.Button Button3;
-        internal System.Windows.Forms.Button Button2;
+        internal System.Windows.Forms.Button btnclose;
+        internal System.Windows.Forms.Button btnclear;
         internal System.Windows.Forms.Label Label2;
         internal System.Windows.Forms.Label Label1;
         internal System.Windows.Forms.TextBox txtpass;

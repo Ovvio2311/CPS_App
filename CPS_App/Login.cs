@@ -76,5 +76,18 @@ namespace CPS_App
         {
             
         }
+
+
+        private void btnclear_Click(object sender, EventArgs e)
+        {
+            txtusername.Text = string.Empty;
+            txtpass.Text = string.Empty;
+        }
+
+        private void btnclose_Click(object sender, EventArgs e)
+        {
+            //this.Close();
+            Application.Exit();
+        }
     }
 }

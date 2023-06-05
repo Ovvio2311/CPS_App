@@ -228,7 +228,7 @@ namespace CPS_App
             this.pn1.Name = "pn1";
             this.pn1.Palette = this.kryptonPalettepanel;
             this.pn1.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
-            this.pn1.Size = new System.Drawing.Size(896, 436);
+            this.pn1.Size = new System.Drawing.Size(817, 436);
             this.pn1.TabIndex = 18;
             // 
             // btncancel

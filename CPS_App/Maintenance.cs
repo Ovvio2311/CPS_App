@@ -78,6 +78,10 @@ namespace CPS_App
             List<tb_roles> roleclaim = JsonConvert.DeserializeObject<List<tb_roles>>(JsonConvert.SerializeObject(roclType.result));
             roleclaim.ForEach(x => cbxroleinroleclaim.Items.Add($"{x.vc_role_name}"));
 
+            var vidType = await _dbServices.GetVidMappingObj();
+            List<StockLevelViewObj> vid = JsonConvert.DeserializeObject<List<StockLevelViewObj>>(JsonConvert.SerializeObject(vidType.result));
+            vid.ForEach(x => cbxvidmap.Items.Add(x.bi_item_vid));
+
             multiDetailView.Show();
 
         }
@@ -186,7 +190,7 @@ namespace CPS_App
                 {"vc_claim_type", txtclaimt.Text },
                 {"vc_claim_value",txtclaimv.Text},
             };
-            if(await _dbServices.CheckDuplicateClaim<role_claim_table>(value))
+            if (await _dbServices.CheckDuplicateClaim<role_claim_table>(value))
             {
                 Claim claim = new Claim(txtclaimt.Text.ToLower(), txtclaimv.Text.ToLower());
 
@@ -215,6 +219,31 @@ namespace CPS_App
             role.Name = txtrole.Text;
             IdentityResult res = await _registerServices.CreateAsync(role);
             if (res.Succeeded) { MessageBox.Show("role added"); }
+        }
+
+        private void btnremove_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnvidadd_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private async void cbxvidmap_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var selectedVid = cbxvidmap.SelectedItem;
+            var vidType = await _dbServices.GetVidMappingObj();
+            //lstbox.Items.Add(vidType.result);
+            List<StockLevelViewObj> obj = vidType.result;
+            var lstObj = obj.FirstOrDefault(x => x.bi_item_vid == GenUtil.ConvertObjtoType<int>(selectedVid)).items_group;
+            string[] arr = lstObj.Split(";");
+            foreach (var x in arr)
+            {
+                lstbox.Items.Add(x);
+            }
+
         }
     }
 }

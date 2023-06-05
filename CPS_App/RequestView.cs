@@ -152,6 +152,7 @@ namespace CPS_App
             if (txtsearch1.Text == string.Empty && txtsearch2.Text == string.Empty)
             {
                 await LoadViewTable(userLoc);
+                return;
             }
             var obj = new searchObj();
 

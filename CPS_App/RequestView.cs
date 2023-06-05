@@ -1,23 +1,15 @@
 ﻿using CPS_App.Services;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Linq.Dynamic.Core;
-using System.Reflection;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using static CPS_App.Models.CPSModel;
 using Krypton.Toolkit;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
 using Newtonsoft.Json;
 using static CPS_App.Models.DbModels;
+using System.Windows.Forms;
 
 namespace CPS_App
 {
@@ -41,19 +33,22 @@ namespace CPS_App
 
         private async void RequestView_Load(object sender, EventArgs e)
         {
-            await _searchFunc.insertJsonString();
+            //await _searchFunc.insertJsonString();
             userIden = AuthService._userClaim;
             if (userIden == null)
             {
                 //throw new Exception("user claim is null");
             }
-            if (!await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "request", "write" } }))
+
+            
+            if (await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "request", "update" } }))
             {
                 btnAdd.Hide();
-            }
-            if (!await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "request", "update" } }))
-            {
                 btnEdit.Hide();
+            }
+            else if (await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "request", "read" } }))
+            {
+                btnAdd.Hide();                
             }
             //var userRole = userIden.Claims.FirstOrDefault(x => x.Type == "role").Value.ToString();
             string userLoc = null;
@@ -62,8 +57,31 @@ namespace CPS_App
             await GetSearchWords(userIden);
 
             lblitem.Hide();
-            defPage = await _requestMapp.RequestMappingObjGetter(userLoc);
 
+            await LoadViewTable(userLoc);
+            //await _searchFunc.insertJsonString();
+            //defPage = await _requestMapp.RequestMappingObjGetter(userLoc);
+
+            //var observableItems = new ObservableCollection<RequestMappingReqObj>(defPage);
+            //BindingList<RequestMappingReqObj> source = observableItems.ToBindingList();
+
+            //if (defPage != null)
+            //    datagridview.DataSource = source;
+
+            //GenUtil.dataGridAttrName<RequestMappingReqObj>(datagridview, new List<string>() { "not_shown" });
+
+        }
+        private async Task LoadViewTable(string loc, searchObj obj = null)
+        {
+
+            datagridview.DataSource = null;
+            defPage = await _requestMapp.RequestMappingObjGetter(loc, obj);
+            if (defPage == null)
+            {
+                datagridview.Columns.Clear();
+                lblnoresult.Show();
+                return;
+            }
             var observableItems = new ObservableCollection<RequestMappingReqObj>(defPage);
             BindingList<RequestMappingReqObj> source = observableItems.ToBindingList();
 
@@ -71,7 +89,6 @@ namespace CPS_App
                 datagridview.DataSource = source;
 
             GenUtil.dataGridAttrName<RequestMappingReqObj>(datagridview, new List<string>() { "not_shown" });
-
         }
         private void datagridview_CellClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -104,12 +121,6 @@ namespace CPS_App
             reqEdit.Show();
         }
 
-        private void txtfield_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            //search function
-        }
-
-
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
@@ -118,8 +129,6 @@ namespace CPS_App
             requestCreate.Show();
         }
 
-
-
         private void btncancel_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -127,24 +136,42 @@ namespace CPS_App
 
         private async void btnsearch_Click(object sender, EventArgs e)
         {
-            if (userIden.Claims.Any())
+            if (cbxsearch1.SelectedItem == cbxsearch2.SelectedItem && txtsearch1.Text != "" && txtsearch2.Text != "")
             {
-                if (cbxsearch1.SelectedItem == cbxsearch2.SelectedItem)
-                {
-                    MessageBox.Show("Duplicate Search criteria");
-                }
-                var search1key = searchWords.FirstOrDefault(x => x.Key == cbxsearch1.SelectedItem.ToString()).Value;
-                var search2key = searchWords.FirstOrDefault(x => x.Key == cbxsearch2.SelectedItem.ToString()).Value;
-
-                var obj = new searchObj()
-                {
-                    searchWords = new Dictionary<string, string>()
-                    {
-                        {search1key,txtsearch1.Text},
-                        {search2key,txtsearch2.Text},
-                    }
-                };
+                MessageBox.Show("Duplicate Search criteria");
+                return;
             }
+            lblnoresult.Hide();
+            lblitem.Hide();
+            datagridviewitem.DataSource = null;
+            string userLoc = userIden.Claims.FirstOrDefault(x => x.Type == "location_id").Value.ToString();
+
+
+            //var search1key = searchWords.FirstOrDefault(x => x.Key == cbxsearch1.SelectedItem.ToString()).Value;
+            var search2key = searchWords.FirstOrDefault(x => x.Key == cbxsearch2.SelectedItem.ToString()).Value;
+            if (txtsearch1.Text == string.Empty && txtsearch2.Text == string.Empty)
+            {
+                await LoadViewTable(userLoc);
+            }
+            var obj = new searchObj();
+
+            foreach (KryptonPanel c in Controls.OfType<KryptonPanel>())
+            {
+                c.Controls.OfType<KryptonTextBox>().ToList().ForEach(x =>
+                {
+                    if (x.Text != string.Empty)
+                    {
+                        c.Controls.OfType<KryptonComboBox>().ToList().ForEach(p =>
+                        {
+                            var searchkey = searchWords.FirstOrDefault(x => x.Key == p.SelectedItem.ToString()).Value;
+                            obj.searchWords.Add(searchkey, x.Text);
+                        });
+                    }
+                });
+            }
+
+            await LoadViewTable(userLoc, obj);
+
         }
         private async Task GetSearchWords(ClaimsIdentity identity)
         {
@@ -161,15 +188,5 @@ namespace CPS_App
             cbxsearch2.DataSource = words.Keys.ToList();
         }
 
-        private void cbxsearch2_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            //cbxsearch2.DataSource = searchWords.Where(x => x != cbxsearch2.SelectedItem).ToList();
-        }
-
-        private void cbxsearch1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-            //cbxsearch2.DataSource = searchWords.Where(x=>x != cbxsearch1.SelectedItem).ToList();
-        }
     }
 }

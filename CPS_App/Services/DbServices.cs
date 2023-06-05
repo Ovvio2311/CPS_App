@@ -212,7 +212,7 @@ namespace CPS_App.Services
                 throw new Exception(ex.Message);
             }
         }
-        public async Task<DbResObj> GetReqMappingObj(searchObj obj = null)
+        public async Task<DbResObj> GetReqMappingObj(string userloc = null, searchObj obj = null)
         {
             //var res = new DbResObj();
 
@@ -230,7 +230,7 @@ namespace CPS_App.Services
                              LEFT JOIN
                          (SELECT * FROM
                              (SELECT 
-                             det.bi_req_id, mapp.bi_item_vid, det.bi_item_id, det.i_item_req_qty, det.i_remain_req_qty, det.i_uom_id, 
+                             det.bi_req_id det_bi_req_id, mapp.bi_item_vid, det.bi_item_id, det.i_item_req_qty, det.i_remain_req_qty, det.i_uom_id, 
                              stat.vc_status_desc item_mapping_status, postat.bi_po_status_id, postat.vc_po_status_desc, det.dt_exp_deli_date, 
                              uom.vc_uom_desc, it.vc_item_desc, 
                              it.bi_category_id, cat.vc_category_desc
@@ -242,16 +242,23 @@ namespace CPS_App.Services
                          left join lut_mapping_status stat on det.i_map_stat_id = stat.i_map_stat_id
                          left join lut_po_status postat on det.bi_po_status_id = postat.bi_po_status_id
                          LEFT JOIN tb_item_vid_mapping mapp ON it.bi_item_id = mapp.bi_item_id) b) c 
-                         ON a.bi_req_id = c.bi_req_id ";
-
-            if (userLoc != null)
+                         ON a.bi_req_id = det_bi_req_id ";
+            if (obj != null)
             {
-                sql += $"order by bi_location_id = '{userLoc}' desc; ";
+                string seasrchList = string.Join(" and ", obj.searchWords.Select(x => $"{x.Key}= \'{x.Value}\'").ToList());
+                sql += $"where {seasrchList} ";
+            }
+            if (userloc != null)
+            {
+                sql += $"order by bi_location_id = '{userloc}' desc; ";
             }
             else
             {
                 sql += ";";
             }
+
+
+
             try
             {
                 var result = await _db.QueryAsync<dynamic>(sql, null);
@@ -351,7 +358,7 @@ namespace CPS_App.Services
             }
         }
 
-        public async Task<DbResObj> GetStockLevel(string userLoc = null)
+        public async Task<DbResObj> GetStockLevel(string userloc = null, searchObj obj = null)
         {
             var res = new DbResObj();
             res.resCode = 0;
@@ -379,9 +386,14 @@ namespace CPS_App.Services
                          LEFT JOIN tb_location loc ON uni.bi_location_id = loc.bi_location_id
                          LEFT JOIN lut_uom_type uom ON it.i_uom_id = uom.i_uom_id
                          )a ";
-                if (userLoc != null)
+                if (obj != null)
                 {
-                    sql = $"order by bi_location_id = '{userLoc}' desc;";
+                    string seasrchList = string.Join(" and ", obj.searchWords.Select(x => $"{x.Key}= \'{x.Value}\'").ToList());
+                    sql += $"where {seasrchList} ";
+                }
+                if (userloc != null)
+                {
+                    sql += $"order by bi_location_id = '{userloc}' desc; ";
                 }
                 else
                 {
@@ -458,9 +470,9 @@ namespace CPS_App.Services
                          inner join tb_supplier sup on hd.bi_supp_id = sup.bi_supp_id
                          inner join lut_term_and_con tc on hd.ti_tc_id = tc.ti_tc_id
                          inner join lut_deli_schedule_type delisc on hd.ti_deli_sched_id = delisc.ti_deli_sched_id
-                         inner join tb_item it on ln.bi_item_id = it.bi_item_id
-                         inner join lut_uom_type uom on ln.i_uom_id = uom.i_uom_id
-                         inner join lut_poa_type poatype on poa.ti_poa_type_id = poatype.ti_poa_type_id
+                         left join tb_item it on ln.bi_item_id = it.bi_item_id
+                         left join lut_uom_type uom on ln.i_uom_id = uom.i_uom_id
+                         left join lut_poa_type poatype on poa.ti_poa_type_id = poatype.ti_poa_type_id
                          inner join tb_location loc on hd.bi_deli_loc_id = loc.bi_location_id
                          left join lut_poa_status poast on poa.bi_poa_status_id = poast.bi_poa_status_id
                          ) a;";

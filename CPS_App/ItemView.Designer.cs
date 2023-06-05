@@ -35,22 +35,26 @@ namespace CPS_App
             comboBox1 = new KryptonComboBox();
             txtfield = new KryptonTextBox();
             btncreate = new KryptonButton();
-            btnupdate = new KryptonButton();
             kryptonPalettebtn = new KryptonPalette(components);
+            btnupdate = new KryptonButton();
+            lblnoresult = new KryptonLabel();
             ((System.ComponentModel.ISupportInitialize)dataGridViewitem).BeginInit();
             ((System.ComponentModel.ISupportInitialize)comboBox1).BeginInit();
             SuspendLayout();
             // 
             // dataGridViewitem
             // 
+            dataGridViewitem.AllowUserToAddRows = false;
             dataGridViewitem.AllowUserToOrderColumns = true;
             dataGridViewitem.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewitem.Location = new Point(55, 81);
             dataGridViewitem.Name = "dataGridViewitem";
             dataGridViewitem.RowTemplate.Height = 25;
             dataGridViewitem.Size = new Size(715, 351);
+            dataGridViewitem.StateCommon.Background.Color1 = Color.Transparent;
+            dataGridViewitem.StateCommon.Background.Color2 = Color.Transparent;
+            dataGridViewitem.StateCommon.BackStyle = PaletteBackStyle.GridBackgroundList;
             dataGridViewitem.TabIndex = 0;
-            dataGridViewitem.AllowUserToAddRows = false;
             dataGridViewitem.CellClick += dataGridViewitem_CellClick;
             // 
             // comboBox1
@@ -83,6 +87,15 @@ namespace CPS_App
             btncreate.Values.Text = "Create";
             btncreate.Click += btncreate_Click;
             // 
+            // kryptonPalettebtn
+            // 
+            kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Border.Color1 = Color.Transparent;
+            kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Border.DrawBorders = PaletteDrawBorders.Top | PaletteDrawBorders.Bottom | PaletteDrawBorders.Left | PaletteDrawBorders.Right;
+            kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Border.Rounding = 5F;
+            kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Color1 = Color.SteelBlue;
+            kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Font = new Font("Microsoft Tai Le", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
+            kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Hint = PaletteTextHint.SystemDefault;
+            // 
             // btnupdate
             // 
             btnupdate.CornerRoundingRadius = -1F;
@@ -95,20 +108,20 @@ namespace CPS_App
             btnupdate.Values.Text = "Update";
             btnupdate.Click += btnupdate_Click;
             // 
-            // kryptonPalettebtn
+            // lblnoresult
             // 
-            kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Border.Color1 = Color.Transparent;
-            kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Border.DrawBorders = PaletteDrawBorders.Top | PaletteDrawBorders.Bottom | PaletteDrawBorders.Left | PaletteDrawBorders.Right;
-            kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Border.Rounding = 5F;
-            kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Color1 = Color.SteelBlue;
-            kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Font = new Font("Microsoft Tai Le", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
-            kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Hint = PaletteTextHint.SystemDefault;
+            lblnoresult.Location = new Point(55, 55);
+            lblnoresult.Name = "lblnoresult";
+            lblnoresult.Size = new Size(64, 20);
+            lblnoresult.TabIndex = 19;
+            lblnoresult.Values.Text = "No Result";
             // 
             // ItemView
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(851, 532);
+            Controls.Add(lblnoresult);
             Controls.Add(btnupdate);
             Controls.Add(btncreate);
             Controls.Add(txtfield);
@@ -131,6 +144,6 @@ namespace CPS_App
         private KryptonButton btncreate;
         private KryptonButton btnupdate;
         private KryptonPalette kryptonPalettebtn;
-
+        private KryptonLabel lblnoresult;
     }
 }

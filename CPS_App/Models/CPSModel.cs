@@ -392,9 +392,9 @@ namespace CPS_App.Models
             [Display(Name = "Type")]
             public string vc_poa_type_desc { get; set; }
             [Display(Name = "not_shown")]
-            public long bi_poa_status_id { get;set; }
+            public long bi_poa_status_id { get; set; }
             [Display(Name = "Status")]
-            public string vc_poa_status { get; set; }
+            public string vc_poa_status_desc { get; set; }
             [Display(Name = "not_shown")]
             public int bi_deli_loc_id { get; set; }
             [Display(Name = "Delivery Location")]
@@ -429,7 +429,7 @@ namespace CPS_App.Models
             [Display(Name = "Poa line Id")]
             public int bi_poa_line_id { get; set; }
             [Display(Name = "not_shown")]
-            public int bi_poa_header_id { get; set; }
+            public int bi_poa_header_id { get; set; }          
             [Display(Name = "Item Id")]
             public int bi_item_id { get; set; }
             [Display(Name = "Item")]

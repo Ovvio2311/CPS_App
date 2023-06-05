@@ -91,15 +91,15 @@ namespace CPS_App
             //};
             dynamic request = new
             {
-                name = "restMan",
+                name = "LoChunFai",
                 password = "123456Aa!",
                 re_password = "123456Aa!",
                 role = "Restaurant",
-                email = "233@ddd.com",
-                empid = "3355",
-                location = "East Anthony",
-                staffRole = "manager",
-                staffName = "kk"
+                email = "LoChunFai@yummy.com",
+                empid = "358",
+                location = "Tai Po Road",
+                staffRole = "Manager",
+                staffName = "LoChunFai"
 
 ,
             };

@@ -61,7 +61,7 @@ namespace CPS_App
         {
             services.AddIdentity<AppUsers, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddScoped<RegisterServices>();
-            services.AddTransient<Form3>();
+            
             services.AddSingleton<GenUtil>();
             services.AddSingleton<Db>();
             services.AddSingleton<AccountServices>();

@@ -43,13 +43,14 @@ namespace CPS_App
             {
                 //throw new Exception("user claim is null");                
             }
-            if (!await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "poa", "write" } }))
+            if (await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "poa", "update" } }))
             {
                 btnadd.Hide();
-            }
-            if (!await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "poa", "update" } }))
-            {
                 btnedit.Hide();
+            }
+            else if (await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "poa", "read" } }))
+            {
+                btnadd.Hide();
             }
             obj = await _pOAWorker.GetPoaWorker();
             if (obj != null)

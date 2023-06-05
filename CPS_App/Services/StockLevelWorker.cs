@@ -19,25 +19,25 @@ namespace CPS_App.Services
             _logger = logger;
         }
 
-        public async Task<List<StockLevelViewObj>> GetStockLevelWorker(string userLoc = null)
+        public async Task<List<StockLevelViewObj>> GetStockLevelWorker(string userLoc = null, searchObj obj = null)
         {
             var res = new DbResObj();
             res.resCode = 0;
             //var result = new List<StockLevelViewObj>();
             try
             {
-                res = await _services.GetStockLevel(userLoc);
+                res = await _services.GetStockLevel(userLoc, obj);
 
                 if (res.resCode == 1 && res.result != null)
                 {
                     return res.result;
-                }                
+                }
             }
             catch (Exception ex)
             {
                 _logger.LogDebug($"Get Stock level error, err_msg: {res.err_msg}");
-                throw new Exception(ex.Message); 
-                
+                throw new Exception(ex.Message);
+
             }
             return res.result = null;
         }

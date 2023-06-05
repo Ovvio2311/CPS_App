@@ -136,5 +136,10 @@ namespace CPS_App
             poaCre.AutoScroll = true;
             poaCre.Show();
         }
+
+        private void btncancel_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }

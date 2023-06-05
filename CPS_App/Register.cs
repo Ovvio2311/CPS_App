@@ -58,22 +58,22 @@ namespace CPS_App
             //submit_Click(sender, e);
            // await _registerServices.CreateUserAsync(request);
         }
-        private void requiredFieldCheck(object sender, EventArgs e)
-        {
-            var role = GroupType.SelectedItem;
-            var location = locDesc.SelectedItem;
-            var availableTxtBox = grpBasic.Controls.OfType<TextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
-            if (availableTxtBox != 6 || role == null || location == null)
-            {
+        //private void requiredFieldCheck(object sender, EventArgs e)
+        //{
+        //    var role = GroupType.SelectedItem;
+        //    var location = locDesc.SelectedItem;
+        //    var availableTxtBox = grpBasic.Controls.OfType<TextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
+        //    if (availableTxtBox != 6 || role == null || location == null)
+        //    {
 
-                //disableValidation();
-                enableValidation();
-            }
-            else
-            {
-                enableValidation();
-            }
-        }
+        //        //disableValidation();
+        //        enableValidation();
+        //    }
+        //    else
+        //    {
+        //        enableValidation();
+        //    }
+        //}
         private async void submit_Click(object sender, EventArgs e)
         {
 
@@ -158,5 +158,21 @@ namespace CPS_App
 
         }
 
+        private void requiredFieldCheck(object sender, CancelEventArgs e)
+        {
+            var role = GroupType.SelectedItem;
+            var location = locDesc.SelectedItem;
+            var availableTxtBox = grpBasic.Controls.OfType<TextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
+            if (availableTxtBox != 7 || role == null || location == null)
+            {
+
+                //disableValidation();
+                enableValidation();
+            }
+            else
+            {
+                enableValidation();
+            }
+        }
     }
 }

@@ -43,14 +43,14 @@
             this.Email = new System.Windows.Forms.Label();
             this.errorProviderClick = new System.Windows.Forms.ErrorProvider(this.components);
             this.grpBasic = new System.Windows.Forms.Panel();
+            this.txtstaffname = new System.Windows.Forms.TextBox();
+            this.lblstaffname = new System.Windows.Forms.Label();
             this.txtStaffRole = new System.Windows.Forms.TextBox();
             this.lblStaffRole = new System.Windows.Forms.Label();
             this.locDesc = new System.Windows.Forms.ComboBox();
             this.lblLocation = new System.Windows.Forms.Label();
             this.txtEmpID = new System.Windows.Forms.TextBox();
             this.lblEmpID = new System.Windows.Forms.Label();
-            this.lblstaffname = new System.Windows.Forms.Label();
-            this.txtstaffname = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.errorProviderClick)).BeginInit();
             this.grpBasic.SuspendLayout();
             this.SuspendLayout();
@@ -193,6 +193,23 @@
             this.grpBasic.Size = new System.Drawing.Size(441, 403);
             this.grpBasic.TabIndex = 19;
             // 
+            // txtstaffname
+            // 
+            this.txtstaffname.Location = new System.Drawing.Point(186, 363);
+            this.txtstaffname.Name = "txtstaffname";
+            this.txtstaffname.Size = new System.Drawing.Size(217, 23);
+            this.txtstaffname.TabIndex = 20;
+            this.txtstaffname.Validating += new System.ComponentModel.CancelEventHandler(this.requiredFieldCheck);
+            // 
+            // lblstaffname
+            // 
+            this.lblstaffname.AutoSize = true;
+            this.lblstaffname.Location = new System.Drawing.Point(41, 366);
+            this.lblstaffname.Name = "lblstaffname";
+            this.lblstaffname.Size = new System.Drawing.Size(66, 15);
+            this.lblstaffname.TabIndex = 19;
+            this.lblstaffname.Text = "Staff Name";
+            // 
             // txtStaffRole
             // 
             this.txtStaffRole.Location = new System.Drawing.Point(187, 279);
@@ -244,22 +261,6 @@
             this.lblEmpID.Size = new System.Drawing.Size(73, 15);
             this.lblEmpID.TabIndex = 13;
             this.lblEmpID.Text = "Employee ID";
-            // 
-            // lblstaffname
-            // 
-            this.lblstaffname.AutoSize = true;
-            this.lblstaffname.Location = new System.Drawing.Point(50, 366);
-            this.lblstaffname.Name = "lblstaffname";
-            this.lblstaffname.Size = new System.Drawing.Size(66, 15);
-            this.lblstaffname.TabIndex = 19;
-            this.lblstaffname.Text = "Staff Name";
-            // 
-            // txtstaffname
-            // 
-            this.txtstaffname.Location = new System.Drawing.Point(186, 363);
-            this.txtstaffname.Name = "txtstaffname";
-            this.txtstaffname.Size = new System.Drawing.Size(217, 23);
-            this.txtstaffname.TabIndex = 20;
             // 
             // Register
             // 

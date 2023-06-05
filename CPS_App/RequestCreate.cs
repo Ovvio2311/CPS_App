@@ -112,29 +112,29 @@ namespace CPS_App
             cbxname.SelectedIndex = 0;
 
         }
-        private void requiredFieldCheck(object sender, EventArgs e)
-        {
-            if (req.items.Count > 0)
-            {
-                enableValidation();
-                //MessageBox.Show($"confirm Submit with {req.items.Count} item?");
-                return;
-            }
-            var datepick = dateTimePicker.Value;
-            var id = cbxname.SelectedItem;
-            if (id != null) { id = id.ToString().Split(":").ElementAt(0); }
-            var avaliableItemBox = panelItem.Controls.OfType<KryptonTextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
-            var availableTxtBox = panelInfo.Controls.OfType<KryptonTextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
-            if (availableTxtBox != 2 || avaliableItemBox != 2 || datepick < DateTime.Now || id == null)
-            {
+        //private void requiredFieldCheck(object sender, EventArgs e)
+        //{
+        //    if (req.items.Count > 0)
+        //    {
+        //        enableValidation();
+        //        //MessageBox.Show($"confirm Submit with {req.items.Count} item?");
+        //        return;
+        //    }
+        //    var datepick = dateTimePicker.Value;
+        //    var id = cbxname.SelectedItem;
+        //    if (id != null) { id = id.ToString().Split(":").ElementAt(0); }
+        //    var avaliableItemBox = panelItem.Controls.OfType<KryptonTextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
+        //    var availableTxtBox = panelInfo.Controls.OfType<KryptonTextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
+        //    if (availableTxtBox != 2 || avaliableItemBox != 2 || datepick < DateTime.Now || id == null)
+        //    {
 
-                disableValidation();
-            }
-            else
-            {
-                enableValidation();
-            }
-        }
+        //        disableValidation();
+        //    }
+        //    else
+        //    {
+        //        enableValidation();
+        //    }
+        //}
 
         private async void btnSubmit_Click(object sender, EventArgs e)
         {
@@ -244,10 +244,35 @@ namespace CPS_App
             MessageBox.Show($"Your Request has been created!\nRequest Id: {res1.result}");
             return true;
         }
-        //add vid
-        private void panelItem_Paint(object sender, PaintEventArgs e)
-        {
+       
 
+        private void requiredFieldCheck(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (req.items.Count > 0)
+            {
+                enableValidation();
+                //MessageBox.Show($"confirm Submit with {req.items.Count} item?");
+                return;
+            }
+            var datepick = dateTimePicker.Value;
+            var id = cbxname.SelectedItem;
+            if (id != null) { id = id.ToString().Split(":").ElementAt(0); }
+            var avaliableItemBox = panelItem.Controls.OfType<KryptonTextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
+            var availableTxtBox = panelInfo.Controls.OfType<KryptonTextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
+            if (availableTxtBox != 2 || avaliableItemBox != 2 || datepick < DateTime.Now || id == null)
+            {
+
+                disableValidation();
+            }
+            else
+            {
+                enableValidation();
+            }
+        }
+
+        private void btncancel_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

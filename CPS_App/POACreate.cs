@@ -88,26 +88,26 @@ namespace CPS_App
             btnsubmit.Enabled = false;
 
         }
-        private void requiredFieldCheck(object sender, EventArgs e)
-        {
-            var idtype = cbxitid.SelectedItem;
-            if (idtype != null) { idtype = idtype.ToString().Split(":").ElementAt(0); }
-            var uomtype = cbxuom.SelectedItem;
-            if (uomtype != null) { uomtype = uomtype.ToString().Split(":").ElementAt(0); }
+        //private void requiredFieldCheck(object sender, EventArgs e)
+        //{
+        //    var idtype = cbxitid.SelectedItem;
+        //    if (idtype != null) { idtype = idtype.ToString().Split(":").ElementAt(0); }
+        //    var uomtype = cbxuom.SelectedItem;
+        //    if (uomtype != null) { uomtype = uomtype.ToString().Split(":").ElementAt(0); }
 
 
-            var availableItem = pn2.Controls.OfType<KryptonTextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
+        //    var availableItem = pn2.Controls.OfType<KryptonTextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
 
-            if (availableItem != 7 || idtype == null || uomtype == null || templist.Count() <= 0)
-            {
-                disableValidation();
-            }
-            else
-            {
-                enableValidation();
-            }
+        //    if (availableItem != 7 || idtype == null || uomtype == null || templist.Count() <= 0)
+        //    {
+        //        disableValidation();
+        //    }
+        //    else
+        //    {
+        //        enableValidation();
+        //    }
 
-        }
+        //}
         private async Task InsertTableHeader()
         {
             //insert tb_poa
@@ -355,6 +355,26 @@ namespace CPS_App
         {
             pn2.Hide();
             pn1.Show();
+        }
+
+        private void requiredFieldCheck(object sender, CancelEventArgs e)
+        {
+            var idtype = cbxitid.SelectedItem;
+            if (idtype != null) { idtype = idtype.ToString().Split(":").ElementAt(0); }
+            var uomtype = cbxuom.SelectedItem;
+            if (uomtype != null) { uomtype = uomtype.ToString().Split(":").ElementAt(0); }
+
+
+            var availableItem = pn2.Controls.OfType<KryptonTextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
+
+            if (availableItem != 7 || idtype == null || uomtype == null || templist.Count() <= 0)
+            {
+                disableValidation();
+            }
+            else
+            {
+                enableValidation();
+            }
         }
     }
 }

@@ -53,6 +53,9 @@ namespace CPS_App
             this.kryptonPalettebtn = new Krypton.Toolkit.KryptonPalette(this.components);
             this.kryptonPaletteheader = new Krypton.Toolkit.KryptonPalette(this.components);
             this.kryptonPalettepanel = new Krypton.Toolkit.KryptonPalette(this.components);
+            this.btncancel = new Krypton.Toolkit.KryptonButton();
+            this.btndel = new Krypton.Toolkit.KryptonButton();
+            this.kryptonPalettedatagridview = new Krypton.Toolkit.KryptonPalette(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewitem)).BeginInit();
             this.SuspendLayout();
             // 
@@ -227,20 +230,24 @@ namespace CPS_App
             this.dataGridViewitem.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewitem.Location = new System.Drawing.Point(29, 39);
             this.dataGridViewitem.Name = "dataGridViewitem";
+            this.dataGridViewitem.Palette = this.kryptonPalettedatagridview;
+            this.dataGridViewitem.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
             this.dataGridViewitem.RowTemplate.Height = 25;
             this.dataGridViewitem.Size = new System.Drawing.Size(745, 150);
             this.dataGridViewitem.TabIndex = 16;
+            this.dataGridViewitem.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewitem_CellClick);
             // 
             // btnmod
             // 
             this.btnmod.CornerRoundingRadius = -1F;
-            this.btnmod.Location = new System.Drawing.Point(664, 347);
+            this.btnmod.Location = new System.Drawing.Point(686, 347);
             this.btnmod.Name = "btnmod";
             this.btnmod.Palette = this.kryptonPalettebtn;
             this.btnmod.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
-            this.btnmod.Size = new System.Drawing.Size(110, 29);
+            this.btnmod.Size = new System.Drawing.Size(87, 36);
             this.btnmod.TabIndex = 17;
-            this.btnmod.Values.Text = "Modify";
+            this.btnmod.Values.Text = "Update";
+            this.btnmod.Click += new System.EventHandler(this.btnmod_Click);
             // 
             // kryptonPalettebtn
             // 
@@ -263,11 +270,41 @@ namespace CPS_App
             this.kryptonPalettepanel.Common.StateCommon.Back.Color1 = System.Drawing.Color.Transparent;
             this.kryptonPalettepanel.Common.StateCommon.Back.Color2 = System.Drawing.Color.Transparent;
             // 
+            // btncancel
+            // 
+            this.btncancel.CornerRoundingRadius = -1F;
+            this.btncancel.Location = new System.Drawing.Point(433, 347);
+            this.btncancel.Name = "btncancel";
+            this.btncancel.Palette = this.kryptonPalettebtn;
+            this.btncancel.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.btncancel.Size = new System.Drawing.Size(87, 36);
+            this.btncancel.TabIndex = 21;
+            this.btncancel.Values.Text = "Cancel";
+            this.btncancel.Click += new System.EventHandler(this.btncancel_Click);
+            // 
+            // btndel
+            // 
+            this.btndel.CornerRoundingRadius = -1F;
+            this.btndel.Location = new System.Drawing.Point(559, 347);
+            this.btndel.Name = "btndel";
+            this.btndel.Palette = this.kryptonPalettebtn;
+            this.btndel.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.btndel.Size = new System.Drawing.Size(87, 36);
+            this.btndel.TabIndex = 22;
+            this.btndel.Values.Text = "Delete";
+            // 
+            // kryptonPalettedatagridview
+            // 
+            this.kryptonPalettedatagridview.Common.StateCommon.Back.Color1 = System.Drawing.Color.Transparent;
+            this.kryptonPalettedatagridview.Common.StateCommon.Back.Color2 = System.Drawing.Color.Transparent;
+            // 
             // ItemEdit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 477);
+            this.Controls.Add(this.btndel);
+            this.Controls.Add(this.btncancel);
             this.Controls.Add(this.btnmod);
             this.Controls.Add(this.dataGridViewitem);
             this.Controls.Add(this.txtuom);
@@ -288,6 +325,7 @@ namespace CPS_App
             this.Controls.Add(this.lblid);
             this.Name = "ItemEdit";
             this.Text = "ItemEdit";
+            this.Load += new System.EventHandler(this.ItemEdit_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewitem)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -319,5 +357,8 @@ namespace CPS_App
         private KryptonPalette kryptonPalettebtn;
         private KryptonPalette kryptonPalettepanel;
         private KryptonPalette kryptonPalettereadonly;
+        private KryptonButton btncancel;
+        private KryptonButton btndel;
+        private KryptonPalette kryptonPalettedatagridview;
     }
 }

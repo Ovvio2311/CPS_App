@@ -25,7 +25,7 @@ namespace CPS_App
             stock = obj;
             _dbServices = dbServices;
             this.selectId = selectId;
-            stockList =new BindingList<StockLevelViewObj>();
+            stockList = new BindingList<StockLevelViewObj>();
         }
 
         private void ItemEdit_Load(object sender, EventArgs e)
@@ -44,7 +44,7 @@ namespace CPS_App
 
 
             GenUtil.dataGridAttrName<StockLevelViewObj>(dataGridViewitem, new List<string>() { "not_shown" });
-           
+
         }
 
         private void dataGridViewitem_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -55,9 +55,9 @@ namespace CPS_App
             {
                 if (e.RowIndex > dataGridViewitem.RowCount) { return; }
                 //dataGridViewitem.DataSource = null;
-                int selectid = GenUtil.ConvertObjtoType<int>(dataGridViewitem.CurrentRow.Cells["bi_location_id"].Value);                                
+                int selectid = GenUtil.ConvertObjtoType<int>(dataGridViewitem.CurrentRow.Cells["bi_location_id"].Value);
 
-                var readyToEdit = stockList.ToList().Where(x=>x.bi_location_id == selectid).FirstOrDefault();
+                var readyToEdit = stockList.ToList().Where(x => x.bi_location_id == selectid).FirstOrDefault();
                 txtvid.Text = readyToEdit.bi_item_vid.ToString();
                 txtid.Text = readyToEdit.bi_item_id.ToString();
                 txtcat.Text = readyToEdit.vc_category_desc.ToString();
@@ -90,6 +90,11 @@ namespace CPS_App
                 return;
             }
             MessageBox.Show("Item updated");
+        }
+
+        private void btncancel_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

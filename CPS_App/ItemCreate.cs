@@ -33,12 +33,7 @@ namespace CPS_App
             req = new StockLevelViewObj();
             _validator = new Validator();
 
-        }
-
-        private void pnit_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
+        }       
 
         private async void ItemCreate_Load(object sender, EventArgs e)
         {
@@ -216,6 +211,17 @@ namespace CPS_App
                     MessageBox.Show("insert tb_item_unit error");
                 }
             }
+        }
+
+        private void btncancel_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void btnitcr_Click(object sender, EventArgs e)
+        {
+            this.Controls.OfType<KryptonTextBox>().ToList().ForEach(t => { t.Text = string.Empty; });
+            this.Controls.OfType<KryptonComboBox>().ToList().ForEach(x=>x.SelectedIndex = 0);
         }
     }
 }

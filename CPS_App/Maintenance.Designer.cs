@@ -101,7 +101,7 @@ namespace CPS_App
             cbxvidmapitemid = new Krypton.Toolkit.KryptonComboBox();
             lblvidmapitemid = new Krypton.Toolkit.KryptonLabel();
             lstbox = new Krypton.Toolkit.KryptonListBox();
-            cbxvidmap = new Krypton.Toolkit.KryptonComboBox();
+            cbxvidmapvid = new Krypton.Toolkit.KryptonComboBox();
             lblvid = new Krypton.Toolkit.KryptonLabel();
             multiDetailView.SuspendLayout();
             tabPageRole.SuspendLayout();
@@ -128,7 +128,7 @@ namespace CPS_App
             tabpagevid.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)cbxvidmaploc).BeginInit();
             ((System.ComponentModel.ISupportInitialize)cbxvidmapitemid).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)cbxvidmap).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)cbxvidmapvid).BeginInit();
             SuspendLayout();
             // 
             // btnroleadd
@@ -737,7 +737,7 @@ namespace CPS_App
             tabpagevid.Controls.Add(cbxvidmapitemid);
             tabpagevid.Controls.Add(lblvidmapitemid);
             tabpagevid.Controls.Add(lstbox);
-            tabpagevid.Controls.Add(cbxvidmap);
+            tabpagevid.Controls.Add(cbxvidmapvid);
             tabpagevid.Controls.Add(lblvid);
             tabpagevid.Location = new Point(4, 24);
             tabpagevid.Name = "tabpagevid";
@@ -757,6 +757,7 @@ namespace CPS_App
             cbxvidmaploc.Size = new Size(124, 21);
             cbxvidmaploc.StateCommon.ComboBox.Content.TextH = Krypton.Toolkit.PaletteRelativeAlign.Near;
             cbxvidmaploc.TabIndex = 27;
+            cbxvidmaploc.Tag = "vc_prefer_loc_id";
             // 
             // lblvipmaploc
             // 
@@ -799,6 +800,7 @@ namespace CPS_App
             cbxvidmapitemid.Size = new Size(124, 21);
             cbxvidmapitemid.StateCommon.ComboBox.Content.TextH = Krypton.Toolkit.PaletteRelativeAlign.Near;
             cbxvidmapitemid.TabIndex = 22;
+            cbxvidmapitemid.Tag = "bi_item_id";
             // 
             // lblvidmapitemid
             // 
@@ -817,17 +819,18 @@ namespace CPS_App
             lstbox.Size = new Size(264, 265);
             lstbox.TabIndex = 19;
             // 
-            // cbxvidmap
+            // cbxvidmapvid
             // 
-            cbxvidmap.CornerRoundingRadius = -1F;
-            cbxvidmap.DropDownWidth = 146;
-            cbxvidmap.IntegralHeight = false;
-            cbxvidmap.Location = new Point(100, 174);
-            cbxvidmap.Name = "cbxvidmap";
-            cbxvidmap.Size = new Size(124, 21);
-            cbxvidmap.StateCommon.ComboBox.Content.TextH = Krypton.Toolkit.PaletteRelativeAlign.Near;
-            cbxvidmap.TabIndex = 18;
-            cbxvidmap.SelectedIndexChanged += cbxvidmap_SelectedIndexChanged;
+            cbxvidmapvid.CornerRoundingRadius = -1F;
+            cbxvidmapvid.DropDownWidth = 146;
+            cbxvidmapvid.IntegralHeight = false;
+            cbxvidmapvid.Location = new Point(100, 174);
+            cbxvidmapvid.Name = "cbxvidmapvid";
+            cbxvidmapvid.Size = new Size(124, 21);
+            cbxvidmapvid.StateCommon.ComboBox.Content.TextH = Krypton.Toolkit.PaletteRelativeAlign.Near;
+            cbxvidmapvid.TabIndex = 18;
+            cbxvidmapvid.Tag = "bi_item_vid";
+            cbxvidmapvid.SelectedIndexChanged += cbxvidmap_SelectedIndexChanged;
             // 
             // lblvid
             // 
@@ -883,7 +886,7 @@ namespace CPS_App
             tabpagevid.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)cbxvidmaploc).EndInit();
             ((System.ComponentModel.ISupportInitialize)cbxvidmapitemid).EndInit();
-            ((System.ComponentModel.ISupportInitialize)cbxvidmap).EndInit();
+            ((System.ComponentModel.ISupportInitialize)cbxvidmapvid).EndInit();
             ResumeLayout(false);
         }
 
@@ -950,7 +953,7 @@ namespace CPS_App
         private Krypton.Toolkit.KryptonPalette kryptonPalettedatagridview;
         private TabPage tabpagevid;
         private Krypton.Toolkit.KryptonListBox lstbox;
-        private Krypton.Toolkit.KryptonComboBox cbxvidmap;
+        private Krypton.Toolkit.KryptonComboBox cbxvidmapvid;
         private Krypton.Toolkit.KryptonLabel lblvid;
         private Krypton.Toolkit.KryptonComboBox cbxvidmapitemid;
         private Krypton.Toolkit.KryptonLabel lblvidmapitemid;

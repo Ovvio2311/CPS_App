@@ -87,7 +87,7 @@ namespace CPS_App
         {
             var vidType = await _dbServices.GetVidMappingObj();
             List<VidMappingObj> vid = JsonConvert.DeserializeObject<List<VidMappingObj>>(JsonConvert.SerializeObject(vidType.result));
-            vid.ForEach(x => cbxvidmap.Items.Add(x.bi_item_vid));
+            vid.ForEach(x => cbxvidmapvid.Items.Add(x.bi_item_vid));
 
             var itemidType = await _dbServices.SelectAllAsync<tb_item>();
             List<tb_item> itid = JsonConvert.DeserializeObject<List<tb_item>>(JsonConvert.SerializeObject(itemidType.result));
@@ -95,7 +95,7 @@ namespace CPS_App
 
             var locType = await _dbServices.SelectAllAsync<tb_location>();
             List<tb_location> loc = JsonConvert.DeserializeObject<List<tb_location>>(JsonConvert.SerializeObject(locType.result));
-            loc.ForEach(x => cbxvidmapitemid.Items.Add($"{x.bi_location_id}:{x.vc_location_desc}"));
+            loc.ForEach(x => cbxvidmaploc.Items.Add($"{x.bi_location_id}:{x.vc_location_desc}"));
 
         }
 
@@ -243,7 +243,7 @@ namespace CPS_App
         private async Task VidMappListBoxRefresh()
         {
             lstbox.Items.Clear();
-            var selectedVid = cbxvidmap.SelectedItem;
+            var selectedVid = cbxvidmapvid.SelectedItem;
             var vidType = await _dbServices.GetVidMappingObj();
             //lstbox.Items.Add(vidType.result);
             List<VidMappingObj> obj = vidType.result;
@@ -256,12 +256,30 @@ namespace CPS_App
         }
         private void btnidinsert_Click(object sender, EventArgs e)
         {
-
+            if (cbxvidmapitemid.SelectedItem == null || cbxvidmaploc.SelectedItem == null || cbxvidmapvid.SelectedItem == null)
+            {
+                MessageBox.Show("Please select Item Id and Location");
+                return;
+            }
+            var selObj = new selectObj();
+            foreach (var prop in typeof(tb_item_vid_mapping).GetProperties())
+            {
+                tabpagevid.Controls.OfType<KryptonComboBox>().ToList().ForEach(x =>
+                {
+                    if (x.Tag.ToString() == prop.Name)
+                    {
+                        selObj.selecter.Add(prop.Name, x.SelectedItem.ToString().Substring(0,1));
+                    }
+                });
+            }            
         }
 
         private void btniddrop_Click(object sender, EventArgs e)
         {
-
+            if (lstbox.SelectedItem == null || cbxvidmapvid.SelectedItem == null)
+            {
+                MessageBox.Show("Please select Vid and the drop item");
+            }
         }
     }
 }

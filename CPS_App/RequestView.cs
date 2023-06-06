@@ -117,9 +117,12 @@ namespace CPS_App
         {
             int selectdId = GenUtil.ConvertObjtoType<int>(datagridview.CurrentRow.Cells["bi_req_id"].Value);
 
-            RequestEdit reqEdit = new RequestEdit(selectdId, defPage, _dbServices);
+            RequestEdit reqEdit = new RequestEdit(selectdId, defPage, _dbServices,_requestMapp);
             reqEdit.MdiParent = this.MdiParent;
+            reqEdit.AutoScroll= true;
+            this.Close();
             reqEdit.Show();
+            
         }
 
 
@@ -127,7 +130,10 @@ namespace CPS_App
         {
             RequestCreate requestCreate = new RequestCreate(_dbServices);
             requestCreate.MdiParent = this.MdiParent;
+            requestCreate.AutoScroll= true;
+            this.Close();
             requestCreate.Show();
+            
         }
 
         private void btncancel_Click(object sender, EventArgs e)
@@ -179,6 +185,10 @@ namespace CPS_App
         {
 
             IEnumerable<tb_search_gen> searchString = await _searchFunc.SearchParaGenerator(identity);
+            if (searchString == null)
+            {
+                return;
+            }
             Dictionary<string, string> words = JsonConvert.DeserializeObject<Dictionary<string, string>>(searchString.ElementAt(0).js_search_para);
             //words.ForEach(x =>
             //{

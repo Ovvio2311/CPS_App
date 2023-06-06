@@ -24,7 +24,7 @@ namespace CPS_App
         private RegisterServices _registerServices;
         private POAWorker _pOAWorker;
         private SearchFunc _searchFunc;
-        private IConfiguration _configuration;
+        private IConfiguration _configuration;         
 
         public Dashboard(Register register, AuthService authService, 
             RequestMapping requestMapp, DbServices dbServices, 
@@ -45,23 +45,36 @@ namespace CPS_App
         }
         private async void Dashboard_Load(object sender, EventArgs e)
         {
-            
+            RefreshDashborad();
+            //userIden = AuthService._userClaim;
+            //if (userIden != null)
+            //{
+            //    var roleName = userIden.Claims.FirstOrDefault(x => x.Type == "role").Value;
+            //    var staName = userIden.Claims.FirstOrDefault(x => x.Type == "staff_name").Value;
+            //    striplblwelcome.Text = $"Welcome {staName},{roleName}";
+            //    if (userIden.Claims.FirstOrDefault(x => x.Type == "role").Value.ToLower() == "admin")
+            //    {
+
+            //    }
+            //}
+            //defPage = await _requestMapp.RequestMappingObjGetter();
+            //HomePage.DataSource = defPage;
+        }
+        public void RefreshDashborad()
+        {
             userIden = AuthService._userClaim;
             if (userIden != null)
             {
+                striplblwelcome.Text = string.Empty;
+                var roleName = userIden.Claims.FirstOrDefault(x => x.Type == "role").Value;
                 var staName = userIden.Claims.FirstOrDefault(x => x.Type == "staff_name").Value;
-                striplblwelcome.Text = $"Welcome Back {staName}";
+                striplblwelcome.Text = $"Welcome {staName},{roleName}";
                 if (userIden.Claims.FirstOrDefault(x => x.Type == "role").Value.ToLower() == "admin")
                 {
 
                 }
             }
-            //defPage = await _requestMapp.RequestMappingObjGetter();
-            //HomePage.DataSource = defPage;
-
-
         }
-
         //private void HomePage_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         //{
         //    if (e.ColumnIndex == _previousIndex)
@@ -127,7 +140,7 @@ namespace CPS_App
             if(dialogResult == DialogResult.Yes)
             {
                 userIden = null;
-                this.Close();
+                this.Hide();
                 Login login = new Login(_configuration, _authService, this);
                 login.Show();
             }

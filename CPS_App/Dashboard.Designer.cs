@@ -162,7 +162,7 @@ namespace CPS_App
             // striplblwelcome
             // 
             this.striplblwelcome.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.striplblwelcome.Font = new System.Drawing.Font("Lucida Sans", 9.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point);
+            this.striplblwelcome.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point);
             this.striplblwelcome.Name = "striplblwelcome";
             this.striplblwelcome.Size = new System.Drawing.Size(0, 32);
             // 

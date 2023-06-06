@@ -58,6 +58,15 @@ namespace CPS_App
                     //form3.ShowDialog();
                     this.Hide();
                     _dashboard.Show();
+                    foreach (var x in _dashboard.MdiChildren)
+                    {
+                        if (x.GetType() == typeof(Form))
+                        {
+                            x.Dispose();
+                        }
+                    }
+                    _dashboard.RefreshDashborad();
+                   
                     
                 }
                 else

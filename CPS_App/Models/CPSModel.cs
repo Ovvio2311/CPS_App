@@ -454,6 +454,29 @@ namespace CPS_App.Models
             public string bi_quot_no { get; set; }
 
         }
-
+        //Vip Mapping Table
+        public class VidMappingObj
+        {
+            [Display(Name = "Item Id")]
+            public int bi_item_id { get; set; }
+            [Display(Name = "Item Vid")]
+            public int bi_item_vid { get; set; }
+            [Display(Name = "Item Name")]
+            public string vc_item_desc { get; set; }
+            [Display(Name = "not_shown")]
+            public int bi_category_id { get; set; }
+            [Display(Name = "Category")]
+            public string vc_category_desc { get; set; }            
+            [Display(Name = "not_shown")]
+            public int bi_prefer_loc_id { get; set; }
+            [Display(Name = "Location")]
+            public string vc_location_desc { get; set; }            
+            [Display(Name = "not_shown")]
+            public string items_group { get; set; }
+            [Display(Name = "not_shown")]
+            public string prefer_loc_group { get; set; }
+            [Display(Name = "not_shown")]
+            public string item_loc_id_group { get; set; }
+        }
     }
 }

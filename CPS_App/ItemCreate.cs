@@ -64,7 +64,7 @@ namespace CPS_App
             sup.ForEach(x => cbxsup.Items.Add($"{x.bi_supp_id}: {x.vc_supp_desc}"));
 
             var vidType = await _dbServices.GetVidMappingObj();
-            List<StockLevelViewObj> vid = JsonConvert.DeserializeObject<List<StockLevelViewObj>>(JsonConvert.SerializeObject(vidType.result));
+            List<VidMappingObj> vid = JsonConvert.DeserializeObject<List<VidMappingObj>>(JsonConvert.SerializeObject(vidType.result));
             vid.ForEach(x => cbxvid.Items.Add($"{x.bi_item_vid}: {x.items_group}"));
         }
 

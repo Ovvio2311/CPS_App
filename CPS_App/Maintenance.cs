@@ -77,12 +77,25 @@ namespace CPS_App
             var roclType = await _dbServices.SelectAllAsync<tb_roles>();
             List<tb_roles> roleclaim = JsonConvert.DeserializeObject<List<tb_roles>>(JsonConvert.SerializeObject(roclType.result));
             roleclaim.ForEach(x => cbxroleinroleclaim.Items.Add($"{x.vc_role_name}"));
-
-            var vidType = await _dbServices.GetVidMappingObj();
-            List<StockLevelViewObj> vid = JsonConvert.DeserializeObject<List<StockLevelViewObj>>(JsonConvert.SerializeObject(vidType.result));
-            vid.ForEach(x => cbxvidmap.Items.Add(x.bi_item_vid));
+            //tabpage vid mapping refresh
+            await VidMappingInitialLoad();
 
             multiDetailView.Show();
+
+        }
+        private async Task VidMappingInitialLoad()
+        {
+            var vidType = await _dbServices.GetVidMappingObj();
+            List<VidMappingObj> vid = JsonConvert.DeserializeObject<List<VidMappingObj>>(JsonConvert.SerializeObject(vidType.result));
+            vid.ForEach(x => cbxvidmap.Items.Add(x.bi_item_vid));
+
+            var itemidType = await _dbServices.SelectAllAsync<tb_item>();
+            List<tb_item> itid = JsonConvert.DeserializeObject<List<tb_item>>(JsonConvert.SerializeObject(itemidType.result));
+            itid.ForEach(x => cbxvidmapitemid.Items.Add($"{x.bi_item_id}:{x.vc_item_desc}"));
+
+            var locType = await _dbServices.SelectAllAsync<tb_location>();
+            List<tb_location> loc = JsonConvert.DeserializeObject<List<tb_location>>(JsonConvert.SerializeObject(locType.result));
+            loc.ForEach(x => cbxvidmapitemid.Items.Add($"{x.bi_location_id}:{x.vc_location_desc}"));
 
         }
 
@@ -221,28 +234,33 @@ namespace CPS_App
             if (res.Succeeded) { MessageBox.Show("role added"); }
         }
 
-        private void btnremove_Click(object sender, EventArgs e)
-        {
 
-        }
-
-        private void btnvidadd_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private async void cbxvidmap_SelectedIndexChanged(object sender, EventArgs e)
         {
+            await VidMappListBoxRefresh();
+        }
+        private async Task VidMappListBoxRefresh()
+        {
+            lstbox.Items.Clear();
             var selectedVid = cbxvidmap.SelectedItem;
             var vidType = await _dbServices.GetVidMappingObj();
             //lstbox.Items.Add(vidType.result);
-            List<StockLevelViewObj> obj = vidType.result;
-            var lstObj = obj.FirstOrDefault(x => x.bi_item_vid == GenUtil.ConvertObjtoType<int>(selectedVid)).items_group;
+            List<VidMappingObj> obj = vidType.result;
+            var lstObj = obj.FirstOrDefault(x => x.bi_item_vid == GenUtil.ConvertObjtoType<int>(selectedVid)).prefer_loc_group;
             string[] arr = lstObj.Split(";");
             foreach (var x in arr)
             {
                 lstbox.Items.Add(x);
             }
+        }
+        private void btnidinsert_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btniddrop_Click(object sender, EventArgs e)
+        {
 
         }
     }

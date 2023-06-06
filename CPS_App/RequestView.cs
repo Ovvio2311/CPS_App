@@ -44,11 +44,12 @@ namespace CPS_App
             if (await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "request", "update" } }))
             {
                 btnAdd.Hide();
-                btnEdit.Hide();
+                //btnEdit.Hide();
             }
             else if (await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "request", "read" } }))
             {
-                btnAdd.Hide();                
+                btnAdd.Hide();
+                btnEdit.Hide();
             }
             //var userRole = userIden.Claims.FirstOrDefault(x => x.Type == "role").Value.ToString();
             string userLoc = null;

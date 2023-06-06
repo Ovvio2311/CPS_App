@@ -428,18 +428,21 @@ namespace CPS_App.Services
             {
                 string sql = @"set sql_mode = 'STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
-                             select * , group_concat(concat('bi_item_id',':',bi_item_id,',','bi_location_id',':',bi_location_id) separator ';') as items_group 
+                             select *  , 
+                             group_concat(concat('Item Id',': ',bi_item_id,', ','Location',': ',vc_location_desc) separator ';') as prefer_loc_group ,
+                             group_concat(vc_item_desc separator ',') as items_group,
+                             group_concat(concat(bi_item_id,',',bi_prefer_loc_id) separator ';') as item_loc_id_group
                              from (
-                             select bi_item_vid, vid.bi_item_id, vc_item_desc, it.bi_category_id, vc_category_desc, uni.bi_location_id, loc.vc_location_desc
+                             select bi_item_vid, vid.bi_item_id, vc_item_desc, it.bi_category_id, vc_category_desc, 
+                             vid.bi_prefer_loc_id, loc.vc_location_desc
                              from tb_item_vid_mapping vid
                              left join tb_item it on vid.bi_item_id = it.bi_item_id
-                             left join tb_item_category cat on it.bi_category_id = cat.bi_category_id
-                             left join tb_item_unit uni on vid.bi_item_id = uni.bi_item_id
-                             left join tb_location loc on uni.bi_location_id = loc.bi_location_id)a
+                             left join tb_item_category cat on it.bi_category_id = cat.bi_category_id                             
+                             left join tb_location loc on vid.bi_prefer_loc_id = loc.bi_location_id)a
                              group by bi_item_vid
                              order by bi_item_vid;";
 
-                var result = await _db.QueryAsync<StockLevelViewObj>(sql, null);
+                var result = await _db.QueryAsync<VidMappingObj>(sql, null);
 
                 if (result != null)
                 {

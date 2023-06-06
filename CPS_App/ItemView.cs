@@ -36,13 +36,14 @@ namespace CPS_App
 
             }
            
-            if (!await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "item", "update" } }))
+            if (await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "item", "update" } }))
             {
                 btncreate.Hide();
-                btnupdate.Hide();
+                
             }
-            else if (!await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "item", "read" } }))
-            {                
+            else if (await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "item", "read" } }))
+            {
+                btncreate.Hide();
                 btnupdate.Hide();
             }
             lblnoresult.Hide();

@@ -68,6 +68,8 @@ namespace CPS_App
             this.txtitname.Name = "txtitname";
             this.txtitname.Size = new System.Drawing.Size(177, 23);
             this.txtitname.TabIndex = 2;
+            this.txtitname.Tag = "vc_item_desc";
+            this.txtitname.Validating += new System.ComponentModel.CancelEventHandler(this.requiredFieldCheck);
             // 
             // lblcrit
             // 
@@ -92,6 +94,7 @@ namespace CPS_App
             this.lblitname.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
             this.lblitname.Size = new System.Drawing.Size(53, 21);
             this.lblitname.TabIndex = 4;
+            this.lblitname.Tag = "vc_item_desc";
             this.lblitname.Values.Text = "Name";
             // 
             // kryptonPalettelbl
@@ -107,6 +110,7 @@ namespace CPS_App
             this.lblcat.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
             this.lblcat.Size = new System.Drawing.Size(74, 21);
             this.lblcat.TabIndex = 5;
+            this.lblcat.Tag = "bi_category_id";
             this.lblcat.Values.Text = "Category";
             // 
             // lblloc
@@ -117,6 +121,7 @@ namespace CPS_App
             this.lblloc.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
             this.lblloc.Size = new System.Drawing.Size(70, 21);
             this.lblloc.TabIndex = 6;
+            this.lblloc.Tag = "bi_location_id";
             this.lblloc.Values.Text = "Location";
             // 
             // lblvid
@@ -127,6 +132,7 @@ namespace CPS_App
             this.lblvid.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
             this.lblvid.Size = new System.Drawing.Size(37, 21);
             this.lblvid.TabIndex = 7;
+            this.lblvid.Tag = "bi_item_vid";
             this.lblvid.Values.Text = "VID";
             // 
             // lbluom
@@ -137,6 +143,7 @@ namespace CPS_App
             this.lbluom.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
             this.lbluom.Size = new System.Drawing.Size(155, 21);
             this.lbluom.TabIndex = 8;
+            this.lbluom.Tag = "i_uom_id";
             this.lbluom.Values.Text = "Unit of Measurement";
             // 
             // pnit
@@ -172,6 +179,8 @@ namespace CPS_App
             this.txtqty.Name = "txtqty";
             this.txtqty.Size = new System.Drawing.Size(177, 23);
             this.txtqty.TabIndex = 18;
+            this.txtqty.Tag = "i_item_qty";
+            this.txtqty.Validating += new System.ComponentModel.CancelEventHandler(this.requiredFieldCheck);
             // 
             // lblqty
             // 
@@ -181,6 +190,7 @@ namespace CPS_App
             this.lblqty.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
             this.lblqty.Size = new System.Drawing.Size(69, 21);
             this.lblqty.TabIndex = 17;
+            this.lblqty.Tag = "i_item_qty";
             this.lblqty.Values.Text = "Quantity";
             // 
             // cbxsup
@@ -193,6 +203,8 @@ namespace CPS_App
             this.cbxsup.Name = "cbxsup";
             this.cbxsup.Size = new System.Drawing.Size(177, 21);
             this.cbxsup.TabIndex = 15;
+            this.cbxsup.Tag = "bi_supp_id";
+            this.cbxsup.Validating += new System.ComponentModel.CancelEventHandler(this.requiredFieldCheck);
             // 
             // btnitsb
             // 
@@ -225,6 +237,7 @@ namespace CPS_App
             this.lblsup.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
             this.lblsup.Size = new System.Drawing.Size(68, 21);
             this.lblsup.TabIndex = 14;
+            this.lblsup.Tag = "bi_supp_id";
             this.lblsup.Values.Text = "Supplier";
             // 
             // btncancel
@@ -249,6 +262,8 @@ namespace CPS_App
             this.cbxuom.Name = "cbxuom";
             this.cbxuom.Size = new System.Drawing.Size(177, 21);
             this.cbxuom.TabIndex = 5;
+            this.cbxuom.Tag = "i_uom_id";
+            this.cbxuom.Validating += new System.ComponentModel.CancelEventHandler(this.requiredFieldCheck);
             // 
             // cbxvid
             // 
@@ -260,6 +275,8 @@ namespace CPS_App
             this.cbxvid.Name = "cbxvid";
             this.cbxvid.Size = new System.Drawing.Size(177, 21);
             this.cbxvid.TabIndex = 4;
+            this.cbxvid.Tag = "bi_item_vid";
+            this.cbxvid.Validating += new System.ComponentModel.CancelEventHandler(this.requiredFieldCheck);
             // 
             // cbxloc
             // 
@@ -271,6 +288,8 @@ namespace CPS_App
             this.cbxloc.Name = "cbxloc";
             this.cbxloc.Size = new System.Drawing.Size(177, 21);
             this.cbxloc.TabIndex = 3;
+            this.cbxloc.Tag = "bi_location_id";
+            this.cbxloc.Validating += new System.ComponentModel.CancelEventHandler(this.requiredFieldCheck);
             // 
             // cbxcat
             // 
@@ -282,6 +301,8 @@ namespace CPS_App
             this.cbxcat.Name = "cbxcat";
             this.cbxcat.Size = new System.Drawing.Size(177, 21);
             this.cbxcat.TabIndex = 2;
+            this.cbxcat.Tag = "bi_category_id";
+            this.cbxcat.Validating += new System.ComponentModel.CancelEventHandler(this.requiredFieldCheck);
             // 
             // btnitcr
             // 

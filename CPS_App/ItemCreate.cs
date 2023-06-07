@@ -17,6 +17,7 @@ using static CPS_App.Models.CPSModel;
 using static CPS_App.Models.DbModels;
 using static CPS_App.Models.RegisterModel;
 using Krypton.Toolkit;
+using System.Xml.Linq;
 
 namespace CPS_App
 {
@@ -26,14 +27,16 @@ namespace CPS_App
         private Validator _validator;
         public ClaimsIdentity userIden;
         public StockLevelViewObj req;
+        public CreateStockObj createStock;
         public ItemCreate(DbServices dbServices)
         {
             InitializeComponent();
             _dbServices = dbServices;
             req = new StockLevelViewObj();
             _validator = new Validator();
+            createStock = new CreateStockObj();
 
-        }       
+        }
 
         private async void ItemCreate_Load(object sender, EventArgs e)
         {
@@ -67,62 +70,118 @@ namespace CPS_App
             List<VidMappingObj> vid = JsonConvert.DeserializeObject<List<VidMappingObj>>(JsonConvert.SerializeObject(vidType.result));
             vid.ForEach(x => cbxvid.Items.Add($"{x.bi_item_vid}: {x.items_group}"));
         }
-
-        private void requiredFieldCheck(object sender, EventArgs e)
+        public void enableValidation()
         {
-
-
-
-
+            btnitsb.Enabled = true;
         }
-
-        private async void btncatsb_Click(object sender, EventArgs e)
+        public void disableValidation()
         {
-            //if (txtcatname.Text == String.Empty)
-            //{
-            //    MessageBox.Show("Please enter Category name");
-            //}
-            //else
-            //{
-            //    var obj = new selectObj();
-            //    obj.table = "tb_item_category";
-            //    obj.selecter.Add("vc_category_desc", txtcatname.Text);
-            //    var res = await _dbServices.SelectWhereAsync(obj);
-            //    if (res.resCode != 1)
-            //    {
-            //        //_logger.LogDebug("item Id not find");
-            //        MessageBox.Show("error");
-            //        return;
-            //    }
-            //    else if (res.resCode == 1 && res.result.Count > 0)
-            //    {
-            //        MessageBox.Show("Category Name has been used");
-            //        return;
-            //    }
-            //    else
-            //    {
-            //        //insert into tb_caterogy
-            //        var tb_cat = new insertObj();
-            //        tb_cat.table = "tb_item_category";
-            //        tb_cat.inserter = new Dictionary<string, string>
-            //        {
-            //            { nameof(req.vc_category_desc), txtcatname.Text },
-            //        };
-            //        var tb_cat_res = await _dbServices.InsertAsync(tb_cat);
-            //        if (tb_cat_res.resCode != 1 || tb_cat_res.result.Count <= 0)
-            //        {
-            //            //_logger.LogDebug("insert error");
-            //            MessageBox.Show("insert error");
-            //        }
-            //        else
-            //        {
-            //            MessageBox.Show($"New Category created, ID: {tb_cat_res.result}");
-            //        }
-            //    }
-            //}
+            btnitsb.Enabled = false;
         }
 
         private async void btnitsb_Click(object sender, EventArgs e)
+        {
+
+            if (!int.TryParse(txtqty.Text, out int output))
+            {
+                MessageBox.Show("Please enter integer in quantity field");
+                return;
+            }
+            this.Controls.OfType<KryptonTextBox>().ToList().ForEach(x =>
+            {
+                createStock.GetType().GetProperties().ToList().ForEach(p =>
+                {
+                    if (x.Tag != null && p.Name == x.Tag.ToString())
+                    {
+                        p.SetValue(createStock,Convert.ChangeType(x.Text,p.PropertyType,null));
+                    }
+
+                });
+            });
+
+
+            DialogResult dialogResult = MessageBox.Show("Are you confirm the information to create", "Confirm", MessageBoxButtons.YesNo);
+            if (!(dialogResult == DialogResult.Yes))
+            {
+                return;
+
+            }
+            //insert tb_item use insertasync<T> cannot get id successfully
+
+            var itemObj = new insertObj()
+            {
+                table = typeof(tb_item).Name,
+                inserter = new Dictionary<string, string>
+                    {
+                        {"bi_category_id", cat.ToString()},
+                        { "vc_item_desc" ,txtitname.Text },
+                        {"i_uom_id", uom.ToString() }
+                    }
+            };
+
+            var res = await _dbServices.InsertAsync(itemObj);
+            if (res.resCode != 1 || res.result == null)
+            {
+                MessageBox.Show("tb_item error");
+            }
+
+            //insert tb_vid
+            //var vidObj = new insertObj()
+            //{
+            //    table = typeof(tb_item_vid_mapping).Name,
+            //    inserter = new Dictionary<string, string>
+            //    {
+            //        {"bi_item_id",res.result.ToString() },
+            //        { "bi_item_vid", vid.ToString()},
+            //    }
+            //};
+            var vidObj = new tb_item_vid_mapping()
+            {
+                bi_item_id = GenUtil.ConvertObjtoType<int>(res.result),
+                bi_item_vid = GenUtil.ConvertObjtoType<int>(vid),
+                dt_created_date = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss")
+            };
+            var vidres = await _dbServices.InsertAsync<tb_item_vid_mapping>(vidObj);
+            if (vidres.resCode != 1 || res.result == null)
+            {
+                MessageBox.Show("vid mapping error");
+            }
+            MessageBox.Show($"New Item has been created with ID: {res.result}");
+
+            //insert tb_item_unit
+            var itemUnit = new tb_item_unit()
+            {
+                bi_item_id = GenUtil.ConvertObjtoType<int>(res.result),
+                bi_location_id = GenUtil.ConvertObjtoType<int>(loc),
+                i_uom_id = GenUtil.ConvertObjtoType<int>(uom),
+                bi_supp_id = GenUtil.ConvertObjtoType<int>(sup),
+                i_item_qty = GenUtil.ConvertObjtoType<int>(txtqty.Text),
+                dt_created_date = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss")
+            };
+            var iUnitres = await _dbServices.InsertAsync<tb_item_unit>(itemUnit);
+            if (iUnitres.resCode != 1)
+            {
+                MessageBox.Show("insert tb_item_unit error");
+            }
+
+        }
+
+        private void btncancel_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void btnitcr_Click(object sender, EventArgs e)
+        {
+            this.Controls.OfType<KryptonTextBox>().ToList().ForEach(t => { t.Text = string.Empty; });
+            this.Controls.OfType<KryptonComboBox>().ToList().ForEach(x => x.SelectedIndex = 0);
+        }
+
+        private void requiredFieldCheck(object sender, CancelEventArgs e)
+        {
+            ValidationCheck();
+        }
+        private void ValidationCheck()
         {
             var cat = cbxcat.SelectedItem;
             if (cat != null) { cat = cat.ToString().Split(":").ElementAt(0); }
@@ -135,93 +194,30 @@ namespace CPS_App
             var vid = cbxvid.SelectedItem;
             if (vid != null) { vid = vid.ToString().Split(":").ElementAt(0); }
 
-            if (!int.TryParse(txtqty.Text, out int output))
-            {
-                MessageBox.Show("Please enter integer in quantity field");
-                return;
-            }
             var availableItem = pnit.Controls.OfType<KryptonTextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
             if (availableItem != 2 || cat == null || loc == null || uom == null || vid == null || sup == null)
             {
-                MessageBox.Show("Please completed the item form");
+                //MessageBox.Show("Please completed the item form");
+                disableValidation();
             }
             else
             {
-                DialogResult dialogResult = MessageBox.Show("Are you confirm the information to create", "Confirm", MessageBoxButtons.YesNo);
-                if (!(dialogResult == DialogResult.Yes))
-                {
-                    return;
-
-                }
-                //insert tb_item use insertasync<T> cannot get id successfully
-
-                var itemObj = new insertObj()
-                {
-                    table = typeof(tb_item).Name,
-                    inserter = new Dictionary<string, string>
-                    {
-                        {"bi_category_id", cat.ToString()},
-                        { "vc_item_desc" ,txtitname.Text },
-                        {"i_uom_id", uom.ToString() }
-                    }
-                };
-
-                var res = await _dbServices.InsertAsync(itemObj);
-                if (res.resCode != 1 || res.result == null)
-                {
-                    MessageBox.Show("tb_item error");
-                }
-
-                //insert tb_vid
-                //var vidObj = new insertObj()
-                //{
-                //    table = typeof(tb_item_vid_mapping).Name,
-                //    inserter = new Dictionary<string, string>
-                //    {
-                //        {"bi_item_id",res.result.ToString() },
-                //        { "bi_item_vid", vid.ToString()},
-                //    }
-                //};
-                var vidObj = new tb_item_vid_mapping()
-                {
-                    bi_item_id = GenUtil.ConvertObjtoType<int>(res.result),
-                    bi_item_vid = GenUtil.ConvertObjtoType<int>(vid),
-                    dt_created_date = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss")
-                };
-                var vidres = await _dbServices.InsertAsync<tb_item_vid_mapping>(vidObj);
-                if (vidres.resCode != 1 || res.result == null)
-                {
-                    MessageBox.Show("vid mapping error");
-                }
-                MessageBox.Show($"New Item has been created with ID: {res.result}");
-
-                //insert tb_item_unit
-                var itemUnit = new tb_item_unit()
-                {
-                    bi_item_id = GenUtil.ConvertObjtoType<int>(res.result),
-                    bi_location_id = GenUtil.ConvertObjtoType<int>(loc),
-                    i_uom_id = GenUtil.ConvertObjtoType<int>(uom),
-                    bi_supp_id = GenUtil.ConvertObjtoType<int>(sup),
-                    i_item_qty = GenUtil.ConvertObjtoType<int>(txtqty.Text),
-                    dt_created_date = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss")
-                };
-                var iUnitres = await _dbServices.InsertAsync<tb_item_unit>(itemUnit);
-                if (iUnitres.resCode != 1)
-                {
-                    MessageBox.Show("insert tb_item_unit error");
-                }
+                enableValidation();
             }
-        }
+            //var datepick = dateTimePicker.Value;
+            //var id = cbxname.SelectedItem;
+            //if (id != null) { id = id.ToString().Split(":").ElementAt(0); }
+            //var avaliableItemBox = panelItem.Controls.OfType<KryptonTextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
+            //var availableTxtBox = panelInfo.Controls.OfType<KryptonTextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
+            //if (availableTxtBox != 2 || avaliableItemBox != 2 || datepick < DateTime.Now || id == null)
+            //{
 
-        private void btncancel_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
-        private void btnitcr_Click(object sender, EventArgs e)
-        {
-            this.Controls.OfType<KryptonTextBox>().ToList().ForEach(t => { t.Text = string.Empty; });
-            this.Controls.OfType<KryptonComboBox>().ToList().ForEach(x=>x.SelectedIndex = 0);
+            //    disableValidation();
+            //}
+            //else
+            //{
+            //    enableValidation();
+            //}
         }
     }
 }

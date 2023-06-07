@@ -114,10 +114,15 @@ namespace CPS_App
                     return;
                 }
                 MessageBox.Show("Item updated");
-            }
-                
+                this.Controls.OfType<KryptonTextBox>().ToList().ForEach(x => { x.Clear(); });
+                await RefreshItemEditTable();
+            }                
         }
-
+        private async Task RefreshItemEditTable()
+        {
+            stock = await _worker.GetStockLevelWorker();
+            await itemEditInitialLoad();
+        }
         private void btncancel_Click(object sender, EventArgs e)
         {
             this.Close();

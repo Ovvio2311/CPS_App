@@ -97,7 +97,9 @@ namespace CPS_App
             }
             ItemEdit itemEdit = new ItemEdit(stock, _dbServices, selectId, _stockWorker);
             itemEdit.MdiParent = this.MdiParent;
+            itemEdit.AutoScroll = true;
             itemEdit.Show();
+            this.Close();
         }
 
         private void dataGridViewitem_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -126,6 +128,7 @@ namespace CPS_App
             itemCreate.MdiParent = this.MdiParent;
             itemCreate.AutoScroll = true;
             itemCreate.Show();
+            this.Close();
         }
 
 

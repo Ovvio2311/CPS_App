@@ -30,300 +30,305 @@ namespace CPS_App
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.lblTitle = new Krypton.Toolkit.KryptonLabel();
-            this.kryptonPaletteheader = new Krypton.Toolkit.KryptonPalette(this.components);
-            this.lblStaff = new Krypton.Toolkit.KryptonLabel();
-            this.kryptonPalettelbl = new Krypton.Toolkit.KryptonPalette(this.components);
-            this.lblLoc = new Krypton.Toolkit.KryptonLabel();
-            this.label4 = new Krypton.Toolkit.KryptonLabel();
-            this.lblQty = new Krypton.Toolkit.KryptonLabel();
-            this.lblExpDli = new Krypton.Toolkit.KryptonLabel();
-            this.txtStaff = new Krypton.Toolkit.KryptonTextBox();
-            this.kryptonPalettereadonly = new Krypton.Toolkit.KryptonPalette(this.components);
-            this.txtQty = new Krypton.Toolkit.KryptonTextBox();
-            this.btnAdd = new Krypton.Toolkit.KryptonButton();
-            this.kryptonPalettebtn = new Krypton.Toolkit.KryptonPalette(this.components);
-            this.btnSubmit = new Krypton.Toolkit.KryptonButton();
-            this.btnClear = new Krypton.Toolkit.KryptonButton();
-            this.panelInfo = new Krypton.Toolkit.KryptonPanel();
-            this.txtloc = new Krypton.Toolkit.KryptonTextBox();
-            this.dateTimePicker = new System.Windows.Forms.DateTimePicker();
-            this.panelItem = new Krypton.Toolkit.KryptonPanel();
-            this.cbxname = new Krypton.Toolkit.KryptonComboBox();
-            this.txtremark = new Krypton.Toolkit.KryptonTextBox();
-            this.lblremark = new Krypton.Toolkit.KryptonLabel();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.btncancel = new Krypton.Toolkit.KryptonButton();
-            ((System.ComponentModel.ISupportInitialize)(this.panelInfo)).BeginInit();
-            this.panelInfo.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.panelItem)).BeginInit();
-            this.panelItem.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.cbxname)).BeginInit();
-            this.SuspendLayout();
+            components = new System.ComponentModel.Container();
+            lblTitle = new KryptonLabel();
+            kryptonPaletteheader = new KryptonPalette(components);
+            lblStaff = new KryptonLabel();
+            kryptonPalettelbl = new KryptonPalette(components);
+            lblLoc = new KryptonLabel();
+            label4 = new KryptonLabel();
+            lblQty = new KryptonLabel();
+            lblExpDli = new KryptonLabel();
+            txtStaff = new KryptonTextBox();
+            kryptonPalettereadonly = new KryptonPalette(components);
+            txtQty = new KryptonTextBox();
+            btnAdd = new KryptonButton();
+            kryptonPalettebtn = new KryptonPalette(components);
+            btnSubmit = new KryptonButton();
+            btnClear = new KryptonButton();
+            panelInfo = new KryptonPanel();
+            txtloc = new KryptonTextBox();
+            dateTimePicker = new DateTimePicker();
+            panelItem = new KryptonPanel();
+            cbxname = new KryptonComboBox();
+            txtremark = new KryptonTextBox();
+            lblremark = new KryptonLabel();
+            contextMenuStrip1 = new ContextMenuStrip(components);
+            btncancel = new KryptonButton();
+            ((System.ComponentModel.ISupportInitialize)panelInfo).BeginInit();
+            panelInfo.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)panelItem).BeginInit();
+            panelItem.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)cbxname).BeginInit();
+            SuspendLayout();
             // 
             // lblTitle
             // 
-            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lblTitle.Location = new System.Drawing.Point(50, 26);
-            this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Palette = this.kryptonPaletteheader;
-            this.lblTitle.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
-            this.lblTitle.Size = new System.Drawing.Size(130, 23);
-            this.lblTitle.TabIndex = 0;
-            this.lblTitle.Values.Text = "Request Create";
+            lblTitle.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point);
+            lblTitle.Location = new Point(50, 26);
+            lblTitle.Name = "lblTitle";
+            lblTitle.Palette = kryptonPaletteheader;
+            lblTitle.PaletteMode = PaletteMode.Custom;
+            lblTitle.Size = new Size(130, 23);
+            lblTitle.TabIndex = 0;
+            lblTitle.Values.Text = "Request Create";
             // 
             // kryptonPaletteheader
             // 
-            this.kryptonPaletteheader.LabelStyles.LabelCommon.StateCommon.ShortText.Color1 = System.Drawing.Color.DarkCyan;
-            this.kryptonPaletteheader.LabelStyles.LabelCommon.StateCommon.ShortText.Font = new System.Drawing.Font("Trebuchet MS", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            kryptonPaletteheader.LabelStyles.LabelCommon.StateCommon.ShortText.Color1 = Color.DarkCyan;
+            kryptonPaletteheader.LabelStyles.LabelCommon.StateCommon.ShortText.Font = new Font("Trebuchet MS", 12F, FontStyle.Bold, GraphicsUnit.Point);
             // 
             // lblStaff
             // 
-            this.lblStaff.Location = new System.Drawing.Point(41, 44);
-            this.lblStaff.Name = "lblStaff";
-            this.lblStaff.Palette = this.kryptonPalettelbl;
-            this.lblStaff.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
-            this.lblStaff.Size = new System.Drawing.Size(63, 21);
-            this.lblStaff.TabIndex = 1;
-            this.lblStaff.Values.Text = "Staff ID";
+            lblStaff.Location = new Point(41, 44);
+            lblStaff.Name = "lblStaff";
+            lblStaff.Palette = kryptonPalettelbl;
+            lblStaff.PaletteMode = PaletteMode.Custom;
+            lblStaff.Size = new Size(63, 21);
+            lblStaff.TabIndex = 1;
+            lblStaff.Values.Text = "Staff ID";
             // 
             // kryptonPalettelbl
             // 
-            this.kryptonPalettelbl.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Microsoft YaHei", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.kryptonPalettelbl.LabelStyles.LabelCommon.StateCommon.ShortText.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            kryptonPalettelbl.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Font = new Font("Microsoft YaHei", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
+            kryptonPalettelbl.LabelStyles.LabelCommon.StateCommon.ShortText.Font = new Font("Microsoft Sans Serif", 11.25F, FontStyle.Regular, GraphicsUnit.Point);
             // 
             // lblLoc
             // 
-            this.lblLoc.Location = new System.Drawing.Point(24, 115);
-            this.lblLoc.Name = "lblLoc";
-            this.lblLoc.Palette = this.kryptonPalettelbl;
-            this.lblLoc.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
-            this.lblLoc.Size = new System.Drawing.Size(107, 21);
-            this.lblLoc.TabIndex = 2;
-            this.lblLoc.Values.Text = "Your Location";
+            lblLoc.Location = new Point(24, 115);
+            lblLoc.Name = "lblLoc";
+            lblLoc.Palette = kryptonPalettelbl;
+            lblLoc.PaletteMode = PaletteMode.Custom;
+            lblLoc.Size = new Size(107, 21);
+            lblLoc.TabIndex = 2;
+            lblLoc.Values.Text = "Your Location";
             // 
             // label4
             // 
-            this.label4.Location = new System.Drawing.Point(24, 46);
-            this.label4.Name = "label4";
-            this.label4.Palette = this.kryptonPalettelbl;
-            this.label4.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
-            this.label4.Size = new System.Drawing.Size(87, 21);
-            this.label4.TabIndex = 4;
-            this.label4.Values.Text = "Item Name";
+            label4.Location = new Point(24, 46);
+            label4.Name = "label4";
+            label4.Palette = kryptonPalettelbl;
+            label4.PaletteMode = PaletteMode.Custom;
+            label4.Size = new Size(87, 21);
+            label4.TabIndex = 4;
+            label4.Tag = "vc_item_desc";
+            label4.Values.Text = "Item Name";
             // 
             // lblQty
             // 
-            this.lblQty.Location = new System.Drawing.Point(24, 85);
-            this.lblQty.Name = "lblQty";
-            this.lblQty.Palette = this.kryptonPalettelbl;
-            this.lblQty.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
-            this.lblQty.Size = new System.Drawing.Size(69, 21);
-            this.lblQty.TabIndex = 5;
-            this.lblQty.Values.Text = "Quantity";
+            lblQty.Location = new Point(24, 85);
+            lblQty.Name = "lblQty";
+            lblQty.Palette = kryptonPalettelbl;
+            lblQty.PaletteMode = PaletteMode.Custom;
+            lblQty.Size = new Size(69, 21);
+            lblQty.TabIndex = 5;
+            lblQty.Tag = "i_item_req_qty";
+            lblQty.Values.Text = "Quantity";
             // 
             // lblExpDli
             // 
-            this.lblExpDli.Location = new System.Drawing.Point(24, 127);
-            this.lblExpDli.Name = "lblExpDli";
-            this.lblExpDli.Palette = this.kryptonPalettelbl;
-            this.lblExpDli.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
-            this.lblExpDli.Size = new System.Drawing.Size(173, 21);
-            this.lblExpDli.TabIndex = 6;
-            this.lblExpDli.Values.Text = "Expected Delivery Date";
+            lblExpDli.Location = new Point(24, 127);
+            lblExpDli.Name = "lblExpDli";
+            lblExpDli.Palette = kryptonPalettelbl;
+            lblExpDli.PaletteMode = PaletteMode.Custom;
+            lblExpDli.Size = new Size(173, 21);
+            lblExpDli.TabIndex = 6;
+            lblExpDli.Tag = "dt_exp_deli_date";
+            lblExpDli.Values.Text = "Expected Delivery Date";
             // 
             // txtStaff
             // 
-            this.txtStaff.Location = new System.Drawing.Point(133, 41);
-            this.txtStaff.Name = "txtStaff";
-            this.txtStaff.Palette = this.kryptonPalettereadonly;
-            this.txtStaff.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
-            this.txtStaff.ReadOnly = true;
-            this.txtStaff.Size = new System.Drawing.Size(121, 23);
-            this.txtStaff.TabIndex = 11;
+            txtStaff.Location = new Point(133, 41);
+            txtStaff.Name = "txtStaff";
+            txtStaff.Palette = kryptonPalettereadonly;
+            txtStaff.PaletteMode = PaletteMode.Custom;
+            txtStaff.ReadOnly = true;
+            txtStaff.Size = new Size(121, 23);
+            txtStaff.TabIndex = 11;
             // 
             // kryptonPalettereadonly
             // 
-            this.kryptonPalettereadonly.Common.StateCommon.Back.Color1 = System.Drawing.SystemColors.Control;
-            this.kryptonPalettereadonly.Common.StateCommon.Back.Color2 = System.Drawing.SystemColors.Control;
+            kryptonPalettereadonly.Common.StateCommon.Back.Color1 = SystemColors.Control;
+            kryptonPalettereadonly.Common.StateCommon.Back.Color2 = SystemColors.Control;
             // 
             // txtQty
             // 
-            this.txtQty.Location = new System.Drawing.Point(201, 85);
-            this.txtQty.Name = "txtQty";
-            this.txtQty.Size = new System.Drawing.Size(200, 23);
-            this.txtQty.TabIndex = 14;
-            this.txtQty.Validating += new System.ComponentModel.CancelEventHandler(this.requiredFieldCheck);
+            txtQty.Location = new Point(201, 85);
+            txtQty.Name = "txtQty";
+            txtQty.Size = new Size(200, 23);
+            txtQty.TabIndex = 14;
+            txtQty.Tag = "i_item_req_qty";
+            txtQty.Validating += requiredFieldCheck;
             // 
             // btnAdd
             // 
-            this.btnAdd.CornerRoundingRadius = -1F;
-            this.btnAdd.Location = new System.Drawing.Point(584, 383);
-            this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Palette = this.kryptonPalettebtn;
-            this.btnAdd.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
-            this.btnAdd.Size = new System.Drawing.Size(97, 39);
-            this.btnAdd.TabIndex = 21;
-            this.btnAdd.Values.Text = "Add Item";
-            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
+            btnAdd.CornerRoundingRadius = -1F;
+            btnAdd.Location = new Point(584, 383);
+            btnAdd.Name = "btnAdd";
+            btnAdd.Palette = kryptonPalettebtn;
+            btnAdd.PaletteMode = PaletteMode.Custom;
+            btnAdd.Size = new Size(97, 39);
+            btnAdd.TabIndex = 21;
+            btnAdd.Values.Text = "Add Item";
+            btnAdd.Click += btnAdd_Click;
             // 
             // kryptonPalettebtn
             // 
-            this.kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Border.Color1 = System.Drawing.Color.Transparent;
-            this.kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Border.DrawBorders = ((Krypton.Toolkit.PaletteDrawBorders)((((Krypton.Toolkit.PaletteDrawBorders.Top | Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Border.Rounding = 5F;
-            this.kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Color1 = System.Drawing.Color.SteelBlue;
-            this.kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Microsoft Tai Le", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Hint = Krypton.Toolkit.PaletteTextHint.SystemDefault;
+            kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Border.Color1 = Color.Transparent;
+            kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Border.DrawBorders = PaletteDrawBorders.Top | PaletteDrawBorders.Bottom | PaletteDrawBorders.Left | PaletteDrawBorders.Right;
+            kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Border.Rounding = 5F;
+            kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Color1 = Color.SteelBlue;
+            kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Font = new Font("Microsoft Tai Le", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
+            kryptonPalettebtn.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Hint = PaletteTextHint.SystemDefault;
             // 
             // btnSubmit
             // 
-            this.btnSubmit.CornerRoundingRadius = -1F;
-            this.btnSubmit.Location = new System.Drawing.Point(729, 383);
-            this.btnSubmit.Name = "btnSubmit";
-            this.btnSubmit.Palette = this.kryptonPalettebtn;
-            this.btnSubmit.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
-            this.btnSubmit.Size = new System.Drawing.Size(102, 39);
-            this.btnSubmit.TabIndex = 22;
-            this.btnSubmit.Values.Text = "Submit";
-            this.btnSubmit.Click += new System.EventHandler(this.btnSubmit_Click);
+            btnSubmit.CornerRoundingRadius = -1F;
+            btnSubmit.Location = new Point(729, 383);
+            btnSubmit.Name = "btnSubmit";
+            btnSubmit.Palette = kryptonPalettebtn;
+            btnSubmit.PaletteMode = PaletteMode.Custom;
+            btnSubmit.Size = new Size(102, 39);
+            btnSubmit.TabIndex = 22;
+            btnSubmit.Values.Text = "Submit";
+            btnSubmit.Click += btnSubmit_Click;
             // 
             // btnClear
             // 
-            this.btnClear.CornerRoundingRadius = -1F;
-            this.btnClear.Location = new System.Drawing.Point(276, 383);
-            this.btnClear.Name = "btnClear";
-            this.btnClear.Palette = this.kryptonPalettebtn;
-            this.btnClear.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
-            this.btnClear.Size = new System.Drawing.Size(102, 39);
-            this.btnClear.TabIndex = 23;
-            this.btnClear.Values.Text = "Clear";
-            this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
+            btnClear.CornerRoundingRadius = -1F;
+            btnClear.Location = new Point(276, 383);
+            btnClear.Name = "btnClear";
+            btnClear.Palette = kryptonPalettebtn;
+            btnClear.PaletteMode = PaletteMode.Custom;
+            btnClear.Size = new Size(102, 39);
+            btnClear.TabIndex = 23;
+            btnClear.Values.Text = "Clear";
+            btnClear.Click += btnClear_Click;
             // 
             // panelInfo
             // 
-            this.panelInfo.Controls.Add(this.txtloc);
-            this.panelInfo.Controls.Add(this.lblStaff);
-            this.panelInfo.Controls.Add(this.txtStaff);
-            this.panelInfo.Controls.Add(this.lblLoc);
-            this.panelInfo.Location = new System.Drawing.Point(26, 80);
-            this.panelInfo.Name = "panelInfo";
-            this.panelInfo.Size = new System.Drawing.Size(352, 232);
-            this.panelInfo.StateCommon.Color1 = System.Drawing.Color.Transparent;
-            this.panelInfo.StateCommon.Color2 = System.Drawing.Color.Transparent;
-            this.panelInfo.TabIndex = 24;
+            panelInfo.Controls.Add(txtloc);
+            panelInfo.Controls.Add(lblStaff);
+            panelInfo.Controls.Add(txtStaff);
+            panelInfo.Controls.Add(lblLoc);
+            panelInfo.Location = new Point(26, 80);
+            panelInfo.Name = "panelInfo";
+            panelInfo.Size = new Size(352, 232);
+            panelInfo.StateCommon.Color1 = Color.Transparent;
+            panelInfo.StateCommon.Color2 = Color.Transparent;
+            panelInfo.TabIndex = 24;
             // 
             // txtloc
             // 
-            this.txtloc.Location = new System.Drawing.Point(135, 114);
-            this.txtloc.Name = "txtloc";
-            this.txtloc.Palette = this.kryptonPalettereadonly;
-            this.txtloc.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
-            this.txtloc.ReadOnly = true;
-            this.txtloc.Size = new System.Drawing.Size(119, 23);
-            this.txtloc.TabIndex = 12;
+            txtloc.Location = new Point(135, 114);
+            txtloc.Name = "txtloc";
+            txtloc.Palette = kryptonPalettereadonly;
+            txtloc.PaletteMode = PaletteMode.Custom;
+            txtloc.ReadOnly = true;
+            txtloc.Size = new Size(119, 23);
+            txtloc.TabIndex = 12;
             // 
             // dateTimePicker
             // 
-            this.dateTimePicker.Location = new System.Drawing.Point(201, 127);
-            this.dateTimePicker.Name = "dateTimePicker";
-            this.dateTimePicker.Size = new System.Drawing.Size(200, 23);
-            this.dateTimePicker.TabIndex = 12;
-            this.dateTimePicker.Validating += new System.ComponentModel.CancelEventHandler(this.requiredFieldCheck);
+            dateTimePicker.Location = new Point(201, 127);
+            dateTimePicker.Name = "dateTimePicker";
+            dateTimePicker.Size = new Size(200, 23);
+            dateTimePicker.TabIndex = 12;
+            dateTimePicker.Tag = "dt_exp_deli_date";
+            dateTimePicker.Validating += requiredFieldCheck;
             // 
             // panelItem
             // 
-            this.panelItem.Controls.Add(this.cbxname);
-            this.panelItem.Controls.Add(this.dateTimePicker);
-            this.panelItem.Controls.Add(this.lblExpDli);
-            this.panelItem.Controls.Add(this.txtremark);
-            this.panelItem.Controls.Add(this.lblremark);
-            this.panelItem.Controls.Add(this.txtQty);
-            this.panelItem.Controls.Add(this.lblQty);
-            this.panelItem.Controls.Add(this.label4);
-            this.panelItem.Location = new System.Drawing.Point(430, 80);
-            this.panelItem.Name = "panelItem";
-            this.panelItem.Size = new System.Drawing.Size(432, 278);
-            this.panelItem.StateCommon.Color1 = System.Drawing.Color.Transparent;
-            this.panelItem.StateCommon.Color2 = System.Drawing.Color.Transparent;
-            this.panelItem.TabIndex = 25;
+            panelItem.Controls.Add(cbxname);
+            panelItem.Controls.Add(dateTimePicker);
+            panelItem.Controls.Add(lblExpDli);
+            panelItem.Controls.Add(txtremark);
+            panelItem.Controls.Add(lblremark);
+            panelItem.Controls.Add(txtQty);
+            panelItem.Controls.Add(lblQty);
+            panelItem.Controls.Add(label4);
+            panelItem.Location = new Point(430, 80);
+            panelItem.Name = "panelItem";
+            panelItem.Size = new Size(432, 278);
+            panelItem.StateCommon.Color1 = Color.Transparent;
+            panelItem.StateCommon.Color2 = Color.Transparent;
+            panelItem.TabIndex = 25;
             // 
             // cbxname
             // 
-            this.cbxname.CornerRoundingRadius = -1F;
-            this.cbxname.DropDownWidth = 200;
-            this.cbxname.IntegralHeight = false;
-            this.cbxname.Location = new System.Drawing.Point(201, 41);
-            this.cbxname.Name = "cbxname";
-            this.cbxname.Size = new System.Drawing.Size(200, 21);
-            this.cbxname.StateCommon.ComboBox.Content.TextH = Krypton.Toolkit.PaletteRelativeAlign.Near;
-            this.cbxname.TabIndex = 19;
-            this.cbxname.Validating += new System.ComponentModel.CancelEventHandler(this.requiredFieldCheck);
+            cbxname.CornerRoundingRadius = -1F;
+            cbxname.DropDownWidth = 200;
+            cbxname.IntegralHeight = false;
+            cbxname.Location = new Point(201, 41);
+            cbxname.Name = "cbxname";
+            cbxname.Size = new Size(200, 21);
+            cbxname.StateCommon.ComboBox.Content.TextH = PaletteRelativeAlign.Near;
+            cbxname.TabIndex = 19;
+            cbxname.Tag = "vc_item_desc";
+            cbxname.Validating += requiredFieldCheck;
             // 
             // txtremark
             // 
-            this.txtremark.Location = new System.Drawing.Point(201, 170);
-            this.txtremark.Name = "txtremark";
-            this.txtremark.Size = new System.Drawing.Size(200, 23);
-            this.txtremark.TabIndex = 18;
-            this.txtremark.Validating += new System.ComponentModel.CancelEventHandler(this.requiredFieldCheck);
+            txtremark.Location = new Point(201, 173);
+            txtremark.Name = "txtremark";
+            txtremark.Size = new Size(200, 23);
+            txtremark.TabIndex = 18;
+            txtremark.Tag = "vc_remark";
+            txtremark.Validating += requiredFieldCheck;
             // 
             // lblremark
             // 
-            this.lblremark.Location = new System.Drawing.Point(24, 173);
-            this.lblremark.Name = "lblremark";
-            this.lblremark.Palette = this.kryptonPalettelbl;
-            this.lblremark.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
-            this.lblremark.Size = new System.Drawing.Size(66, 21);
-            this.lblremark.TabIndex = 17;
-            this.lblremark.Values.Text = "Remark";
+            lblremark.Location = new Point(24, 173);
+            lblremark.Name = "lblremark";
+            lblremark.Palette = kryptonPalettelbl;
+            lblremark.PaletteMode = PaletteMode.Custom;
+            lblremark.Size = new Size(66, 21);
+            lblremark.TabIndex = 17;
+            lblremark.Tag = "vc_remark";
+            lblremark.Values.Text = "Remark";
             // 
             // contextMenuStrip1
             // 
-            this.contextMenuStrip1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
+            contextMenuStrip1.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            contextMenuStrip1.Name = "contextMenuStrip1";
+            contextMenuStrip1.Size = new Size(61, 4);
             // 
             // btncancel
             // 
-            this.btncancel.CornerRoundingRadius = -1F;
-            this.btncancel.Location = new System.Drawing.Point(430, 383);
-            this.btncancel.Name = "btncancel";
-            this.btncancel.Palette = this.kryptonPalettebtn;
-            this.btncancel.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
-            this.btncancel.Size = new System.Drawing.Size(102, 39);
-            this.btncancel.TabIndex = 26;
-            this.btncancel.Values.Text = "Cancel";
-            this.btncancel.Click += new System.EventHandler(this.btncancel_Click);
+            btncancel.CornerRoundingRadius = -1F;
+            btncancel.Location = new Point(430, 383);
+            btncancel.Name = "btncancel";
+            btncancel.Palette = kryptonPalettebtn;
+            btncancel.PaletteMode = PaletteMode.Custom;
+            btncancel.Size = new Size(102, 39);
+            btncancel.TabIndex = 26;
+            btncancel.Values.Text = "Cancel";
+            btncancel.Click += btncancel_Click;
             // 
             // RequestCreate
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(898, 571);
-            this.Controls.Add(this.btncancel);
-            this.Controls.Add(this.panelItem);
-            this.Controls.Add(this.btnClear);
-            this.Controls.Add(this.btnSubmit);
-            this.Controls.Add(this.btnAdd);
-            this.Controls.Add(this.lblTitle);
-            this.Controls.Add(this.panelInfo);
-            this.Name = "RequestCreate";
-            this.Text = "RequestCreate";
-            this.Load += new System.EventHandler(this.RequestCreate_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.panelInfo)).EndInit();
-            this.panelInfo.ResumeLayout(false);
-            this.panelInfo.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.panelItem)).EndInit();
-            this.panelItem.ResumeLayout(false);
-            this.panelItem.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.cbxname)).EndInit();
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(898, 571);
+            Controls.Add(btncancel);
+            Controls.Add(panelItem);
+            Controls.Add(btnClear);
+            Controls.Add(btnSubmit);
+            Controls.Add(btnAdd);
+            Controls.Add(lblTitle);
+            Controls.Add(panelInfo);
+            Name = "RequestCreate";
+            Text = "RequestCreate";
+            Load += RequestCreate_Load;
+            ((System.ComponentModel.ISupportInitialize)panelInfo).EndInit();
+            panelInfo.ResumeLayout(false);
+            panelInfo.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)panelItem).EndInit();
+            panelItem.ResumeLayout(false);
+            panelItem.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)cbxname).EndInit();
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion

@@ -270,6 +270,8 @@ namespace CPS_App.Models
             public int bi_item_vid { get; set; }
             [Display(Name = "Item Id")]
             public int bi_item_id { get; set; }
+            [Display(Name = "Item Name")]
+            public string vc_item_desc { get; set; }
             [Display(Name = "Request Quantity")]
             public int i_item_req_qty { get; set; }
             [Display(Name = "Remain Quanity")]
@@ -285,7 +287,7 @@ namespace CPS_App.Models
             [Display(Name = "Remark")]
             public string vc_remark { get; set; }
             [Display(Name = "Expected Delievery Date")]
-            public DateTime dt_exp_deli_date { get; set; }
+            public string dt_exp_deli_date { get; set; }
         }
 
         //req view

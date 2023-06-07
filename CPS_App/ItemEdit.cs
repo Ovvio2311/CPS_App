@@ -80,7 +80,7 @@ namespace CPS_App
             }
             var updateObj = new updateObj();
             updateObj.table = "tb_item_unit";
-            updateObj.updater.Add(nameof(reit.i_item_qty), txtqty.ToString());
+            updateObj.updater.Add(nameof(reit.i_item_qty), txtqty.Text.ToString());
             updateObj.selecter.Add(nameof(reit.bi_item_id), reit.bi_item_id.ToString());
             updateObj.selecter.Add(nameof(reit.bi_location_id), reit.bi_location_id.ToString());
             var res = await _dbServices.UpdateAsync(updateObj);

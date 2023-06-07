@@ -1,6 +1,8 @@
 ﻿using Krypton.Toolkit;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Newtonsoft.Json;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -19,13 +21,13 @@ namespace CPS_App.Services
 {
     public class GenUtil
     {
-        
+
         public static dynamic ConvertObjtoType<T>(object obj)
         {
             if (typeof(T) == typeof(DateTime)) { return DateTime.Parse(obj.ToString()); }
             if (typeof(T) == typeof(string)) { return Convert.ToString(obj); }
             if (typeof(T) == typeof(long)) { return long.TryParse(obj.ToString(), out long number) ? Convert.ToInt64(obj) : obj; }
-            if (typeof(T) == typeof(int)) { return int.TryParse(obj.ToString(),out int number)? Convert.ToInt32(obj):obj; }
+            if (typeof(T) == typeof(int)) { return int.TryParse(obj.ToString(), out int number) ? Convert.ToInt32(obj) : obj; }
             if (typeof(T) == typeof(double)) { return double.TryParse(obj.ToString(), out double number) ? Convert.ToDouble(obj) : obj; }
             if (typeof(T) == typeof(decimal)) { return decimal.TryParse(obj.ToString(), out decimal number) ? Convert.ToDecimal(obj) : obj; }
             return null;
@@ -87,8 +89,8 @@ namespace CPS_App.Services
                          $" where {req} = {req}";
         }
 
-        public static void dataGridAttrName<T>(KryptonDataGridView grid, List<string> invisibleList=null)
-        {            
+        public static void dataGridAttrName<T>(KryptonDataGridView grid, List<string> invisibleList = null)
+        {
             grid.Columns.ToDynamicList().ForEach(col =>
             {
                 DataGridViewColumn column = col;
@@ -98,7 +100,7 @@ namespace CPS_App.Services
                 .Where(x => col.HeaderText == x.Name)
                 .Select(x => x.GetCustomAttribute<DisplayAttribute>())
                 .Where(x => x != null).Select(x => x.Name.ToString()).FirstOrDefault();
-                if(invisibleList != null)
+                if (invisibleList != null)
                 {
                     foreach (var header in invisibleList)
                     {
@@ -107,9 +109,87 @@ namespace CPS_App.Services
                             column.Visible = false;
                         }
                     }
-                }                
+                }
             });
         }
-        
+        public static async Task<bool> ConfirmListAttach(Form form)
+        {
+            var confirmObj = new Dictionary<string, string>();
+            form.Controls.OfType<KryptonLabel>().ToList().ForEach(x =>
+            {
+                form.Controls.OfType<KryptonTextBox>().ToList().ForEach(p =>
+                {
+                    if (p.ReadOnly == false)
+                    {
+                        if (p.Tag != null && x.Tag != null &&
+                        p.Tag.ToString() == x.Tag.ToString())
+                        {
+                            confirmObj.Add(x.Text, p.Text);
+                        }
+                    }
+                });
+                form.Controls.OfType<KryptonComboBox>().ToList().ForEach(c =>
+                {
+                    if (c.Tag != null && x.Tag != null &&
+                    c.Tag.ToString() == x.Tag.ToString())
+                    {
+                        confirmObj.Add(x.Text, c.SelectedItem.ToString());
+                    }
+                });
+                form.Controls.OfType<DateTimePicker>().ToList().ForEach(d =>
+                {
+                    if (d.Tag != null && x.Tag != null &&
+                    d.Tag.ToString() == x.Tag.ToString())
+                    {
+                        confirmObj.Add(x.Text, d.Value.ToString());
+                    }
+                });
+
+            });
+            string confirmStr = string.Join(Environment.NewLine, confirmObj.Select(x => $"{x.Key} = {x.Value}").ToList());
+
+            DialogResult response = MessageBox.Show(confirmStr, "Confirm", MessageBoxButtons.YesNo);
+            return response == DialogResult.Yes ? true : false;
+        }
+        public static async Task<bool> ConfirmListAttach<T>(Panel form, List<T> obj)
+        {
+            List<Dictionary<string, string>> confirmObj = new List<Dictionary<string, string>>();
+
+            foreach (var item in obj)
+            {
+                Dictionary<string, string> temp = new Dictionary<string, string>();
+                form.Controls.OfType<KryptonLabel>().ToList().ForEach(x =>
+                {
+                    if (item != null)
+                    {
+                        item.GetType().GetProperties().ToList().ForEach(p =>
+                        {
+                            if (x.Tag != null && p.Name == x.Tag.ToString())
+                            {
+                                if (p.GetValue(item).ToString() != null && p.GetValue(item) != "")
+                                {
+                                    temp.Add(x.Text, p.GetValue(item).ToString());
+                                }
+
+                            }
+                        });
+                    }
+
+                });
+                confirmObj.Add(temp);
+            }
+
+            string confirmStr = string.Empty;
+            confirmObj.ForEach(x =>
+            {
+                x.ToList().ForEach(x =>
+                {                    
+                    confirmStr += string.Join(Environment.NewLine, $"{x.Key} = {x.Value}\n");
+                });
+            });
+
+            DialogResult response = MessageBox.Show(confirmStr, "Confirm", MessageBoxButtons.YesNo);
+            return response == DialogResult.Yes ? true : false;
+        }
     }
 }

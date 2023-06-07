@@ -67,6 +67,24 @@ namespace CPS_App
 
         private async void btnAdd_Click(object sender, EventArgs e)
         {
+            //dynamic request = new
+            //{
+            //    name = cbxname.SelectedItem,
+            //    quantity = txtQty.Text,
+
+            //};
+            //Validator validator = new Validator();
+            //validator.make(request,
+            //new
+            //{
+            //    name /*key*/= "required" /*fieldRule*/,
+            //    quantity = "int",
+
+            //});
+            //if (!validator.passes())
+            //{
+            //    MessageBox.Show(GenUtil.ArrayToString(validator.errors()), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //}
             if (cbxname.SelectedItem == null || !int.TryParse(txtQty.Text, out var b) || dateTimePicker.Value <= DateTime.Now)
             {
                 //_logger.LogDebug("Please Enter Correct Format");
@@ -75,13 +93,14 @@ namespace CPS_App
             }
             var itemId = cbxname.SelectedItem;
             if (itemId != null) { itemId = itemId.ToString().Split(":").ElementAt(0); }
-
+            var itemName = cbxname.SelectedItem.ToString().Split(":").ElementAt(1);
             var item = new RequestionCreationItem
             {
                 bi_item_id = GenUtil.ConvertObjtoType<int>(itemId),
+                vc_item_desc = itemName,
                 i_item_req_qty = GenUtil.ConvertObjtoType<int>(txtQty.Text),
                 vc_remark = txtremark.Text,
-                dt_exp_deli_date = dateTimePicker.Value,
+                dt_exp_deli_date = dateTimePicker.Value.ToString(),
 
             };
             var selectObj = new selectObj();
@@ -95,7 +114,7 @@ namespace CPS_App
             {
                 if (req.items.Count > 0 && req.items.Select(x => x.bi_item_id == item.bi_item_id).FirstOrDefault())
                 {
-                    MessageBox.Show("Duplicated ID");
+                    MessageBox.Show("Duplicated Item Id");
                 }
                 else
                 {
@@ -110,45 +129,27 @@ namespace CPS_App
             txtremark.Clear();
             txtQty.Clear();
             cbxname.SelectedIndex = 0;
-
+            ValidationCheck();
         }
-        //private void requiredFieldCheck(object sender, EventArgs e)
-        //{
-        //    if (req.items.Count > 0)
-        //    {
-        //        enableValidation();
-        //        //MessageBox.Show($"confirm Submit with {req.items.Count} item?");
-        //        return;
-        //    }
-        //    var datepick = dateTimePicker.Value;
-        //    var id = cbxname.SelectedItem;
-        //    if (id != null) { id = id.ToString().Split(":").ElementAt(0); }
-        //    var avaliableItemBox = panelItem.Controls.OfType<KryptonTextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
-        //    var availableTxtBox = panelInfo.Controls.OfType<KryptonTextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
-        //    if (availableTxtBox != 2 || avaliableItemBox != 2 || datepick < DateTime.Now || id == null)
-        //    {
 
-        //        disableValidation();
-        //    }
-        //    else
-        //    {
-        //        enableValidation();
-        //    }
-        //}
 
         private async void btnSubmit_Click(object sender, EventArgs e)
         {
-            req.i_staff_id = GenUtil.ConvertObjtoType<int>(txtStaff.Text);
-            //var res = await _dbServices.GetLocationDesc<string>(cbxLoc.SelectedItem.ToString());
-            //tb_location re = JsonConvert.DeserializeObject<tb_location>(JsonConvert.SerializeObject(res.result));
-            //req.bi_location_id = re.bi_location_id;
-
-            if (!await CreateRequestAsync(req))
+            if (await GenUtil.ConfirmListAttach<RequestionCreationItem>(panelItem, req.items))
             {
-                MessageBox.Show("Request creation error\nPlease create again");
-            };
-            req.items.Clear();
-            disableValidation();
+                req.i_staff_id = GenUtil.ConvertObjtoType<int>(txtStaff.Text);
+                //var res = await _dbServices.GetLocationDesc<string>(cbxLoc.SelectedItem.ToString());
+                //tb_location re = JsonConvert.DeserializeObject<tb_location>(JsonConvert.SerializeObject(res.result));
+                //req.bi_location_id = re.bi_location_id;
+
+                if (!await CreateRequestAsync(req))
+                {
+                    MessageBox.Show("Request creation error\nPlease create again");
+                };
+                req.items.Clear();
+                disableValidation();
+            }
+
         }
         private async Task<bool> CreateRequestAsync(RequestCreationReq req)
         {
@@ -224,7 +225,7 @@ namespace CPS_App
                         {nameof(row.i_map_stat_id), "1" },
                         {nameof(row.bi_po_status_id), "1" },
                         {nameof(row.vc_remark),row.vc_remark != ""? row.vc_remark:null},
-                        {nameof(row.dt_exp_deli_date),row.dt_exp_deli_date.ToString("yyyy-MM-ddTHH:mm:ss")}
+                        {nameof(row.dt_exp_deli_date),row.dt_exp_deli_date.ToString()}
                     };
 
                     var res2 = await _dbServices.InsertAsync(tb_detail);
@@ -244,10 +245,17 @@ namespace CPS_App
             MessageBox.Show($"Your Request has been created!\nRequest Id: {res1.result}");
             return true;
         }
-       
+
 
         private void requiredFieldCheck(object sender, System.ComponentModel.CancelEventArgs e)
         {
+
+            ValidationCheck();
+
+        }
+        private void ValidationCheck()
+        {
+
             if (req.items.Count > 0)
             {
                 enableValidation();
@@ -269,7 +277,6 @@ namespace CPS_App
                 enableValidation();
             }
         }
-
         private void btncancel_Click(object sender, EventArgs e)
         {
             this.Close();

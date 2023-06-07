@@ -51,36 +51,26 @@ namespace CPS_App
                 btnAdd.Hide();
                 btnEdit.Hide();
             }
+            lblitem.Hide();
             //var userRole = userIden.Claims.FirstOrDefault(x => x.Type == "role").Value.ToString();
             string userLoc = null;
             userLoc = userIden.Claims.FirstOrDefault(x => x.Type == "location_id").Value.ToString();
 
-            await GetSearchWords(userIden);
-
-            lblitem.Hide();
-
-            await LoadViewTable(userLoc);
-            //await _searchFunc.insertJsonString();
-            //defPage = await _requestMapp.RequestMappingObjGetter(userLoc);
-
-            //var observableItems = new ObservableCollection<RequestMappingReqObj>(defPage);
-            //BindingList<RequestMappingReqObj> source = observableItems.ToBindingList();
-
-            //if (defPage != null)
-            //    datagridview.DataSource = source;
-
-            //GenUtil.dataGridAttrName<RequestMappingReqObj>(datagridview, new List<string>() { "not_shown" });
+            await GetSearchWords(userIden);           
+            await LoadViewTable(userLoc);         
 
         }
         private async Task LoadViewTable(string loc, searchObj obj = null)
         {
-
+            lblnoresult.Hide();
             datagridview.DataSource = null;
             defPage = await _requestMapp.RequestMappingObjGetter(loc, obj);
             if (defPage == null)
             {
                 datagridview.Columns.Clear();
                 lblnoresult.Show();
+                btnAdd.Hide();
+                btnEdit.Hide();
                 return;
             }
             var observableItems = new ObservableCollection<RequestMappingReqObj>(defPage);
@@ -143,6 +133,8 @@ namespace CPS_App
 
         private async void btnsearch_Click(object sender, EventArgs e)
         {
+            btnAdd.Hide();
+            btnEdit.Hide();
             if (cbxsearch1.SelectedItem == cbxsearch2.SelectedItem && txtsearch1.Text != "" && txtsearch2.Text != "")
             {
                 MessageBox.Show("Duplicate Search criteria");
@@ -152,10 +144,7 @@ namespace CPS_App
             lblitem.Hide();
             datagridviewitem.DataSource = null;
             string userLoc = userIden.Claims.FirstOrDefault(x => x.Type == "location_id").Value.ToString();
-
-
-            //var search1key = searchWords.FirstOrDefault(x => x.Key == cbxsearch1.SelectedItem.ToString()).Value;
-            var search2key = searchWords.FirstOrDefault(x => x.Key == cbxsearch2.SelectedItem.ToString()).Value;
+            
             if (txtsearch1.Text == string.Empty && txtsearch2.Text == string.Empty)
             {
                 await LoadViewTable(userLoc);
@@ -190,11 +179,7 @@ namespace CPS_App
                 return;
             }
             Dictionary<string, string> words = JsonConvert.DeserializeObject<Dictionary<string, string>>(searchString.ElementAt(0).js_search_para);
-            //words.ForEach(x =>
-            //{
-            //    cbxsearch1.Items.Add(x);
-            //    cbxsearch2.Items.Add(x);
-            //});
+        
             searchWords = words;
             cbxsearch1.DataSource = words.Keys.ToList();
             cbxsearch2.DataSource = words.Keys.ToList();

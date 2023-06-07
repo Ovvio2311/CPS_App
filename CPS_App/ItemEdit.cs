@@ -17,37 +17,55 @@ namespace CPS_App
     {
         public int selectId;
         public List<StockLevelViewObj> stock;
-        public BindingList<StockLevelViewObj> stockList;
+        public BindingList<StockLevelSubItem> stockList;
         private DbServices _dbServices;
-        public ItemEdit(List<StockLevelViewObj> obj, DbServices dbServices, int selectId)
+        private StockLevelWorker _worker;
+        public ItemEdit(List<StockLevelViewObj> obj, DbServices dbServices, int selectId, StockLevelWorker worker)
         {
             InitializeComponent();
             stock = obj;
             _dbServices = dbServices;
             this.selectId = selectId;
-            stockList = new BindingList<StockLevelViewObj>();
+            stockList = new BindingList<StockLevelSubItem>();
+            _worker = worker;
         }
 
-        private void ItemEdit_Load(object sender, EventArgs e)
+        private async void ItemEdit_Load(object sender, EventArgs e)
         {
             if (stock == null)
             {
                 MessageBox.Show("error");
                 return;
             }
-            List<StockLevelViewObj> selectItems = stock.Where(x => x.bi_item_id == selectId)
-                .Select(x => x).ToList();
+            await itemEditInitialLoad();
+            //List<StockLevelViewObj> selectItems = stock.Where(x => x.bi_item_id == selectId)
+            //    .Select(x => x).ToList();
 
-            var observableItems = new ObservableCollection<StockLevelViewObj>(selectItems);
-            stockList = observableItems.ToBindingList();
-            dataGridViewitem.DataSource = stockList;
+            //var observableItems = new ObservableCollection<StockLevelViewObj>(selectItems);
+            //stockList = observableItems.ToBindingList();
+            //dataGridViewitem.DataSource = stockList;
 
 
-            GenUtil.dataGridAttrName<StockLevelViewObj>(dataGridViewitem, new List<string>() { "not_shown" });
+            //GenUtil.dataGridAttrName<StockLevelViewObj>(dataGridViewitem, new List<string>() { "not_shown" });
 
         }
+        private async Task itemEditInitialLoad()
+        {
+            StockLevelViewObj edititems = stock.ToList().Where(x => x.bi_item_id == selectId).FirstOrDefault();
+            //txtreqid.Text = edititems.bi_req_id.ToString();
+            //txtstaName.Text = GenUtil.ConvertObjtoType<string>(edititems.vc_staff_name);
+            //txtloc.Text = edititems.vc_location_desc.ToString();
+            //txtcrDate.Text = edititems.dt_created_date.ToString();
 
-        private void dataGridViewitem_CellClick(object sender, DataGridViewCellEventArgs e)
+            var observableItems = new ObservableCollection<StockLevelSubItem>(edititems.subitem);
+            stockList = observableItems.ToBindingList();
+            dataGridViewitem.Columns.Clear();
+            dataGridViewitem.DataSource = stockList;
+
+            //change header name and hide column
+            GenUtil.dataGridAttrName<StockLevelSubItem>(dataGridViewitem, new List<string>() { "not_shown" });
+        }
+        private async void dataGridViewitem_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.ColumnIndex < 0 || e.RowIndex < 0) return; // header clicked
 
@@ -58,38 +76,46 @@ namespace CPS_App
                 int selectid = GenUtil.ConvertObjtoType<int>(dataGridViewitem.CurrentRow.Cells["bi_location_id"].Value);
 
                 var readyToEdit = stockList.ToList().Where(x => x.bi_location_id == selectid).FirstOrDefault();
-                txtvid.Text = readyToEdit.bi_item_vid.ToString();
-                txtid.Text = readyToEdit.bi_item_id.ToString();
-                txtcat.Text = readyToEdit.vc_category_desc.ToString();
-                txtloc.Text = readyToEdit.vc_location_desc.ToString();
-                txtuom.Text = readyToEdit.vc_uom_desc.ToString();
-                txtupdate.Text = readyToEdit.dt_updated_datetime.ToString();
-                txtname.Text = readyToEdit.vc_item_desc.ToString();
-                txtqty.Text = readyToEdit.i_item_qty.ToString();
+                await GenUtil.AutoLabelAdding<StockLevelSubItem>(this, readyToEdit);
+                StockLevelViewObj edititems = stock.ToList().Where(x => x.bi_item_id == selectId).FirstOrDefault();
+                await GenUtil.AutoLabelAdding<StockLevelViewObj>(this, edititems);
+                //txtvid.Text = readyToEdit.bi_item_vid.ToString();
+                //txtid.Text = readyToEdit.bi_item_id.ToString();
+                //txtcat.Text = readyToEdit.vc_category_desc.ToString();
+                //txtloc.Text = readyToEdit.vc_location_desc.ToString();
+                //txtuom.Text = readyToEdit.vc_uom_desc.ToString();
+                //txtupdate.Text = readyToEdit.dt_updated_datetime.ToString();
+                //txtname.Text = readyToEdit.vc_item_desc.ToString();
+                //txtqty.Text = readyToEdit.i_item_qty.ToString();
             }
         }
 
         private async void btnmod_Click(object sender, EventArgs e)
         {
-            var reit = stock.ToList().ElementAt(dataGridViewitem.CurrentRow.Index);
-
+            //var reit = stock.ToList().ElementAt(dataGridViewitem.CurrentRow.Index);
+            int selectdId = GenUtil.ConvertObjtoType<int>(dataGridViewitem.CurrentRow.Cells["bi_item_id"].Value);
+            StockLevelSubItem readyToEdit = stockList.Where(x => x.bi_item_id == selectdId).FirstOrDefault();
             if (txtqty.Text.Equals(string.Empty))
             {
                 MessageBox.Show("Please enter qty");
                 return;
             }
-            var updateObj = new updateObj();
-            updateObj.table = "tb_item_unit";
-            updateObj.updater.Add(nameof(reit.i_item_qty), txtqty.Text.ToString());
-            updateObj.selecter.Add(nameof(reit.bi_item_id), reit.bi_item_id.ToString());
-            updateObj.selecter.Add(nameof(reit.bi_location_id), reit.bi_location_id.ToString());
-            var res = await _dbServices.UpdateAsync(updateObj);
-            if (res.resCode != 1)
+            if (await GenUtil.ConfirmListAttach(this))
             {
-                MessageBox.Show("error");
-                return;
+                var updateObj = new updateObj();
+                updateObj.table = "tb_item_unit";
+                updateObj.updater.Add(nameof(readyToEdit.i_item_qty), txtqty.Text.ToString());
+                updateObj.selecter.Add(nameof(readyToEdit.bi_item_id), readyToEdit.bi_item_id.ToString());
+                updateObj.selecter.Add(nameof(readyToEdit.bi_location_id), readyToEdit.bi_location_id.ToString());
+                var res = await _dbServices.UpdateAsync(updateObj);
+                if (res.resCode != 1)
+                {
+                    MessageBox.Show("error");
+                    return;
+                }
+                MessageBox.Show("Item updated");
             }
-            MessageBox.Show("Item updated");
+                
         }
 
         private void btncancel_Click(object sender, EventArgs e)

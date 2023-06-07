@@ -89,7 +89,7 @@ namespace CPS_App
             {
                 int selectdId = GenUtil.ConvertObjtoType<int>(datagridviewitem.CurrentRow.Cells["bi_item_id"].Value);
                 ItemRequest readyToEdit = itemsReq.Where(x => x.bi_item_id == selectdId).FirstOrDefault();
-                await AutoLabelAdding<ItemRequest>(readyToEdit);
+                await GenUtil.AutoLabelAdding<ItemRequest>(this, readyToEdit);
                 //txtvid.Text = readyToEdit.bi_item_vid.ToString();
                 //txtrs.Text = GenUtil.ConvertObjtoType<string>(readyToEdit.vc_po_status_desc);
                 //txtremain.Text = readyToEdit.i_remain_req_qty.ToString();
@@ -100,20 +100,7 @@ namespace CPS_App
                 //txtreqst.Text = GenUtil.ConvertObjtoType<string>(readyToEdit.item_mapping_status);
             }
         }
-        private async Task AutoLabelAdding<T>(T obj)
-        {
-            obj.GetType().GetProperties().ToList().ForEach(x =>
-            {
-                this.Controls.OfType<KryptonTextBox>().ToList().ForEach(p =>
-                {
-
-                    if (p.Tag != null && p.Tag.ToString() == x.Name)
-                    {
-                        p.Text = GenUtil.ConvertObjtoType<string>(x.GetValue(obj, null));
-                    }
-                });
-            });
-        }
+    
         private void btndel_Click(object sender, EventArgs e)
         {
             //del item button

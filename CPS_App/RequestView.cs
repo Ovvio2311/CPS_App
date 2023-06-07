@@ -40,7 +40,7 @@ namespace CPS_App
                 //throw new Exception("user claim is null");
             }
 
-            
+
             if (await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "request", "update" } }))
             {
                 btnAdd.Hide();
@@ -56,8 +56,8 @@ namespace CPS_App
             string userLoc = null;
             userLoc = userIden.Claims.FirstOrDefault(x => x.Type == "location_id").Value.ToString();
 
-            await GetSearchWords(userIden);           
-            await LoadViewTable(userLoc);         
+            await GetSearchWords(userIden);
+            await LoadViewTable(userLoc);
 
         }
         private async Task LoadViewTable(string loc, searchObj obj = null)
@@ -107,12 +107,12 @@ namespace CPS_App
         {
             int selectdId = GenUtil.ConvertObjtoType<int>(datagridview.CurrentRow.Cells["bi_req_id"].Value);
 
-            RequestEdit reqEdit = new RequestEdit(selectdId, defPage, _dbServices,_requestMapp);
+            RequestEdit reqEdit = new RequestEdit(selectdId, defPage, _dbServices, _requestMapp);
             reqEdit.MdiParent = this.MdiParent;
-            reqEdit.AutoScroll= true;
+            reqEdit.AutoScroll = true;
             this.Close();
             reqEdit.Show();
-            
+
         }
 
 
@@ -120,10 +120,10 @@ namespace CPS_App
         {
             RequestCreate requestCreate = new RequestCreate(_dbServices);
             requestCreate.MdiParent = this.MdiParent;
-            requestCreate.AutoScroll= true;
+            requestCreate.AutoScroll = true;
             this.Close();
             requestCreate.Show();
-            
+
         }
 
         private void btncancel_Click(object sender, EventArgs e)
@@ -133,8 +133,8 @@ namespace CPS_App
 
         private async void btnsearch_Click(object sender, EventArgs e)
         {
-            btnAdd.Hide();
-            btnEdit.Hide();
+            btnAdd.Show();
+            btnEdit.Show();
             if (cbxsearch1.SelectedItem == cbxsearch2.SelectedItem && txtsearch1.Text != "" && txtsearch2.Text != "")
             {
                 MessageBox.Show("Duplicate Search criteria");
@@ -144,7 +144,7 @@ namespace CPS_App
             lblitem.Hide();
             datagridviewitem.DataSource = null;
             string userLoc = userIden.Claims.FirstOrDefault(x => x.Type == "location_id").Value.ToString();
-            
+
             if (txtsearch1.Text == string.Empty && txtsearch2.Text == string.Empty)
             {
                 await LoadViewTable(userLoc);
@@ -179,11 +179,15 @@ namespace CPS_App
                 return;
             }
             Dictionary<string, string> words = JsonConvert.DeserializeObject<Dictionary<string, string>>(searchString.ElementAt(0).js_search_para);
-        
+
             searchWords = words;
             cbxsearch1.DataSource = words.Keys.ToList();
             cbxsearch2.DataSource = words.Keys.ToList();
         }
 
+        private void datagridview_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 }

@@ -107,7 +107,7 @@ namespace CPS_App
 
         private void stripitem_Click(object sender, EventArgs e)
         {
-            ItemView itemView = new ItemView(_dbServices, _stockWorker);
+            ItemView itemView = new ItemView(_dbServices, _stockWorker,_searchFunc);
             itemView.MdiParent = this;
             itemView.AutoScroll = true;
             itemView.Show();

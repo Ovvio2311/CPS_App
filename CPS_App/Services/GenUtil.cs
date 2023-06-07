@@ -191,5 +191,19 @@ namespace CPS_App.Services
             DialogResult response = MessageBox.Show(confirmStr, "Confirm", MessageBoxButtons.YesNo);
             return response == DialogResult.Yes ? true : false;
         }
+        public static async Task AutoLabelAdding<T>(Form form,T obj)
+        {
+            obj.GetType().GetProperties().ToList().ForEach(x =>
+            {
+                form.Controls.OfType<KryptonTextBox>().ToList().ForEach(p =>
+                {
+
+                    if (p.Tag != null && p.Tag.ToString() == x.Name)
+                    {
+                        p.Text = GenUtil.ConvertObjtoType<string>(x.GetValue(obj, null));
+                    }
+                });
+            });
+        }
     }
 }

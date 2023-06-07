@@ -152,33 +152,8 @@ namespace CPS_App
 
         }
         private async Task<bool> CreateRequestAsync(RequestCreationReq req)
-        {
-            DbResObj res1 = new DbResObj();
-            try
-            {
-                //insert tb_request
-                var tb_req = new insertObj();
-                tb_req.table = "tb_request";
-                tb_req.inserter = new Dictionary<string, string>
-            {
-                { nameof(req.i_staff_id), req.i_staff_id.ToString() },
-                {"i_map_stat_id", "1"}
-            };
-                res1 = await _dbServices.InsertAsync(tb_req);
-                if (res1.resCode != 1 || res1.result == null)
-                {
-                    //_logger.LogDebug("insert error");
-                    throw new Exception("insert tb_request error");
-                }
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-                return false;
-            }
-
-
-            //insert tb_request_detail
+        {            
+            //Checking insert tb_request_detail data correct
             req.items.ForEach(async row =>
             {
                 try
@@ -212,16 +187,51 @@ namespace CPS_App
                         MessageBox.Show("uom Id not find");
                     }
                     tb_item uomId = uomid.result[0];
+                    row.i_uom_id = GenUtil.ConvertObjtoType<int>(uomId.i_uom_id);                                        
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message);
 
+                }                
+            });
+
+            DbResObj res1 = new DbResObj();
+            try
+            {
+                //insert tb_request
+                var tb_req = new insertObj();
+                tb_req.table = "tb_request";
+                tb_req.inserter = new Dictionary<string, string>
+            {
+                { nameof(req.i_staff_id), req.i_staff_id.ToString() },
+                {"i_map_stat_id", "1"}
+            };
+                res1 = await _dbServices.InsertAsync(tb_req);
+                if (res1.resCode != 1 || res1.result == null)
+                {
+                    //_logger.LogDebug("insert error");
+                    throw new Exception("insert tb_request error");
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+                return false;
+            }
+            //insert tb_request_detail
+            req.items.ForEach(async row =>
+            {
+                try {
                     var tb_detail = new insertObj();
                     tb_detail.table = "tb_request_detail";
                     tb_detail.inserter = new Dictionary<string, string>
                     {
                         {nameof(row.bi_req_id), res1.result.ToString()},
-                        {nameof(row.bi_item_id),  itemvid.bi_item_id.ToString()},
+                        {nameof(row.bi_item_id),  row.bi_item_id.ToString()},
                         {nameof(row.i_item_req_qty), row.i_item_req_qty.ToString() },
                         {nameof(row.i_remain_req_qty),row.i_item_req_qty.ToString() },
-                        {nameof(row.i_uom_id), uomId.i_uom_id.ToString() },
+                        {nameof(row.i_uom_id), row.i_uom_id.ToString() },
                         {nameof(row.i_map_stat_id), "1" },
                         {nameof(row.bi_po_status_id), "1" },
                         {nameof(row.vc_remark),row.vc_remark != ""? row.vc_remark:null},
@@ -235,13 +245,13 @@ namespace CPS_App
                         //MessageBox.Show("insert error");
                         throw new Exception("insert error");
                     }
-                }
-                catch (Exception e)
+                }catch(Exception ex)
                 {
-                    MessageBox.Show(e.Message);
-
+                    MessageBox.Show(ex.Message);
                 }
+                
             });
+            
             MessageBox.Show($"Your Request has been created!\nRequest Id: {res1.result}");
             return true;
         }

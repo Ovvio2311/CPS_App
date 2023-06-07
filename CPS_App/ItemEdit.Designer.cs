@@ -67,6 +67,7 @@ namespace CPS_App
             lblid.PaletteMode = PaletteMode.Custom;
             lblid.Size = new Size(61, 21);
             lblid.TabIndex = 0;
+            lblid.Tag = "bi_item_id";
             lblid.Values.Text = "Item ID";
             // 
             // kryptonPalettelbl
@@ -82,6 +83,7 @@ namespace CPS_App
             lblvid.PaletteMode = PaletteMode.Custom;
             lblvid.Size = new Size(71, 21);
             lblvid.TabIndex = 1;
+            lblvid.Tag = "bi_item_vid";
             lblvid.Values.Text = "Item VID";
             // 
             // lblname
@@ -102,6 +104,7 @@ namespace CPS_App
             lblcat.PaletteMode = PaletteMode.Custom;
             lblcat.Size = new Size(74, 21);
             lblcat.TabIndex = 3;
+            lblcat.Tag = "vc_category_desc";
             lblcat.Values.Text = "Category";
             // 
             // lbluom
@@ -112,6 +115,7 @@ namespace CPS_App
             lbluom.PaletteMode = PaletteMode.Custom;
             lbluom.Size = new Size(155, 21);
             lbluom.TabIndex = 4;
+            lbluom.Tag = "vc_uom_desc";
             lbluom.Values.Text = "Unit of Measurement";
             // 
             // lblloc
@@ -122,6 +126,7 @@ namespace CPS_App
             lblloc.PaletteMode = PaletteMode.Custom;
             lblloc.Size = new Size(113, 21);
             lblloc.TabIndex = 5;
+            lblloc.Tag = "vc_location_desc";
             lblloc.Values.Text = "Stock Loaction";
             // 
             // lblqty
@@ -132,6 +137,7 @@ namespace CPS_App
             lblqty.PaletteMode = PaletteMode.Custom;
             lblqty.Size = new Size(69, 21);
             lblqty.TabIndex = 6;
+            lblqty.Tag = "i_item_qty";
             lblqty.Values.Text = "Quantity";
             // 
             // lbluptime
@@ -142,6 +148,7 @@ namespace CPS_App
             lbluptime.PaletteMode = PaletteMode.Custom;
             lbluptime.Size = new Size(142, 21);
             lbluptime.TabIndex = 7;
+            lbluptime.Tag = "dt_updated_datetime";
             lbluptime.Values.Text = "Last Updated Time";
             // 
             // txtvid
@@ -153,6 +160,7 @@ namespace CPS_App
             txtvid.ReadOnly = true;
             txtvid.Size = new Size(120, 23);
             txtvid.TabIndex = 8;
+            txtvid.Tag = "bi_item_vid";
             // 
             // kryptonPalettereadonly
             // 
@@ -168,6 +176,7 @@ namespace CPS_App
             txtcat.ReadOnly = true;
             txtcat.Size = new Size(120, 23);
             txtcat.TabIndex = 9;
+            txtcat.Tag = "vc_category_desc";
             // 
             // txtname
             // 
@@ -178,6 +187,7 @@ namespace CPS_App
             txtname.ReadOnly = true;
             txtname.Size = new Size(120, 23);
             txtname.TabIndex = 10;
+            txtname.Tag = "vc_item_desc";
             // 
             // txtid
             // 
@@ -188,6 +198,7 @@ namespace CPS_App
             txtid.ReadOnly = true;
             txtid.Size = new Size(120, 23);
             txtid.TabIndex = 11;
+            txtid.Tag = "bi_item_id";
             // 
             // txtqty
             // 
@@ -195,14 +206,17 @@ namespace CPS_App
             txtqty.Name = "txtqty";
             txtqty.Size = new Size(120, 23);
             txtqty.TabIndex = 12;
+            txtqty.Tag = "i_item_qty";
             // 
             // txtloc
             // 
             txtloc.Location = new Point(653, 259);
             txtloc.Name = "txtloc";
-            txtloc.ReadOnly = true;
+            txtloc.Palette = kryptonPalettereadonly;
+            txtloc.PaletteMode = PaletteMode.Custom;
             txtloc.Size = new Size(120, 23);
             txtloc.TabIndex = 13;
+            txtloc.Tag = "vc_location_desc";
             // 
             // txtupdate
             // 
@@ -213,6 +227,7 @@ namespace CPS_App
             txtupdate.ReadOnly = true;
             txtupdate.Size = new Size(120, 23);
             txtupdate.TabIndex = 14;
+            txtupdate.Tag = "dt_updated_datetime";
             // 
             // txtuom
             // 
@@ -223,6 +238,7 @@ namespace CPS_App
             txtuom.ReadOnly = true;
             txtuom.Size = new Size(120, 23);
             txtuom.TabIndex = 15;
+            txtuom.Tag = "vc_uom_desc";
             // 
             // dataGridViewitem
             // 

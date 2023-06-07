@@ -275,9 +275,9 @@ namespace CPS_App.Models
             [Display(Name = "Request Quantity")]
             public int i_item_req_qty { get; set; }
             [Display(Name = "Remain Quanity")]
-            public int i_remain_req_qty { get; set; } //need update sql
+            public int i_remain_req_qty { get; set; } 
             [Display(Name = "i_uom_id")]
-            public int i_uom_id { get; set; } //need update sql
+            public int i_uom_id { get; set; } 
             [Display(Name = "")]
             public int bi_supp_id { get; set; }
             [Display(Name = "Mapping Id")]
@@ -365,6 +365,14 @@ namespace CPS_App.Models
             public int i_uom_id { get; set; }
             [Display(Name = "Unit of Measurement")]
             public string vc_uom_desc { get; set; }
+            [Display(Name = "not_shown")]
+            public List<StockLevelSubItem> subitem { get; set; } 
+
+        }
+        public class StockLevelSubItem
+        {
+            [Display(Name = "Item Id")]
+            public int bi_item_id { get; set; }
             [Display(Name = "not_shown")]
             public int bi_location_id { get; set; }
             [Display(Name = "Location")]

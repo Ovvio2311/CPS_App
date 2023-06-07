@@ -256,9 +256,6 @@ namespace CPS_App.Services
             {
                 sql += ";";
             }
-
-
-
             try
             {
                 var result = await _db.QueryAsync<dynamic>(sql, null);
@@ -399,11 +396,11 @@ namespace CPS_App.Services
                 {
                     sql += ";";
                 }
-                var result = await _db.QueryAsync<StockLevelViewObj>(sql, null);
+                var result = await _db.QueryAsync<dynamic>(sql, null);
 
                 if (result.Count() > 0)
                 {
-                    res.result = result;
+                    res.result = GenUtil.DbResulttoKVP(result);
                     res.resCode = 1;
                 }
                 else

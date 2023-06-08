@@ -394,6 +394,8 @@ namespace CPS_App.Models
             public int bi_item_id { get; set; }
             [Display(Name = "Item Vid")]
             public int bi_item_vid { get; set; }
+            [Display(Name = "Item Name")]
+            public string vc_item_desc { get; set; }
             [Display(Name = "not_shown")]
             public int bi_category_id { get; set; }
             [Display(Name = "Category")]

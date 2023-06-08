@@ -112,6 +112,7 @@ namespace CPS_App.Services
                 }
             });
         }
+        //textbox to label
         public static async Task<bool> ConfirmListAttach(Form form)
         {
             var confirmObj = new Dictionary<string, string>();
@@ -122,7 +123,7 @@ namespace CPS_App.Services
                     if (p.ReadOnly == false)
                     {
                         if (p.Tag != null && x.Tag != null &&
-                        p.Tag.ToString() == x.Tag.ToString())
+                        p.Tag.ToString() == x.Tag.ToString() && x.Text.Trim() != string.Empty)
                         {
                             confirmObj.Add(x.Text, p.Text);
                         }
@@ -151,6 +152,7 @@ namespace CPS_App.Services
             DialogResult response = MessageBox.Show(confirmStr, "Confirm", MessageBoxButtons.YesNo);
             return response == DialogResult.Yes ? true : false;
         }
+        //class obj to label
         public static async Task<bool> ConfirmListAttach<T>(Panel form, List<T> obj)
         {
             List<Dictionary<string, string>> confirmObj = new List<Dictionary<string, string>>();
@@ -170,11 +172,9 @@ namespace CPS_App.Services
                                 {
                                     temp.Add(x.Text, p.GetValue(item).ToString());
                                 }
-
                             }
                         });
                     }
-
                 });
                 confirmObj.Add(temp);
             }
@@ -183,7 +183,7 @@ namespace CPS_App.Services
             confirmObj.ForEach(x =>
             {
                 x.ToList().ForEach(x =>
-                {                    
+                {
                     confirmStr += string.Join(Environment.NewLine, $"{x.Key} = {x.Value}\n");
                 });
             });
@@ -191,17 +191,36 @@ namespace CPS_App.Services
             DialogResult response = MessageBox.Show(confirmStr, "Confirm", MessageBoxButtons.YesNo);
             return response == DialogResult.Yes ? true : false;
         }
-        public static async Task AutoLabelAdding<T>(Form form,T obj)
+
+        //form class to textbox
+        public static async Task AutoLabelAddingToTextBox<T>(Form form, T obj)
         {
             obj.GetType().GetProperties().ToList().ForEach(x =>
             {
                 form.Controls.OfType<KryptonTextBox>().ToList().ForEach(p =>
                 {
-
-                    if (p.Tag != null && p.Tag.ToString() == x.Name)
+                    if (p.Tag != null && p.Tag.ToString() == x.Name )
                     {
-                        p.Text = GenUtil.ConvertObjtoType<string>(x.GetValue(obj, null));
+                        if (x.GetValue(obj).ToString() != null && x.GetValue(obj) != "")
+                        {
+                            p.Text = GenUtil.ConvertObjtoType<string>(x.GetValue(obj, null));
+                        }                            
                     }
+                });
+            });
+        }
+        //no use
+        public static async Task AutoAddObjItemFromTextBox<T>(Form form, T obj)
+        {
+            form.Controls.OfType<KryptonTextBox>().ToList().ForEach(x =>
+            {
+                obj.GetType().GetProperties().ToList().ForEach(p =>
+                {
+                    if (x.Tag != null && p.Name == x.Tag.ToString())
+                    {
+                        p.SetValue(obj, Convert.ChangeType(x.Text, p.PropertyType, null));
+                    }
+
                 });
             });
         }

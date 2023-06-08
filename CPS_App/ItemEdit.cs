@@ -76,9 +76,9 @@ namespace CPS_App
                 int selectid = GenUtil.ConvertObjtoType<int>(dataGridViewitem.CurrentRow.Cells["bi_location_id"].Value);
 
                 var readyToEdit = stockList.ToList().Where(x => x.bi_location_id == selectid).FirstOrDefault();
-                await GenUtil.AutoLabelAdding<StockLevelSubItem>(this, readyToEdit);
+                await GenUtil.AutoLabelAddingToTextBox<StockLevelSubItem>(this, readyToEdit);
                 StockLevelViewObj edititems = stock.ToList().Where(x => x.bi_item_id == selectId).FirstOrDefault();
-                await GenUtil.AutoLabelAdding<StockLevelViewObj>(this, edititems);
+                await GenUtil.AutoLabelAddingToTextBox<StockLevelViewObj>(this, edititems);
                 //txtvid.Text = readyToEdit.bi_item_vid.ToString();
                 //txtid.Text = readyToEdit.bi_item_id.ToString();
                 //txtcat.Text = readyToEdit.vc_category_desc.ToString();
@@ -114,15 +114,10 @@ namespace CPS_App
                     return;
                 }
                 MessageBox.Show("Item updated");
-                this.Controls.OfType<KryptonTextBox>().ToList().ForEach(x => { x.Clear(); });
-                await RefreshItemEditTable();
-            }                
+            }
+                
         }
-        private async Task RefreshItemEditTable()
-        {
-            stock = await _worker.GetStockLevelWorker();
-            await itemEditInitialLoad();
-        }
+
         private void btncancel_Click(object sender, EventArgs e)
         {
             this.Close();

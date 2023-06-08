@@ -89,7 +89,7 @@ namespace CPS_App
             {
                 int selectdId = GenUtil.ConvertObjtoType<int>(datagridviewitem.CurrentRow.Cells["bi_item_id"].Value);
                 ItemRequest readyToEdit = itemsReq.Where(x => x.bi_item_id == selectdId).FirstOrDefault();
-                await GenUtil.AutoLabelAdding<ItemRequest>(this, readyToEdit);
+                await GenUtil.AutoLabelAddingToTextBox<ItemRequest>(this, readyToEdit);
                 //txtvid.Text = readyToEdit.bi_item_vid.ToString();
                 //txtrs.Text = GenUtil.ConvertObjtoType<string>(readyToEdit.vc_po_status_desc);
                 //txtremain.Text = readyToEdit.i_remain_req_qty.ToString();

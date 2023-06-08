@@ -199,12 +199,23 @@ namespace CPS_App.Services
             {
                 form.Controls.OfType<KryptonTextBox>().ToList().ForEach(p =>
                 {
-                    if (p.Tag != null && p.Tag.ToString() == x.Name )
+                    if (p.Tag != null && p.Tag.ToString() == x.Name)
                     {
                         if (x.GetValue(obj).ToString() != null && x.GetValue(obj) != "")
                         {
                             p.Text = GenUtil.ConvertObjtoType<string>(x.GetValue(obj, null));
-                        }                            
+                        }
+                    }
+                });
+                form.Controls.OfType<KryptonComboBox>().ToList().ForEach(c =>
+                {
+                    if (c.Tag != null && c.Tag.ToString() == x.Name)
+                    {
+                        if (x.GetValue(obj).ToString() != null && x.GetValue(obj) != "")
+                        {
+                            var value = x.GetValue(obj);
+                            c.SelectedItem = c.Items.ToDynamicList<string>().Where(x => x.Contains(value.ToString())).FirstOrDefault();
+                        }
                     }
                 });
             });

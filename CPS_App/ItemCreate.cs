@@ -97,7 +97,7 @@ namespace CPS_App
             {
                 temp.GetType().GetProperties().ToList().ForEach(p =>
                 {
-                    if (x.Tag != null && p.Name == x.Tag.ToString() && x.Text.Trim() != string.Empty)
+                    if (x.Tag != null && p.Name == x.Tag.ToString() && x.Text.Trim() != string.Empty && x.Enabled)
                     {
                         p.SetValue(temp, Convert.ChangeType(x.Text, p.PropertyType, null));
                     }
@@ -108,7 +108,7 @@ namespace CPS_App
             {
                 temp.GetType().GetProperties().ToList().ForEach(p =>
                 {
-                    if (x.Tag != null && x.Tag.ToString().Contains(":"))
+                    if (x.Tag != null && x.Tag.ToString().Contains(":") && x.Enabled)
                     {
                         var id = x.Tag.ToString().Split(":").ElementAt(0);
                         var name = x.Tag.ToString().Split(":").ElementAt(1);
@@ -123,7 +123,7 @@ namespace CPS_App
                             p.SetValue(temp, Convert.ChangeType(nameValue, p.PropertyType, null));
                         }
                     }
-                    else if (x.Tag != null && p.Name == x.Tag.ToString())
+                    else if (x.Tag != null && p.Name == x.Tag.ToString() && x.Enabled)
                     {
                         var value = x.SelectedItem.ToString().Split(":").ElementAt(0);
                         p.SetValue(temp, Convert.ChangeType(value, p.PropertyType, null));
@@ -155,9 +155,8 @@ namespace CPS_App
                         if (res.resCode != 1 || res.result == null)
                         {
                             MessageBox.Show("tb_item error");
+                            return;
                         }
-
-
 
                         //insert tb_vid
                         //var vidObj = new insertObj()
@@ -179,9 +178,13 @@ namespace CPS_App
                         if (vidres.resCode != 1 || res.result == null)
                         {
                             MessageBox.Show("vid mapping error");
+                            return;
                         }
                         MessageBox.Show($"New Item has been created with ID: {res.result}");
-
+                        if (!chkstock.Checked)
+                        {
+                            return;
+                        }
                         //insert tb_item_unit
                         var itemUnit = new tb_item_unit()
                         {
@@ -196,7 +199,9 @@ namespace CPS_App
                         if (iUnitres.resCode != 1)
                         {
                             MessageBox.Show("insert tb_item_unit error");
+                            return;
                         }
+                        MessageBox.Show("item unit insert into location");
                     }
                     catch (Exception ex)
                     {
@@ -211,8 +216,6 @@ namespace CPS_App
 
             //}
             //insert tb_item use insertasync<T> cannot get id successfully
-
-
 
         }
 
@@ -229,23 +232,31 @@ namespace CPS_App
 
         private void requiredFieldCheck(object sender, CancelEventArgs e)
         {
+            CheckBoxChange();
             ValidationCheck();
         }
+
         private void ValidationCheck()
         {
+            if (chkstock.Checked)
+            {
+                if (!CheckBoxValidate())
+                {
+                    disableValidation();
+                    return;
+                }
+            }
             var cat = cbxcat.SelectedItem;
             if (cat != null) { cat = cat.ToString().Split(":").ElementAt(0); }
-            var loc = cbxloc.SelectedItem;
-            if (loc != null) { loc = loc.ToString().Split(":").ElementAt(0); }
+
             var uom = cbxuom.SelectedItem;
             if (uom != null) { uom = uom.ToString().Split(":").ElementAt(0); }
-            var sup = cbxsup.SelectedItem;
-            if (sup != null) { sup = sup.ToString().Split(":").ElementAt(0); }
+
             var vid = cbxvid.SelectedItem;
             if (vid != null) { vid = vid.ToString().Split(":").ElementAt(0); }
 
-            var availableItem = pnit.Controls.OfType<KryptonTextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
-            if (txtitname.Text == string.Empty || cat == null || loc == null || uom == null || vid == null || sup == null)
+            //var availableItem = pnit.Controls.OfType<KryptonTextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
+            if (txtitname.Text == string.Empty || cat == null || uom == null || vid == null)
             {
                 //MessageBox.Show("Please completed the item form");
                 disableValidation();
@@ -254,25 +265,45 @@ namespace CPS_App
             {
                 enableValidation();
             }
-            //var datepick = dateTimePicker.Value;
-            //var id = cbxname.SelectedItem;
-            //if (id != null) { id = id.ToString().Split(":").ElementAt(0); }
-            //var avaliableItemBox = panelItem.Controls.OfType<KryptonTextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
-            //var availableTxtBox = panelInfo.Controls.OfType<KryptonTextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
-            //if (availableTxtBox != 2 || avaliableItemBox != 2 || datepick < DateTime.Now || id == null)
-            //{
-
-            //    disableValidation();
-            //}
-            //else
-            //{
-            //    enableValidation();
-            //}
+      
         }
+        private bool CheckBoxValidate()
+        {
+            var loc = cbxloc.SelectedItem;
+            if (loc != null) { loc = loc.ToString().Split(":").ElementAt(0); }
+            var sup = cbxsup.SelectedItem;
+            if (sup != null) { sup = sup.ToString().Split(":").ElementAt(0); }
+            var qty = GenUtil.ConvertObjtoType<int>(txtqty.Text);
+            return qty != null && loc != null && sup != null ? true : false;
 
+        }
         private void requiredFieldCheck(object sender, EventArgs e)
         {
             ValidationCheck();
+        }
+
+        private void chkstock_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkstock.Checked)
+            {
+                disableValidation();
+            }
+            CheckBoxChange();
+        }
+        private void CheckBoxChange()
+        {
+            if (chkstock.Checked)
+            {
+                txtqty.Enabled = true;
+                cbxsup.Enabled = true;
+                cbxloc.Enabled = true;
+            }
+            else
+            {
+                txtqty.Enabled = false;
+                cbxsup.Enabled = false;
+                cbxloc.Enabled = false;
+            }
         }
     }
 }

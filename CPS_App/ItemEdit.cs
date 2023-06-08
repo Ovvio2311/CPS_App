@@ -15,17 +15,17 @@ namespace CPS_App
 {
     public partial class ItemEdit : KryptonForm
     {
-        public int selectId;
+        public int itemId;
         public List<StockLevelViewObj> stock;
         public BindingList<StockLevelSubItem> stockList;
         private DbServices _dbServices;
         private StockLevelWorker _worker;
-        public ItemEdit(List<StockLevelViewObj> obj, DbServices dbServices, int selectId, StockLevelWorker worker)
+        public ItemEdit(List<StockLevelViewObj> obj, DbServices dbServices, int itemId, StockLevelWorker worker)
         {
             InitializeComponent();
             stock = obj;
             _dbServices = dbServices;
-            this.selectId = selectId;
+            this.itemId = itemId;
             stockList = new BindingList<StockLevelSubItem>();
             _worker = worker;
         }
@@ -51,7 +51,7 @@ namespace CPS_App
         }
         private async Task itemEditInitialLoad()
         {
-            StockLevelViewObj edititems = stock.ToList().Where(x => x.bi_item_id == selectId).FirstOrDefault();
+            StockLevelViewObj edititems = stock.ToList().Where(x => x.bi_item_id == itemId).FirstOrDefault();
             //txtreqid.Text = edititems.bi_req_id.ToString();
             //txtstaName.Text = GenUtil.ConvertObjtoType<string>(edititems.vc_staff_name);
             //txtloc.Text = edititems.vc_location_desc.ToString();
@@ -77,7 +77,7 @@ namespace CPS_App
 
                 var readyToEdit = stockList.ToList().Where(x => x.bi_location_id == selectid).FirstOrDefault();
                 await GenUtil.AutoLabelAddingToTextBox<StockLevelSubItem>(this, readyToEdit);
-                StockLevelViewObj edititems = stock.ToList().Where(x => x.bi_item_id == selectId).FirstOrDefault();
+                StockLevelViewObj edititems = stock.ToList().Where(x => x.bi_item_id == itemId).FirstOrDefault();
                 await GenUtil.AutoLabelAddingToTextBox<StockLevelViewObj>(this, edititems);
                 //txtvid.Text = readyToEdit.bi_item_vid.ToString();
                 //txtid.Text = readyToEdit.bi_item_id.ToString();
@@ -115,7 +115,7 @@ namespace CPS_App
                 }
                 MessageBox.Show("Item updated");
             }
-                
+
         }
 
         private void btncancel_Click(object sender, EventArgs e)

@@ -115,7 +115,7 @@ namespace CPS_App
 
         private void strippoa_Click(object sender, EventArgs e)
         {
-            POAView poaView = new POAView(_dbServices, _pOAWorker);
+            POAView poaView = new POAView(_dbServices, _pOAWorker,_searchFunc);
             poaView.MdiParent = this;
             poaView.AutoScroll = true;
             poaView.Show();

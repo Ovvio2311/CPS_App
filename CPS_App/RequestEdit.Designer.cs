@@ -123,6 +123,7 @@ namespace CPS_App
             // 
             // txtreqid
             // 
+            txtreqid.Enabled = false;
             txtreqid.Location = new Point(130, 390);
             txtreqid.Name = "txtreqid";
             txtreqid.Palette = kryptonPalettereadonly;
@@ -139,6 +140,7 @@ namespace CPS_App
             // 
             // txtstaName
             // 
+            txtstaName.Enabled = false;
             txtstaName.Location = new Point(365, 390);
             txtstaName.Name = "txtstaName";
             txtstaName.Palette = kryptonPalettereadonly;
@@ -153,6 +155,7 @@ namespace CPS_App
             // 
             // txtloc
             // 
+            txtloc.Enabled = false;
             txtloc.Location = new Point(130, 444);
             txtloc.Name = "txtloc";
             txtloc.Palette = kryptonPalettereadonly;
@@ -164,6 +167,7 @@ namespace CPS_App
             // 
             // txtreqst
             // 
+            txtreqst.Enabled = false;
             txtreqst.Location = new Point(365, 445);
             txtreqst.Name = "txtreqst";
             txtreqst.Palette = kryptonPalettereadonly;
@@ -175,6 +179,7 @@ namespace CPS_App
             // 
             // txtcrDate
             // 
+            txtcrDate.Enabled = false;
             txtcrDate.Location = new Point(701, 391);
             txtcrDate.Name = "txtcrDate";
             txtcrDate.Palette = kryptonPalettereadonly;
@@ -277,6 +282,7 @@ namespace CPS_App
             // 
             // txtvid
             // 
+            txtvid.Enabled = false;
             txtvid.Location = new Point(113, 510);
             txtvid.Name = "txtvid";
             txtvid.Palette = kryptonPalettereadonly;
@@ -288,6 +294,7 @@ namespace CPS_App
             // 
             // txtitname
             // 
+            txtitname.Enabled = false;
             txtitname.Location = new Point(113, 560);
             txtitname.Name = "txtitname";
             txtitname.Palette = kryptonPalettereadonly;
@@ -299,6 +306,7 @@ namespace CPS_App
             // 
             // txtrs
             // 
+            txtrs.Enabled = false;
             txtrs.Location = new Point(388, 510);
             txtrs.Name = "txtrs";
             txtrs.Palette = kryptonPalettereadonly;
@@ -310,6 +318,7 @@ namespace CPS_App
             // 
             // txtcat
             // 
+            txtcat.Enabled = false;
             txtcat.Location = new Point(388, 560);
             txtcat.Name = "txtcat";
             txtcat.Palette = kryptonPalettereadonly;
@@ -329,6 +338,7 @@ namespace CPS_App
             // 
             // txtqty
             // 
+            txtqty.Enabled = false;
             txtqty.Location = new Point(701, 510);
             txtqty.Name = "txtqty";
             txtqty.Palette = kryptonPalettereadonly;

@@ -40,6 +40,7 @@ namespace CPS_App
             lblvid = new KryptonLabel();
             lbluom = new KryptonLabel();
             pnit = new KryptonPanel();
+            chkstock = new KryptonCheckBox();
             txtqty = new KryptonTextBox();
             lblqty = new KryptonLabel();
             cbxsup = new KryptonComboBox();
@@ -53,7 +54,6 @@ namespace CPS_App
             cbxcat = new KryptonComboBox();
             btnitcr = new KryptonButton();
             kryptonPalettepanel = new KryptonPalette(components);
-            chkstock = new KryptonCheckBox();
             ((System.ComponentModel.ISupportInitialize)pnit).BeginInit();
             pnit.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)cbxsup).BeginInit();
@@ -175,6 +175,15 @@ namespace CPS_App
             pnit.PaletteMode = PaletteMode.Custom;
             pnit.Size = new Size(755, 448);
             pnit.TabIndex = 13;
+            // 
+            // chkstock
+            // 
+            chkstock.Location = new Point(405, 65);
+            chkstock.Name = "chkstock";
+            chkstock.Size = new Size(152, 20);
+            chkstock.TabIndex = 18;
+            chkstock.Values.Text = "Insert Stock Import Info";
+            chkstock.CheckedChanged += chkstock_CheckedChanged;
             // 
             // txtqty
             // 
@@ -331,14 +340,6 @@ namespace CPS_App
             // 
             kryptonPalettepanel.Common.StateCommon.Back.Color1 = Color.Transparent;
             kryptonPalettepanel.Common.StateCommon.Back.Color2 = Color.Transparent;
-            // 
-            // chkstock
-            // 
-            chkstock.Location = new Point(405, 65);
-            chkstock.Name = "chkstock";
-            chkstock.Size = new Size(152, 20);
-            chkstock.TabIndex = 18;
-            chkstock.Values.Text = "Insert Stock Import Info";
             // 
             // ItemCreate
             // 

@@ -455,7 +455,7 @@ namespace CPS_App.Services
             }
             return res;
         }
-        public async Task<DbResObj> GetPoaList()
+        public async Task<DbResObj> GetPoaList(string loc, searchObj obj = null)
         {
             //var res = new DbResObj();
 

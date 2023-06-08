@@ -13,20 +13,22 @@ namespace CPS_App
 {
     public partial class POAEdit : KryptonForm
     {
-        public int index;
-        public List<POATableObj> obj;
+        public int headId;
+        public List<POATableObj> poaObj;
+        public BindingList<PoaItemList> itemList;
         private readonly DbServices _dbServices;
-        public POAEdit(int index, List<POATableObj> obj, DbServices dbServices)
+        public POAEdit(int headId, List<POATableObj> obj, DbServices dbServices)
         {
             InitializeComponent();
-            this.index = index;
-            this.obj = obj;
+            this.headId = headId;
+            this.poaObj = obj;
             _dbServices = dbServices;
+            itemList = new BindingList<PoaItemList>();
         }
 
         private async void POAEdit_Load(object sender, EventArgs e)
         {
-            if (obj.Count() == 0)
+            if (poaObj.Count() == 0)
             {
                 MessageBox.Show("error");
                 return;
@@ -40,14 +42,14 @@ namespace CPS_App
             List<lut_poa_status> st = JsonConvert.DeserializeObject<List<lut_poa_status>>(JsonConvert.SerializeObject(stType.result));
             st.ForEach(x => cbxst.Items.Add($"{x.bi_poa_status_id}: {x.vc_poa_status_desc}"));
 
-            var editPoaLine = obj.ToList().Where(x => x.bi_poa_header_id == index).FirstOrDefault();
+            var editPoaLine = poaObj.ToList().Where(x => x.bi_poa_header_id == headId).FirstOrDefault();
             var observableItems = new ObservableCollection<PoaItemList>(editPoaLine.itemLists);
             BindingList<PoaItemList> source = observableItems.ToBindingList();
 
 
-            kryptonDataGridViewit.DataSource = source;
+            await poaEditInitialLoad();
 
-            GenUtil.dataGridAttrName<PoaItemList>(kryptonDataGridViewit, new List<string>() { "not_shown" });
+            
             //kryptonDataGridViewit.Columns.ToDynamicList().ForEach(col =>
             //{
             //    DataGridViewColumn column = col;
@@ -62,15 +64,31 @@ namespace CPS_App
 
             //});
         }
+        private async Task poaEditInitialLoad()
+        {
+            POATableObj edititems = poaObj.ToList().Where(x => x.bi_poa_header_id == headId).FirstOrDefault();
+            //txtreqid.Text = edititems.bi_req_id.ToString();
+            //txtstaName.Text = GenUtil.ConvertObjtoType<string>(edititems.vc_staff_name);
+            //txtloc.Text = edititems.vc_location_desc.ToString();
+            //txtcrDate.Text = edititems.dt_created_date.ToString();
 
+            var observableItems = new ObservableCollection<PoaItemList>(edititems.itemLists);
+            itemList= observableItems.ToBindingList();
+            kryptonDataGridViewit.Columns.Clear();
+            kryptonDataGridViewit.DataSource = itemList;
+
+            //change header name and hide column
+            GenUtil.dataGridAttrName<PoaItemList>(kryptonDataGridViewit, new List<string>() { "not_shown" });
+        }
 
         private async void btnmod_Click(object sender, EventArgs e)
         {
             int selectdId = GenUtil.ConvertObjtoType<int>(kryptonDataGridViewit.CurrentRow.Cells["bi_poa_line_id"].Value);
-            var poaItem = obj.Where(x => x.bi_poa_header_id == index).FirstOrDefault();
-            var readyToEdit = obj.FirstOrDefault(x => x.bi_poa_header_id == index).itemLists
+            var poaItem = poaObj.Where(x => x.bi_poa_header_id == headId).FirstOrDefault();
+            var readyToEdit = poaObj.FirstOrDefault(x => x.bi_poa_header_id == headId).itemLists
                 .Where(x => x.bi_poa_line_id == selectdId).FirstOrDefault();
-
+            //var readyToEdit = itemList.Where(x => x.bi_poa_line_id == selectdId).FirstOrDefault();
+            
             var poast = cbxst.SelectedItem.ToString();
             if (poast != null) { poast = poast.Split(":").ElementAt(0); }
             var delisc = cbxdelisc.SelectedItem.ToString();
@@ -79,13 +97,13 @@ namespace CPS_App
             if (txtpro.Text == readyToEdit.dc_promise_qty.ToString() &&
                 txtmin.Text == readyToEdit.dc_min_qty.ToString() && txtp.Text == readyToEdit.dc_price.ToString() &&
                 txtam.Text == readyToEdit.dc_amount.ToString() && txtref.Text == readyToEdit.vc_reference.ToString() &&
-                cbxst.SelectedItem.ToString().Contains(poaItem.bi_poa_status_id.ToString()) && 
+                cbxst.SelectedItem.ToString().Contains(poaItem.bi_poa_status_id.ToString()) &&
                 cbxdelisc.SelectedItem.ToString().Contains(poaItem.ti_deli_sched_id.ToString()))
             {
                 MessageBox.Show("Value haven't change");
                 return;
             }
-            
+
             var updatepoa = new updateObj()
             {
                 table = "tb_poa",
@@ -164,10 +182,11 @@ namespace CPS_App
             if (e.RowIndex == kryptonDataGridViewit.CurrentRow.Index)
             {
                 int selectdId = GenUtil.ConvertObjtoType<int>(kryptonDataGridViewit.CurrentRow.Cells["bi_poa_line_id"].Value);
-                var poaItem = obj.Where(x => x.bi_poa_header_id == index).FirstOrDefault();
-                var readyToEdit = obj.FirstOrDefault(x => x.bi_poa_header_id == index).itemLists
-                    .Where(x => x.bi_poa_line_id == selectdId).FirstOrDefault();
-
+                var poaView = poaObj.Where(x => x.bi_poa_header_id == headId).FirstOrDefault();
+                //var readyToEdit = poaObj.FirstOrDefault(x => x.bi_poa_header_id == headId).itemLists
+                //    .Where(x => x.bi_poa_line_id == selectdId).FirstOrDefault();
+                var readyToEdit = itemList.Where(x => x.bi_poa_line_id == selectdId).FirstOrDefault();
+                
                 txtline.Text = readyToEdit.bi_poa_line_id.ToString();
                 txtit.Text = readyToEdit.vc_item_desc.ToString();
                 txtsupid.Text = readyToEdit.bi_supp_item_id.ToString();
@@ -178,12 +197,12 @@ namespace CPS_App
                 txtam.Text = readyToEdit.dc_amount.ToString();
                 txtref.Text = readyToEdit.vc_reference.ToString();
                 txtqu.Text = readyToEdit.bi_quot_no.ToString();
-                txtpoa.Text = poaItem.bi_poa_id.ToString();
-                txttype.Text = poaItem.vc_poa_type_desc.ToString();                
+                txtpoa.Text = poaView.bi_poa_id.ToString();
+                txttype.Text = poaView.vc_poa_type_desc.ToString();
                 cbxst.SelectedItem = cbxst.Items.ToDynamicList<string>()
-                .Where(x => x.Contains(poaItem.bi_poa_status_id.ToString())).FirstOrDefault();
+                .Where(x => x.Contains(poaView.bi_poa_status_id.ToString())).FirstOrDefault();
                 cbxdelisc.SelectedItem = cbxdelisc.Items.ToDynamicList<string>()
-                .Where(x => x.Contains(poaItem.ti_deli_sched_id.ToString())).FirstOrDefault();
+                .Where(x => x.Contains(poaView.ti_deli_sched_id.ToString())).FirstOrDefault();
 
             }
         }

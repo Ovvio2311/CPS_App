@@ -153,6 +153,7 @@ namespace CPS_App
             // 
             // txtvid
             // 
+            txtvid.Enabled = false;
             txtvid.Location = new Point(96, 259);
             txtvid.Name = "txtvid";
             txtvid.Palette = kryptonPalettereadonly;
@@ -169,6 +170,7 @@ namespace CPS_App
             // 
             // txtcat
             // 
+            txtcat.Enabled = false;
             txtcat.Location = new Point(350, 259);
             txtcat.Name = "txtcat";
             txtcat.Palette = kryptonPalettereadonly;
@@ -180,6 +182,7 @@ namespace CPS_App
             // 
             // txtname
             // 
+            txtname.Enabled = false;
             txtname.Location = new Point(350, 220);
             txtname.Name = "txtname";
             txtname.Palette = kryptonPalettereadonly;
@@ -191,6 +194,7 @@ namespace CPS_App
             // 
             // txtid
             // 
+            txtid.Enabled = false;
             txtid.Location = new Point(96, 220);
             txtid.Name = "txtid";
             txtid.Palette = kryptonPalettereadonly;
@@ -210,6 +214,7 @@ namespace CPS_App
             // 
             // txtloc
             // 
+            txtloc.Enabled = false;
             txtloc.Location = new Point(653, 259);
             txtloc.Name = "txtloc";
             txtloc.Palette = kryptonPalettereadonly;
@@ -220,6 +225,7 @@ namespace CPS_App
             // 
             // txtupdate
             // 
+            txtupdate.Enabled = false;
             txtupdate.Location = new Point(653, 301);
             txtupdate.Name = "txtupdate";
             txtupdate.Palette = kryptonPalettereadonly;
@@ -231,6 +237,7 @@ namespace CPS_App
             // 
             // txtuom
             // 
+            txtuom.Enabled = false;
             txtuom.Location = new Point(349, 301);
             txtuom.Name = "txtuom";
             txtuom.Palette = kryptonPalettereadonly;
@@ -244,7 +251,7 @@ namespace CPS_App
             // 
             dataGridViewitem.AllowUserToAddRows = false;
             dataGridViewitem.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewitem.Location = new Point(29, 39);
+            dataGridViewitem.Location = new Point(38, 39);
             dataGridViewitem.Name = "dataGridViewitem";
             dataGridViewitem.Palette = kryptonPalettedatagridview;
             dataGridViewitem.PaletteMode = PaletteMode.Custom;

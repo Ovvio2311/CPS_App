@@ -100,7 +100,7 @@ namespace CPS_App
                 //txtreqst.Text = GenUtil.ConvertObjtoType<string>(readyToEdit.item_mapping_status);
             }
         }
-    
+
         private void btndel_Click(object sender, EventArgs e)
         {
             //del item button

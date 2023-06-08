@@ -120,7 +120,7 @@ namespace CPS_App.Services
             {
                 form.Controls.OfType<KryptonTextBox>().ToList().ForEach(p =>
                 {
-                    if (p.ReadOnly == false)
+                    if (p.Enabled == true)
                     {
                         if (p.Tag != null && x.Tag != null &&
                         p.Tag.ToString() == x.Tag.ToString() && x.Text.Trim() != string.Empty)

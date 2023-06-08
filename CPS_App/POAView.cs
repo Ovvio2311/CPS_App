@@ -1,4 +1,5 @@
 ﻿using CPS_App.Services;
+using Krypton.Toolkit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Newtonsoft.Json;
@@ -26,14 +27,18 @@ namespace CPS_App
     {
         public ClaimsIdentity userIden;
         private readonly DbServices _dbServices;
-        public List<POATableObj> obj;
+        public List<POATableObj> poaObj;
         private POAWorker _pOAWorker;
-        public POAView(DbServices dbServices, POAWorker pOAWorker)
+        private Dictionary<string, string> searchWords;
+        private SearchFunc _searchFunc;
+        public POAView(DbServices dbServices, POAWorker pOAWorker, SearchFunc searchFunc)
         {
             InitializeComponent();
             _dbServices = dbServices;
-            obj = new List<POATableObj>();
+            poaObj = new List<POATableObj>();
             _pOAWorker = pOAWorker;
+            searchWords = new Dictionary<string, string>();            
+            _searchFunc = searchFunc;
         }
 
         private async void POAView_Load(object sender, EventArgs e)
@@ -52,49 +57,67 @@ namespace CPS_App
             {
                 btnadd.Hide();
             }
-            obj = await _pOAWorker.GetPoaWorker();
-            if (obj != null)
-            {
-                var observableItems = new ObservableCollection<POATableObj>(obj);
-                BindingList<POATableObj> source = observableItems.ToBindingList();
+            var userLoc = userIden.Claims.FirstOrDefault(x => x.Type == "location_id").Value.ToString();
+            await LoadViewTable(userLoc);
+            //kryptonDataGridViewpoa.Columns.ToDynamicList().ForEach(col =>
+            //{
+            //    DataGridViewColumn column = col;
+            //    col.HeaderText = typeof(POATableObj).GetProperties().ToList()
+            //    .Where(x => col.HeaderText == x.Name)
+            //    .Select(x => x.GetCustomAttribute<DisplayAttribute>())
+            //    .Where(x => x != null).Select(x => x.Name.ToString()).FirstOrDefault();
+            //    if (column.HeaderText == "bi_deli_loc_id" || column.HeaderText == "bi_supp_id"
+            //    || column.HeaderText == "ti_tc_id" || column.HeaderText == "ti_deli_sched_id"
+            //    || column.HeaderText == "itemLists")
+            //    {
+            //        column.Visible = false;
+            //    }
 
+            //});
 
-                kryptonDataGridViewpoa.DataSource = source;
-
-                GenUtil.dataGridAttrName<POATableObj>(kryptonDataGridViewpoa, new List<string>() { "not_shown" });
-                //kryptonDataGridViewpoa.Columns.ToDynamicList().ForEach(col =>
-                //{
-                //    DataGridViewColumn column = col;
-                //    col.HeaderText = typeof(POATableObj).GetProperties().ToList()
-                //    .Where(x => col.HeaderText == x.Name)
-                //    .Select(x => x.GetCustomAttribute<DisplayAttribute>())
-                //    .Where(x => x != null).Select(x => x.Name.ToString()).FirstOrDefault();
-                //    if (column.HeaderText == "bi_deli_loc_id" || column.HeaderText == "bi_supp_id"
-                //    || column.HeaderText == "ti_tc_id" || column.HeaderText == "ti_deli_sched_id"
-                //    || column.HeaderText == "itemLists")
-                //    {
-                //        column.Visible = false;
-                //    }
-
-                //});
-            }
 
             //var deliscType = await _dbServices.SelectAllAsync<lut_deli_schedule_type>();
             //List<lut_deli_schedule_type> sc = JsonConvert.DeserializeObject<List<lut_deli_schedule_type>>(JsonConvert.SerializeObject(deliscType.result));
             //sc.ForEach(x => cbxdelisc.Items.Add($"{x.ti_deli_sched_id}: {x.vc_deli_sched_desc}"));
 
         }
+        private async Task LoadViewTable(string loc = null, searchObj obj = null)
+        {
+            lblnoresult.Hide();
+            kryptonDataGridViewpoa.DataSource = null;
+            poaObj = await _pOAWorker.GetPoaWorker(loc, obj);
+            if (poaObj == null)
+            {
+                kryptonDataGridViewpoa.Columns.Clear();
+                lblnoresult.Show();
+                btnadd.Hide();
+                btnedit.Hide();
+                return;
+            }
+            var observableItems = new ObservableCollection<POATableObj>(poaObj);
+            BindingList<POATableObj> source = observableItems.ToBindingList();
 
+            if (poaObj != null)
+                kryptonDataGridViewpoa.DataSource = source;
+
+            GenUtil.dataGridAttrName<POATableObj>(kryptonDataGridViewpoa, new List<string>() { "not_shown" });
+        }
         private void kryptonDataGridViewpoa_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.ColumnIndex < 0 || e.RowIndex < 0) return; // header clicked
 
             if (e.RowIndex == kryptonDataGridViewpoa.CurrentRow.Index)
             {
-
+                lblsubitemtitle.Show();
                 int selectdId = GenUtil.ConvertObjtoType<int>(kryptonDataGridViewpoa.CurrentRow.Cells["bi_poa_header_id"].Value);
+              
                 kryptonDataGridViewitem.DataSource = null;
-                List<PoaItemList> itemViewSelect = obj.Where(x => x.bi_poa_header_id == selectdId).FirstOrDefault().itemLists;
+                if (GenUtil.ConvertObjtoType<int>(kryptonDataGridViewpoa.CurrentRow.Cells["ti_poa_type_id"].Value) == 2)
+                {
+                    lblsubitemtitle.Hide();
+                    return;
+                }
+                List<PoaItemList> itemViewSelect = poaObj.Where(x => x.bi_poa_header_id == selectdId).FirstOrDefault().itemLists;
                 var observableItems = new ObservableCollection<PoaItemList>(itemViewSelect);
                 BindingList<PoaItemList> source = observableItems.ToBindingList();
                 kryptonDataGridViewitem.DataSource = source;
@@ -119,14 +142,14 @@ namespace CPS_App
         private async void btnedit_Click(object sender, EventArgs e)
         {
             var currentIndex = GenUtil.ConvertObjtoType<int>(kryptonDataGridViewpoa.CurrentRow.Cells["bi_poa_header_id"].Value);
-            var readyToEdit = obj.Where(x => x.bi_poa_header_id == currentIndex).ToList();
-          
+            var readyToEdit = poaObj.Where(x => x.bi_poa_header_id == currentIndex).ToList();
+
             POAEdit poaEdit = new POAEdit(currentIndex, readyToEdit, _dbServices);
             poaEdit.MdiParent = this.MdiParent;
             poaEdit.AutoScroll = true;
             poaEdit.Show();
+            this.Close();
 
-            
         }
 
         private void btnadd_Click(object sender, EventArgs e)
@@ -135,11 +158,64 @@ namespace CPS_App
             poaCre.MdiParent = this.MdiParent;
             poaCre.AutoScroll = true;
             poaCre.Show();
+            this.Close();
         }
 
         private void btncancel_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+        private async void btnsearch_Click(object sender, EventArgs e)
+        {
+            btnadd.Show();
+            btnedit.Show();
+            if (cbxsearch1.SelectedItem == cbxsearch2.SelectedItem && txtsearch1.Text != "" && txtsearch2.Text != "")
+            {
+                MessageBox.Show("Duplicate Search criteria");
+                return;
+            }
+            lblnoresult.Hide();
+            lblsubitemtitle.Hide();
+            kryptonDataGridViewpoa.DataSource = null;
+            string userLoc = userIden.Claims.FirstOrDefault(x => x.Type == "location_id").Value.ToString();
+
+            if (txtsearch1.Text == string.Empty && txtsearch2.Text == string.Empty)
+            {
+                await LoadViewTable(userLoc);
+                return;
+            }
+            var obj = new searchObj();
+
+            foreach (KryptonPanel c in Controls.OfType<KryptonPanel>())
+            {
+                c.Controls.OfType<KryptonTextBox>().ToList().ForEach(x =>
+                {
+                    if (x.Text != string.Empty)
+                    {
+                        c.Controls.OfType<KryptonComboBox>().ToList().ForEach(p =>
+                        {
+                            var searchkey = searchWords.FirstOrDefault(x => x.Key == p.SelectedItem.ToString()).Value;
+                            obj.searchWords.Add(searchkey, x.Text);
+                        });
+                    }
+                });
+            }
+
+            await LoadViewTable(userLoc, obj);
+        }
+        private async Task GetSearchWords(ClaimsIdentity identity)
+        {
+
+            IEnumerable<tb_search_gen> searchString = await _searchFunc.SearchParaGenerator(identity);
+            if (searchString == null)
+            {
+                return;
+            }
+            Dictionary<string, string> words = JsonConvert.DeserializeObject<Dictionary<string, string>>(searchString.ElementAt(0).js_search_para);
+
+            searchWords = words;
+            cbxsearch1.DataSource = words.Keys.ToList();
+            cbxsearch2.DataSource = words.Keys.ToList();
         }
     }
 }

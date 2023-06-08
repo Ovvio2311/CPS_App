@@ -19,11 +19,11 @@ namespace CPS_App.Services
             _logger = logger;
             _services = dbServices;
         }
-        public async Task<List<POATableObj>> GetPoaWorker()
+        public async Task<List<POATableObj>> GetPoaWorker(string loc, searchObj obj = null)
         {
             var reqPoaList = new List<POATableObj>();
             var res = new List<POATableObj>();
-            var resObj = await _services.GetPoaList();
+            var resObj = await _services.GetPoaList(loc,obj);
             if (resObj.resCode == 1 && resObj.result != null)
             {
                 List<List<KeyValuePair<string, object>>> kvp = resObj.result;

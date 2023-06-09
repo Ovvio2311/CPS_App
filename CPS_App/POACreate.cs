@@ -11,9 +11,11 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using CPS_App.Helpers;
 using CPS_App.Services;
 using Krypton.Toolkit;
 using Newtonsoft.Json;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Header;
 using static CPS_App.Models.CPSModel;
 using static CPS_App.Models.DbModels;
 
@@ -25,12 +27,14 @@ namespace CPS_App
         private DbServices _dbServices;
         private POATableObj obj;
         private List<PoaItemList> itemList;
+        private Validator _validator;
         public POACreate(DbServices dbServices)
         {
             InitializeComponent();
             obj = new POATableObj();
             itemList = new List<PoaItemList>();
             _dbServices = dbServices;
+            _validator = new Validator();
         }
 
         private async void POACreate_Load(object sender, EventArgs e)
@@ -73,8 +77,10 @@ namespace CPS_App
             List<tb_item> itid = JsonConvert.DeserializeObject<List<tb_item>>(JsonConvert.SerializeObject(itemType.result));
             itid.ForEach(x => cbxitid.Items.Add($"{x.bi_item_id}: {x.vc_item_desc}"));
 
-        
-
+            pn1.Controls.OfType<KryptonTextBox>().ToList().ForEach(x => x.Validating += requiredFieldCheck);
+            pn2.Controls.OfType<KryptonTextBox>().ToList().ForEach(x => x.Validating += requiredFieldCheck);
+            pn1.Controls.OfType<KryptonComboBox>().ToList().ForEach(x => x.Validating += requiredFieldCheck);
+            pn2.Controls.OfType<KryptonComboBox>().ToList().ForEach(x => x.Validating += requiredFieldCheck);
         }
         public void enableValidation()
         {
@@ -236,33 +242,60 @@ namespace CPS_App
                 }
             });
         }
-        private void btnAdd_Click(object sender, EventArgs e)
+        private async void btnAdd_Click(object sender, EventArgs e)
         {
+            if (ValidateCheck())
+            {
+                MessageBox.Show("item form not complete");
+                return;
+            }
 
+            dynamic request = new
+            {
+                supid = txtsupitid.Text,
+                quantity = txtproqty.Text,
+                minqty = txtminqty.Text,
+                price = txtpri.Text,
+                reference = txtref.Text,
+                quot = txtquot.Text,
+
+            };
+            Validator validator = new Validator();
+            validator.make(request,
+            new
+            {
+                supid /*key*/= "required" /*fieldRule*/,
+                quantity = "int",
+                minqty = "decimal",
+                price = "decimal",
+                reference = "required",
+                quot = "required",
+
+            });
+            if (!validator.passes())
+            {
+                MessageBox.Show(GenUtil.ArrayToString(validator.errors()), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             var itemidtype = cbxitid.SelectedItem;
             if (itemidtype != null) { itemidtype = itemidtype.ToString().Split(":").ElementAt(0); }
             //var uomtype = cbxuom.SelectedItem;
             //if (uomtype != null) { uomtype = uomtype.ToString().Split(":").ElementAt(0); }
+            PoaItemList req = new PoaItemList();
+            await GenUtil.AddingInputToObject<PoaItemList>(pn2, req);
+            //PoaItemList req = new PoaItemList()
+            //{
+            //    bi_item_id = GenUtil.ConvertObjtoType<int>(itemidtype),
+            //    bi_supp_item_id = GenUtil.ConvertObjtoType<int>(txtsupitid.Text),
+            //    dc_promise_qty = GenUtil.ConvertObjtoType<decimal>(txtproqty.Text),
+            //    // i_uom_id = GenUtil.ConvertObjtoType<int>(uomtype),
+            //    dc_min_qty = GenUtil.ConvertObjtoType<decimal>(txtminqty.Text),
+            //    dc_price = GenUtil.ConvertObjtoType<decimal>(txtpri.Text),
+            //    dc_amount = GenUtil.ConvertObjtoType<decimal>(txtam.Text),
+            //    vc_reference = txtref.Text,
+            //    bi_quot_no = txtquot.Text,
 
-            var availableItem = pn2.Controls.OfType<KryptonTextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
-            if (availableItem != 7 || itemidtype == null)
-            {
-                MessageBox.Show("Please completed the POA form");
-                return;
-            }
-            PoaItemList req = new PoaItemList()
-            {
-                bi_item_id = GenUtil.ConvertObjtoType<int>(itemidtype),
-                bi_supp_item_id = GenUtil.ConvertObjtoType<int>(txtsupitid.Text),
-                dc_promise_qty = GenUtil.ConvertObjtoType<decimal>(txtproqty.Text),
-                // i_uom_id = GenUtil.ConvertObjtoType<int>(uomtype),
-                dc_min_qty = GenUtil.ConvertObjtoType<decimal>(txtminqty.Text),
-                dc_price = GenUtil.ConvertObjtoType<decimal>(txtpri.Text),
-                dc_amount = GenUtil.ConvertObjtoType<decimal>(txtam.Text),
-                vc_reference = txtref.Text,
-                bi_quot_no = txtquot.Text,
-
-            };
+            //};
             if (itemList.Count > 0 && itemList.Select(x => x.bi_item_id == req.bi_item_id).FirstOrDefault())
             {
                 MessageBox.Show("Item duplicate entry");
@@ -309,7 +342,10 @@ namespace CPS_App
                 MessageBox.Show("Effective date error");
                 return;
             }
-            var selectedComboBoxpn1 = pn1.Controls.OfType<KryptonComboBox>().Where(n => !GenUtil.isNull(n.SelectedItem.ToString())).Count();
+            var selectedComboBoxpn1 = pn1.Controls.OfType<KryptonComboBox>().Where(n => GenUtil.ConvertObjtoType<string>(n.SelectedItem) != null).Count();
+            //var selectedComboBoxpn2 = pn2.Controls.OfType<KryptonComboBox>().Where(n => GenUtil.ConvertObjtoType<string>(n.SelectedItem) != null).Count();
+
+
             var availableItem = pn1.Controls.OfType<KryptonTextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
 
             if (availableItem != 2 || selectedComboBoxpn1 != 5)
@@ -359,27 +395,41 @@ namespace CPS_App
 
         private void requiredFieldCheck(object sender, CancelEventArgs e)
         {
-            ValidateCheck();
-
-        }
-        private void ValidateCheck()
-        {
-            var idtype = cbxitid.SelectedItem;
-            if (idtype != null) { idtype = idtype.ToString().Split(":").ElementAt(0); }
-
-            var selectedComboBoxpn1 = pn1.Controls.OfType<KryptonComboBox>().Where(n => !GenUtil.isNull(n.SelectedItem.ToString())).Count();
-            var selectedComboBoxpn2 = pn2.Controls.OfType<KryptonComboBox>().Where(n => !GenUtil.isNull(n.SelectedItem.ToString())).Count();
-            var availablePn1 = pn1.Controls.OfType<KryptonTextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
-            var availablePn2 = pn2.Controls.OfType<KryptonTextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
-
-            if (availablePn1 != 2 || availablePn2 != 6 || selectedComboBoxpn1 != 7 || selectedComboBoxpn2 != 2 || itemList.Count() <= 0)
-            {
-                disableValidation();
-            }
-            else
+            if (ValidateCheck() && itemList.Count() <= 0)
             {
                 enableValidation();
             }
+            else
+            {
+                disableValidation();
+            }
+
+        }
+        private bool ValidateCheck()
+        {
+            try
+            {
+                if (txtpri.Text != string.Empty && txtproqty.Text != string.Empty)
+                {
+                    var dec = GenUtil.ConvertObjtoType<decimal>(txtpri.Text) * GenUtil.ConvertObjtoType<decimal>(txtproqty.Text);
+                    txtam.Text = dec.ToString();
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+            var idtype = cbxitid.SelectedItem;
+            if (idtype != null) { idtype = idtype.ToString().Split(":").ElementAt(0); }
+
+            var selectedComboBoxpn1 = pn1.Controls.OfType<KryptonComboBox>().Where(n => GenUtil.ConvertObjtoType<string>(n.SelectedItem) != null).Count();
+            var selectedComboBoxpn2 = pn2.Controls.OfType<KryptonComboBox>().Where(n => GenUtil.ConvertObjtoType<string>(n.SelectedItem) != null).Count();
+            var availablePn1 = pn1.Controls.OfType<KryptonTextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
+            var availablePn2 = pn2.Controls.OfType<KryptonTextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
+            return availablePn1 != 2 || availablePn2 != 8 || selectedComboBoxpn1 != 5 || selectedComboBoxpn2 != 1;
+
         }
     }
 }

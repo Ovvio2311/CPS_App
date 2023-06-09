@@ -27,15 +27,16 @@ namespace CPS_App.Services
         {
             if (typeof(T) == typeof(DateTime)) { return DateTime.Parse(obj.ToString()); }
             if (typeof(T) == typeof(string)) { return Convert.ToString(obj); }
-            if (typeof(T) == typeof(long)) { return long.TryParse(obj.ToString(), out long number) ? Convert.ToInt64(obj) : obj; }
-            if (typeof(T) == typeof(int)) { return int.TryParse(obj.ToString(), out int number) ? Convert.ToInt32(obj) : obj; }
-            if (typeof(T) == typeof(double)) { return double.TryParse(obj.ToString(), out double number) ? Convert.ToDouble(obj) : obj; }
-            if (typeof(T) == typeof(decimal)) { return decimal.TryParse(obj.ToString(), out decimal number) ? Convert.ToDecimal(obj) : obj; }
+            if (typeof(T) == typeof(long)) { return long.TryParse(obj.ToString(), out long number) ? Convert.ToInt64(obj) : null; }
+            if (typeof(T) == typeof(int)) { return int.TryParse(obj.ToString(), out int number) ? Convert.ToInt32(obj) : null; }
+            if (typeof(T) == typeof(double)) { return double.TryParse(obj.ToString(), out double number) ? Convert.ToDouble(obj) : null; }
+            if (typeof(T) == typeof(decimal)) { return decimal.TryParse(obj.ToString(), out decimal number) ? Convert.ToDecimal(obj) : null; }
             return null;
         }
         public static bool isNull(string obj)
         {
-            return string.IsNullOrWhiteSpace(obj.Trim()) ? true : false;
+
+            return string.IsNullOrWhiteSpace(obj.Trim()) || obj==string.Empty? true : false;
         }
         public static bool isNull(List<string> obj)
         {

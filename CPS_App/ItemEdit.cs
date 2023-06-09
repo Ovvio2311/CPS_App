@@ -76,9 +76,10 @@ namespace CPS_App
                 int selectid = GenUtil.ConvertObjtoType<int>(dataGridViewitem.CurrentRow.Cells["bi_location_id"].Value);
 
                 var readyToEdit = stockList.ToList().Where(x => x.bi_location_id == selectid).FirstOrDefault();
-                await GenUtil.AutoLabelAddingToTextBox<StockLevelSubItem>(this, readyToEdit);
+
+                await GenUtil.AutoLabelAddingfromTextBox<StockLevelSubItem>(this, readyToEdit);
                 StockLevelViewObj edititems = stock.ToList().Where(x => x.bi_item_id == itemId).FirstOrDefault();
-                await GenUtil.AutoLabelAddingToTextBox<StockLevelViewObj>(this, edititems);
+                await GenUtil.AutoLabelAddingfromTextBox<StockLevelViewObj>(this, edititems);
                 //txtvid.Text = readyToEdit.bi_item_vid.ToString();
                 //txtid.Text = readyToEdit.bi_item_id.ToString();
                 //txtcat.Text = readyToEdit.vc_category_desc.ToString();
@@ -100,20 +101,33 @@ namespace CPS_App
                 MessageBox.Show("Please enter qty");
                 return;
             }
-            if (await GenUtil.ConfirmListAttach(this))
+
+            string confirmStr = await GenUtil.ConfirmListAttach(this);
+            if (confirmStr != string.Empty)
             {
-                var updateObj = new updateObj();
-                updateObj.table = "tb_item_unit";
-                updateObj.updater.Add(nameof(readyToEdit.i_item_qty), txtqty.Text.ToString());
-                updateObj.selecter.Add(nameof(readyToEdit.bi_item_id), readyToEdit.bi_item_id.ToString());
-                updateObj.selecter.Add(nameof(readyToEdit.bi_location_id), readyToEdit.bi_location_id.ToString());
-                var res = await _dbServices.UpdateAsync(updateObj);
-                if (res.resCode != 1)
+                DialogResult response = MessageBox.Show(confirmStr, "Confirm", MessageBoxButtons.YesNo);
+                if (response == DialogResult.Yes ? true : false)
                 {
-                    MessageBox.Show("error");
-                    return;
+                    var updateObj = new updateObj();
+                    updateObj.table = "tb_item_unit";
+                    updateObj.updater.Add(nameof(readyToEdit.i_item_qty), txtqty.Text.ToString());
+                    updateObj.selecter.Add(nameof(readyToEdit.bi_item_id), readyToEdit.bi_item_id.ToString());
+                    updateObj.selecter.Add(nameof(readyToEdit.bi_location_id), readyToEdit.bi_location_id.ToString());
+                    var res = await _dbServices.UpdateAsync(updateObj);
+                    if (res.resCode != 1)
+                    {
+                        MessageBox.Show("error");
+                        return;
+                    }
+                    MessageBox.Show("Item updated");
+                    this.Controls.OfType<KryptonTextBox>().ToList().ForEach(x => x.Clear());
+                    this.Controls.OfType<KryptonComboBox>().ToList().ForEach(x => x.SelectedItem = 0);
+                    await RefreshItemEditTable();
                 }
-                MessageBox.Show("Item updated");
+            }
+            else
+            {
+                MessageBox.Show("confirmStr is null");
             }
 
         }
@@ -122,5 +136,11 @@ namespace CPS_App
         {
             this.Close();
         }
+        private async Task RefreshItemEditTable()
+        {
+            stock = await _worker.GetStockLevelWorker();
+            await itemEditInitialLoad();
+        }
+
     }
 }

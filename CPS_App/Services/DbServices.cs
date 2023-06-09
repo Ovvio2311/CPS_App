@@ -455,7 +455,7 @@ namespace CPS_App.Services
             }
             return res;
         }
-        public async Task<DbResObj> GetPoaList(string loc, searchObj obj = null)
+        public async Task<DbResObj> GetPoaList(string loc = null, searchObj obj = null)
         {
             //var res = new DbResObj();
 
@@ -476,7 +476,20 @@ namespace CPS_App.Services
                          left join lut_poa_type poatype on poa.ti_poa_type_id = poatype.ti_poa_type_id
                          inner join tb_location loc on hd.bi_deli_loc_id = loc.bi_location_id
                          left join lut_poa_status poast on poa.bi_poa_status_id = poast.bi_poa_status_id
-                         ) a;";
+                         ) a ";
+            if (obj != null)
+            {
+                string seasrchList = string.Join(" and ", obj.searchWords.Select(x => $"{x.Key}= \'{x.Value}\'").ToList());
+                sql += $"where {seasrchList} ";
+            }
+            if (loc != null)
+            {
+                sql += $"order by bi_deli_loc_id = '{loc}' desc; ";
+            }
+            else
+            {
+                sql += ";";
+            }
             try
             {
                 var result = await _db.QueryAsync<dynamic>(sql, null);

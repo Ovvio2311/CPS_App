@@ -14,6 +14,7 @@ using System.Reflection;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using static CPS_App.Models.CPSModel;
 using static CPS_App.Models.DbModels;
 
@@ -112,8 +113,8 @@ namespace CPS_App.Services
                 }
             });
         }
-        //textbox to label
-        public static async Task<bool> ConfirmListAttach(Form form)
+        //coordinate label and textbox, combobox, datetimepicker to confirm list
+        public static async Task<string> ConfirmListAttach(Form form)
         {
             var confirmObj = new Dictionary<string, string>();
             form.Controls.OfType<KryptonLabel>().ToList().ForEach(x =>
@@ -147,13 +148,10 @@ namespace CPS_App.Services
                 });
 
             });
-            string confirmStr = string.Join(Environment.NewLine, confirmObj.Select(x => $"{x.Key} = {x.Value}").ToList());
-
-            DialogResult response = MessageBox.Show(confirmStr, "Confirm", MessageBoxButtons.YesNo);
-            return response == DialogResult.Yes ? true : false;
+            return string.Join(Environment.NewLine, confirmObj.Select(x => $"{x.Key} = {x.Value}").ToList());
         }
-        //class obj to label
-        public static async Task<bool> ConfirmListAttach<T>(Panel form, List<T> obj)
+        //coordinate class obj and label data to confirm list
+        public static async Task<string> ConfirmListAttach<T>(Panel form, List<T> obj)
         {
             List<Dictionary<string, string>> confirmObj = new List<Dictionary<string, string>>();
 
@@ -187,13 +185,11 @@ namespace CPS_App.Services
                     confirmStr += string.Join(Environment.NewLine, $"{x.Key} = {x.Value}\n");
                 });
             });
-
-            DialogResult response = MessageBox.Show(confirmStr, "Confirm", MessageBoxButtons.YesNo);
-            return response == DialogResult.Yes ? true : false;
+            return confirmStr;
         }
 
-        //form class to textbox
-        public static async Task AutoLabelAddingToTextBox<T>(Form form, T obj)
+        //Adding data from class obj to textbox and combobox
+        public static async Task AutoLabelAddingfromTextBox<T>(Form form, T obj)
         {
             obj.GetType().GetProperties().ToList().ForEach(x =>
             {
@@ -220,16 +216,57 @@ namespace CPS_App.Services
                 });
             });
         }
-        //no use
-        public static async Task AutoAddObjItemFromTextBox<T>(Form form, T obj)
+
+        //add textbox, combobox data to class obj
+        public static async Task AddingInputToObject<T>(Panel panel,T obj)
         {
-            form.Controls.OfType<KryptonTextBox>().ToList().ForEach(x =>
+            panel.Controls.OfType<KryptonTextBox>().ToList().ForEach(x =>
             {
                 obj.GetType().GetProperties().ToList().ForEach(p =>
                 {
-                    if (x.Tag != null && p.Name == x.Tag.ToString())
+                    if (x.Tag != null && p.Name == x.Tag.ToString() && 
+                    x.Text.Trim() != string.Empty && x.Enabled)
                     {
                         p.SetValue(obj, Convert.ChangeType(x.Text, p.PropertyType, null));
+                    }
+
+                });
+            });
+            panel.Controls.OfType<KryptonComboBox>().ToList().ForEach(x =>
+            {
+                obj.GetType().GetProperties().ToList().ForEach(p =>
+                {
+                    if (x.Tag != null && x.Tag.ToString().Contains(":") && x.Enabled)
+                    {
+                        var id = x.Tag.ToString().Split(":").ElementAt(0);
+                        var name = x.Tag.ToString().Split(":").ElementAt(1);
+                        if (id == p.Name)
+                        {
+                            var idValue = x.SelectedItem.ToString().Split(":").ElementAt(0);
+                            p.SetValue(obj, Convert.ChangeType(idValue, p.PropertyType, null));
+                        }
+                        else if (name == p.Name)
+                        {
+                            var nameValue = x.SelectedItem.ToString().Split(":").ElementAt(1);
+                            p.SetValue(obj, Convert.ChangeType(nameValue, p.PropertyType, null));
+                        }
+                    }
+                    else if (x.Tag != null && p.Name == x.Tag.ToString() && x.Enabled)
+                    {
+                        var value = x.SelectedItem.ToString().Split(":").ElementAt(0);
+                        p.SetValue(obj, Convert.ChangeType(value, p.PropertyType, null));
+                    }
+
+                });
+            });
+            panel.Controls.OfType<KryptonDateTimePicker>().ToList().ForEach(d =>
+            {
+                obj.GetType().GetProperties().ToList().ForEach(p =>
+                {
+                    if (d.Tag != null && p.Name == d.Tag.ToString() &&
+                    d.Text.Trim() != string.Empty && d.Enabled)
+                    {
+                        p.SetValue(obj, Convert.ChangeType(d.Value.ToString("yyyy-MM-dd HH:mm:ss"), p.PropertyType, null));
                     }
 
                 });

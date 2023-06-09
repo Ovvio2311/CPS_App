@@ -452,13 +452,13 @@ namespace CPS_App.Models
             [Display(Name = "Delivery Schedule")]
             public string vc_deli_sched_desc { get; set; }
             [Display(Name = "Effective Date")]
-            public DateTime dt_effect_date { get; set; }
+            public string dt_effect_date { get; set; }
             [Display(Name = "Contract No")]
             public string bi_contract_no { get; set; }
             [Display(Name = "not_shown")]
-            public DateTime dt_created_date { get; set; }
+            public string dt_created_date { get; set; }
             [Display(Name = "not_shown")]
-            public DateTime dt_updated_datetime { get; set; }
+            public string dt_updated_datetime { get; set; }
             [Display(Name = "not_shown")]
             public List<PoaItemList> itemLists { get; set; }
         }

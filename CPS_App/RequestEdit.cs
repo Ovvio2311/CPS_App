@@ -89,7 +89,7 @@ namespace CPS_App
             {
                 int selectdId = GenUtil.ConvertObjtoType<int>(datagridviewitem.CurrentRow.Cells["bi_item_id"].Value);
                 ItemRequest readyToEdit = itemsReq.Where(x => x.bi_item_id == selectdId).FirstOrDefault();
-                await GenUtil.AutoLabelAddingToTextBox<ItemRequest>(this, readyToEdit);
+                await GenUtil.AutoLabelAddingfromTextBox<ItemRequest>(this, readyToEdit);
                 //txtvid.Text = readyToEdit.bi_item_vid.ToString();
                 //txtrs.Text = GenUtil.ConvertObjtoType<string>(readyToEdit.vc_po_status_desc);
                 //txtremain.Text = readyToEdit.i_remain_req_qty.ToString();
@@ -125,26 +125,37 @@ namespace CPS_App
                 MessageBox.Show("Remain Quantity cannot larger than Request Quantity");
                 return;
             }
-            if (await GenUtil.ConfirmListAttach(this))
+            string confirmStr = await GenUtil.ConfirmListAttach(this);
+            if (confirmStr != string.Empty)
             {
-                var updateObj = new updateObj();
-                updateObj.table = "tb_request_detail";
-                updateObj.updater.Add(nameof(readyToEdit.i_remain_req_qty), txtremain.Text.ToString());
-                updateObj.updater.Add(nameof(readyToEdit.dt_exp_deli_date), dateTimePickerEDD.Value.ToString("yyyy-MM-ddTHH:mm:ss"));
-                updateObj.selecter.Add(nameof(readyToEdit.bi_req_id), readyToEdit.bi_req_id.ToString());
-                updateObj.selecter.Add(nameof(readyToEdit.bi_item_id), readyToEdit.bi_item_id.ToString());
-                var res = await _dbServices.UpdateAsync(updateObj);
-                if (res.resCode != 1)
+                DialogResult response = MessageBox.Show(confirmStr, "Confirm", MessageBoxButtons.YesNo);
+                if(response == DialogResult.Yes ? true : false)
                 {
-                    MessageBox.Show("update error");
-                }
-                else
-                {
-                    MessageBox.Show("Update Success");
-                    this.Controls.OfType<KryptonTextBox>().ToList().ForEach(x => x.Clear());
-                    await RefreshItemEditTable();
+                    var updateObj = new updateObj();
+                    updateObj.table = "tb_request_detail";
+                    updateObj.updater.Add(nameof(readyToEdit.i_remain_req_qty), txtremain.Text.ToString());
+                    updateObj.updater.Add(nameof(readyToEdit.dt_exp_deli_date), dateTimePickerEDD.Value.ToString("yyyy-MM-ddTHH:mm:ss"));
+                    updateObj.selecter.Add(nameof(readyToEdit.bi_req_id), readyToEdit.bi_req_id.ToString());
+                    updateObj.selecter.Add(nameof(readyToEdit.bi_item_id), readyToEdit.bi_item_id.ToString());
+                    var res = await _dbServices.UpdateAsync(updateObj);
+                    if (res.resCode != 1)
+                    {
+                        MessageBox.Show("update error");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Update Success");
+                        this.Controls.OfType<KryptonTextBox>().ToList().ForEach(x => x.Clear());
+                        await RefreshItemEditTable();
+                    }
                 }
             }
+            else
+            {
+                MessageBox.Show("confirmStr is null");
+            }
+            
+
 
         }
         //private async Task<bool> ConfirmListAttach()

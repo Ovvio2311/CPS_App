@@ -135,24 +135,37 @@ namespace CPS_App
 
         private async void btnSubmit_Click(object sender, EventArgs e)
         {
-            if (await GenUtil.ConfirmListAttach<RequestionCreationItem>(panelItem, req.items))
-            {
-                req.i_staff_id = GenUtil.ConvertObjtoType<int>(txtStaff.Text);
-                //var res = await _dbServices.GetLocationDesc<string>(cbxLoc.SelectedItem.ToString());
-                //tb_location re = JsonConvert.DeserializeObject<tb_location>(JsonConvert.SerializeObject(res.result));
-                //req.bi_location_id = re.bi_location_id;
+            string confirmStr = await GenUtil.ConfirmListAttach<RequestionCreationItem>(panelItem, req.items);
 
-                if (!await CreateRequestAsync(req))
+            if (confirmStr != string.Empty)
+            {
+                DialogResult response = MessageBox.Show(confirmStr, "Confirm", MessageBoxButtons.YesNo);
+                if (response == DialogResult.Yes ? true : false)
                 {
-                    MessageBox.Show("Request creation error\nPlease create again");
-                };
-                req.items.Clear();
-                disableValidation();
+                    req.i_staff_id = GenUtil.ConvertObjtoType<int>(txtStaff.Text);
+                    //var res = await _dbServices.GetLocationDesc<string>(cbxLoc.SelectedItem.ToString());
+                    //tb_location re = JsonConvert.DeserializeObject<tb_location>(JsonConvert.SerializeObject(res.result));
+                    //req.bi_location_id = re.bi_location_id;
+
+                    if (!await CreateRequestAsync(req))
+                    {
+                        MessageBox.Show("Request creation error\nPlease create again");
+                    };
+                    req.items.Clear();
+                    disableValidation();
+                }
             }
+            else
+            {
+                MessageBox.Show("confirmStr is null");
+            }
+
+
+
 
         }
         private async Task<bool> CreateRequestAsync(RequestCreationReq req)
-        {            
+        {
             //Checking insert tb_request_detail data correct
             req.items.ForEach(async row =>
             {
@@ -187,13 +200,13 @@ namespace CPS_App
                         MessageBox.Show("uom Id not find");
                     }
                     tb_item uomId = uomid.result[0];
-                    row.i_uom_id = GenUtil.ConvertObjtoType<int>(uomId.i_uom_id);                                        
+                    row.i_uom_id = GenUtil.ConvertObjtoType<int>(uomId.i_uom_id);
                 }
                 catch (Exception e)
                 {
                     MessageBox.Show(e.Message);
 
-                }                
+                }
             });
 
             DbResObj res1 = new DbResObj();
@@ -222,7 +235,8 @@ namespace CPS_App
             //insert tb_request_detail
             req.items.ForEach(async row =>
             {
-                try {
+                try
+                {
                     var tb_detail = new insertObj();
                     tb_detail.table = "tb_request_detail";
                     tb_detail.inserter = new Dictionary<string, string>
@@ -245,13 +259,14 @@ namespace CPS_App
                         //MessageBox.Show("insert error");
                         throw new Exception("insert error");
                     }
-                }catch(Exception ex)
+                }
+                catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message);
                 }
-                
+
             });
-            
+
             MessageBox.Show($"Your Request has been created!\nRequest Id: {res1.result}");
             return true;
         }

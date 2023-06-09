@@ -24,20 +24,19 @@ namespace CPS_App
         public ClaimsIdentity userIden;
         private DbServices _dbServices;
         private POATableObj obj;
-        private List<PoaItemList> templist;
+        private List<PoaItemList> itemList;
         public POACreate(DbServices dbServices)
         {
             InitializeComponent();
             obj = new POATableObj();
-            templist = new List<PoaItemList>();
+            itemList = new List<PoaItemList>();
             _dbServices = dbServices;
         }
 
         private async void POACreate_Load(object sender, EventArgs e)
         {
             pn2.Hide();
-            pn2.Controls.OfType<KryptonTextBox>().ToList().ForEach(x => x.Validating += requiredFieldCheck);
-            pn2.Controls.OfType<KryptonComboBox>().ToList().ForEach(x => x.Validating += requiredFieldCheck);
+            pn2.Enabled = false;
             userIden = AuthService._userClaim;
             if (userIden != null)
             {
@@ -66,16 +65,15 @@ namespace CPS_App
             List<lut_deli_schedule_type> sc = JsonConvert.DeserializeObject<List<lut_deli_schedule_type>>(JsonConvert.SerializeObject(deliscType.result));
             sc.ForEach(x => cbxselisc.Items.Add($"{x.ti_deli_sched_id}: {x.vc_deli_sched_desc}"));
 
-            var uomType = await _dbServices.SelectAllAsync<lut_uom_type>();
-            List<lut_uom_type> uom = JsonConvert.DeserializeObject<List<lut_uom_type>>(JsonConvert.SerializeObject(uomType.result));
-            uom.ForEach(x => cbxuom.Items.Add($"{x.i_uom_id}: {x.vc_uom_desc}"));
+            //var uomType = await _dbServices.SelectAllAsync<lut_uom_type>();
+            //List<lut_uom_type> uom = JsonConvert.DeserializeObject<List<lut_uom_type>>(JsonConvert.SerializeObject(uomType.result));
+            //uom.ForEach(x => cbxuom.Items.Add($"{x.i_uom_id}: {x.vc_uom_desc}"));
 
             var itemType = await _dbServices.SelectAllAsync<tb_item>();
             List<tb_item> itid = JsonConvert.DeserializeObject<List<tb_item>>(JsonConvert.SerializeObject(itemType.result));
             itid.ForEach(x => cbxitid.Items.Add($"{x.bi_item_id}: {x.vc_item_desc}"));
 
-            pn2.Controls.OfType<TextBox>().ToList().ForEach(n => n.Enabled = false);
-            pn2.Controls.OfType<ComboBox>().ToList().ForEach(n => n.Enabled = false);
+        
 
         }
         public void enableValidation()
@@ -142,7 +140,7 @@ namespace CPS_App
                         { nameof(obj.vc_currency), obj.vc_currency },
                         { nameof(obj.ti_tc_id), obj.ti_tc_id.ToString() },
                         { nameof(obj.ti_deli_sched_id), obj.ti_deli_sched_id.ToString() },
-                        { nameof(obj.dt_effect_date), obj.dt_effect_date.ToString("yyyy-MM-dd HH:mm:ss") },
+                        { nameof(obj.dt_effect_date), obj.dt_effect_date.ToString() },
                         { nameof(obj.bi_contract_no), obj.bi_contract_no },
                 }
             };
@@ -206,7 +204,7 @@ namespace CPS_App
 
 
             //insert poa_line
-            obj.itemLists = templist;
+            obj.itemLists = itemList;
             obj.itemLists.ForEach(async row =>
             {
                 var poa_line = new insertObj()
@@ -243,11 +241,11 @@ namespace CPS_App
 
             var itemidtype = cbxitid.SelectedItem;
             if (itemidtype != null) { itemidtype = itemidtype.ToString().Split(":").ElementAt(0); }
-            var uomtype = cbxuom.SelectedItem;
-            if (uomtype != null) { uomtype = uomtype.ToString().Split(":").ElementAt(0); }
+            //var uomtype = cbxuom.SelectedItem;
+            //if (uomtype != null) { uomtype = uomtype.ToString().Split(":").ElementAt(0); }
 
             var availableItem = pn2.Controls.OfType<KryptonTextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
-            if (availableItem != 7 || itemidtype == null || uomtype == null)
+            if (availableItem != 7 || itemidtype == null)
             {
                 MessageBox.Show("Please completed the POA form");
                 return;
@@ -257,7 +255,7 @@ namespace CPS_App
                 bi_item_id = GenUtil.ConvertObjtoType<int>(itemidtype),
                 bi_supp_item_id = GenUtil.ConvertObjtoType<int>(txtsupitid.Text),
                 dc_promise_qty = GenUtil.ConvertObjtoType<decimal>(txtproqty.Text),
-                i_uom_id = GenUtil.ConvertObjtoType<int>(uomtype),
+                // i_uom_id = GenUtil.ConvertObjtoType<int>(uomtype),
                 dc_min_qty = GenUtil.ConvertObjtoType<decimal>(txtminqty.Text),
                 dc_price = GenUtil.ConvertObjtoType<decimal>(txtpri.Text),
                 dc_amount = GenUtil.ConvertObjtoType<decimal>(txtam.Text),
@@ -265,12 +263,12 @@ namespace CPS_App
                 bi_quot_no = txtquot.Text,
 
             };
-            if (templist.Count > 0 && templist.Select(x => x.bi_item_id == req.bi_item_id).FirstOrDefault())
+            if (itemList.Count > 0 && itemList.Select(x => x.bi_item_id == req.bi_item_id).FirstOrDefault())
             {
                 MessageBox.Show("Item duplicate entry");
                 return;
             }
-            templist.Add(req);
+            itemList.Add(req);
             MessageBox.Show("Item added");
             pn2.Controls.OfType<TextBox>().ToList().ForEach(t => t.Clear());
             pn2.Controls.OfType<ComboBox>().ToList().ForEach(t => t.SelectedIndex = 0);
@@ -311,31 +309,32 @@ namespace CPS_App
                 MessageBox.Show("Effective date error");
                 return;
             }
+            var selectedComboBoxpn1 = pn1.Controls.OfType<KryptonComboBox>().Where(n => !GenUtil.isNull(n.SelectedItem.ToString())).Count();
             var availableItem = pn1.Controls.OfType<KryptonTextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
 
-            if (availableItem != 2 || poatype == null || loc == null || tc == null
-                || delisc == null || sup == null || ecdate < DateTime.Now)
+            if (availableItem != 2 || selectedComboBoxpn1 != 5)
             {
                 MessageBox.Show("Please enter correct info");
                 return;
             }
             else
             {
-                obj = new POATableObj()
-                {
-                    ti_poa_type_id = GenUtil.ConvertObjtoType<int>(poatype),
-                    bi_poa_status_id = 1,
-                    bi_deli_loc_id = GenUtil.ConvertObjtoType<int>(loc),
-                    bi_supp_id = GenUtil.ConvertObjtoType<int>(sup),
-                    vc_currency = txtcur.Text,
-                    ti_tc_id = GenUtil.ConvertObjtoType<int>(tc),
-                    ti_deli_sched_id = GenUtil.ConvertObjtoType<int>(delisc),
-                    dt_effect_date = ecdate,
-                    bi_contract_no = txtcont.Text,
-                };
+                await GenUtil.AddingInputToObject<POATableObj>(pn1, obj);
+                //obj = new POATableObj()
+                //{
+                //    ti_poa_type_id = GenUtil.ConvertObjtoType<int>(poatype),
+                //    bi_poa_status_id = 1,
+                //    bi_deli_loc_id = GenUtil.ConvertObjtoType<int>(loc),
+                //    bi_supp_id = GenUtil.ConvertObjtoType<int>(sup),
+                //    vc_currency = txtcur.Text,
+                //    ti_tc_id = GenUtil.ConvertObjtoType<int>(tc),
+                //    ti_deli_sched_id = GenUtil.ConvertObjtoType<int>(delisc),
+                //    dt_effect_date = ecdate,
+                //    bi_contract_no = txtcont.Text,
+                //};
             }
 
-            if(obj.ti_poa_type_id != 1) 
+            if (obj.ti_poa_type_id != 1)
             {
                 await InsertTableHeader();
 
@@ -344,6 +343,7 @@ namespace CPS_App
 
             pn1.Hide();
             pn2.Show();
+            pn2.Enabled = true;
         }
 
         private void btncancel_Click(object sender, EventArgs e)
@@ -359,15 +359,20 @@ namespace CPS_App
 
         private void requiredFieldCheck(object sender, CancelEventArgs e)
         {
+            ValidateCheck();
+
+        }
+        private void ValidateCheck()
+        {
             var idtype = cbxitid.SelectedItem;
             if (idtype != null) { idtype = idtype.ToString().Split(":").ElementAt(0); }
-            var uomtype = cbxuom.SelectedItem;
-            if (uomtype != null) { uomtype = uomtype.ToString().Split(":").ElementAt(0); }
 
+            var selectedComboBoxpn1 = pn1.Controls.OfType<KryptonComboBox>().Where(n => !GenUtil.isNull(n.SelectedItem.ToString())).Count();
+            var selectedComboBoxpn2 = pn2.Controls.OfType<KryptonComboBox>().Where(n => !GenUtil.isNull(n.SelectedItem.ToString())).Count();
+            var availablePn1 = pn1.Controls.OfType<KryptonTextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
+            var availablePn2 = pn2.Controls.OfType<KryptonTextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
 
-            var availableItem = pn2.Controls.OfType<KryptonTextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
-
-            if (availableItem != 7 || idtype == null || uomtype == null || templist.Count() <= 0)
+            if (availablePn1 != 2 || availablePn2 != 6 || selectedComboBoxpn1 != 7 || selectedComboBoxpn2 != 2 || itemList.Count() <= 0)
             {
                 disableValidation();
             }

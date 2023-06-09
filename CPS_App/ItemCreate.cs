@@ -133,82 +133,93 @@ namespace CPS_App
             });
             createStock.Add(temp);
             //confirmation
-            if (await GenUtil.ConfirmListAttach(pnit, createStock))
+            string confirmStr = await GenUtil.ConfirmListAttach(pnit, createStock);
+            if(confirmStr != string.Empty)
             {
-                foreach (var i in createStock)
+                DialogResult response = MessageBox.Show(confirmStr, "Confirm", MessageBoxButtons.YesNo);
+                if(response == DialogResult.Yes ? true : false)
                 {
-                    try
+                    foreach (var i in createStock)
                     {
-                        //insert tb_item
-                        var itemObj = new insertObj()
+                        try
                         {
-                            table = typeof(tb_item).Name,
-                            inserter = new Dictionary<string, string>
+                            //insert tb_item
+                            var itemObj = new insertObj()
+                            {
+                                table = typeof(tb_item).Name,
+                                inserter = new Dictionary<string, string>
                         {
                             {"bi_category_id", i.bi_category_id.ToString()},
                             {"vc_item_desc" ,i.vc_item_desc},
                             {"i_uom_id", i.i_uom_id.ToString() }
                         }
-                        };
+                            };
 
-                        var res = await _dbServices.InsertAsync(itemObj);
-                        if (res.resCode != 1 || res.result == null)
-                        {
-                            MessageBox.Show("tb_item error");
-                            return;
-                        }
+                            var res = await _dbServices.InsertAsync(itemObj);
+                            if (res.resCode != 1 || res.result == null)
+                            {
+                                MessageBox.Show("tb_item error");
+                                return;
+                            }
 
-                        //insert tb_vid
-                        //var vidObj = new insertObj()
-                        //{
-                        //    table = typeof(tb_item_vid_mapping).Name,
-                        //    inserter = new Dictionary<string, string>
-                        //    {
-                        //        {"bi_item_id",res.result.ToString() },
-                        //        { "bi_item_vid", vid.ToString()},
-                        //    }
-                        //};
-                        var vidObj = new tb_item_vid_mapping()
-                        {
-                            bi_item_id = GenUtil.ConvertObjtoType<int>(res.result),
-                            bi_item_vid = GenUtil.ConvertObjtoType<int>(i.bi_item_vid),
-                            dt_created_date = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss")
-                        };
-                        var vidres = await _dbServices.InsertAsync<tb_item_vid_mapping>(vidObj);
-                        if (vidres.resCode != 1 || res.result == null)
-                        {
-                            MessageBox.Show("vid mapping error");
-                            return;
+                            //insert tb_vid
+                            //var vidObj = new insertObj()
+                            //{
+                            //    table = typeof(tb_item_vid_mapping).Name,
+                            //    inserter = new Dictionary<string, string>
+                            //    {
+                            //        {"bi_item_id",res.result.ToString() },
+                            //        { "bi_item_vid", vid.ToString()},
+                            //    }
+                            //};
+                            var vidObj = new tb_item_vid_mapping()
+                            {
+                                bi_item_id = GenUtil.ConvertObjtoType<int>(res.result),
+                                bi_item_vid = GenUtil.ConvertObjtoType<int>(i.bi_item_vid),
+                                dt_created_date = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss")
+                            };
+                            var vidres = await _dbServices.InsertAsync<tb_item_vid_mapping>(vidObj);
+                            if (vidres.resCode != 1 || res.result == null)
+                            {
+                                MessageBox.Show("vid mapping error");
+                                return;
+                            }
+                            MessageBox.Show($"New Item has been created with ID: {res.result}");
+                            if (!chkstock.Checked)
+                            {
+                                return;
+                            }
+                            //insert tb_item_unit
+                            var itemUnit = new tb_item_unit()
+                            {
+                                bi_item_id = GenUtil.ConvertObjtoType<int>(res.result),
+                                bi_location_id = GenUtil.ConvertObjtoType<int>(i.bi_location_id),
+                                i_uom_id = GenUtil.ConvertObjtoType<int>(i.i_uom_id),
+                                bi_supp_id = GenUtil.ConvertObjtoType<int>(i.bi_supp_id),
+                                i_item_qty = GenUtil.ConvertObjtoType<int>(i.i_item_qty),
+                                dt_created_date = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss")
+                            };
+                            var iUnitres = await _dbServices.InsertAsync<tb_item_unit>(itemUnit);
+                            if (iUnitres.resCode != 1)
+                            {
+                                MessageBox.Show("insert tb_item_unit error");
+                                return;
+                            }
+                            MessageBox.Show("item unit insert into location");
                         }
-                        MessageBox.Show($"New Item has been created with ID: {res.result}");
-                        if (!chkstock.Checked)
+                        catch (Exception ex)
                         {
-                            return;
+                            MessageBox.Show(ex.Message);
                         }
-                        //insert tb_item_unit
-                        var itemUnit = new tb_item_unit()
-                        {
-                            bi_item_id = GenUtil.ConvertObjtoType<int>(res.result),
-                            bi_location_id = GenUtil.ConvertObjtoType<int>(i.bi_location_id),
-                            i_uom_id = GenUtil.ConvertObjtoType<int>(i.i_uom_id),
-                            bi_supp_id = GenUtil.ConvertObjtoType<int>(i.bi_supp_id),
-                            i_item_qty = GenUtil.ConvertObjtoType<int>(i.i_item_qty),
-                            dt_created_date = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss")
-                        };
-                        var iUnitres = await _dbServices.InsertAsync<tb_item_unit>(itemUnit);
-                        if (iUnitres.resCode != 1)
-                        {
-                            MessageBox.Show("insert tb_item_unit error");
-                            return;
-                        }
-                        MessageBox.Show("item unit insert into location");
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message);
                     }
                 }
             }
+            else
+            {
+                MessageBox.Show("confirmStr is null");
+            }
+                
+            
             //DialogResult dialogResult = MessageBox.Show("Are you confirm the information to create", "Confirm", MessageBoxButtons.YesNo);
             //if (!(dialogResult == DialogResult.Yes))
             //{

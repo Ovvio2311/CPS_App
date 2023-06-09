@@ -144,7 +144,7 @@ namespace CPS_App
             var currentIndex = GenUtil.ConvertObjtoType<int>(kryptonDataGridViewpoa.CurrentRow.Cells["bi_poa_header_id"].Value);
             var readyToEdit = poaObj.Where(x => x.bi_poa_header_id == currentIndex).ToList();
 
-            POAEdit poaEdit = new POAEdit(currentIndex, readyToEdit, _dbServices);
+            POAEdit poaEdit = new POAEdit(currentIndex, readyToEdit, _dbServices,_pOAWorker);
             poaEdit.MdiParent = this.MdiParent;
             poaEdit.AutoScroll = true;
             poaEdit.Show();

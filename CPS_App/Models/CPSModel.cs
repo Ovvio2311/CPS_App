@@ -473,7 +473,7 @@ namespace CPS_App.Models
             [Display(Name = "Item")]
             public string vc_item_desc { get; set; }
             [Display(Name = "Supplier Item Id")]
-            public int bi_supp_item_id { get; set; }
+            public string bi_supp_item_id { get; set; }
             [Display(Name = "Promise Qty")]
             public decimal dc_promise_qty { get; set; }
             [Display(Name = "not_shown")]

@@ -38,7 +38,7 @@ namespace CPS_App.Models
             [Display(Name = "Role_id")]
             public string vc_role_id { get; set; }
             [Display(Name = "Role Name")]
-            public string vc_role_name { get;set; }
+            public string vc_role_name { get; set; }
             [Display(Name = "Role Type")]
             public string vc_claim_type { get; set; }
             [Display(Name = "Role value")]
@@ -110,7 +110,15 @@ namespace CPS_App.Models
             public string dt_created_date { get; set; }
             public string dt_updated_datetime { get; set; }
         }
-
+        public class lut_currency: CPSModelBase
+        {
+            [Display(Name = "ID")]
+            public int i_cur_id { get; set; }
+            [Display(Name = "currency")]
+            public string vc_cur_desc { get; set; }
+            public string dt_created_date { get; set; }
+            public string dt_updated_datetime { get; set; }
+        }
         public class tb_item_vid_mapping : CPSModelBase
         {
             public int bi_item_id { get; set; }
@@ -217,7 +225,7 @@ namespace CPS_App.Models
             [Display(Name = "Role Id")]
             public string vc_role_id { get; set; }
             [Display(Name = "Json")]
-            public string js_search_para { get; set; }            
+            public string js_search_para { get; set; }
             [Display(Name = "Create Date")]
             public string dt_created_date { get; set; }
             [Display(Name = "Update Date")]
@@ -225,7 +233,7 @@ namespace CPS_App.Models
         }
         public class JsonResponse : CPSModelBase
         {
-            public Dictionary<string,string> jsonRes { get; set; }
+            public Dictionary<string, string> jsonRes { get; set; }
         }
         //public class CustomRole
         //{
@@ -275,9 +283,9 @@ namespace CPS_App.Models
             [Display(Name = "Request Quantity")]
             public int i_item_req_qty { get; set; }
             [Display(Name = "Remain Quanity")]
-            public int i_remain_req_qty { get; set; } 
+            public int i_remain_req_qty { get; set; }
             [Display(Name = "i_uom_id")]
-            public int i_uom_id { get; set; } 
+            public int i_uom_id { get; set; }
             [Display(Name = "")]
             public int bi_supp_id { get; set; }
             [Display(Name = "Mapping Id")]
@@ -308,7 +316,7 @@ namespace CPS_App.Models
             [Display(Name = "Location")]
             public string vc_location_desc { get; set; }
             [Display(Name = "not_shown")]
-            public string vc_location_addr { get; set; }            
+            public string vc_location_addr { get; set; }
             [Display(Name = "not_shown")]
             public List<ItemRequest> item { get; set; }
             [Display(Name = "not_shown")]
@@ -366,7 +374,7 @@ namespace CPS_App.Models
             [Display(Name = "Unit of Measurement")]
             public string vc_uom_desc { get; set; }
             [Display(Name = "not_shown")]
-            public List<StockLevelSubItem> subitem { get; set; } 
+            public List<StockLevelSubItem> subitem { get; set; }
 
         }
         public class StockLevelSubItem
@@ -441,8 +449,10 @@ namespace CPS_App.Models
             public int bi_supp_id { get; set; }
             [Display(Name = "Supplier")]
             public string vc_supp_desc { get; set; }
+            [Display(Name = "not_shown")]
+            public int i_cur_id { get; set; }
             [Display(Name = "currency")]
-            public string vc_currency { get; set; }
+            public string vc_cur_desc { get; set; }
             [Display(Name = "not_shown")]
             public int ti_tc_id { get; set; }
             [Display(Name = "Terms and Conditions")]
@@ -467,7 +477,7 @@ namespace CPS_App.Models
             [Display(Name = "Poa line Id")]
             public int bi_poa_line_id { get; set; }
             [Display(Name = "not_shown")]
-            public int bi_poa_header_id { get; set; }          
+            public int bi_poa_header_id { get; set; }
             [Display(Name = "Item Id")]
             public int bi_item_id { get; set; }
             [Display(Name = "Item")]
@@ -504,11 +514,11 @@ namespace CPS_App.Models
             [Display(Name = "not_shown")]
             public int bi_category_id { get; set; }
             [Display(Name = "Category")]
-            public string vc_category_desc { get; set; }            
+            public string vc_category_desc { get; set; }
             [Display(Name = "not_shown")]
             public int bi_prefer_loc_id { get; set; }
             [Display(Name = "Location")]
-            public string vc_location_desc { get; set; }            
+            public string vc_location_desc { get; set; }
             [Display(Name = "not_shown")]
             public string items_group { get; set; }
             [Display(Name = "not_shown")]

@@ -237,7 +237,7 @@ namespace CPS_App.Services
             {
                 obj.GetType().GetProperties().ToList().ForEach(p =>
                 {
-                    if (x.Tag != null && x.Tag.ToString().Contains(":") && x.Enabled)
+                    if (x.Tag != null && x.Tag.ToString().Contains(":") )
                     {
                         var id = x.Tag.ToString().Split(":").ElementAt(0);
                         var name = x.Tag.ToString().Split(":").ElementAt(1);

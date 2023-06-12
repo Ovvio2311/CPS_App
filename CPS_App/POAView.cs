@@ -104,6 +104,7 @@ namespace CPS_App
         }
         private void kryptonDataGridViewpoa_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+            
             if (e.ColumnIndex < 0 || e.RowIndex < 0) return; // header clicked
 
             if (e.RowIndex == kryptonDataGridViewpoa.CurrentRow.Index)
@@ -114,7 +115,7 @@ namespace CPS_App
                 kryptonDataGridViewitem.DataSource = null;
                 if (GenUtil.ConvertObjtoType<int>(kryptonDataGridViewpoa.CurrentRow.Cells["ti_poa_type_id"].Value) == 2)
                 {
-                    lblsubitemtitle.Hide();
+                    lblsubitemtitle.Hide();                    
                     return;
                 }
                 List<PoaItemList> itemViewSelect = poaObj.Where(x => x.bi_poa_header_id == selectdId).FirstOrDefault().itemLists;
@@ -142,6 +143,12 @@ namespace CPS_App
         private async void btnedit_Click(object sender, EventArgs e)
         {
             var currentIndex = GenUtil.ConvertObjtoType<int>(kryptonDataGridViewpoa.CurrentRow.Cells["bi_poa_header_id"].Value);
+            var currentpoaType = GenUtil.ConvertObjtoType<int>(kryptonDataGridViewpoa.CurrentRow.Cells["ti_poa_type_id"].Value);
+            if (currentpoaType == 2) 
+            {
+                MessageBox.Show("Contract Agreement has no items to update");
+                return;
+            }
             var readyToEdit = poaObj.Where(x => x.bi_poa_header_id == currentIndex).ToList();
 
             POAEdit poaEdit = new POAEdit(currentIndex, readyToEdit, _dbServices,_pOAWorker);

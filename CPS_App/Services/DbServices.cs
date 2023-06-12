@@ -461,9 +461,9 @@ namespace CPS_App.Services
 
             string sql = $@"select * from (
 	                     select poa.bi_poa_id, poa.ti_poa_type_id, poatype.vc_poa_type_desc, poa.bi_poa_status_id, poast.vc_poa_status_desc, hd.bi_poa_header_id,
-                         hd.bi_deli_loc_id, loc.vc_location_desc, hd.bi_supp_id, sup.vc_supp_desc, hd.vc_currency, hd.ti_tc_id, tc.vc_tc_desc, hd.ti_deli_sched_id, delisc.vc_deli_sched_desc, 
-                         hd.dt_effect_date, hd.bi_contract_no,
-	                     ln.bi_poa_line_id, ln.bi_item_id, it.vc_item_desc, ln.bi_supp_item_id, ln.dc_promise_qty, uom.vc_uom_desc, ln.i_uom_id, ln.dc_min_qty, ln.dc_price, ln.dc_amount, ln.vc_reference, ln.bi_quot_no,
+                         hd.bi_deli_loc_id, loc.vc_location_desc, hd.bi_supp_id, sup.vc_supp_desc, hd.i_cur_id, cur.vc_cur_desc , hd.ti_tc_id, tc.vc_tc_desc, 
+                         hd.ti_deli_sched_id, delisc.vc_deli_sched_desc, hd.dt_effect_date, hd.bi_contract_no, ln.bi_poa_line_id, ln.bi_item_id, it.vc_item_desc, 
+                         ln.bi_supp_item_id, ln.dc_promise_qty, uom.vc_uom_desc, ln.i_uom_id, ln.dc_min_qty, ln.dc_price, ln.dc_amount, ln.vc_reference, ln.bi_quot_no,
                          poa.dt_created_date, poa.dt_updated_datetime
                          from tb_poa poa
                          inner join tb_poa_header hd on poa.bi_poa_id = hd.bi_poa_id
@@ -476,6 +476,7 @@ namespace CPS_App.Services
                          left join lut_poa_type poatype on poa.ti_poa_type_id = poatype.ti_poa_type_id
                          inner join tb_location loc on hd.bi_deli_loc_id = loc.bi_location_id
                          left join lut_poa_status poast on poa.bi_poa_status_id = poast.bi_poa_status_id
+                         left join lut_currency cur on hd.i_cur_id = cur.i_cur_id
                          ) a ";
             if (obj != null)
             {

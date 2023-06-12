@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Reflection.PortableExecutable;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -69,9 +70,13 @@ namespace CPS_App
             List<lut_deli_schedule_type> sc = JsonConvert.DeserializeObject<List<lut_deli_schedule_type>>(JsonConvert.SerializeObject(deliscType.result));
             sc.ForEach(x => cbxselisc.Items.Add($"{x.ti_deli_sched_id}: {x.vc_deli_sched_desc}"));
 
-            //var uomType = await _dbServices.SelectAllAsync<lut_uom_type>();
-            //List<lut_uom_type> uom = JsonConvert.DeserializeObject<List<lut_uom_type>>(JsonConvert.SerializeObject(uomType.result));
-            //uom.ForEach(x => cbxuom.Items.Add($"{x.i_uom_id}: {x.vc_uom_desc}"));
+            var uomType = await _dbServices.SelectAllAsync<lut_uom_type>();
+            List<lut_uom_type> uom = JsonConvert.DeserializeObject<List<lut_uom_type>>(JsonConvert.SerializeObject(uomType.result));
+            uom.ForEach(x => cbxuom.Items.Add($"{x.i_uom_id}: {x.vc_uom_desc}"));
+
+            var curType = await _dbServices.SelectAllAsync<lut_currency>();
+            List<lut_currency> cur = JsonConvert.DeserializeObject<List<lut_currency>>(JsonConvert.SerializeObject(curType.result));
+            cur.ForEach(x => cbxcur.Items.Add($"{x.i_cur_id}: {x.vc_cur_desc}"));
 
             var itemType = await _dbServices.SelectAllAsync<tb_item>();
             List<tb_item> itid = JsonConvert.DeserializeObject<List<tb_item>>(JsonConvert.SerializeObject(itemType.result));
@@ -92,8 +97,8 @@ namespace CPS_App
             btnsubmit.Enabled = false;
 
         }
-     
-        
+
+
         private async void btnnext_Click(object sender, EventArgs e)
         {
 
@@ -107,6 +112,8 @@ namespace CPS_App
             if (delisc != null) { delisc = delisc.ToString().Split(":").ElementAt(0); }
             var sup = cbxsup.SelectedItem;
             if (sup != null) { sup = sup.ToString().Split(":").ElementAt(0); }
+            var cur = cbxcur.SelectedItem;
+            if (cur != null) { cur = cur.ToString().Split(":").ElementAt(0); }
             var ecdate = kryptonDateTimePickerec.Value;
             if (ecdate < DateTime.Now)
             {
@@ -119,7 +126,7 @@ namespace CPS_App
 
             var availableItem = pn1.Controls.OfType<KryptonTextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
 
-            if (availableItem != 2 || selectedComboBoxpn1 != 5)
+            if (availableItem != 1 || selectedComboBoxpn1 != 6)
             {
                 MessageBox.Show("Please enter correct info");
                 return;
@@ -141,15 +148,15 @@ namespace CPS_App
             pn2.Show();
             pn2.Enabled = true;
         }
-        
+
         private async void btnAdd_Click(object sender, EventArgs e)
         {
-            if (!ValidateCheck())
+            if (!await ValidateCheck())
             {
                 MessageBox.Show("item form not complete");
                 return;
             }
-            
+
             dynamic request = new
             {
                 supid = txtsupitid.Text,
@@ -183,7 +190,7 @@ namespace CPS_App
             //if (uomtype != null) { uomtype = uomtype.ToString().Split(":").ElementAt(0); }
             PoaItemList req = new PoaItemList();
             await GenUtil.AddingInputToObject<PoaItemList>(pn2, req);
-            if(req.dc_promise_qty<req.dc_min_qty)
+            if (req.dc_promise_qty < req.dc_min_qty)
             {
                 MessageBox.Show("Min Qty must smaller than Promise Qty");
                 return;
@@ -197,7 +204,7 @@ namespace CPS_App
             MessageBox.Show("Item added");
             pn2.Controls.OfType<TextBox>().ToList().ForEach(t => t.Clear());
             pn2.Controls.OfType<ComboBox>().ToList().ForEach(t => t.SelectedIndex = 0);
-            if (ValidateCheck() && itemList.Count() > 0)
+            if (await ValidateCheck() && itemList.Count() > 0)
             {
                 enableValidation();
 
@@ -209,17 +216,26 @@ namespace CPS_App
         }
         private async void btnsubmit_Click(object sender, EventArgs e)
         {
-            await InsertTableHeader();            
-
-            //insert poa_line
             obj.itemLists = itemList;
-            obj.itemLists.ForEach(async row =>
+            var newlst = new List<POATableObj>();
+            newlst.Add(obj);
+            string confirmStr1 = await GenUtil.ConfirmListAttach<POATableObj>(pn1, newlst);
+            string confirmStr2 = await GenUtil.ConfirmListAttach<PoaItemList>(pn2, obj.itemLists);
+            DialogResult response = MessageBox.Show(confirmStr1 + confirmStr2, "Confirm", MessageBoxButtons.YesNo);
+            if (response == DialogResult.Yes ? true : false)
             {
-                var poa_line = new insertObj()
+
+                await InsertTableHeader();
+
+                //insert poa_line
+
+                obj.itemLists.ForEach(async row =>
                 {
-                    table = "tb_poa_line",
-                    inserter = new Dictionary<string, string>
+                    var poa_line = new insertObj()
                     {
+                        table = "tb_poa_line",
+                        inserter = new Dictionary<string, string>
+                        {
                         {nameof(row.bi_poa_header_id), obj.bi_poa_header_id.ToString() },
                         {nameof(row.bi_item_id), row.bi_item_id.ToString() },
                         {nameof(row.bi_supp_item_id),row.bi_supp_item_id.ToString() },
@@ -230,21 +246,22 @@ namespace CPS_App
                         {nameof(row.dc_amount), row.dc_amount.ToString() },
                         {nameof(row.vc_reference), row.vc_reference.ToString() },
                         {nameof(row.bi_quot_no),row.bi_quot_no.ToString() },
+                        }
+                    };
+                    var resitem = await _dbServices.InsertAsync(poa_line);
+                    if (resitem.resCode != 1 || resitem.result == null)
+                    {
+                        //_logger.LogDebug("insert error");
+                        MessageBox.Show("insert error");
                     }
-                };
-                var resitem = await _dbServices.InsertAsync(poa_line);
-                if (resitem.resCode != 1 || resitem.result == null)
-                {
-                    //_logger.LogDebug("insert error");
-                    MessageBox.Show("insert error");
-                }
-                else
-                {
-                    MessageBox.Show($"poa line id: {resitem.result}");
-                }
-            });
+                    else
+                    {
+                        MessageBox.Show($"poa line id: {resitem.result}");
+                    }
+                });
+            }
         }
-        
+
         private async void btnclear_Click(object sender, EventArgs e)
         {
             await ClearContent();
@@ -257,7 +274,7 @@ namespace CPS_App
             pn2.Controls.OfType<ComboBox>().ToList().ForEach(t => t.SelectedIndex = 0);
         }
 
-        
+
 
         private void btncancel_Click(object sender, EventArgs e)
         {
@@ -270,12 +287,12 @@ namespace CPS_App
             pn1.Show();
         }
 
-        private void requiredFieldCheck(object sender, CancelEventArgs e)
+        private async void requiredFieldCheck(object sender, CancelEventArgs e)
         {
-            if (ValidateCheck() && itemList.Count() > 0)
+            if (await ValidateCheck() && itemList.Count() > 0)
             {
                 enableValidation();
-                
+
             }
             else
             {
@@ -283,7 +300,7 @@ namespace CPS_App
             }
 
         }
-        private bool ValidateCheck()
+        private async Task<bool> ValidateCheck()
         {
             try
             {
@@ -292,7 +309,27 @@ namespace CPS_App
                     var dec = GenUtil.ConvertObjtoType<decimal>(txtpri.Text) * GenUtil.ConvertObjtoType<decimal>(txtproqty.Text);
                     txtam.Text = dec.ToString();
                 }
-                
+                if (cbxitid.SelectedItem != null)
+                {
+                    var itid = cbxitid.SelectedItem;
+                    itid = itid.ToString().Split(":").ElementAt(0);
+                    var uomFinder = new selectObj();
+                    uomFinder.table = "tb_item";
+                    uomFinder.selecter = new Dictionary<string, string>
+                    {
+                        {"bi_item_id", itid.ToString()}
+                    };
+                    var uomid = await _dbServices.SelectWhereAsync<tb_item>(uomFinder);
+                    if (uomid.resCode != 1 || uomid.result == null)
+                    {
+                        //_logger.LogDebug("uom Id not find");
+                        MessageBox.Show("uom Id not find");
+                    }
+                    tb_item uomId = uomid.result[0];
+                    var temp = GenUtil.ConvertObjtoType<int>(uomId.i_uom_id);
+                    cbxuom.SelectedItem = cbxuom.Items.ToDynamicList<string>()
+                        .Where(x => x.Contains(temp.ToString())).FirstOrDefault();
+                }
             }
             catch (Exception ex)
             {
@@ -306,7 +343,7 @@ namespace CPS_App
             var selectedComboBoxpn2 = pn2.Controls.OfType<KryptonComboBox>().Where(n => GenUtil.ConvertObjtoType<string>(n.SelectedItem) != null).Count();
             var availablePn1 = pn1.Controls.OfType<KryptonTextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
             var availablePn2 = pn2.Controls.OfType<KryptonTextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
-            return availablePn1 == 2 && availablePn2 == 8 && selectedComboBoxpn1 == 5 && selectedComboBoxpn2 == 1;
+            return availablePn1 == 1 && availablePn2 == 7 && selectedComboBoxpn1 == 6 && selectedComboBoxpn2 == 2;
 
         }
         private async Task InsertTableHeader()
@@ -324,7 +361,7 @@ namespace CPS_App
             var respoa = await _dbServices.InsertAsync(tb_poa);
             if (respoa.resCode != 1 || respoa.result == null)
             {
-                MessageBox.Show("insert tb_poa error");
+                MessageBox.Show("insert poa error");
                 return;
             }
 
@@ -340,7 +377,7 @@ namespace CPS_App
                         { "vc_order_revision", "0" },
                         { nameof(obj.bi_supp_id), obj.bi_supp_id.ToString() },
                         { nameof(obj.bi_deli_loc_id), obj.bi_deli_loc_id.ToString() },
-                        { nameof(obj.vc_currency), obj.vc_currency },
+                        { nameof(obj.i_cur_id), obj.i_cur_id.ToString()},
                         { nameof(obj.ti_tc_id), obj.ti_tc_id.ToString() },
                         { nameof(obj.ti_deli_sched_id), obj.ti_deli_sched_id.ToString() },
                         { nameof(obj.dt_effect_date), obj.dt_effect_date.ToString() },
@@ -350,11 +387,11 @@ namespace CPS_App
             var resheader = await _dbServices.InsertAsync(tb_boa_header);
             if (resheader.resCode != 1 || resheader.result == null)
             {
-                MessageBox.Show("insert db_poa_header error");
+                MessageBox.Show("insert poa header error");
                 return;
             }
             obj.bi_poa_header_id = GenUtil.ConvertObjtoType<int>(resheader.result);
-            MessageBox.Show($"insert completed, poa_id: {obj.bi_poa_id}, poa_header_id: {obj.bi_poa_header_id}");
+            MessageBox.Show($"insert completed, poa id: {obj.bi_poa_id}, poa header id: {obj.bi_poa_header_id}");
 
         }
     }

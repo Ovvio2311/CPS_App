@@ -97,7 +97,7 @@ namespace CPS_App.Services
 
                 if (true) //test
                 {
-                    //await RequestMappingScheduler(res);
+                    await RequestMappingScheduler(res);
                 }
                 //Debug.WriteLine(JsonConvert.SerializeObject(res));
                 return res;
@@ -138,53 +138,54 @@ namespace CPS_App.Services
             }
 
         }
-        //public async Task RequestMappingScheduler(List<RequestMappingReqObj> reqObj)
-        //{
-        //    var item_list = new List<ItemRequest>();
-        //    var poaTable = new List<POATableObj>();
+        public async Task RequestMappingScheduler(List<RequestMappingReqObj> reqObj)
+        {
+            var item_list = new List<ItemRequest>();
+            var poaTable = new List<POATableObj>();
 
-        //    foreach (var row in reqObj)
-        //    {
-        //        if (row.vc_req_status == "pending" && row.item.Count > 0)
-        //        {
-        //            foreach (var item in row.item)
-        //            {
-        //                if (item.item_req_status == "pending" && item.i_remain_req_qty > 0)
-        //                {
-        //                    item_list.Add(item);
-        //                }
-        //            }
-        //        }
-        //    }
-        //    var itemIdLst = item_list.Select(x => x.bi_item_id).ToList();
-        //    string lst = string.Join(",", itemIdLst);
-        //    var poaObj = await _services.GetBPAResult<POATableObj>(lst);
-        //    var inStock = await _services.GetInStockQty();
-        //    if (poaObj.resCode == 1 && poaObj.result.Count > 0)
-        //    {
-        //        poaTable = poaObj.result;
-        //    }
-        //    foreach (var item in item_list)
-        //    {
-        //        var poalst = poaTable.Where(x => x.bi_item_id == item.bi_item_id).Select(p => p).ToList();
-        //        if (poalst.Count > 0)
-        //        {
-        //            poalst.ForEach(row =>
-        //            {
-        //                if (row.dc_promise_qty > item.i_remain_req_qty && item.i_remain_req_qty > row.dc_min_qty)
-        //                {
-        //                    //update db
-        //                    //further process to po
-        //                    return;
-        //                }else if (row.dc_promise_qty < item.i_remain_req_qty && item.i_remain_req_qty > row.dc_min_qty)
-        //                {
-        //                    //update db 
-        //                    //further process to po 
-        //                    //continue check remaining item qty
-        //                }
-        //            });
-        //        }
-        //    }
-        //}
+            foreach (var row in reqObj)
+            {
+                if (row.vc_req_status == "pending" && row.item.Count > 0)
+                {
+                    foreach (var item in row.item)
+                    {
+                        if (item.item_req_status == "pending" && item.i_remain_req_qty > 0)
+                        {
+                            item_list.Add(item);
+                        }
+                    }
+                }
+            }
+            var itemIdLst = item_list.Select(x => x.bi_item_id).ToList();
+            string lst = string.Join(",", itemIdLst);
+            var poaObj = await _services.GetBPAResult<POATableObj>(lst);
+            var inStock = await _services.GetInStockQty();
+            if (poaObj.resCode == 1 && poaObj.result.Count > 0)
+            {
+                poaTable = poaObj.result;
+            }
+            foreach (var item in item_list)
+            {
+                var poalst = poaTable.Where(x => x.bi_item_id == item.bi_item_id).Select(p => p).ToList();
+                if (poalst.Count > 0)
+                {
+                    poalst.ForEach(row =>
+                    {
+                        if (row.dc_promise_qty > item.i_remain_req_qty && item.i_remain_req_qty > row.dc_min_qty)
+                        {
+                            //update db
+                            //further process to po
+                            return;
+                        }
+                        else if (row.dc_promise_qty < item.i_remain_req_qty && item.i_remain_req_qty > row.dc_min_qty)
+                        {
+                            //update db 
+                            //further process to po 
+                            //continue check remaining item qty
+                        }
+                    });
+                }
+            }
+        }
     }
 }

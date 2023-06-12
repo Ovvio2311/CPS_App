@@ -38,16 +38,7 @@ namespace CPS_App
                 return;
             }
             await itemEditInitialLoad();
-            //List<StockLevelViewObj> selectItems = stock.Where(x => x.bi_item_id == selectId)
-            //    .Select(x => x).ToList();
-
-            //var observableItems = new ObservableCollection<StockLevelViewObj>(selectItems);
-            //stockList = observableItems.ToBindingList();
-            //dataGridViewitem.DataSource = stockList;
-
-
-            //GenUtil.dataGridAttrName<StockLevelViewObj>(dataGridViewitem, new List<string>() { "not_shown" });
-
+        
         }
         private async Task itemEditInitialLoad()
         {

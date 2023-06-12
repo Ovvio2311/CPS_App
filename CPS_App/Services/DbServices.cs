@@ -231,7 +231,7 @@ namespace CPS_App.Services
                          (SELECT * FROM
                              (SELECT 
                              det.bi_req_id det_bi_req_id, mapp.bi_item_vid, det.bi_item_id, det.i_item_req_qty, det.i_remain_req_qty, det.i_uom_id, 
-                             det.i_map_stat_id, stat.vc_status_desc item_mapping_status, postat.bi_po_status_id, 
+                             det.i_hd_map_stat_id, stat.vc_status_desc item_mapping_status, postat.bi_po_status_id, 
                              postat.vc_po_status_desc, det.dt_exp_deli_date, uom.vc_uom_desc, it.vc_item_desc, 
                              it.bi_category_id, cat.vc_category_desc
                          FROM
@@ -239,19 +239,14 @@ namespace CPS_App.Services
 	                     LEFT JOIN tb_item it ON det.bi_item_id = it.bi_item_id
                          INNER JOIN tb_item_category cat ON it.bi_category_id = cat.bi_category_id
                          left join lut_uom_type uom on det.i_uom_id = uom.i_uom_id
-                         left join lut_mapping_status stat on det.i_map_stat_id = stat.i_map_stat_id
+                         left join lut_mapping_status stat on det.i_hd_map_stat_id = stat.i_map_stat_id
                          left join lut_po_status postat on det.bi_po_status_id = postat.bi_po_status_id
                          LEFT JOIN tb_item_vid_mapping mapp ON it.bi_item_id = mapp.bi_item_id) b) c 
                          ON a.bi_req_id = det_bi_req_id ";
             if (obj != null)
             {
-                string seasrchList = string.Empty;
-                obj.searchWords.ToList().ForEach(x =>
-                {
-                    var valuestring = string.Join(",", $"\'{x.Value}\'");
-                    seasrchList += $"{x.Key} in ({valuestring})"
-                });
-                string seasrchList = string.Join(" and ", obj.searchWords.Select(x => $"{x.Key} in (\'{x.Value}\')").ToList());
+             
+                string seasrchList = string.Join(" and ", obj.searchWords.Select(x => $"{x.Key} in ({string.Join(",", x.Value.ToList().Select(i=>$"'{i}'").ToList())})").ToList());
                 sql += $"where {seasrchList} ";
             }
             if (userloc != null)
@@ -391,7 +386,7 @@ namespace CPS_App.Services
                          )a ";
                 if (obj != null)
                 {
-                    string seasrchList = string.Join(" and ", obj.searchWords.Select(x => $"{x.Key}= \'{x.Value}\'").ToList());
+                    string seasrchList = string.Join(" and ", obj.searchWords.Select(x => $"{x.Key} in ({string.Join(",", x.Value.ToList().Select(i => $"'{i}'").ToList())})").ToList());
                     sql += $"where {seasrchList} ";
                 }
                 if (userloc != null)
@@ -432,7 +427,7 @@ namespace CPS_App.Services
                 string sql = @"set sql_mode = 'STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
                              select *  , 
-                             group_concat(concat('Item Id',': ',bi_item_id,', ','Location',': ',vc_location_desc) separator ';') as prefer_loc_group ,
+                             group_concat(concat('Item Id',': ',bi_item_id,', ', 'Item',': ',vc_item_desc,', ', 'Location',': ',vc_location_desc) separator ';') as prefer_loc_group ,
                              group_concat(vc_item_desc separator ',') as items_group,
                              group_concat(concat(bi_item_id,',',bi_prefer_loc_id) separator ';') as item_loc_id_group
                              from (
@@ -467,7 +462,7 @@ namespace CPS_App.Services
 
             string sql = $@"select * from (
 	                     select poa.bi_poa_id, poa.ti_poa_type_id, poatype.vc_poa_type_desc, poa.bi_poa_status_id, poast.vc_poa_status_desc, hd.bi_poa_header_id,
-                         hd.bi_deli_loc_id, loc.vc_location_desc, hd.bi_supp_id, sup.vc_supp_desc, hd.i_cur_id, cur.vc_cur_desc , hd.ti_tc_id, tc.vc_tc_desc, 
+                         hd.bi_supp_id, sup.vc_supp_desc, hd.i_cur_id, cur.vc_cur_desc , hd.ti_tc_id, tc.vc_tc_desc, 
                          hd.ti_deli_sched_id, delisc.vc_deli_sched_desc, hd.dt_effect_date, hd.bi_contract_no, ln.bi_poa_line_id, ln.bi_item_id, it.vc_item_desc, 
                          ln.bi_supp_item_id, ln.dc_promise_qty, uom.vc_uom_desc, ln.i_uom_id, ln.dc_min_qty, ln.dc_price, ln.dc_amount, ln.vc_reference, ln.bi_quot_no,
                          poa.dt_created_date, poa.dt_updated_datetime
@@ -479,19 +474,18 @@ namespace CPS_App.Services
                          inner join lut_deli_schedule_type delisc on hd.ti_deli_sched_id = delisc.ti_deli_sched_id
                          left join tb_item it on ln.bi_item_id = it.bi_item_id
                          left join lut_uom_type uom on ln.i_uom_id = uom.i_uom_id
-                         left join lut_poa_type poatype on poa.ti_poa_type_id = poatype.ti_poa_type_id
-                         inner join tb_location loc on hd.bi_deli_loc_id = loc.bi_location_id
+                         left join lut_poa_type poatype on poa.ti_poa_type_id = poatype.ti_poa_type_id                         
                          left join lut_poa_status poast on poa.bi_poa_status_id = poast.bi_poa_status_id
                          left join lut_currency cur on hd.i_cur_id = cur.i_cur_id
                          ) a ";
             if (obj != null)
             {
-                string seasrchList = string.Join(" and ", obj.searchWords.Select(x => $"{x.Key}= \'{x.Value}\'").ToList());
+                string seasrchList = string.Join(" and ", obj.searchWords.Select(x => $"{x.Key} in ({string.Join(",", x.Value.ToList().Select(i => $"'{i}'").ToList())})").ToList());
                 sql += $"where {seasrchList} ";
             }
             if (loc != null)
             {
-                sql += $"order by bi_deli_loc_id = '{loc}' desc; ";
+                //sql += $"order by bi_deli_loc_id = '{loc}' desc; ";
             }
             else
             {

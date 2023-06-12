@@ -123,7 +123,7 @@ namespace CPS_App.Models
         {
             public int bi_item_id { get; set; }
             public int bi_item_vid { get; set; }
-            public string vc_prefer_loc_id { get; set; }
+            public string bi_prefer_loc_id { get; set; }
             public string dt_created_date { get; set; }
             public string dt_updated_datetime { get; set; }
         }
@@ -349,7 +349,7 @@ namespace CPS_App.Models
             [Display(Name = "Category")]
             public string vc_category_desc { get; set; }
             [Display(Name = "not_shown")]
-            public int i_map_stat_id { get; set; }
+            public int i_hd_map_stat_id { get; set; }
             [Display(Name = "Mapping Status")]
             public string item_mapping_status { get; set; }
             [Display(Name = "not_shown")]
@@ -445,10 +445,10 @@ namespace CPS_App.Models
             public long bi_poa_status_id { get; set; }
             [Display(Name = "Status")]
             public string vc_poa_status_desc { get; set; }
-            [Display(Name = "not_shown")]
-            public int bi_deli_loc_id { get; set; }//no need
-            [Display(Name = "Delivery Location")]
-            public string vc_location_desc { get; set; }//no need
+            //[Display(Name = "not_shown")]
+            //public int bi_deli_loc_id { get; set; }//no need
+            //[Display(Name = "Delivery Location")]
+            //public string vc_location_desc { get; set; }//no need
             [Display(Name = "not_shown")]
             public int bi_supp_id { get; set; }
             [Display(Name = "Supplier")]
@@ -531,6 +531,86 @@ namespace CPS_App.Models
             public string prefer_loc_group { get; set; }
             [Display(Name = "not_shown")]
             public string item_loc_id_group { get; set; }
+        }
+
+        public class PoCreateObj
+        {
+            public PoCreateObj()
+            {
+                itemLists = new List<PoCreateItem>();
+            }
+            [Display(Name = "Po Id")]
+            public int bi_po_id { get; set; }
+            [Display(Name = "Poa Id")]
+            public int bi_poa_id { get; set; }
+            [Display(Name = "not_shown")]
+            public int bi_po_header_id { get; set; }
+            [Display(Name = "not_shown")]
+            public int ti_po_type_id { get; set; }
+            [Display(Name = "Type")]
+            public string vc_po_type_desc { get; set; }
+            [Display(Name = "not_shown")]
+            public long bi_po_status_id { get; set; }
+            [Display(Name = "Status")]
+            public string vc_po_status_desc { get; set; }
+            [Display(Name = "not_shown")]
+            public int bi_deli_loc_id { get; set; }//no need
+            [Display(Name = "Delivery Location")]
+            public string vc_location_desc { get; set; }//no need
+            [Display(Name = "not_shown")]
+            public int bi_supp_id { get; set; }
+            [Display(Name = "Supplier")]
+            public string vc_supp_desc { get; set; }
+            [Display(Name = "not_shown")]
+            public int i_cur_id { get; set; }
+            [Display(Name = "currency")]
+            public string vc_cur_desc { get; set; }
+            [Display(Name = "not_shown")]
+            public int ti_tc_id { get; set; }
+            [Display(Name = "Terms and Conditions")]
+            public string vc_tc_desc { get; set; }
+            //[Display(Name = "not_shown")]
+            //public int ti_deli_sched_id { get; set; }
+            //[Display(Name = "Delivery Schedule")]
+            //public string vc_deli_sched_desc { get; set; }
+            [Display(Name = "Effective Date")]
+            public string dt_effect_date { get; set; }
+            //[Display(Name = "Contract No")]
+            //public string bi_contract_no { get; set; }
+            [Display(Name = "not_shown")]
+            public string dt_created_date { get; set; }
+            [Display(Name = "not_shown")]
+            public string dt_updated_datetime { get; set; }
+            [Display(Name = "not_shown")]
+            public List<PoCreateItem> itemLists { get; set; }
+        }
+        public class PoCreateItem
+        {
+            [Display(Name = "Po line Id")]
+            public int bi_po_line_id { get; set; }
+            [Display(Name = "not_shown")]
+            public int bi_po_header_id { get; set; }
+            [Display(Name = "Item Id")]
+            public int bi_item_id { get; set; }
+            [Display(Name = "Item")]
+            public string vc_item_desc { get; set; }
+            [Display(Name = "Supplier Item Id")]
+            public string bi_supp_item_id { get; set; }
+            [Display(Name = "Remain Qty")]            
+            public decimal dc_actual_qty { get; set; }
+            [Display(Name = "not_shown")]
+            public int i_uom_id { get; set; }
+            [Display(Name = "Unit of Measurement")]
+            public string vc_uom_desc { get; set; }            
+            [Display(Name = "Price")]
+            public decimal dc_price { get; set; }
+            [Display(Name = "Amount")]
+            public decimal dc_act_amount { get; set; }
+            [Display(Name = "Reference")]
+            public string vc_reference { get; set; }
+            [Display(Name = "not_shown")]
+            public string bi_quot_no { get; set; }
+
         }
     }
 }

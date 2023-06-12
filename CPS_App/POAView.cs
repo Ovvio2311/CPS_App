@@ -202,7 +202,7 @@ namespace CPS_App
                         c.Controls.OfType<KryptonComboBox>().ToList().ForEach(p =>
                         {
                             var searchkey = searchWords.FirstOrDefault(x => x.Key == p.SelectedItem.ToString()).Value;
-                            obj.searchWords.Add(searchkey, x.Text);
+                            obj.searchWords.Add(searchkey, new List<string>() { x.Text });
                         });
                     }
                 });

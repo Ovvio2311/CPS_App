@@ -376,7 +376,7 @@ namespace CPS_App
                         { nameof(obj.bi_poa_id), obj.bi_poa_id.ToString() },
                         { "vc_order_revision", "0" },
                         { nameof(obj.bi_supp_id), obj.bi_supp_id.ToString() },
-                        { nameof(obj.bi_deli_loc_id), obj.bi_deli_loc_id.ToString() },
+                        //{ nameof(obj.bi_deli_loc_id), obj.bi_deli_loc_id.ToString() },
                         { nameof(obj.i_cur_id), obj.i_cur_id.ToString()},
                         { nameof(obj.ti_tc_id), obj.ti_tc_id.ToString() },
                         { nameof(obj.ti_deli_sched_id), obj.ti_deli_sched_id.ToString() },

@@ -22,16 +22,17 @@ namespace CPS_App
         
         private IConfiguration _configuration;
         public Dashboard _dashboard { get; set; }
+        private ScheduleTask _scheduleTask;
         
-        public Login(IConfiguration configuration, AuthService authService, Dashboard dashboard)
+        public Login(IConfiguration configuration, AuthService authService, Dashboard dashboard, ScheduleTask scheduleTask)
         {
             InitializeComponent();
             
             
             _configuration = configuration;
             _authService = authService;
-            _dashboard = dashboard;
-            
+            _dashboard = dashboard;            
+            _scheduleTask = scheduleTask;
         }
 
 
@@ -83,7 +84,7 @@ namespace CPS_App
 
         private async void Login_Load(object sender, EventArgs e)
         {
-            
+          //await  _scheduleTask.RequestMappingScheduler();
         }
 
 

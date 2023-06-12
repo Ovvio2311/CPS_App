@@ -17,11 +17,13 @@ namespace CPS_App.Services
         private readonly DbServices _services;
         private ILogger<RequestMapping> _logger;
         private POAWorker _pOAWorker;
+        
         public RequestMapping(DbServices services, ILogger<RequestMapping> logger, POAWorker pOAWorker)
         {
             _services = services;
             _logger = logger;
             _pOAWorker = pOAWorker;
+            
         }
         public async Task<List<RequestMappingReqObj>> RequestMappingObjGetter(string userloc = null, searchObj obj = null)
         {
@@ -99,7 +101,7 @@ namespace CPS_App.Services
 
                 if (true) //test
                 {
-                    //await RequestMappingScheduler(res);
+                    //await _scheduleTask.RequestMappingScheduler();
                 }
                 //Debug.WriteLine(JsonConvert.SerializeObject(res));
                 return res;
@@ -140,6 +142,6 @@ namespace CPS_App.Services
             }
 
         }
-        
+
     }
 }

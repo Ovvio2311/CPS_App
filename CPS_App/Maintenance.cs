@@ -190,11 +190,6 @@ namespace CPS_App
 
         }
 
-        private void tabroleclaim_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private async void btnaddclaim_Click(object sender, EventArgs e)
         {
             Dictionary<string, string> value = new Dictionary<string, string>()
@@ -254,7 +249,7 @@ namespace CPS_App
                 lstbox.Items.Add(x);
             }
         }
-        private void btnidinsert_Click(object sender, EventArgs e)
+        private async void btnidinsert_Click(object sender, EventArgs e)
         {
             if (cbxvidmapitemid.SelectedItem == null || cbxvidmaploc.SelectedItem == null || cbxvidmapvid.SelectedItem == null)
             {
@@ -268,10 +263,34 @@ namespace CPS_App
                 {
                     if (x.Tag.ToString() == prop.Name)
                     {
-                        selObj.selecter.Add(prop.Name, x.SelectedItem.ToString().Substring(0,1));
+                        var id = x.SelectedItem.ToString().Split(":").ElementAt(0);
+                        selObj.selecter.Add(prop.Name, id);
                     }
                 });
-            }            
+            }
+            selObj.table = nameof(tb_item_vid_mapping);
+            DbResObj selduplicate = await _dbServices.SelectWhereAsync<tb_item_vid_mapping>(selObj);
+            if (selduplicate.resCode == 0 && selduplicate.result == null)
+            {
+                insertObj insertvid = new insertObj()
+                {
+                    table = nameof(tb_item_vid_mapping),
+                    inserter = selObj.selecter
+                };
+                                
+                DbResObj insertRes = await _dbServices.InsertAsync(insertvid);
+                if (insertRes.resCode != 1)
+                {
+                    MessageBox.Show("insert in vid error");
+                    return;
+                }
+                MessageBox.Show("insert vid success");
+                await VidMappListBoxRefresh();
+            }
+            else
+            {
+                MessageBox.Show("select duplicate vid error");
+            } 
         }
 
         private void btniddrop_Click(object sender, EventArgs e)

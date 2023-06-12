@@ -24,12 +24,13 @@ namespace CPS_App
         private RegisterServices _registerServices;
         private POAWorker _pOAWorker;
         private SearchFunc _searchFunc;
-        private IConfiguration _configuration;         
+        private IConfiguration _configuration;
+        private ScheduleTask _scheduleTask;
 
         public Dashboard(Register register, AuthService authService, 
             RequestMapping requestMapp, DbServices dbServices, 
             StockLevelWorker stockWorker, RegisterServices registerServices, 
-            POAWorker pOAWorker, SearchFunc searchFunc, IConfiguration configuration)
+            POAWorker pOAWorker, SearchFunc searchFunc, IConfiguration configuration, ScheduleTask scheduleTask)
         {
             _authService = authService;
             _register = register;
@@ -42,6 +43,7 @@ namespace CPS_App
             _pOAWorker = pOAWorker;
             _searchFunc = searchFunc;
             _configuration = configuration;
+            _scheduleTask = scheduleTask;
         }
         private async void Dashboard_Load(object sender, EventArgs e)
         {
@@ -141,7 +143,7 @@ namespace CPS_App
             {
                 userIden = null;
                 this.Hide();
-                Login login = new Login(_configuration, _authService, this);
+                Login login = new Login(_configuration, _authService, this,_scheduleTask);
                 login.Show();
             }
         }

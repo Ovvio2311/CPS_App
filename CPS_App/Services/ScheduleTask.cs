@@ -23,15 +23,16 @@ namespace CPS_App.Services
             _pOAWorker = pOAWorker;
             _requestMapping = requestMapping;
         }
-        public async Task RequestMappingScheduler(List<RequestMappingReqObj> reqObj)
+        public async Task RequestMappingScheduler()
         {
             searchObj reqse = new searchObj()
             {
-                searchWords = new Dictionary<string, string>
+                searchWords = new Dictionary<string, List<string>>
                 {
-                    {"vc_req_status", "1"}
+                    {"i_map_stat_id", new List<string>(){"1","3"} }
                 }
             };
+            List< RequestMappingReqObj> reqObj =  await _requestMapping.RequestMappingObjGetter(null, reqse);
             var item_list = new List<ItemRequest>();
             var poaTable = new List<POATableObj>();
 
@@ -41,7 +42,7 @@ namespace CPS_App.Services
                 {
                     foreach (ItemRequest item in row.item)
                     {
-                        if (item.i_map_stat_id == 1 && item.i_remain_req_qty > 0)
+                        if (item.i_hd_map_stat_id == 1 && item.i_remain_req_qty > 0)
                         {
                             item_list.Add(item);
                         }
@@ -52,9 +53,9 @@ namespace CPS_App.Services
             string lst = string.Join(",", itemIdLst);
             searchObj seObj = new searchObj()
             {
-                searchWords = new Dictionary<string, string>
+                searchWords = new Dictionary<string, List<string>>
                 {
-                    {"bi_poa_status_id","1" },
+                    {"bi_poa_status_id",new List < string >() { "1" } },
                 }
             };
             List<POATableObj> poaObj = await _pOAWorker.GetPoaWorker(null, seObj);
@@ -70,7 +71,7 @@ namespace CPS_App.Services
                 }
             }
             //var poaObj = await _services.GetBPAResult<POATableObj>(lst);
-            var inStock = await _services.GetInStockQty();//warehouse part
+            //var inStock = await _services.GetInStockQty();//warehouse part
 
             foreach (var item in item_list)
             {
@@ -80,11 +81,12 @@ namespace CPS_App.Services
                     {
                         row.itemLists.Where(x => x.bi_item_id == item.bi_item_id).ToList().ForEach(i =>
                         {
+
+                            var day = row.vc_deli_sched_desc.Split(' ');
+                            DateTime arrival = DateTime.Now.AddDays(GenUtil.ConvertObjtoType<int>(day.ElementAt(0)));
                             //poa > request
-                            if (i.dc_remain_qty > item.i_remain_req_qty && item.i_remain_req_qty > i.dc_min_qty)
+                            if (i.dc_remain_qty > item.i_remain_req_qty && item.i_remain_req_qty > i.dc_min_qty )
                             {
-                                var day = row.vc_deli_sched_desc.Split(' ');
-                                DateTime arrival = DateTime.Now.AddDays(GenUtil.ConvertObjtoType<int>(day.ElementAt(0)));
                                 if (arrival > item.dt_exp_deli_date)
                                 {
                                     //update db
@@ -100,24 +102,7 @@ namespace CPS_App.Services
                     }
                 });
 
-                if (poalst.Count > 0)
-                {
-                    poalst.ForEach(row =>
-                    {
-                        if (row.dc_promise_qty > item.i_remain_req_qty && item.i_remain_req_qty > row.dc_min_qty)
-                        {
-                            //update db
-                            //further process to po
-                            return;
-                        }
-                        else if (row.dc_promise_qty < item.i_remain_req_qty && item.i_remain_req_qty > row.dc_min_qty)
-                        {
-                            //update db 
-                            //further process to po 
-                            //continue check remaining item qty
-                        }
-                    });
-                }
+                
             }
         }
     }

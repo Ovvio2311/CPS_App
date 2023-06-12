@@ -286,7 +286,7 @@ namespace CPS_App.Models
             public int i_remain_req_qty { get; set; }
             [Display(Name = "i_uom_id")]
             public int i_uom_id { get; set; }
-            [Display(Name = "")]
+            [Display(Name = "not_shown")]
             public int bi_supp_id { get; set; }
             [Display(Name = "Mapping Id")]
             public int i_map_stat_id { get; set; }
@@ -309,6 +309,8 @@ namespace CPS_App.Models
             public string vc_staff_name { get; set; }
             [Display(Name = "Staff Role")]
             public string vc_staff_role { get; set; }
+            [Display(Name = "not_shown")]
+            public int i_map_stat_id { get; set; }
             [Display(Name = "Mapping Status")]
             public string vc_req_status { get; set; }
             [Display(Name = "not_shown")]
@@ -346,6 +348,8 @@ namespace CPS_App.Models
             public int bi_category_id { get; set; }
             [Display(Name = "Category")]
             public string vc_category_desc { get; set; }
+            [Display(Name = "not_shown")]
+            public int i_map_stat_id { get; set; }
             [Display(Name = "Mapping Status")]
             public string item_mapping_status { get; set; }
             [Display(Name = "not_shown")]
@@ -442,9 +446,9 @@ namespace CPS_App.Models
             [Display(Name = "Status")]
             public string vc_poa_status_desc { get; set; }
             [Display(Name = "not_shown")]
-            public int bi_deli_loc_id { get; set; }
+            public int bi_deli_loc_id { get; set; }//no need
             [Display(Name = "Delivery Location")]
-            public string vc_location_desc { get; set; }
+            public string vc_location_desc { get; set; }//no need
             [Display(Name = "not_shown")]
             public int bi_supp_id { get; set; }
             [Display(Name = "Supplier")]
@@ -485,7 +489,9 @@ namespace CPS_App.Models
             [Display(Name = "Supplier Item Id")]
             public string bi_supp_item_id { get; set; }
             [Display(Name = "Promise Qty")]
-            public decimal dc_promise_qty { get; set; }
+            public decimal dc_promise_qty { get; set; }//add remain qty
+            [Display(Name = "Remain Qty")]
+            public decimal dc_remain_qty { get; set; }
             [Display(Name = "not_shown")]
             public int i_uom_id { get; set; }
             [Display(Name = "Unit of Measurement")]

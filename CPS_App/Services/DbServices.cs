@@ -218,8 +218,8 @@ namespace CPS_App.Services
 
             string sql = $@"SELECT * FROM
                          (SELECT 
-                             req.bi_req_id, req.i_staff_id, sta.vc_staff_name, sta.vc_staff_role, stat.vc_status_desc vc_req_status, 
-                             sta.bi_location_id, loc.vc_location_desc, 
+                             req.bi_req_id, req.i_staff_id, sta.vc_staff_name, sta.vc_staff_role, req.i_map_stat_id, 
+                             stat.vc_status_desc vc_req_status, sta.bi_location_id, loc.vc_location_desc, 
                              loc.vc_location_addr, req.dt_created_date, req.dt_updated_datetime
                          FROM
                              tb_request req
@@ -231,8 +231,8 @@ namespace CPS_App.Services
                          (SELECT * FROM
                              (SELECT 
                              det.bi_req_id det_bi_req_id, mapp.bi_item_vid, det.bi_item_id, det.i_item_req_qty, det.i_remain_req_qty, det.i_uom_id, 
-                             stat.vc_status_desc item_mapping_status, postat.bi_po_status_id, postat.vc_po_status_desc, det.dt_exp_deli_date, 
-                             uom.vc_uom_desc, it.vc_item_desc, 
+                             det.i_map_stat_id, stat.vc_status_desc item_mapping_status, postat.bi_po_status_id, 
+                             postat.vc_po_status_desc, det.dt_exp_deli_date, uom.vc_uom_desc, it.vc_item_desc, 
                              it.bi_category_id, cat.vc_category_desc
                          FROM
                              tb_request_detail det
@@ -245,12 +245,18 @@ namespace CPS_App.Services
                          ON a.bi_req_id = det_bi_req_id ";
             if (obj != null)
             {
-                string seasrchList = string.Join(" and ", obj.searchWords.Select(x => $"{x.Key}= \'{x.Value}\'").ToList());
+                string seasrchList = string.Empty;
+                obj.searchWords.ToList().ForEach(x =>
+                {
+                    var valuestring = string.Join(",", $"\'{x.Value}\'");
+                    seasrchList += $"{x.Key} in ({valuestring})"
+                });
+                string seasrchList = string.Join(" and ", obj.searchWords.Select(x => $"{x.Key} in (\'{x.Value}\')").ToList());
                 sql += $"where {seasrchList} ";
             }
             if (userloc != null)
             {
-                sql += $"order by bi_location_id = '{userloc}' desc; ";
+                sql += $"order by bi_location_id in ('{userloc}') desc; ";
             }
             else
             {

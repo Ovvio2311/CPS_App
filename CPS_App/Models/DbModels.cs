@@ -50,9 +50,9 @@ namespace CPS_App.Models
         {
             public searchObj()
             {
-                searchWords = new Dictionary<string, string>();
+                searchWords = new Dictionary<string, List<string>>();
             }
-            public Dictionary<string, string> searchWords { get; set; }
+            public Dictionary<string, List<string>> searchWords { get; set; }
         }
         public class resObj
         {

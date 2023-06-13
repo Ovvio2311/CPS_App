@@ -140,7 +140,7 @@ namespace CPS_App
             if (obj.ti_poa_type_id != 1)
             {
                 await InsertTableHeader();
-
+                await ClearContent();
                 return;
             }
 
@@ -338,7 +338,11 @@ namespace CPS_App
 
             var idtype = cbxitid.SelectedItem;
             if (idtype != null) { idtype = idtype.ToString().Split(":").ElementAt(0); }
-
+            if (cbxtype.SelectedItem.ToString().Contains("2"))
+            {
+                txtcont.Enabled = false;
+                txtcont.Text = "null";
+            }
             var selectedComboBoxpn1 = pn1.Controls.OfType<KryptonComboBox>().Where(n => GenUtil.ConvertObjtoType<string>(n.SelectedItem) != null).Count();
             var selectedComboBoxpn2 = pn2.Controls.OfType<KryptonComboBox>().Where(n => GenUtil.ConvertObjtoType<string>(n.SelectedItem) != null).Count();
             var availablePn1 = pn1.Controls.OfType<KryptonTextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();

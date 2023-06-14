@@ -83,11 +83,13 @@ namespace CPS_App.Services
                 {
                     res.result = result;
                     res.resCode = 1;
+                    res.err_msg = null;
                 }
                 else
                 {
                     res.result = null;
                     res.resCode = 0;
+                    res.err_msg = null;
                 }
             }
             catch (Exception ex)
@@ -211,6 +213,56 @@ namespace CPS_App.Services
             {
                 throw new Exception(ex.Message);
             }
+        }
+        public async Task<DbResObj> DeleteAsync(deleteObj obj)
+        {
+            var res = new DbResObj();
+            res.resCode = 0;
+            try
+            {
+                string sql = $"delete from {obj.table} where ";
+
+                DynamicParameters para = new DynamicParameters();
+                List<string> vari = new List<string>();
+                obj.deleter.ToList().ForEach(x =>
+                {
+                    vari.Add($"{x.Key} = @{x.Key}");
+                    para.Add($"@{x.Key}", x.Value.ToString());
+                });
+                if (vari.Count > 1)
+                {
+                    sql += string.Join(" and ", vari);
+                    sql += " ;";
+                }
+                else
+                {
+                    sql += vari[0] + " ;";
+                }
+
+                //para.Add($"@{wName}", obj.selecter.Values.FirstOrDefault());
+                var result = await _db.ExecuteAsync(sql, para);
+
+                if (result > 0)
+                {
+                    res.result = result;
+                    res.resCode = 1;
+                    res.err_msg = null;
+                }
+                else
+                {
+                    res.result = null;
+                    res.resCode = 0;
+                    res.err_msg = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                res.result = null;
+                res.resCode = 0;
+                res.err_msg = ex.Message;
+            }
+
+            return res;
         }
         public async Task<DbResObj> GetReqMappingObj(string userloc = null, searchObj obj = null)
         {
@@ -427,7 +479,7 @@ namespace CPS_App.Services
                 string sql = @"set sql_mode = 'STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
                              select *  , 
-                             group_concat(concat('Item Id',': ',bi_item_id,', ', 'Item',': ',vc_item_desc,', ', 'Location',': ',vc_location_desc) separator ';') as prefer_loc_group ,
+                             group_concat(concat('Item Id',': ',bi_item_id,', ', 'Item',': ',vc_item_desc,', ', 'Location Id',': ',bi_prefer_loc_id,', ', 'Location',': ',vc_location_desc) separator ';') as prefer_loc_group ,
                              group_concat(vc_item_desc separator ',') as items_group,
                              group_concat(concat(bi_item_id,',',bi_prefer_loc_id) separator ';') as item_loc_id_group
                              from (
@@ -628,6 +680,41 @@ namespace CPS_App.Services
                 return false;
             }
             return true;
+        }
+        public async Task<DbResObj> CheckVidmapDupItemId(selectObj obj)
+        {
+            var res = new DbResObj();
+            res.resCode = 0;
+            try
+            {
+                //var wName = obj.selecter.Keys.FirstOrDefault();
+                string selectsql = $"set sql_mode = 'STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';" +
+                                   $"select * from tb_item_vid_mapping where bi_item_id = @bi_item_id " +
+                                   $"group by bi_item_id, bi_item_vid ;";
+                DynamicParameters para = new DynamicParameters();
+                para.Add($"@bi_item_id", obj.selecter.Values.FirstOrDefault());
+                var result = await _db.QueryAsync<tb_item_vid_mapping>(selectsql, para);
+                if (result.Count() > 0)
+                {
+                    res.result = result;
+                    res.resCode = 1;
+                    res.err_msg = null;
+                }
+                else
+                {
+                    res.result = null;
+                    res.resCode = 0;
+                    res.err_msg = null;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                res.result = null;
+                res.resCode = 0;
+                res.err_msg = ex.Message;
+            }
+            return res;
         }
     }
 }

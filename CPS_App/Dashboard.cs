@@ -103,7 +103,7 @@ namespace CPS_App
 
         private void stripreq_Click(object sender, EventArgs e)
         {
-            RequestView reqView = new RequestView(_dbServices, _requestMapp,_searchFunc);
+            RequestView reqView = new RequestView(_dbServices, _requestMapp,_searchFunc, _genericTableViewWorker);
             reqView.MdiParent = this;            
             reqView.AutoScroll = true;
             reqView.Show();
@@ -111,7 +111,7 @@ namespace CPS_App
 
         private void stripitem_Click(object sender, EventArgs e)
         {
-            ItemView itemView = new ItemView(_dbServices, _stockWorker,_searchFunc);
+            ItemView itemView = new ItemView(_dbServices, _stockWorker,_searchFunc,_genericTableViewWorker);
             itemView.MdiParent = this;
             itemView.AutoScroll = true;
             itemView.Show();
@@ -127,7 +127,10 @@ namespace CPS_App
 
         private void strippo_Click(object sender, EventArgs e)
         {
-
+            POView poView = new POView(_dbServices, _pOAWorker, _searchFunc, _genericTableViewWorker);
+            poView.MdiParent = this;
+            poView.AutoScroll = true;
+            poView.Show();
         }
 
         private void stripset_Click(object sender, EventArgs e)

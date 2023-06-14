@@ -515,7 +515,7 @@
             Controls.Add(lblline);
             Name = "POAEdit";
             Text = "POAEdit";
-            Load += POAEdit_Load;
+            Load += POEdit_Load;
             ((System.ComponentModel.ISupportInitialize)kryptonDataGridViewit).EndInit();
             ((System.ComponentModel.ISupportInitialize)cbxdelisc).EndInit();
             ((System.ComponentModel.ISupportInitialize)cbxst).EndInit();

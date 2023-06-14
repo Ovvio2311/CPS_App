@@ -21,7 +21,8 @@ namespace CPS_App
         private readonly DbServices _dbServices;
         private SearchFunc _searchFunc;
         private Dictionary<string, string> searchWords;
-        public RequestView(DbServices dbServices, RequestMapping mapping, SearchFunc searchFunc)
+        private GenericTableViewWorker _genericTableViewWorker;
+        public RequestView(DbServices dbServices, RequestMapping mapping, SearchFunc searchFunc, GenericTableViewWorker genericTableViewWorker)
         {
             InitializeComponent();
             defPage = new List<RequestMappingReqObj>();
@@ -29,6 +30,8 @@ namespace CPS_App
             _requestMapp = mapping;
             _searchFunc = searchFunc;
             searchWords = new Dictionary<string, string>();
+            _genericTableViewWorker = genericTableViewWorker;
+
         }
 
         private async void RequestView_Load(object sender, EventArgs e)
@@ -62,9 +65,16 @@ namespace CPS_App
         }
         private async Task LoadViewTable(string loc, searchObj obj = null)
         {
+            
             lblnoresult.Hide();
             datagridview.DataSource = null;
-            defPage = await _requestMapp.RequestMappingObjGetter(loc, obj);
+            //defPage = await _requestMapp.RequestMappingObjGetter(loc, obj);
+            RequestMappingReqObj viewObj = new RequestMappingReqObj();
+            var kvpLoc = new Dictionary<string, string>()
+            {
+                {nameof(viewObj.bi_location_id),loc }
+            };
+            defPage = await _genericTableViewWorker.GetGenericWorker<RequestMappingReqObj, ItemRequest>(viewObj.sql, nameof(viewObj.bi_req_id), kvpLoc, obj);
             if (defPage == null)
             {
                 datagridview.Columns.Clear();
@@ -93,7 +103,7 @@ namespace CPS_App
                 lblitem.Show();
                 int selectdId = GenUtil.ConvertObjtoType<int>(datagridview.CurrentRow.Cells["bi_req_id"].Value);
                 datagridviewitem.DataSource = null;
-                List<ItemRequest> itemViewSelect = defPage.Where(x => x.bi_req_id == selectdId).FirstOrDefault().item;
+                List<ItemRequest> itemViewSelect = defPage.Where(x => x.bi_req_id == selectdId).FirstOrDefault().itemLists;
 
                 var observableItems = new ObservableCollection<ItemRequest>(itemViewSelect);
                 BindingList<ItemRequest> source = observableItems.ToBindingList();
@@ -107,7 +117,7 @@ namespace CPS_App
         {
             int selectdId = GenUtil.ConvertObjtoType<int>(datagridview.CurrentRow.Cells["bi_req_id"].Value);
 
-            RequestEdit reqEdit = new RequestEdit(selectdId, defPage, _dbServices, _requestMapp);
+            RequestEdit reqEdit = new RequestEdit(selectdId, defPage, _dbServices, _requestMapp,_genericTableViewWorker);
             reqEdit.MdiParent = this.MdiParent;
             reqEdit.AutoScroll = true;
             this.Close();

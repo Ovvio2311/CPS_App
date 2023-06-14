@@ -55,6 +55,17 @@ namespace CPS_App.Models
             [Display(Name = "Update Date")]
             public string dt_updated_datetime { get; set; }
         }
+        public class lut_po_status
+        {
+            [Display(Name = "ID")]
+            public int bi_po_status_id { get; set; }
+            [Display(Name = "Name")]
+            public string vc_po_status_desc { get; set; }
+            [Display(Name = "Create Date")]
+            public string dt_created_date { get; set; }
+            [Display(Name = "Update Date")]
+            public string dt_updated_datetime { get; set; }
+        }
         public class tb_location : CPSModelBase
         {
             [Display(Name = "ID")]
@@ -110,7 +121,7 @@ namespace CPS_App.Models
             public string dt_created_date { get; set; }
             public string dt_updated_datetime { get; set; }
         }
-        public class lut_currency: CPSModelBase
+        public class lut_currency : CPSModelBase
         {
             [Display(Name = "ID")]
             public int i_cur_id { get; set; }
@@ -301,6 +312,39 @@ namespace CPS_App.Models
         //req view
         public class RequestMappingReqObj
         {
+            public RequestMappingReqObj() {
+                itemLists = new List<ItemRequest>();
+                sql = $@"SELECT * FROM
+                         (SELECT 
+                             req.bi_req_id, req.i_staff_id, sta.vc_staff_name, sta.vc_staff_role, req.i_map_stat_id, 
+                             stat.vc_status_desc vc_req_status, sta.bi_location_id, loc.vc_location_desc, 
+                             loc.vc_location_addr, req.dt_created_date, req.dt_updated_datetime
+                         FROM
+                             tb_request req
+                         INNER JOIN tb_staff sta ON req.i_staff_id = sta.i_staff_id
+                         INNER JOIN tb_location loc ON sta.bi_location_id = loc.bi_location_id
+                         left join lut_mapping_status stat on req.i_map_stat_id = stat.i_map_stat_id
+                         ) a
+                             LEFT JOIN
+                         (SELECT * FROM
+                             (SELECT 
+                             det.bi_req_id det_bi_req_id, mapp.bi_item_vid, det.bi_item_id, det.i_item_req_qty, det.i_remain_req_qty, det.i_uom_id, 
+                             det.i_hd_map_stat_id, stat.vc_status_desc item_mapping_status, postat.bi_po_status_id, 
+                             postat.vc_po_status_desc, det.dt_exp_deli_date, uom.vc_uom_desc, it.vc_item_desc, 
+                             it.bi_category_id, cat.vc_category_desc
+                         FROM
+                             tb_request_detail det
+	                     LEFT JOIN tb_item it ON det.bi_item_id = it.bi_item_id
+                         INNER JOIN tb_item_category cat ON it.bi_category_id = cat.bi_category_id
+                         left join lut_uom_type uom on det.i_uom_id = uom.i_uom_id
+                         left join lut_mapping_status stat on det.i_hd_map_stat_id = stat.i_map_stat_id
+                         left join lut_po_status postat on det.bi_po_status_id = postat.bi_po_status_id
+                         LEFT JOIN tb_item_vid_mapping mapp ON it.bi_item_id = mapp.bi_item_id) b) c 
+                         ON a.bi_req_id = det_bi_req_id ";
+            }
+
+            [Display(Name = "not_shown")]
+            public string sql { get; set; }
             [Display(Name = "Request Id")]
             public int bi_req_id { get; set; }
             [Display(Name = "Staff Id")]
@@ -320,7 +364,7 @@ namespace CPS_App.Models
             [Display(Name = "not_shown")]
             public string vc_location_addr { get; set; }
             [Display(Name = "not_shown")]
-            public List<ItemRequest> item { get; set; }
+            public List<ItemRequest> itemLists { get; set; }
             [Display(Name = "not_shown")]
             public string dt_created_date { get; set; }
             [Display(Name = "not_shown")]
@@ -363,6 +407,33 @@ namespace CPS_App.Models
         //item view
         public class StockLevelViewObj
         {
+            public StockLevelViewObj() {
+                itemLists = new List<StockLevelSubItem>();
+                sql = @"SELECT * FROM
+                         (SELECT 
+                             it.bi_item_id,
+                                 vid.bi_item_vid,
+                                 vc_item_desc,
+                                 it.bi_category_id,
+                                 cat.vc_category_desc,
+                                 it.i_uom_id,
+                                 uom.vc_uom_desc,
+                                 uni.bi_location_id,
+                                 loc.vc_location_desc,
+                                 i_item_qty,
+                                 it.dt_created_date,
+                                 it.dt_updated_datetime
+                         FROM
+                             tb_item it
+                         INNER JOIN tb_item_category cat ON it.bi_category_id = cat.bi_category_id
+                         INNER JOIN tb_item_vid_mapping vid ON it.bi_item_id = vid.bi_item_id
+                         LEFT JOIN tb_item_unit uni ON it.bi_item_id = uni.bi_item_id
+                         LEFT JOIN tb_location loc ON uni.bi_location_id = loc.bi_location_id
+                         LEFT JOIN lut_uom_type uom ON it.i_uom_id = uom.i_uom_id
+                         )a ";
+            }
+            [Display(Name = "not_shown")]
+            public string sql { get; set; }
             [Display(Name = "Item Id")]
             public int bi_item_id { get; set; }
             [Display(Name = "Item Vid")]
@@ -378,7 +449,7 @@ namespace CPS_App.Models
             [Display(Name = "Unit of Measurement")]
             public string vc_uom_desc { get; set; }
             [Display(Name = "not_shown")]
-            public List<StockLevelSubItem> subitem { get; set; }
+            public List<StockLevelSubItem> itemLists { get; set; }
 
         }
         public class StockLevelSubItem
@@ -432,7 +503,27 @@ namespace CPS_App.Models
             public POATableObj()
             {
                 itemLists = new List<PoaItemList>();
+                sql = @"select * from (
+	                     select poa.bi_poa_id, poa.ti_poa_type_id, poatype.vc_poa_type_desc, poa.bi_poa_status_id, poast.vc_poa_status_desc, hd.bi_poa_header_id,
+                         hd.bi_supp_id, sup.vc_supp_desc, hd.i_cur_id, cur.vc_cur_desc , hd.ti_tc_id, tc.vc_tc_desc, 
+                         hd.ti_deli_sched_id, delisc.vc_deli_sched_desc, hd.dt_effect_date, hd.bi_contract_no, ln.bi_poa_line_id, ln.bi_item_id, it.vc_item_desc, 
+                         ln.bi_supp_item_id, ln.dc_promise_qty, uom.vc_uom_desc, ln.i_uom_id, ln.dc_min_qty, ln.dc_price, ln.dc_amount, ln.vc_reference, ln.bi_quot_no,
+                         poa.dt_created_date, poa.dt_updated_datetime
+                         from tb_poa poa
+                         inner join tb_poa_header hd on poa.bi_poa_id = hd.bi_poa_id
+                         left join tb_poa_line ln on hd.bi_poa_header_id = ln.bi_poa_header_id
+                         inner join tb_supplier sup on hd.bi_supp_id = sup.bi_supp_id
+                         inner join lut_term_and_con tc on hd.ti_tc_id = tc.ti_tc_id
+                         inner join lut_deli_schedule_type delisc on hd.ti_deli_sched_id = delisc.ti_deli_sched_id
+                         left join tb_item it on ln.bi_item_id = it.bi_item_id
+                         left join lut_uom_type uom on ln.i_uom_id = uom.i_uom_id
+                         left join lut_poa_type poatype on poa.ti_poa_type_id = poatype.ti_poa_type_id                         
+                         left join lut_poa_status poast on poa.bi_poa_status_id = poast.bi_poa_status_id
+                         left join lut_currency cur on hd.i_cur_id = cur.i_cur_id
+                         ) a ";
             }
+            [Display(Name = "not_shown")]
+            public string sql { get; set; }
             [Display(Name = "Poa Id")]
             public int bi_poa_id { get; set; }
             [Display(Name = "not_shown")]
@@ -596,12 +687,12 @@ namespace CPS_App.Models
             public string vc_item_desc { get; set; }
             [Display(Name = "Supplier Item Id")]
             public string bi_supp_item_id { get; set; }
-            [Display(Name = "Remain Qty")]            
+            [Display(Name = "Remain Qty")]
             public decimal dc_actual_qty { get; set; }
             [Display(Name = "not_shown")]
             public int i_uom_id { get; set; }
             [Display(Name = "Unit of Measurement")]
-            public string vc_uom_desc { get; set; }            
+            public string vc_uom_desc { get; set; }
             [Display(Name = "Price")]
             public decimal dc_price { get; set; }
             [Display(Name = "Amount")]
@@ -617,9 +708,7 @@ namespace CPS_App.Models
             public POTableObj()
             {
                 itemLists = new List<PoItemList>();
-            }
-            [Display(Name = "not_shown")]
-            public string sql = @"select * from (
+                sql = @"select * from (
 	                     select po.bi_po_id, po.bi_poa_id, po.ti_po_type_id, potype.vc_po_type_desc, po.bi_po_status_id, post.vc_po_status_desc, hd.bi_po_header_id,
                          hd.bi_supp_id, sup.vc_supp_desc, hd.i_cur_id, cur.vc_cur_desc , hd.ti_tc_id, tc.vc_tc_desc, hd.bi_deli_loc_id, loc.vc_location_desc,
                          hd.ti_deli_sched_id, delisc.vc_deli_sched_desc, hd.dt_effect_date, ln.bi_contract_no, ln.bi_po_line_id, ln.bi_item_id, it.vc_item_desc, 
@@ -638,6 +727,9 @@ namespace CPS_App.Models
                          left join lut_currency cur on hd.i_cur_id = cur.i_cur_id
                          left join tb_location loc on hd.bi_deli_loc_id = loc.bi_location_id
                          ) a ";
+            }
+            [Display(Name = "not_shown")]
+            public string sql { get; set; }
             [Display(Name = "Po Id")]
             public int bi_po_id { get; set; }
             [Display(Name = "Poa Id")]

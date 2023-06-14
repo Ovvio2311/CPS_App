@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using static CPS_App.Models.DbModels;
 using System.Windows.Forms;
 using Newtonsoft.Json;
+using System.Windows.Controls;
 
 namespace CPS_App
 {
@@ -22,7 +23,8 @@ namespace CPS_App
         public int selectId = 0;
         private SearchFunc _searchFunc;
         private Dictionary<string, string> searchWords;
-        public ItemView(DbServices dbServices, StockLevelWorker stockWorker, SearchFunc searchFunc)
+        private GenericTableViewWorker _genericTableViewWorker;
+        public ItemView(DbServices dbServices, StockLevelWorker stockWorker, SearchFunc searchFunc, GenericTableViewWorker genericTableViewWorker)
         {
             InitializeComponent();
             _dbServices = dbServices;
@@ -30,6 +32,7 @@ namespace CPS_App
             _stockWorker = stockWorker;
             searchWords = new Dictionary<string, string>();
             _searchFunc = searchFunc;
+            _genericTableViewWorker = genericTableViewWorker;
         }
 
         private async void ItemView_Load(object sender, EventArgs e)
@@ -68,9 +71,15 @@ namespace CPS_App
         }
         private async Task LoadViewTable(string loc, searchObj obj = null)
         {
+            StockLevelViewObj viewObj = new StockLevelViewObj();
+            var kvpLoc = new Dictionary<string, string>()
+            {
+                {"bi_location_id",loc }
+            };
             lblnoresult.Hide();
             dataGridViewitem.DataSource = null;
-            stock = await _stockWorker.GetStockLevelWorker(loc, obj);
+            //stock = await _stockWorker.GetStockLevelWorker(loc, obj);
+            stock = await _genericTableViewWorker.GetGenericWorker<StockLevelViewObj, StockLevelSubItem>(viewObj.sql, nameof(viewObj.bi_item_id), kvpLoc, obj);
             if (stock == null)
             {
                 dataGridViewitem.Columns.Clear();
@@ -95,7 +104,7 @@ namespace CPS_App
                 MessageBox.Show("Please select an item to update");
                 return;
             }
-            ItemEdit itemEdit = new ItemEdit(stock, _dbServices, selectId, _stockWorker);
+            ItemEdit itemEdit = new ItemEdit(stock, _dbServices, selectId, _stockWorker,_genericTableViewWorker);
             itemEdit.MdiParent = this.MdiParent;
             itemEdit.AutoScroll = true;
             itemEdit.Show();
@@ -112,7 +121,7 @@ namespace CPS_App
                 selectId = GenUtil.ConvertObjtoType<int>(dataGridViewitem.CurrentRow.Cells["bi_item_id"].Value);
 
                 kryptonDataGridViewsubitem.DataSource = null;
-                List<StockLevelSubItem> itemViewSelect = stock.Where(x => x.bi_item_id == selectId).FirstOrDefault().subitem;
+                List<StockLevelSubItem> itemViewSelect = stock.Where(x => x.bi_item_id == selectId).FirstOrDefault().itemLists;
 
                 var observableItems = new ObservableCollection<StockLevelSubItem>(itemViewSelect);
                 BindingList<StockLevelSubItem> source = observableItems.ToBindingList();
@@ -167,7 +176,7 @@ namespace CPS_App
                         c.Controls.OfType<KryptonComboBox>().ToList().ForEach(p =>
                         {
                             var searchkey = searchWords.FirstOrDefault(x => x.Key == p.SelectedItem.ToString()).Value;
-                            obj.searchWords.Add(searchkey,new List<string>() { x.Text });
+                            obj.searchWords.Add(searchkey, new List<string>() { x.Text });
                         });
                     }
                 });

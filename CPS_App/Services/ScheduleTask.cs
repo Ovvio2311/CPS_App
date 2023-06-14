@@ -15,13 +15,15 @@ namespace CPS_App.Services
         private ILogger<ScheduleTask> _logger;
         private POAWorker _pOAWorker;
         private RequestMapping _requestMapping;
+        private GenericTableViewWorker _genericTableViewWorker;
 
-        public ScheduleTask(DbServices dbServices, ILogger<ScheduleTask> logger, POAWorker pOAWorker, RequestMapping requestMapping)
+        public ScheduleTask(DbServices dbServices, ILogger<ScheduleTask> logger, POAWorker pOAWorker, RequestMapping requestMapping, GenericTableViewWorker genericTableViewWorker)
         {
             _services = dbServices;
             _logger = logger;
             _pOAWorker = pOAWorker;
             _requestMapping = requestMapping;
+            _genericTableViewWorker = genericTableViewWorker;
         }
         public async Task RequestMappingScheduler()
         {
@@ -32,15 +34,18 @@ namespace CPS_App.Services
                     {"i_map_stat_id", new List<string>(){"1","3"} }
                 }
             };
-            List< RequestMappingReqObj> reqObj =  await _requestMapping.RequestMappingObjGetter(null, reqse);
+            RequestMappingReqObj viewObj = new RequestMappingReqObj();
+            List<RequestMappingReqObj> reqObj = await _genericTableViewWorker.GetGenericWorker<RequestMappingReqObj, ItemRequest>(viewObj.sql, nameof(viewObj.bi_req_id), null, reqse);
+
+            //List< RequestMappingReqObj> reqObj =  await _requestMapping.RequestMappingObjGetter(null, reqse);
             var item_list = new List<ItemRequest>();
             var poaTable = new List<POATableObj>();
 
             foreach (RequestMappingReqObj row in reqObj)
             {
-                if (row.i_map_stat_id == 1 && row.item.Count > 0)
+                if (row.i_map_stat_id == 1 && row.itemLists.Count > 0)
                 {
-                    foreach (ItemRequest item in row.item)
+                    foreach (ItemRequest item in row.itemLists)
                     {
                         if (item.i_hd_map_stat_id == 1 && item.i_remain_req_qty > 0)
                         {

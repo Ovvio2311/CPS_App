@@ -297,8 +297,8 @@ namespace CPS_App.Services
                          ON a.bi_req_id = det_bi_req_id ";
             if (obj != null)
             {
-             
-                string seasrchList = string.Join(" and ", obj.searchWords.Select(x => $"{x.Key} in ({string.Join(",", x.Value.ToList().Select(i=>$"'{i}'").ToList())})").ToList());
+
+                string seasrchList = string.Join(" and ", obj.searchWords.Select(x => $"{x.Key} in ({string.Join(",", x.Value.ToList().Select(i => $"'{i}'").ToList())})").ToList());
                 sql += $"where {seasrchList} ";
             }
             if (userloc != null)
@@ -508,6 +508,58 @@ namespace CPS_App.Services
             }
             return res;
         }
+        public async Task<DbResObj> GetGenericViewTable(string sql, Dictionary<string, string> loc = null, searchObj obj = null)
+        {
+            var res = new DbResObj();
+            res.resCode = 0;
+            
+            if (obj != null)
+            {
+                string seasrchList = string.Join(" and ", obj.searchWords.Select(x => $"{x.Key} in ({string.Join(",", x.Value.ToList().Select(i => $"'{i}'").ToList())})").ToList());
+                sql += $"where {seasrchList} ";
+            }
+            if (loc != null)
+            {
+                sql += $"order by {loc.ElementAt(0).Key} = '{loc.ElementAt(0).Value}' desc; ";
+            }
+            else
+            {
+                sql += ";";
+            }
+            try
+            {
+                var result = await _db.QueryAsync<dynamic>(sql, null);
+                if (result.Count() > 0)
+                {
+
+                    return new DbResObj
+                    {
+                        resCode = 1,
+                        result = GenUtil.DbResulttoKVP(result),
+                        err_msg = null
+                    };
+
+                }
+                else
+                {
+                    return new DbResObj
+                    {
+                        resCode = 0,
+                        result = null,
+                        err_msg = null
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new DbResObj
+                {
+                    resCode = 0,
+                    result = null,
+                    err_msg = ex.Message
+                };
+            }
+        }
         public async Task<DbResObj> GetPoaList(string loc = null, searchObj obj = null)
         {
             //var res = new DbResObj();
@@ -587,8 +639,8 @@ namespace CPS_App.Services
             select.table = typeof(T).Name;
             select.selecter.Add(value.ElementAt(0).Key, value.ElementAt(0).Value.ToLower().Trim());
 
-            var result = await SelectWhereAsync<T>(select);
-            if (result.result.Count > 0)
+            DbResObj result = await SelectWhereAsync<T>(select);
+            if (result.resCode == 1 && result.result == null)
             {
                 MessageBox.Show("Name has been used");
                 return;

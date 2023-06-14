@@ -38,7 +38,7 @@ namespace CPS_App
             _dbServices = dbServices;
             poaObj = new List<POATableObj>();
             _pOAWorker = pOAWorker;
-            searchWords = new Dictionary<string, string>();            
+            searchWords = new Dictionary<string, string>();
             _searchFunc = searchFunc;
             _genericTableViewWorker = genericTableViewWorker;
         }
@@ -85,10 +85,15 @@ namespace CPS_App
         }
         private async Task LoadViewTable(string loc = null, searchObj obj = null)
         {
-            
+           
             lblnoresult.Hide();
             kryptonDataGridViewpoa.DataSource = null;
-            poaObj = await _genericTableViewWorker.GetGenericWorker<POATableObj, PoaItemList>("bi_poa_header_id",loc,obj);
+            POATableObj viewObj = new POATableObj();
+            var kvpLoc = new Dictionary<string, string>()
+            {
+                {nameof(viewObj.vc_deli_sched_desc),loc }
+            };
+            poaObj = await _genericTableViewWorker.GetGenericWorker<POATableObj, PoaItemList>(viewObj.sql, nameof(viewObj.bi_poa_header_id), null, obj);
             //poaObj = await _pOAWorker.GetPoaWorker(loc, obj);
 
             if (poaObj == null)
@@ -109,18 +114,18 @@ namespace CPS_App
         }
         private void kryptonDataGridViewpoa_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            
+
             if (e.ColumnIndex < 0 || e.RowIndex < 0) return; // header clicked
 
             if (e.RowIndex == kryptonDataGridViewpoa.CurrentRow.Index)
             {
                 lblsubitemtitle.Show();
                 int selectdId = GenUtil.ConvertObjtoType<int>(kryptonDataGridViewpoa.CurrentRow.Cells["bi_poa_header_id"].Value);
-              
+
                 kryptonDataGridViewitem.DataSource = null;
                 if (GenUtil.ConvertObjtoType<int>(kryptonDataGridViewpoa.CurrentRow.Cells["ti_poa_type_id"].Value) == 2)
                 {
-                    lblsubitemtitle.Hide();                    
+                    lblsubitemtitle.Hide();
                     return;
                 }
                 List<PoaItemList> itemViewSelect = poaObj.Where(x => x.bi_poa_header_id == selectdId).FirstOrDefault().itemLists;
@@ -149,14 +154,14 @@ namespace CPS_App
         {
             var currentIndex = GenUtil.ConvertObjtoType<int>(kryptonDataGridViewpoa.CurrentRow.Cells["bi_poa_header_id"].Value);
             var currentpoaType = GenUtil.ConvertObjtoType<int>(kryptonDataGridViewpoa.CurrentRow.Cells["ti_poa_type_id"].Value);
-            if (currentpoaType == 2) 
+            if (currentpoaType == 2)
             {
                 MessageBox.Show("Contract Agreement has no items to update");
                 return;
             }
             var readyToEdit = poaObj.Where(x => x.bi_poa_header_id == currentIndex).ToList();
 
-            POAEdit poaEdit = new POAEdit(currentIndex, readyToEdit, _dbServices,_pOAWorker);
+            POAEdit poaEdit = new POAEdit(currentIndex, readyToEdit, _dbServices, _pOAWorker,_genericTableViewWorker);
             poaEdit.MdiParent = this.MdiParent;
             poaEdit.AutoScroll = true;
             poaEdit.Show();

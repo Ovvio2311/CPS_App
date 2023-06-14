@@ -17,8 +17,9 @@ namespace CPS_App
         public BindingList<ItemRequest> itemsReq;
         private readonly DbServices _dbServices;
         private RequestMapping _requestMapp;
+        private GenericTableViewWorker _genericTableViewWorker;
         public RequestEdit(int reqID, List<RequestMappingReqObj> defPage,
-            DbServices dbServices, RequestMapping requestMapp)
+            DbServices dbServices, RequestMapping requestMapp, GenericTableViewWorker genericTableViewWorker)
         {
             InitializeComponent();
             this.reqID = reqID;
@@ -26,6 +27,7 @@ namespace CPS_App
             _dbServices = dbServices;
             itemsReq = new BindingList<ItemRequest>();
             _requestMapp = requestMapp;
+            _genericTableViewWorker = genericTableViewWorker;
         }
 
         private async void RequestEdit_Load(object sender, EventArgs e)
@@ -43,7 +45,7 @@ namespace CPS_App
             //txtloc.Text = edititems.vc_location_desc.ToString();
             //txtcrDate.Text = edititems.dt_created_date.ToString();
 
-            //var observableItems = new ObservableCollection<ItemRequest>(edititems.item);
+            //var observableItems = new ObservableCollection<ItemRequest>(edititems.itemLists);
             //itemsReq = observableItems.ToBindingList();
             //datagridviewitem.DataSource = itemsReq;
 
@@ -73,7 +75,7 @@ namespace CPS_App
             txtloc.Text = edititems.vc_location_desc.ToString();
             txtcrDate.Text = edititems.dt_created_date.ToString();
 
-            var observableItems = new ObservableCollection<ItemRequest>(edititems.item);
+            var observableItems = new ObservableCollection<ItemRequest>(edititems.itemLists);
             itemsReq = observableItems.ToBindingList();
             datagridviewitem.Columns.Clear();
             datagridviewitem.DataSource = itemsReq;
@@ -181,7 +183,10 @@ namespace CPS_App
         //}
         private async Task RefreshItemEditTable()
         {
-            defPage = await _requestMapp.RequestMappingObjGetter();
+            RequestMappingReqObj viewObj = new RequestMappingReqObj();
+            defPage = await _genericTableViewWorker.GetGenericWorker<RequestMappingReqObj, ItemRequest>(viewObj.sql, nameof(viewObj.bi_req_id));
+
+            //defPage = await _requestMapp.RequestMappingObjGetter();
             await ReqEditInitialLoad();
         }
         private void btncancel_Click(object sender, EventArgs e)

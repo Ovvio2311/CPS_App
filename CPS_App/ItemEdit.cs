@@ -20,7 +20,8 @@ namespace CPS_App
         public BindingList<StockLevelSubItem> stockList;
         private DbServices _dbServices;
         private StockLevelWorker _worker;
-        public ItemEdit(List<StockLevelViewObj> obj, DbServices dbServices, int itemId, StockLevelWorker worker)
+        private GenericTableViewWorker _genericTableViewWorker;
+        public ItemEdit(List<StockLevelViewObj> obj, DbServices dbServices, int itemId, StockLevelWorker worker, GenericTableViewWorker genericTableViewWorker)
         {
             InitializeComponent();
             stock = obj;
@@ -28,6 +29,7 @@ namespace CPS_App
             this.itemId = itemId;
             stockList = new BindingList<StockLevelSubItem>();
             _worker = worker;
+            _genericTableViewWorker = genericTableViewWorker;
         }
 
         private async void ItemEdit_Load(object sender, EventArgs e)
@@ -48,7 +50,7 @@ namespace CPS_App
             //txtloc.Text = edititems.vc_location_desc.ToString();
             //txtcrDate.Text = edititems.dt_created_date.ToString();
 
-            var observableItems = new ObservableCollection<StockLevelSubItem>(edititems.subitem);
+            var observableItems = new ObservableCollection<StockLevelSubItem>(edititems.itemLists);
             stockList = observableItems.ToBindingList();
             dataGridViewitem.Columns.Clear();
             dataGridViewitem.DataSource = stockList;
@@ -129,7 +131,10 @@ namespace CPS_App
         }
         private async Task RefreshItemEditTable()
         {
-            stock = await _worker.GetStockLevelWorker();
+            StockLevelViewObj viewObj = new StockLevelViewObj();
+            stock = await _genericTableViewWorker.GetGenericWorker<StockLevelViewObj, StockLevelSubItem>(viewObj.sql, nameof(viewObj.bi_item_id));
+
+            //stock = await _worker.GetStockLevelWorker();
             await itemEditInitialLoad();
         }
 

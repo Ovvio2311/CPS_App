@@ -153,7 +153,7 @@ namespace CPS_App
         {
             if (!await ValidateCheck())
             {
-                MessageBox.Show("item form not complete");
+                MessageBox.Show("itemLists form not complete");
                 return;
             }
 
@@ -398,7 +398,7 @@ namespace CPS_App
 
         private void cbxtype_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cbxtype.SelectedItem.ToString().Contains("2"))
+            if (cbxtype.SelectedItem.ToString().Contains("1"))
             {
                 txtcont.Enabled = false;
                 txtquot.Enabled = false;

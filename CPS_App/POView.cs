@@ -27,18 +27,20 @@ namespace CPS_App
     {
         public ClaimsIdentity userIden;
         private readonly DbServices _dbServices;
-        public List<POATableObj> poaObj;
-        private POAWorker _pOAWorker;
+        public List<POTableObj> poObj;
+        //private POAWorker _pOAWorker;
         private Dictionary<string, string> searchWords;
         private SearchFunc _searchFunc;
-        public POView(DbServices dbServices, POAWorker pOAWorker, SearchFunc searchFunc)
+        GenericTableViewWorker _genericTableViewWorker;
+        public POView(DbServices dbServices, POAWorker pOAWorker, SearchFunc searchFunc, GenericTableViewWorker genericTableViewWorker)
         {
             InitializeComponent();
             _dbServices = dbServices;
-            poaObj = new List<POATableObj>();
-            _pOAWorker = pOAWorker;
+            poObj = new List<POTableObj>();
+            //_pOAWorker = pOAWorker;
             searchWords = new Dictionary<string, string>();
             _searchFunc = searchFunc;
+            _genericTableViewWorker = genericTableViewWorker;
         }
 
         private async void POAView_Load(object sender, EventArgs e)
@@ -68,7 +70,7 @@ namespace CPS_App
             //    .Where(x => x != null).Select(x => x.Name.ToString()).FirstOrDefault();
             //    if (column.HeaderText == "bi_deli_loc_id" || column.HeaderText == "bi_supp_id"
             //    || column.HeaderText == "ti_tc_id" || column.HeaderText == "ti_deli_sched_id"
-            //    || column.HeaderText == "itemLists")
+            //    || column.HeaderText == "item")
             //    {
             //        column.Visible = false;
             //    }
@@ -83,10 +85,18 @@ namespace CPS_App
         }
         private async Task LoadViewTable(string loc = null, searchObj obj = null)
         {
+            
             lblnoresult.Hide();
             kryptonDataGridViewpoa.DataSource = null;
-            poaObj = await _pOAWorker.GetPoaWorker(loc, obj);
-            if (poaObj == null)
+            //poObj = await _pOAWorker.GetPoaWorker(loc, obj);
+            POTableObj viewObj = new POTableObj();
+            var kvpLoc = new Dictionary<string, string>()
+            {
+                {nameof(viewObj.bi_deli_loc_id),loc }
+            };
+            poObj = await _genericTableViewWorker.GetGenericWorker<POTableObj, PoItemList>(viewObj.sql, nameof(viewObj.bi_po_header_id), kvpLoc, obj);
+
+            if (poObj == null)
             {
                 kryptonDataGridViewpoa.Columns.Clear();
                 lblnoresult.Show();
@@ -94,10 +104,10 @@ namespace CPS_App
                 btnedit.Hide();
                 return;
             }
-            var observableItems = new ObservableCollection<POATableObj>(poaObj);
-            BindingList<POATableObj> source = observableItems.ToBindingList();
+            var observableItems = new ObservableCollection<POTableObj>(poObj);
+            BindingList<POTableObj> source = observableItems.ToBindingList();
 
-            if (poaObj != null)
+            if (poObj != null)
                 kryptonDataGridViewpoa.DataSource = source;
 
             GenUtil.dataGridAttrName<POATableObj>(kryptonDataGridViewpoa, new List<string>() { "not_shown" });
@@ -118,9 +128,9 @@ namespace CPS_App
                     lblsubitemtitle.Hide();
                     return;
                 }
-                List<PoaItemList> itemViewSelect = poaObj.Where(x => x.bi_poa_header_id == selectdId).FirstOrDefault().itemLists;
-                var observableItems = new ObservableCollection<PoaItemList>(itemViewSelect);
-                BindingList<PoaItemList> source = observableItems.ToBindingList();
+                List<PoItemList> itemViewSelect = poObj.Where(x => x.bi_po_header_id == selectdId).FirstOrDefault().itemLists;
+                var observableItems = new ObservableCollection<PoItemList>(itemViewSelect);
+                BindingList<PoItemList> source = observableItems.ToBindingList();
                 kryptonDataGridViewitem.DataSource = source;
                 GenUtil.dataGridAttrName<PoaItemList>(kryptonDataGridViewitem, new List<string>() { "not_shown" });
                 //kryptonDataGridViewitem.Columns.ToDynamicList().ForEach(col =>
@@ -149,9 +159,9 @@ namespace CPS_App
                 MessageBox.Show("Contract Agreement has no items to update");
                 return;
             }
-            var readyToEdit = poaObj.Where(x => x.bi_poa_header_id == currentIndex).ToList();
+            var readyToEdit = poObj.Where(x => x.bi_po_header_id == currentIndex).ToList();
 
-            POAEdit poaEdit = new POAEdit(currentIndex, readyToEdit, _dbServices, _pOAWorker);
+            POEdit poaEdit = new POEdit(currentIndex, readyToEdit, _dbServices, _genericTableViewWorker);
             poaEdit.MdiParent = this.MdiParent;
             poaEdit.AutoScroll = true;
             poaEdit.Show();

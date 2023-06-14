@@ -73,7 +73,7 @@ namespace CPS_App.Services
                         {
                             if (col.Name.Equals(prop.Name))
                                 prop.SetValue(resRow, col.GetValue(fstKey), null);
-                            if (prop.Name.Equals("item"))
+                            if (prop.Name.Equals("itemLists"))
                                 prop.SetValue(resRow, templst, null);
                         });
                     });

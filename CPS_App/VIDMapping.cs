@@ -28,7 +28,7 @@ namespace CPS_App
 
         private async void VIDMapping_Load(object sender, EventArgs e)
         {
-            defPage = await _requestMapp.RequestMappingObjGetter();
+            //defPage = await _requestMapp.RequestMappingObjGetter();
 
             int rowIndex = 0;
 

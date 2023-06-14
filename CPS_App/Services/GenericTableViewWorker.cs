@@ -23,13 +23,13 @@ namespace CPS_App.Services
             _logger = logger;
             _services = dbServices;
         }
-        public async Task<List<T>> GetGenericWorker<T, i>(string key, string loc = null, searchObj obj = null)
+        public async Task<List<T>> GetGenericWorker<T, i>(string sql,string keyName, Dictionary<string,string> loc = null, searchObj obj = null)
             where T : new()
             where i : new()
         {
             var reqPoaList = new List<T>();
             var res = new List<T>();
-            var resObj = await _services.GetPoaList(loc, obj);
+            var resObj = await _services.GetGenericViewTable(sql,loc, obj);
             if (resObj.resCode == 1 && resObj.result != null)
             {
                 List<List<KeyValuePair<string, object>>> kvp = resObj.result;
@@ -55,21 +55,20 @@ namespace CPS_App.Services
                     workerLst.Add(mappingObj);
                     itemLst.Add(item);
                 });
-                var keylst = workerLst.GroupBy(GroupByExpression<T>("bi_poa_header_id").Compile()).Select(g => g.Key).ToList();
+                var keylst = workerLst.GroupBy(g => g.GetType().GetProperty(keyName)!.GetValue(g)).Select(g => g.Key).ToList();
+                //use function to get group by
+                //var keyls = workerLst.GroupBy(GroupByExpression<T>(keyName).Compile()).Select(g => g.Key).ToList();
                 keylst.ForEach(key =>
                 {
                 var resRow = new T();
 
               
-
-
-
-                    var templst = itemLst.Where(x => x.GetType().GetProperty("bi_poa_header_id").GetValue(x).Equals(key)).ToList();
+                    var templst = itemLst.Where(x => x.GetType().GetProperty(keyName).GetValue(x).Equals(key)).ToList();
                     //var templst = itemLst.Where(x => x.bi_poa_header_id.Equals(key)).ToList();
                     resRow.GetType().GetProperties().ToList()
                     .ForEach(prop =>
                     {
-                        var fstKey = workerLst.Where(x => x.GetType().GetProperty("bi_poa_header_id").GetValue(x).Equals(key)).FirstOrDefault();
+                        var fstKey = workerLst.Where(x => x.GetType().GetProperty(keyName).GetValue(x).Equals(key)).FirstOrDefault();
                         //var fstKey = workerLst.Where(x => x.bi_poa_header_id.Equals(key)).FirstOrDefault();
                         fstKey.GetType().GetProperties().ToList()
                         .ForEach(col =>

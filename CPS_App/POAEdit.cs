@@ -18,14 +18,18 @@ namespace CPS_App
         public BindingList<PoaItemList> itemList;
         private readonly DbServices _dbServices;
         private POAWorker _pOAWorker;
-        public POAEdit(int headId, List<POATableObj> obj, DbServices dbServices, POAWorker pOAWorker)
+        private GenericTableViewWorker _genericTableViewWorker;
+        public POAEdit(int headId, List<POATableObj> obj, DbServices dbServices, POAWorker pOAWorker, GenericTableViewWorker genericTableViewWorker)
         {
             InitializeComponent();
             this.headId = headId;
             this.poaObj = obj;
             _dbServices = dbServices;
             _pOAWorker = pOAWorker;
+            _genericTableViewWorker = genericTableViewWorker;
             itemList = new BindingList<PoaItemList>();
+
+
         }
 
         private async void POAEdit_Load(object sender, EventArgs e)
@@ -185,7 +189,10 @@ namespace CPS_App
 
         private async Task RefreshPOAEditTable()
         {
-            poaObj = await _pOAWorker.GetPoaWorker();
+            POATableObj viewObj = new POATableObj();
+            poaObj = await _genericTableViewWorker.GetGenericWorker<POATableObj, PoaItemList>(viewObj.sql, nameof(viewObj.bi_poa_header_id));
+
+            //poaObj = await _pOAWorker.GetPoaWorker();
             await poaEditInitialLoad();
         }
 

@@ -301,8 +301,14 @@ namespace CPS_App
                 selObj2.selecter.Remove("bi_item_vid");
                 selObj2.selecter.Remove("bi_prefer_loc_id");
                 DbResObj res2 = await _dbServices.CheckVidmapDupItemId(selObj2);
-                if (res2.resCode == 1 && res2.result.Count > 1)
+                if (res2.resCode == 1 && res2.result.Count >= 1)
                 {
+                    tb_item_vid_mapping temp1 = res2.result[0];
+                    if (res2.result.Count == 1 && temp1.bi_item_vid.ToString() != cbxvidmapvid.SelectedItem.ToString())
+                    {
+                        MessageBox.Show("Item id cannot assgined to another Vid");
+                        return;
+                    }
                     MessageBox.Show("Item id was assgined to another Vid");
                     return;
                 }

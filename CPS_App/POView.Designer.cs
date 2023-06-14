@@ -239,9 +239,9 @@
             lbltitle.Name = "lbltitle";
             lbltitle.Palette = kryptonPaletteheader;
             lbltitle.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
-            lbltitle.Size = new Size(221, 23);
+            lbltitle.Size = new Size(131, 23);
             lbltitle.TabIndex = 33;
-            lbltitle.Values.Text = "Purchase Order Agreement";
+            lbltitle.Values.Text = "Purchase Order";
             // 
             // lblnoresult
             // 

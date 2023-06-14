@@ -338,11 +338,7 @@ namespace CPS_App
 
             var idtype = cbxitid.SelectedItem;
             if (idtype != null) { idtype = idtype.ToString().Split(":").ElementAt(0); }
-            if (cbxtype.SelectedItem.ToString().Contains("2"))
-            {
-                txtcont.Enabled = false;
-                txtcont.Text = "null";
-            }
+
             var selectedComboBoxpn1 = pn1.Controls.OfType<KryptonComboBox>().Where(n => GenUtil.ConvertObjtoType<string>(n.SelectedItem) != null).Count();
             var selectedComboBoxpn2 = pn2.Controls.OfType<KryptonComboBox>().Where(n => GenUtil.ConvertObjtoType<string>(n.SelectedItem) != null).Count();
             var availablePn1 = pn1.Controls.OfType<KryptonTextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
@@ -350,6 +346,7 @@ namespace CPS_App
             return availablePn1 == 1 && availablePn2 == 7 && selectedComboBoxpn1 == 6 && selectedComboBoxpn2 == 2;
 
         }
+
         private async Task InsertTableHeader()
         {
             //insert tb_poa
@@ -397,6 +394,22 @@ namespace CPS_App
             obj.bi_poa_header_id = GenUtil.ConvertObjtoType<int>(resheader.result);
             MessageBox.Show($"insert completed, poa id: {obj.bi_poa_id}, poa header id: {obj.bi_poa_header_id}");
 
+        }
+
+        private void cbxtype_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbxtype.SelectedItem.ToString().Contains("2"))
+            {
+                txtcont.Enabled = false;
+                txtquot.Enabled = false;
+                txtcont.Text = "Null";
+            }
+            else
+            {
+                txtcont.Enabled = true;
+                txtquot.Enabled = true;
+                txtcont.Text = string.Empty;
+            }
         }
     }
 }

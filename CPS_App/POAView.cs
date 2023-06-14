@@ -31,7 +31,8 @@ namespace CPS_App
         private POAWorker _pOAWorker;
         private Dictionary<string, string> searchWords;
         private SearchFunc _searchFunc;
-        public POAView(DbServices dbServices, POAWorker pOAWorker, SearchFunc searchFunc)
+        private GenericTableViewWorker _genericTableViewWorker;
+        public POAView(DbServices dbServices, POAWorker pOAWorker, SearchFunc searchFunc, GenericTableViewWorker genericTableViewWorker)
         {
             InitializeComponent();
             _dbServices = dbServices;
@@ -39,6 +40,7 @@ namespace CPS_App
             _pOAWorker = pOAWorker;
             searchWords = new Dictionary<string, string>();            
             _searchFunc = searchFunc;
+            _genericTableViewWorker = genericTableViewWorker;
         }
 
         private async void POAView_Load(object sender, EventArgs e)
@@ -83,9 +85,12 @@ namespace CPS_App
         }
         private async Task LoadViewTable(string loc = null, searchObj obj = null)
         {
+            
             lblnoresult.Hide();
             kryptonDataGridViewpoa.DataSource = null;
-            poaObj = await _pOAWorker.GetPoaWorker(loc, obj);
+            poaObj = await _genericTableViewWorker.GetGenericWorker<POATableObj, PoaItemList>("bi_poa_header_id",loc,obj);
+            //poaObj = await _pOAWorker.GetPoaWorker(loc, obj);
+
             if (poaObj == null)
             {
                 kryptonDataGridViewpoa.Columns.Clear();

@@ -76,6 +76,7 @@ namespace CPS_App
             services.AddScoped<RequestMapping>();
             services.AddScoped<POAWorker>();
             services.AddScoped<SearchFunc>();
+            services.AddScoped<GenericTableViewWorker>();
             services.AddScoped<ScheduleTask>();
             services.AddScoped<StockLevelWorker>();
             services.Configure<IdentityOptions>(options =>

@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Printing.IndexedProperties;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -56,15 +58,19 @@ namespace CPS_App.Services
                 var keylst = workerLst.GroupBy(GroupByExpression<T>("bi_poa_header_id").Compile()).Select(g => g.Key).ToList();
                 keylst.ForEach(key =>
                 {
-                    var resRow = new T();
-                    var i = itemLst.GetType().GetProperties().Where(x=>x.Name.Equals(key)).ToList();
-                   
-                   
-                    var templst = itemLst.Where(x => x.bi_poa_header_id.Equals(key)).ToList();
+                var resRow = new T();
+
+              
+
+
+
+                    var templst = itemLst.Where(x => x.GetType().GetProperty("bi_poa_header_id").GetValue(x).Equals(key)).ToList();
+                    //var templst = itemLst.Where(x => x.bi_poa_header_id.Equals(key)).ToList();
                     resRow.GetType().GetProperties().ToList()
                     .ForEach(prop =>
                     {
-                        var fstKey = workerLst.Where(x => x.bi_poa_header_id.Equals(key)).FirstOrDefault();
+                        var fstKey = workerLst.Where(x => x.GetType().GetProperty("bi_poa_header_id").GetValue(x).Equals(key)).FirstOrDefault();
+                        //var fstKey = workerLst.Where(x => x.bi_poa_header_id.Equals(key)).FirstOrDefault();
                         fstKey.GetType().GetProperties().ToList()
                         .ForEach(col =>
                         {
@@ -86,13 +92,13 @@ namespace CPS_App.Services
             }
         }
 
-        public object GetProperty(this object source, string name)
-        {
-            if (source == null) return null;
-            var pi = source.GetType().GetProperty(name);
-            if (pi == null) return null;
-            return pi.GetValue(source);
-        }
+        //public object GetProperty(this object source, string name)
+        //{
+        //    if (source == null) return null;
+        //    var pi = source.GetType().GetProperty(name);
+        //    if (pi == null) return null;
+        //    return pi.GetValue(source);
+        //}
         public Expression<Func<T, object>> GroupByExpression<T>(string propertyName)
         {
             var parameter = Expression.Parameter(typeof(T), "x");

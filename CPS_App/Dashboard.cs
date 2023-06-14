@@ -26,11 +26,12 @@ namespace CPS_App
         private SearchFunc _searchFunc;
         private IConfiguration _configuration;
         private ScheduleTask _scheduleTask;
+        private GenericTableViewWorker _genericTableViewWorker;
 
         public Dashboard(Register register, AuthService authService, 
             RequestMapping requestMapp, DbServices dbServices, 
             StockLevelWorker stockWorker, RegisterServices registerServices, 
-            POAWorker pOAWorker, SearchFunc searchFunc, IConfiguration configuration, ScheduleTask scheduleTask)
+            POAWorker pOAWorker, SearchFunc searchFunc, IConfiguration configuration, ScheduleTask scheduleTask, GenericTableViewWorker genericTableViewWorker)
         {
             _authService = authService;
             _register = register;
@@ -44,6 +45,7 @@ namespace CPS_App
             _searchFunc = searchFunc;
             _configuration = configuration;
             _scheduleTask = scheduleTask;
+            _genericTableViewWorker = genericTableViewWorker;
         }
         private async void Dashboard_Load(object sender, EventArgs e)
         {
@@ -117,7 +119,7 @@ namespace CPS_App
 
         private void strippoa_Click(object sender, EventArgs e)
         {
-            POAView poaView = new POAView(_dbServices, _pOAWorker,_searchFunc);
+            POAView poaView = new POAView(_dbServices, _pOAWorker,_searchFunc,_genericTableViewWorker);
             poaView.MdiParent = this;
             poaView.AutoScroll = true;
             poaView.Show();

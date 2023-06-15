@@ -16,6 +16,7 @@ using CPS_App.Helpers;
 using CPS_App.Services;
 using Krypton.Toolkit;
 using Newtonsoft.Json;
+using Pomelo.EntityFrameworkCore.MySql.Query.ExpressionTranslators.Internal;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Header;
 using static CPS_App.Models.CPSModel;
 using static CPS_App.Models.DbModels;
@@ -29,6 +30,7 @@ namespace CPS_App
         private POATableObj obj;
         private List<PoaItemList> itemList;
         private Validator _validator;
+        private Dictionary<string, string> poaRefType;
         public POCreate(DbServices dbServices)
         {
             InitializeComponent();
@@ -36,6 +38,7 @@ namespace CPS_App
             itemList = new List<PoaItemList>();
             _dbServices = dbServices;
             _validator = new Validator();
+            poaRefType = new Dictionary<string, string>();
         }
 
         private async void POACreate_Load(object sender, EventArgs e)

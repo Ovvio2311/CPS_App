@@ -31,7 +31,8 @@ namespace CPS_App
         private List<PoaItemList> itemList;
         private Validator _validator;
         private Dictionary<string, string> poaRefType;
-        public POCreate(DbServices dbServices)
+        private GenericTableViewWorker _genericTableViewWorker;
+        public POCreate(DbServices dbServices, GenericTableViewWorker genericTableViewWorker)
         {
             InitializeComponent();
             obj = new POATableObj();
@@ -39,6 +40,7 @@ namespace CPS_App
             _dbServices = dbServices;
             _validator = new Validator();
             poaRefType = new Dictionary<string, string>();
+            _genericTableViewWorker = genericTableViewWorker;
         }
 
         private async void POACreate_Load(object sender, EventArgs e)
@@ -52,19 +54,22 @@ namespace CPS_App
             }
 
             disableValidation();
-            var type = await _dbServices.SelectAllAsync<lut_poa_type>();
-            List<lut_poa_type> poatype = JsonConvert.DeserializeObject<List<lut_poa_type>>(JsonConvert.SerializeObject(type.result));
-            poatype.ForEach(x => cbxreffrom.Items.Add(x.vc_poa_type_desc));
+            var poa_type = await _dbServices.SelectAllAsync<lut_poa_type>();
+            List<lut_poa_type> poatype = JsonConvert.DeserializeObject<List<lut_poa_type>>(JsonConvert.SerializeObject(poa_type.result));
+            poatype.ForEach(x =>
+            {
+                if (x.b_is_ref_type)
+                    cbxreffrom.Items.Add(x.vc_poa_type_desc);
+            });
 
             var po_type = await _dbServices.SelectAllAsync<tb_po_type>();
             List<tb_po_type> potype = JsonConvert.DeserializeObject<List<tb_po_type>>(JsonConvert.SerializeObject(po_type.result));
             potype.ForEach(x =>
             {
-                if(x.vc_po_type_desc == "Planned Purchase Order")
+                if (x.b_is_ref_type)
                     cbxreffrom.Items.Add(x.vc_po_type_desc);
                 cbxtype.Items.Add($"{x.ti_po_type_id}: {x.vc_po_type_desc}");
             });
-            
 
             var locType = await _dbServices.SelectAllAsync<tb_location>();
             List<tb_location> loc = JsonConvert.DeserializeObject<List<tb_location>>(JsonConvert.SerializeObject(locType.result));
@@ -407,8 +412,92 @@ namespace CPS_App
 
         }
 
-        private void cbxreffrom_SelectedIndexChanged(object sender, EventArgs e)
+        private async void cbxreffrom_SelectedIndexChanged(object sender, EventArgs e)
         {
+            string selectedRef = cbxreffrom.Text;
+            cbxreforderid.SelectedIndex = -1;
+            cbxreforderid.Items.Clear();
+
+            DbResObj poaRes = await selectWhere(nameof(lut_poa_type), new Dictionary<string, string> { { "vc_poa_type_desc", selectedRef } });
+
+            if (poaRes.resCode == 1 && poaRes.result.Count == 1)
+            {
+                List<List<KeyValuePair<string, object>>> kvp = poaRes.result;
+                kvp.ElementAt(0).FirstOrDefault(x => x.Key == "ti_poa_type_id");
+
+                DbResObj poaIdRes = await selectWhere("tb_poa", new Dictionary<string, string> { { "ti_poa_type_id",
+                        kvp.ElementAt(0).FirstOrDefault(x => x.Key == "ti_poa_type_id").Value.ToString() } });
+
+                if (poaIdRes.resCode == 1 && poaIdRes.result.Count > 0)
+                {
+                    List<List<KeyValuePair<string, object>>> kvppoaId = poaIdRes.result;
+                    kvppoaId.ToList().ForEach(row =>
+                    {
+                        cbxreforderid.Items.Add($"Poa Id: {row.FirstOrDefault(col => col.Key == "bi_poa_id").Value}");
+                    });
+                }
+            }
+            else if (poaRes.resCode == 0 && poaRes.result.Count == 0)
+            {
+                var pores = await selectWhere(nameof(tb_po_type), new Dictionary<string, string> { { "vc_po_type_desc", selectedRef } });
+                if (pores.resCode == 1 && pores.result.Count == 1)
+                {
+                    List<List<KeyValuePair<string, object>>> kvp = pores.result;
+                    DbResObj poIdRes = await selectWhere("tb_po", new Dictionary<string, string> { { "ti_po_type_id",
+                            kvp.ElementAt(0).FirstOrDefault(x => x.Key == "ti_po_type_id").Value.ToString() } });
+                    if (poIdRes.resCode == 1 && poIdRes.result.Count > 0)
+                    {
+                        List<List<KeyValuePair<string, object>>> kvppoId = poIdRes.result;
+                        kvppoId.ToList().ForEach(row =>
+                        {
+                            cbxreforderid.Items.Add($"Po Id: {row.FirstOrDefault(col => col.Key == "bi_po_id").Value}");
+                        });
+                    }
+                }
+            }
+        }
+        public async Task<DbResObj> selectWhere(string table, Dictionary<string, string> obj)
+        {
+            DbResObj res = new DbResObj()
+            {
+                resCode = 0,
+                result = null,
+                err_msg = null
+            };
+            try
+            {
+                var selectObj = new selectObj();
+                selectObj.table = table;
+                selectObj.selecter = obj;
+                res = await _dbServices.SelectWhereAsync(selectObj);
+                if (res.resCode == 1 && res.result.Count > 0)
+                {
+                    res.result = GenUtil.DbResulttoKVP(res.result);
+                }
+                return res;
+            }
+            catch (Exception ex)
+            {
+                return res;
+            }
+        }
+
+        private async void cbxreforderid_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var refType = cbxreforderid.SelectedIndex.ToString().Split(":").ElementAt(0);
+            var refId = cbxreforderid.SelectedIndex.ToString().Split(":").ElementAt(1);
+            if (refType.Contains("Poa"))
+            {
+                POATableObj obj = new POATableObj();
+                List<POATableObj> preHandleList = await _genericTableViewWorker.GetGenericWorker<POATableObj, PoaItemList>(obj.GetSqlQuery(), nameof(obj.bi_poa_header_id),
+                    new Dictionary<string, string> { { nameof(obj.bi_poa_id), refId } });
+            }
+            else if (refType.Contains("Po"))
+            {
+                POTableObj obj = new POTableObj();
+                List<POTableObj> preHandleList = await _genericTableViewWorker.GetGenericWorker<POTableObj, PoItemList>(obj.GetSqlQuery(), nameof(obj.bi_po_header_id),
+                    new Dictionary<string, string> { { nameof(obj.bi_po_id), refId } });
+            }
 
         }
     }

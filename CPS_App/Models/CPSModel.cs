@@ -173,6 +173,8 @@ namespace CPS_App.Models
             public int ti_poa_type_id { get; set; }
             [Display(Name = "Name")]
             public string vc_poa_type_desc { get; set; }
+            [Display(Name = "is_ref")]
+            public bool b_is_ref_type { get; set; }
             [Display(Name = "Create Date")]
             public string dt_created_date { get; set; }
             [Display(Name = "Update Date")]
@@ -224,6 +226,8 @@ namespace CPS_App.Models
             public int ti_po_type_id { get; set; }
             [Display(Name = "Name")]
             public string vc_po_type_desc { get; set; }
+            [Display(Name = "is_ref")]
+            public bool b_is_ref_type { get; set; }
             [Display(Name = "Create Date")]
             public string dt_created_date { get; set; }
             [Display(Name = "Update Date")]
@@ -566,6 +570,29 @@ namespace CPS_App.Models
             public string dt_updated_datetime { get; set; }
             [Display(Name = "not_shown")]
             public List<PoaItemList> itemLists { get; set; }
+            public string GetSqlQuery()
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.Append(@"select * from (
+	                     select poa.bi_poa_id, poa.ti_poa_type_id, poatype.vc_poa_type_desc, poa.bi_poa_status_id, poast.vc_poa_status_desc, hd.bi_poa_header_id,
+                         hd.bi_supp_id, sup.vc_supp_desc, hd.i_cur_id, cur.vc_cur_desc , hd.ti_tc_id, tc.vc_tc_desc, 
+                         hd.ti_deli_sched_id, delisc.vc_deli_sched_desc, hd.dt_effect_date, hd.bi_contract_no, ln.bi_poa_line_id, ln.bi_item_id, it.vc_item_desc, 
+                         ln.bi_supp_item_id, ln.dc_promise_qty, uom.vc_uom_desc, ln.i_uom_id, ln.dc_min_qty, ln.dc_price, ln.dc_amount, ln.vc_reference, ln.bi_quot_no,
+                         poa.dt_created_date, poa.dt_updated_datetime
+                         from tb_poa poa
+                         inner join tb_poa_header hd on poa.bi_poa_id = hd.bi_poa_id
+                         left join tb_poa_line ln on hd.bi_poa_header_id = ln.bi_poa_header_id
+                         inner join tb_supplier sup on hd.bi_supp_id = sup.bi_supp_id
+                         inner join lut_term_and_con tc on hd.ti_tc_id = tc.ti_tc_id
+                         inner join lut_deli_schedule_type delisc on hd.ti_deli_sched_id = delisc.ti_deli_sched_id
+                         left join tb_item it on ln.bi_item_id = it.bi_item_id
+                         left join lut_uom_type uom on ln.i_uom_id = uom.i_uom_id
+                         left join lut_poa_type poatype on poa.ti_poa_type_id = poatype.ti_poa_type_id                         
+                         left join lut_poa_status poast on poa.bi_poa_status_id = poast.bi_poa_status_id
+                         left join lut_currency cur on hd.i_cur_id = cur.i_cur_id
+                         ) a ");
+                return sb.ToString();
+            }
         }
         public class PoaItemList
         {

@@ -81,6 +81,10 @@ namespace CPS_App
             btnAdd = new KryptonButton();
             btnsubmit = new KryptonButton();
             kryptonPalettereadonly = new KryptonPalette(components);
+            lblreffrom = new KryptonLabel();
+            cbxreffrom = new KryptonComboBox();
+            cbxreforderid = new KryptonComboBox();
+            lblrefid = new KryptonLabel();
             ((System.ComponentModel.ISupportInitialize)pn1).BeginInit();
             pn1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)cbxcur).BeginInit();
@@ -93,6 +97,8 @@ namespace CPS_App
             pn2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)cbxuom).BeginInit();
             ((System.ComponentModel.ISupportInitialize)cbxitid).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)cbxreffrom).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)cbxreforderid).BeginInit();
             SuspendLayout();
             // 
             // lbltype
@@ -207,6 +213,10 @@ namespace CPS_App
             // 
             // pn1
             // 
+            pn1.Controls.Add(cbxreforderid);
+            pn1.Controls.Add(lblrefid);
+            pn1.Controls.Add(cbxreffrom);
+            pn1.Controls.Add(lblreffrom);
             pn1.Controls.Add(cbxcur);
             pn1.Controls.Add(btncancel);
             pn1.Controls.Add(btnclear1);
@@ -310,9 +320,9 @@ namespace CPS_App
             lblpoacreate.Name = "lblpoacreate";
             lblpoacreate.Palette = kryptonPaletteheader;
             lblpoacreate.PaletteMode = PaletteMode.Custom;
-            lblpoacreate.Size = new Size(124, 27);
+            lblpoacreate.Size = new Size(230, 27);
             lblpoacreate.StateCommon.Font = new Font("Microsoft Tai Le", 15.75F, FontStyle.Bold, GraphicsUnit.Point);
-            lblpoacreate.Text = "POA Create";
+            lblpoacreate.Text = "Purchase Order Create";
             // 
             // kryptonPaletteheader
             // 
@@ -662,14 +672,65 @@ namespace CPS_App
             kryptonPalettereadonly.Common.StateCommon.Back.Color1 = SystemColors.Control;
             kryptonPalettereadonly.Common.StateCommon.Back.Color2 = SystemColors.Control;
             // 
-            // POACreate
+            // lblreffrom
+            // 
+            lblreffrom.ForeColor = Color.FromArgb(177, 192, 214);
+            lblreffrom.LabelStyle = LabelStyle.NormalControl;
+            lblreffrom.Location = new Point(53, 76);
+            lblreffrom.Name = "lblreffrom";
+            lblreffrom.Palette = kryptonPalettelbl;
+            lblreffrom.PaletteMode = PaletteMode.Custom;
+            lblreffrom.Size = new Size(123, 21);
+            lblreffrom.TabIndex = 13;
+            lblreffrom.Tag = "";
+            lblreffrom.Values.Text = "Reference From";
+            // 
+            // cbxreffrom
+            // 
+            cbxreffrom.CornerRoundingRadius = -1F;
+            cbxreffrom.DropDownWidth = 121;
+            cbxreffrom.IntegralHeight = false;
+            cbxreffrom.Location = new Point(182, 76);
+            cbxreffrom.Name = "cbxreffrom";
+            cbxreffrom.Size = new Size(160, 21);
+            cbxreffrom.StateCommon.ComboBox.Content.TextH = PaletteRelativeAlign.Near;
+            cbxreffrom.TabIndex = 14;
+            cbxreffrom.Tag = "";
+            cbxreffrom.SelectedIndexChanged += cbxreffrom_SelectedIndexChanged;
+            // 
+            // cbxreforderid
+            // 
+            cbxreforderid.CornerRoundingRadius = -1F;
+            cbxreforderid.DropDownWidth = 121;
+            cbxreforderid.IntegralHeight = false;
+            cbxreforderid.Location = new Point(518, 76);
+            cbxreforderid.Name = "cbxreforderid";
+            cbxreforderid.Size = new Size(160, 21);
+            cbxreforderid.StateCommon.ComboBox.Content.TextH = PaletteRelativeAlign.Near;
+            cbxreforderid.TabIndex = 16;
+            cbxreforderid.Tag = "";
+            // 
+            // lblrefid
+            // 
+            lblrefid.ForeColor = Color.FromArgb(177, 192, 214);
+            lblrefid.LabelStyle = LabelStyle.NormalControl;
+            lblrefid.Location = new Point(369, 76);
+            lblrefid.Name = "lblrefid";
+            lblrefid.Palette = kryptonPalettelbl;
+            lblrefid.PaletteMode = PaletteMode.Custom;
+            lblrefid.Size = new Size(143, 21);
+            lblrefid.TabIndex = 15;
+            lblrefid.Tag = "";
+            lblrefid.Values.Text = "Reference Order Id";
+            // 
+            // POCreate
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(842, 606);
             Controls.Add(pn1);
             Controls.Add(pn2);
-            Name = "POACreate";
+            Name = "POCreate";
             Text = "POACreate";
             Load += POACreate_Load;
             ((System.ComponentModel.ISupportInitialize)pn1).EndInit();
@@ -686,6 +747,8 @@ namespace CPS_App
             pn2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)cbxuom).EndInit();
             ((System.ComponentModel.ISupportInitialize)cbxitid).EndInit();
+            ((System.ComponentModel.ISupportInitialize)cbxreffrom).EndInit();
+            ((System.ComponentModel.ISupportInitialize)cbxreforderid).EndInit();
             ResumeLayout(false);
         }
 
@@ -743,5 +806,9 @@ namespace CPS_App
         private KryptonButton btncancel;
         private KryptonComboBox cbxuom;
         private KryptonComboBox cbxcur;
+        private KryptonComboBox cbxreffrom;
+        private KryptonLabel lblreffrom;
+        private KryptonComboBox cbxreforderid;
+        private KryptonLabel lblrefid;
     }
 }

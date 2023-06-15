@@ -49,10 +49,19 @@ namespace CPS_App
             }
 
             disableValidation();
-
             var type = await _dbServices.SelectAllAsync<lut_poa_type>();
             List<lut_poa_type> poatype = JsonConvert.DeserializeObject<List<lut_poa_type>>(JsonConvert.SerializeObject(type.result));
-            poatype.ForEach(x => cbxtype.Items.Add($"{x.ti_poa_type_id}: {x.vc_poa_type_desc}"));
+            poatype.ForEach(x => cbxreffrom.Items.Add(x.vc_poa_type_desc));
+
+            var po_type = await _dbServices.SelectAllAsync<tb_po_type>();
+            List<tb_po_type> potype = JsonConvert.DeserializeObject<List<tb_po_type>>(JsonConvert.SerializeObject(po_type.result));
+            potype.ForEach(x =>
+            {
+                if(x.vc_po_type_desc == "Planned Purchase Order")
+                    cbxreffrom.Items.Add(x.vc_po_type_desc);
+                cbxtype.Items.Add($"{x.ti_po_type_id}: {x.vc_po_type_desc}");
+            });
+            
 
             var locType = await _dbServices.SelectAllAsync<tb_location>();
             List<tb_location> loc = JsonConvert.DeserializeObject<List<tb_location>>(JsonConvert.SerializeObject(locType.result));
@@ -392,6 +401,11 @@ namespace CPS_App
             }
             obj.bi_poa_header_id = GenUtil.ConvertObjtoType<int>(resheader.result);
             MessageBox.Show($"insert completed, poa id: {obj.bi_poa_id}, poa header id: {obj.bi_poa_header_id}");
+
+        }
+
+        private void cbxreffrom_SelectedIndexChanged(object sender, EventArgs e)
+        {
 
         }
     }

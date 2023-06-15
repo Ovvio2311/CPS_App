@@ -61,27 +61,7 @@ namespace CPS_App
             }
             var userLoc = userIden.Claims.FirstOrDefault(x => x.Type == "location_id").Value.ToString();
             await LoadViewTable(userLoc);
-            //kryptonDataGridViewpoa.Columns.ToDynamicList().ForEach(col =>
-            //{
-            //    DataGridViewColumn column = col;
-            //    col.HeaderText = typeof(POATableObj).GetProperties().ToList()
-            //    .Where(x => col.HeaderText == x.Name)
-            //    .Select(x => x.GetCustomAttribute<DisplayAttribute>())
-            //    .Where(x => x != null).Select(x => x.Name.ToString()).FirstOrDefault();
-            //    if (column.HeaderText == "bi_deli_loc_id" || column.HeaderText == "bi_supp_id"
-            //    || column.HeaderText == "ti_tc_id" || column.HeaderText == "ti_deli_sched_id"
-            //    || column.HeaderText == "item")
-            //    {
-            //        column.Visible = false;
-            //    }
-
-            //});
-
-
-            //var deliscType = await _dbServices.SelectAllAsync<lut_deli_schedule_type>();
-            //List<lut_deli_schedule_type> sc = JsonConvert.DeserializeObject<List<lut_deli_schedule_type>>(JsonConvert.SerializeObject(deliscType.result));
-            //sc.ForEach(x => cbxdelisc.Items.Add($"{x.ti_deli_sched_id}: {x.vc_deli_sched_desc}"));
-
+           
         }
         private async Task LoadViewTable(string loc = null, searchObj obj = null)
         {
@@ -94,13 +74,13 @@ namespace CPS_App
             {
                 {nameof(viewObj.bi_deli_loc_id),loc }
             };
-            poObj = await _genericTableViewWorker.GetGenericWorker<POTableObj, PoItemList>(viewObj.sql, nameof(viewObj.bi_po_header_id), kvpLoc, obj);
+            poObj = await _genericTableViewWorker.GetGenericWorker<POTableObj, PoItemList>(viewObj.GetSqlQuery(), nameof(viewObj.bi_po_header_id), kvpLoc, obj);
 
             if (poObj == null)
             {
                 kryptonDataGridViewpoa.Columns.Clear();
                 lblnoresult.Show();
-                btnadd.Hide();
+                //btnadd.Hide();
                 btnedit.Hide();
                 return;
             }
@@ -132,21 +112,7 @@ namespace CPS_App
                 var observableItems = new ObservableCollection<PoItemList>(itemViewSelect);
                 BindingList<PoItemList> source = observableItems.ToBindingList();
                 kryptonDataGridViewitem.DataSource = source;
-                GenUtil.dataGridAttrName<PoaItemList>(kryptonDataGridViewitem, new List<string>() { "not_shown" });
-                //kryptonDataGridViewitem.Columns.ToDynamicList().ForEach(col =>
-                //{
-                //    DataGridViewColumn column = col;
-                //    col.HeaderText = typeof(ItemRequest).GetProperties().ToList()
-                //    .Where(x => col.HeaderText == x.Name)
-                //    .Select(x => x.GetCustomAttribute<DisplayAttribute>())
-                //    .Where(x => x != null).Select(x => x.Name.ToString()).FirstOrDefault();
-                //    if (column.HeaderText == "i_uom_id")
-                //    {
-                //        column.Visible = false;
-                //    }
-
-                //});
-
+                GenUtil.dataGridAttrName<PoaItemList>(kryptonDataGridViewitem, new List<string>() { "not_shown" });                
             }
         }
         //edit POA and POA header
@@ -171,10 +137,10 @@ namespace CPS_App
 
         private void btnadd_Click(object sender, EventArgs e)
         {
-            POACreate poaCre = new POACreate(_dbServices);
-            poaCre.MdiParent = this.MdiParent;
-            poaCre.AutoScroll = true;
-            poaCre.Show();
+            POCreate poCre = new POCreate(_dbServices);
+            poCre.MdiParent = this.MdiParent;
+            poCre.AutoScroll = true;
+            poCre.Show();
             this.Close();
         }
 
@@ -184,7 +150,7 @@ namespace CPS_App
         }
         private async void btnsearch_Click(object sender, EventArgs e)
         {
-            btnadd.Show();
+            //btnadd.Show();
             btnedit.Show();
             if (cbxsearch1.SelectedItem == cbxsearch2.SelectedItem && txtsearch1.Text != "" && txtsearch2.Text != "")
             {

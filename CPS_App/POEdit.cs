@@ -189,7 +189,7 @@ namespace CPS_App
         {
             POTableObj viewObj = new POTableObj();
             
-            poObj = await _genericTableViewWorker.GetGenericWorker<POTableObj, PoItemList>(viewObj.sql, nameof(viewObj.bi_po_header_id));
+            poObj = await _genericTableViewWorker.GetGenericWorker<POTableObj, PoItemList>(viewObj.GetSqlQuery(), nameof(viewObj.bi_po_header_id));
 
             //poObj = await _pOAWorker.GetPoaWorker();
             await poEditInitialLoad();

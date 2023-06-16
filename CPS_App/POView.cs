@@ -137,7 +137,7 @@ namespace CPS_App
 
         private void btnadd_Click(object sender, EventArgs e)
         {
-            POCreate poCre = new POCreate(_dbServices);
+            POCreate poCre = new POCreate(_dbServices,_genericTableViewWorker);
             poCre.MdiParent = this.MdiParent;
             poCre.AutoScroll = true;
             poCre.Show();

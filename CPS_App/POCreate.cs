@@ -27,20 +27,22 @@ namespace CPS_App
     {
         public ClaimsIdentity userIden;
         private DbServices _dbServices;
-        private POATableObj obj;
-        private List<PoaItemList> itemList;
+        private POTableObj obj;
+        private List<PoItemList> itemList;
         private Validator _validator;
         private Dictionary<string, string> poaRefType;
         private GenericTableViewWorker _genericTableViewWorker;
+        private PoCreateRefList preHandleList;
         public POCreate(DbServices dbServices, GenericTableViewWorker genericTableViewWorker)
         {
             InitializeComponent();
-            obj = new POATableObj();
-            itemList = new List<PoaItemList>();
+            obj = new POTableObj();
+            itemList = new List<PoItemList>();
             _dbServices = dbServices;
             _validator = new Validator();
             poaRefType = new Dictionary<string, string>();
             _genericTableViewWorker = genericTableViewWorker;
+            preHandleList = new PoCreateRefList();
         }
 
         private async void POACreate_Load(object sender, EventArgs e)
@@ -115,12 +117,11 @@ namespace CPS_App
 
         }
 
-
         private async void btnnext_Click(object sender, EventArgs e)
         {
 
-            var poatype = cbxtype.SelectedItem;
-            if (poatype != null) { poatype = poatype.ToString().Split(":").ElementAt(0); }
+            var potype = cbxtype.SelectedItem;
+            if (potype != null) { potype = potype.ToString().Split(":").ElementAt(0); }
             var loc = cbxloc.SelectedItem;
             if (loc != null) { loc = loc.ToString().Split(":").ElementAt(0); }
             var tc = cbxtc.SelectedItem;
@@ -134,32 +135,31 @@ namespace CPS_App
             var ecdate = kryptonDateTimePickerec.Value;
             if (ecdate < DateTime.Now)
             {
-                MessageBox.Show("Effective date error");
-                return;
+                //MessageBox.Show("Effective date error");
+                //return;
             }
             var selectedComboBoxpn1 = pn1.Controls.OfType<KryptonComboBox>().Where(n => GenUtil.ConvertObjtoType<string>(n.SelectedItem) != null).Count();
             //var selectedComboBoxpn2 = pn2.Controls.OfType<KryptonComboBox>().Where(n => GenUtil.ConvertObjtoType<string>(n.SelectedItem) != null).Count();
 
-
             var availableItem = pn1.Controls.OfType<KryptonTextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
 
-            if (availableItem != 1 || selectedComboBoxpn1 != 6)
+            if (availableItem != 1 || selectedComboBoxpn1 != 8)
             {
                 MessageBox.Show("Please enter correct info");
                 return;
             }
             else
             {
-                await GenUtil.AddingInputToObject<POATableObj>(pn1, obj);
-                obj.bi_poa_status_id = 1;
+                await GenUtil.AddingInputToObject<POTableObj>(pn1, obj);
+                obj.bi_po_status_id = 1;
             }
 
-            if (obj.ti_poa_type_id != 1)
-            {
-                await InsertTableHeader();
+            //if (obj.ti_po_type_id != 1)
+            //{
+            //    await InsertTableHeader();
 
-                return;
-            }
+            //    return;
+            //}
 
             pn1.Hide();
             pn2.Show();
@@ -205,13 +205,13 @@ namespace CPS_App
             if (itemidtype != null) { itemidtype = itemidtype.ToString().Split(":").ElementAt(0); }
             //var uomtype = cbxuom.SelectedItem;
             //if (uomtype != null) { uomtype = uomtype.ToString().Split(":").ElementAt(0); }
-            PoaItemList req = new PoaItemList();
-            await GenUtil.AddingInputToObject<PoaItemList>(pn2, req);
-            if (req.dc_promise_qty < req.dc_min_qty)
-            {
-                MessageBox.Show("Min Qty must smaller than Promise Qty");
-                return;
-            }
+            PoItemList req = new PoItemList();
+            await GenUtil.AddingInputToObject<PoItemList>(pn2, req);
+            //if (req.dc_promise_qty < req.dc_min_qty)
+            //{
+            //    MessageBox.Show("Min Qty must smaller than Promise Qty");
+            //    return;
+            //}
             if (itemList.Count > 0 && itemList.Select(x => x.bi_item_id == req.bi_item_id).FirstOrDefault())
             {
                 MessageBox.Show("Item duplicate entry");
@@ -234,10 +234,10 @@ namespace CPS_App
         private async void btnsubmit_Click(object sender, EventArgs e)
         {
             obj.itemLists = itemList;
-            var newlst = new List<POATableObj>();
+            var newlst = new List<POTableObj>();
             newlst.Add(obj);
-            string confirmStr1 = await GenUtil.ConfirmListAttach<POATableObj>(pn1, newlst);
-            string confirmStr2 = await GenUtil.ConfirmListAttach<PoaItemList>(pn2, obj.itemLists);
+            string confirmStr1 = await GenUtil.ConfirmListAttach<POTableObj>(pn1, newlst);
+            string confirmStr2 = await GenUtil.ConfirmListAttach<PoItemList>(pn2, obj.itemLists);
             DialogResult response = MessageBox.Show(confirmStr1 + confirmStr2, "Confirm", MessageBoxButtons.YesNo);
             if (response == DialogResult.Yes ? true : false)
             {
@@ -253,14 +253,14 @@ namespace CPS_App
                         table = "tb_poa_line",
                         inserter = new Dictionary<string, string>
                         {
-                        {nameof(row.bi_poa_header_id), obj.bi_poa_header_id.ToString() },
+                        {nameof(row.bi_po_header_id), obj.bi_po_header_id.ToString() },
                         {nameof(row.bi_item_id), row.bi_item_id.ToString() },
                         {nameof(row.bi_supp_item_id),row.bi_supp_item_id.ToString() },
-                        {nameof(row.dc_promise_qty), row.dc_promise_qty.ToString() },
+                        {nameof(row.dc_actual_qty), row.dc_actual_qty.ToString() },
                         {nameof(row.i_uom_id),row.i_uom_id.ToString() },
                         {nameof(row.dc_min_qty),row.dc_min_qty.ToString() },
                         {nameof(row.dc_price), row.dc_price.ToString() },
-                        {nameof(row.dc_amount), row.dc_amount.ToString() },
+                        {nameof(row.dc_actual_amount), row.dc_actual_amount.ToString() },
                         {nameof(row.vc_reference), row.vc_reference.ToString() },
                         {nameof(row.bi_quot_no),row.bi_quot_no.ToString() },
                         }
@@ -371,8 +371,8 @@ namespace CPS_App
                 table = "tb_poa",
                 inserter = new Dictionary<string, string>
                     {
-                        {nameof(obj.ti_poa_type_id),obj.ti_poa_type_id.ToString() },
-                        {nameof(obj.bi_poa_status_id), obj.bi_poa_status_id.ToString() }
+                        {nameof(obj.ti_po_type_id),obj.ti_po_type_id.ToString() },
+                        {nameof(obj.bi_po_status_id), obj.bi_po_status_id.ToString() }
                     },
             };
             var respoa = await _dbServices.InsertAsync(tb_poa);
@@ -407,14 +407,16 @@ namespace CPS_App
                 MessageBox.Show("insert poa header error");
                 return;
             }
-            obj.bi_poa_header_id = GenUtil.ConvertObjtoType<int>(resheader.result);
-            MessageBox.Show($"insert completed, poa id: {obj.bi_poa_id}, poa header id: {obj.bi_poa_header_id}");
+            obj.bi_po_header_id = GenUtil.ConvertObjtoType<int>(resheader.result);
+            MessageBox.Show($"insert completed, poa id: {obj.bi_poa_id}, poa header id: {obj.bi_po_header_id}");
 
         }
 
         private async void cbxreffrom_SelectedIndexChanged(object sender, EventArgs e)
         {
             string selectedRef = cbxreffrom.Text;
+            cbxreforderid.FormattingEnabled = true;
+            
             cbxreforderid.SelectedIndex = -1;
             cbxreforderid.Items.Clear();
 
@@ -433,7 +435,7 @@ namespace CPS_App
                     List<List<KeyValuePair<string, object>>> kvppoaId = poaIdRes.result;
                     kvppoaId.ToList().ForEach(row =>
                     {
-                        cbxreforderid.Items.Add($"Poa Id: {row.FirstOrDefault(col => col.Key == "bi_poa_id").Value}");
+                        cbxreforderid.Items.Add($"Poa Id: {row.FirstOrDefault(col => col.Key == "bi_poa_id").Value}");                        
                     });
                 }
             }
@@ -484,21 +486,53 @@ namespace CPS_App
 
         private async void cbxreforderid_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var refType = cbxreforderid.SelectedIndex.ToString().Split(":").ElementAt(0);
-            var refId = cbxreforderid.SelectedIndex.ToString().Split(":").ElementAt(1);
-            if (refType.Contains("Poa"))
+            if (cbxreforderid.SelectedIndex != -1)
             {
-                POATableObj obj = new POATableObj();
-                List<POATableObj> preHandleList = await _genericTableViewWorker.GetGenericWorker<POATableObj, PoaItemList>(obj.GetSqlQuery(), nameof(obj.bi_poa_header_id),
-                    new Dictionary<string, string> { { nameof(obj.bi_poa_id), refId } });
-            }
-            else if (refType.Contains("Po"))
-            {
-                POTableObj obj = new POTableObj();
-                List<POTableObj> preHandleList = await _genericTableViewWorker.GetGenericWorker<POTableObj, PoItemList>(obj.GetSqlQuery(), nameof(obj.bi_po_header_id),
-                    new Dictionary<string, string> { { nameof(obj.bi_po_id), refId } });
-            }
+                var refType = cbxreforderid.SelectedItem.ToString().Split(":").ElementAt(0);
+                var refId = cbxreforderid.SelectedItem.ToString().Split(":").ElementAt(1);
 
+
+                if (refType.Contains("Poa"))
+                {
+                    POATableObj obj = new POATableObj();
+                     preHandleList.poaList = await _genericTableViewWorker.GetGenericWorker<POATableObj, PoaItemList>(obj.GetSqlQuery(), nameof(obj.bi_poa_header_id), null,
+                        new searchObj() { searchWords = new Dictionary<string, List<string>> { { nameof(obj.bi_poa_id), new List<string>() { refId } } } });
+                    await AllocatePrehandleList<POATableObj>(preHandleList.poaList);
+                    cbxitid.Items.Clear();
+                    preHandleList.poaList.ForEach(p =>
+                    {
+                        p.itemLists.ForEach(i =>
+                        {
+                            cbxitid.Items.Add($"{i.bi_item_id}: {i.vc_item_desc}");
+                        });
+                    });
+                }
+                else if (refType.Contains("Po"))
+                {
+                    POTableObj obj = new POTableObj();
+                     preHandleList.poList = await _genericTableViewWorker.GetGenericWorker<POTableObj, PoItemList>(obj.GetSqlQuery(), nameof(obj.bi_po_header_id), null,
+                        new searchObj() { searchWords = new Dictionary<string, List<string>> { { nameof(obj.bi_po_id), new List<string>() { refId } } } });
+                    await AllocatePrehandleList<POTableObj>(preHandleList.poList);
+                    cbxitid.Items.Clear();
+                    preHandleList.poList.ForEach(p =>
+                    {
+                        p.itemLists.ForEach(i =>
+                        {
+                            cbxitid.Items.Add($"{i.bi_item_id}: {i.vc_item_desc}");
+                        });
+                    });
+                }
+            }
+        }
+        private async Task AllocatePrehandleList<T>(List<T> obj)
+        {
+            await GenUtil.AutoLabelAddingTextBox<T>(pn1, obj);
+        }
+
+        private void cbxitid_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if(cbxitid.SelectedIndex != -1) {
+            }
         }
     }
 }

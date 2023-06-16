@@ -72,12 +72,10 @@ namespace CPS_App
             this.lblref = new Krypton.Toolkit.KryptonLabel();
             this.lblam = new Krypton.Toolkit.KryptonLabel();
             this.txtpri = new Krypton.Toolkit.KryptonTextBox();
-            this.txtminqty = new Krypton.Toolkit.KryptonTextBox();
             this.txtproqty = new Krypton.Toolkit.KryptonTextBox();
             this.txtsupitid = new Krypton.Toolkit.KryptonTextBox();
             this.cbxitid = new Krypton.Toolkit.KryptonComboBox();
             this.lblpri = new Krypton.Toolkit.KryptonLabel();
-            this.lblminqty = new Krypton.Toolkit.KryptonLabel();
             this.lbluom = new Krypton.Toolkit.KryptonLabel();
             this.lblproqty = new Krypton.Toolkit.KryptonLabel();
             this.lblsupid = new Krypton.Toolkit.KryptonLabel();
@@ -105,7 +103,7 @@ namespace CPS_App
             // 
             this.lbltype.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(177)))), ((int)(((byte)(192)))), ((int)(((byte)(214)))));
             this.lbltype.LabelStyle = Krypton.Toolkit.LabelStyle.NormalControl;
-            this.lbltype.Location = new System.Drawing.Point(130, 124);
+            this.lbltype.Location = new System.Drawing.Point(130, 122);
             this.lbltype.Name = "lbltype";
             this.lbltype.Palette = this.kryptonPalettelbl;
             this.lbltype.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
@@ -182,7 +180,7 @@ namespace CPS_App
             // lblecf
             // 
             this.lblecf.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(177)))), ((int)(((byte)(192)))), ((int)(((byte)(214)))));
-            this.lblecf.Location = new System.Drawing.Point(404, 124);
+            this.lblecf.Location = new System.Drawing.Point(404, 122);
             this.lblecf.Name = "lblecf";
             this.lblecf.Palette = this.kryptonPalettelbl;
             this.lblecf.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
@@ -281,6 +279,7 @@ namespace CPS_App
             this.cbxreffrom.StateCommon.ComboBox.Content.TextH = Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.cbxreffrom.TabIndex = 14;
             this.cbxreffrom.Tag = "";
+            this.cbxreffrom.SelectedIndexChanged += new System.EventHandler(this.cbxreffrom_SelectedIndexChanged);
             // 
             // lblreffrom
             // 
@@ -317,6 +316,7 @@ namespace CPS_App
             this.btncancel.Size = new System.Drawing.Size(115, 38);
             this.btncancel.TabIndex = 10;
             this.btncancel.Values.Text = "Cancel";
+            this.btncancel.Click += new System.EventHandler(this.btncancel_Click);
             // 
             // kryptonPalettebtn
             // 
@@ -339,6 +339,7 @@ namespace CPS_App
             this.btnclear1.Size = new System.Drawing.Size(114, 38);
             this.btnclear1.TabIndex = 9;
             this.btnclear1.Values.Text = "Clear";
+            this.btnclear1.Click += new System.EventHandler(this.btnclear_Click);
             // 
             // btnnext
             // 
@@ -350,12 +351,13 @@ namespace CPS_App
             this.btnnext.Size = new System.Drawing.Size(115, 38);
             this.btnnext.TabIndex = 11;
             this.btnnext.Values.Text = "Next";
+            this.btnnext.Click += new System.EventHandler(this.btnnext_Click);
             // 
             // kryptonDateTimePickerec
             // 
             this.kryptonDateTimePickerec.CalendarTodayDate = new System.DateTime(2023, 6, 1, 0, 0, 0, 0);
             this.kryptonDateTimePickerec.CornerRoundingRadius = -1F;
-            this.kryptonDateTimePickerec.Location = new System.Drawing.Point(518, 124);
+            this.kryptonDateTimePickerec.Location = new System.Drawing.Point(518, 122);
             this.kryptonDateTimePickerec.Name = "kryptonDateTimePickerec";
             this.kryptonDateTimePickerec.Size = new System.Drawing.Size(160, 21);
             this.kryptonDateTimePickerec.TabIndex = 5;
@@ -432,12 +434,12 @@ namespace CPS_App
             this.cbxtype.CornerRoundingRadius = -1F;
             this.cbxtype.DropDownWidth = 121;
             this.cbxtype.IntegralHeight = false;
-            this.cbxtype.Location = new System.Drawing.Point(182, 124);
+            this.cbxtype.Location = new System.Drawing.Point(182, 122);
             this.cbxtype.Name = "cbxtype";
             this.cbxtype.Size = new System.Drawing.Size(160, 21);
             this.cbxtype.StateCommon.ComboBox.Content.TextH = Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.cbxtype.TabIndex = 1;
-            this.cbxtype.Tag = "ti_poa_type_id:vc_poa_type_desc";
+            this.cbxtype.Tag = "ti_po_type_id:vc_po_type_desc";
             // 
             // kryptonPalettepanel
             // 
@@ -454,6 +456,7 @@ namespace CPS_App
             this.btnclear.Size = new System.Drawing.Size(114, 38);
             this.btnclear.TabIndex = 21;
             this.btnclear.Values.Text = "Clear";
+            this.btnclear.Click += new System.EventHandler(this.btnclear_Click);
             // 
             // pn2
             // 
@@ -467,12 +470,10 @@ namespace CPS_App
             this.pn2.Controls.Add(this.lblref);
             this.pn2.Controls.Add(this.lblam);
             this.pn2.Controls.Add(this.txtpri);
-            this.pn2.Controls.Add(this.txtminqty);
             this.pn2.Controls.Add(this.txtproqty);
             this.pn2.Controls.Add(this.txtsupitid);
             this.pn2.Controls.Add(this.cbxitid);
             this.pn2.Controls.Add(this.lblpri);
-            this.pn2.Controls.Add(this.lblminqty);
             this.pn2.Controls.Add(this.lbluom);
             this.pn2.Controls.Add(this.lblproqty);
             this.pn2.Controls.Add(this.lblsupid);
@@ -510,6 +511,7 @@ namespace CPS_App
             this.btnback.Size = new System.Drawing.Size(115, 38);
             this.btnback.TabIndex = 22;
             this.btnback.Values.Text = "Back";
+            this.btnback.Click += new System.EventHandler(this.btnback_Click);
             // 
             // lblitemcr
             // 
@@ -547,7 +549,7 @@ namespace CPS_App
             this.txtam.Name = "txtam";
             this.txtam.Size = new System.Drawing.Size(160, 23);
             this.txtam.TabIndex = 15;
-            this.txtam.Tag = "dc_amount";
+            this.txtam.Tag = "dc_actual_amount";
             // 
             // lblquot
             // 
@@ -590,21 +592,13 @@ namespace CPS_App
             this.txtpri.TabIndex = 18;
             this.txtpri.Tag = "dc_price";
             // 
-            // txtminqty
-            // 
-            this.txtminqty.Location = new System.Drawing.Point(540, 95);
-            this.txtminqty.Name = "txtminqty";
-            this.txtminqty.Size = new System.Drawing.Size(160, 23);
-            this.txtminqty.TabIndex = 17;
-            this.txtminqty.Tag = "dc_min_qty";
-            // 
             // txtproqty
             // 
             this.txtproqty.Location = new System.Drawing.Point(228, 194);
             this.txtproqty.Name = "txtproqty";
             this.txtproqty.Size = new System.Drawing.Size(160, 23);
             this.txtproqty.TabIndex = 14;
-            this.txtproqty.Tag = "dc_promise_qty";
+            this.txtproqty.Tag = "dc_actual_qty";
             // 
             // txtsupitid
             // 
@@ -625,6 +619,7 @@ namespace CPS_App
             this.cbxitid.StateCommon.ComboBox.Content.TextH = Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.cbxitid.TabIndex = 12;
             this.cbxitid.Tag = "bi_item_id:vc_item_desc";
+            this.cbxitid.SelectedIndexChanged += new System.EventHandler(this.cbxitid_SelectedIndexChanged);
             // 
             // lblpri
             // 
@@ -636,17 +631,6 @@ namespace CPS_App
             this.lblpri.TabIndex = 38;
             this.lblpri.Tag = "dc_price";
             this.lblpri.Values.Text = "Price";
-            // 
-            // lblminqty
-            // 
-            this.lblminqty.Location = new System.Drawing.Point(462, 97);
-            this.lblminqty.Name = "lblminqty";
-            this.lblminqty.Palette = this.kryptonPalettelbl;
-            this.lblminqty.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
-            this.lblminqty.Size = new System.Drawing.Size(65, 21);
-            this.lblminqty.TabIndex = 37;
-            this.lblminqty.Tag = "dc_min_qty";
-            this.lblminqty.Values.Text = "Min Qty";
             // 
             // lbluom
             // 
@@ -661,14 +645,14 @@ namespace CPS_App
             // 
             // lblproqty
             // 
-            this.lblproqty.Location = new System.Drawing.Point(126, 194);
+            this.lblproqty.Location = new System.Drawing.Point(144, 196);
             this.lblproqty.Name = "lblproqty";
             this.lblproqty.Palette = this.kryptonPalettelbl;
             this.lblproqty.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
-            this.lblproqty.Size = new System.Drawing.Size(96, 21);
+            this.lblproqty.Size = new System.Drawing.Size(69, 21);
             this.lblproqty.TabIndex = 35;
             this.lblproqty.Tag = "dc_promise_qty";
-            this.lblproqty.Values.Text = "Promise Qty";
+            this.lblproqty.Values.Text = "Quantity";
             // 
             // lblsupid
             // 
@@ -702,6 +686,7 @@ namespace CPS_App
             this.btnAdd.Size = new System.Drawing.Size(115, 38);
             this.btnAdd.TabIndex = 23;
             this.btnAdd.Values.Text = "Add";
+            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
             // btnsubmit
             // 
@@ -713,6 +698,7 @@ namespace CPS_App
             this.btnsubmit.Size = new System.Drawing.Size(112, 38);
             this.btnsubmit.TabIndex = 24;
             this.btnsubmit.Values.Text = "Submit";
+            this.btnsubmit.Click += new System.EventHandler(this.btnsubmit_Click);
             // 
             // kryptonPalettereadonly
             // 
@@ -724,10 +710,11 @@ namespace CPS_App
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(842, 606);
-            this.Controls.Add(this.pn1);
             this.Controls.Add(this.pn2);
+            this.Controls.Add(this.pn1);
             this.Name = "POCreate";
             this.Text = "POACreate";
+            this.Load += new System.EventHandler(this.POACreate_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pn1)).EndInit();
             this.pn1.ResumeLayout(false);
             this.pn1.PerformLayout();

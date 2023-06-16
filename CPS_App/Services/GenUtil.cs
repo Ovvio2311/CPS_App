@@ -36,7 +36,7 @@ namespace CPS_App.Services
         public static bool isNull(string obj)
         {
 
-            return string.IsNullOrWhiteSpace(obj.Trim()) || obj==string.Empty? true : false;
+            return string.IsNullOrWhiteSpace(obj.Trim()) || obj == string.Empty ? true : false;
         }
         public static bool isNull(List<string> obj)
         {
@@ -192,8 +192,10 @@ namespace CPS_App.Services
         //Adding data from class obj to textbox and combobox
         public static async Task AutoLabelAddingfromTextBox<T>(Form form, T obj)
         {
-            obj.GetType().GetProperties().ToList().ForEach(x =>
+
+            obj!.GetType().GetProperties().ToList().ForEach(x =>
             {
+
                 form.Controls.OfType<KryptonTextBox>().ToList().ForEach(p =>
                 {
                     if (p.Tag != null && p.Tag.ToString() == x.Name)
@@ -216,16 +218,85 @@ namespace CPS_App.Services
                     }
                 });
             });
-        }
 
+
+        }
+        //for Po Create
+        public static async Task AutoLabelAddingTextBox<T>(Panel pan, List<T> List)
+        {
+
+            try
+            {
+                List.ForEach(obj =>
+                {
+                    obj!.GetType().GetProperties().ToList().ForEach(x =>
+                    {
+
+                        pan.Controls.OfType<KryptonTextBox>().ToList().ForEach(p =>
+                        {
+                            if (p.Tag != null && p.Tag.ToString() == x.Name)
+                            {
+                                if (x.GetValue(obj).ToString() != null && x.GetValue(obj) != "")
+                                {
+                                    p.Text = GenUtil.ConvertObjtoType<string>(x.GetValue(obj, null));
+                                    p.Enabled= false;
+                                }
+                            }
+                        });
+                        pan.Controls.OfType<KryptonComboBox>().ToList().ForEach(c =>
+                        {
+
+                            if (c.Tag != null && c.Tag.ToString().Contains(":"))
+                            {
+                                var id = c.Tag.ToString().Split(":").ElementAt(0);
+                                var name = c.Tag.ToString().Split(":").ElementAt(1);
+                                if (id == x.Name)
+                                {
+                                    c.SelectedItem = c.Items.ToDynamicList<string>().Where(c => c.ToString().Contains(x.GetValue(obj).ToString())).FirstOrDefault();
+                                    c.Enabled= false;
+                                    //var idValue = c.SelectedItem.ToString().Split(":").ElementAt(0);
+                                    //x.SetValue(obj, Convert.ChangeType(idValue, x.PropertyType, null));
+                                }
+                                else if (name == x.Name)
+                                {
+                                    
+                                }
+                            }
+                            else if (c.Tag != null && x.Name == c.Tag.ToString() && c.Enabled)
+                            {
+                                c.SelectedItem = c.Items.ToDynamicList<string>().Where(c => c.ToString().Contains(x.GetValue(obj).ToString())).FirstOrDefault();
+                                c.Enabled = false;
+                            }
+                        });
+                        pan.Controls.OfType<KryptonDateTimePicker>().ToList().ForEach(t =>
+                        {
+                            if (t.Tag != null && t.Tag.ToString() == x.Name)
+                            {
+                                if (x.GetValue(obj).ToString() != null && x.GetValue(obj) != "")
+                                {
+                                    t.Value = GenUtil.ConvertObjtoType<DateTime>(x.GetValue(obj));
+                                    t.Enabled = false;
+                                }
+                            }
+                        });
+                    });
+                });
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+
+        }
         //add textbox, combobox data to class obj
-        public static async Task AddingInputToObject<T>(Panel panel,T obj)
+        public static async Task AddingInputToObject<T>(Panel panel, T obj)
         {
             panel.Controls.OfType<KryptonTextBox>().ToList().ForEach(x =>
             {
                 obj.GetType().GetProperties().ToList().ForEach(p =>
                 {
-                    if (x.Tag != null && p.Name == x.Tag.ToString() && 
+                    if (x.Tag != null && p.Name == x.Tag.ToString() &&
                     x.Text.Trim() != string.Empty && x.Enabled)
                     {
                         p.SetValue(obj, Convert.ChangeType(x.Text, p.PropertyType, null));
@@ -237,7 +308,7 @@ namespace CPS_App.Services
             {
                 obj.GetType().GetProperties().ToList().ForEach(p =>
                 {
-                    if (x.Tag != null && x.Tag.ToString().Contains(":") )
+                    if (x.Tag != null && x.Tag.ToString().Contains(":"))
                     {
                         var id = x.Tag.ToString().Split(":").ElementAt(0);
                         var name = x.Tag.ToString().Split(":").ElementAt(1);

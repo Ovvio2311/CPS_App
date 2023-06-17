@@ -710,8 +710,8 @@ namespace CPS_App
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(842, 606);
-            this.Controls.Add(this.pn2);
             this.Controls.Add(this.pn1);
+            this.Controls.Add(this.pn2);
             this.Name = "POCreate";
             this.Text = "POACreate";
             this.Load += new System.EventHandler(this.POACreate_Load);

@@ -843,6 +843,11 @@ namespace CPS_App.Models
         {
             public List<POTableObj> poList { get; set; }
             public List<POATableObj> poaList { get; set; }
+            public PoCreateRefList()
+            {
+                poList = new List<POTableObj>();
+                poaList= new List<POATableObj>();
+            }
         }
     }
 }

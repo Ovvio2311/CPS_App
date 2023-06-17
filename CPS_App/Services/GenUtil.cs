@@ -239,7 +239,7 @@ namespace CPS_App.Services
                                 if (x.GetValue(obj).ToString() != null && x.GetValue(obj) != "")
                                 {
                                     p.Text = GenUtil.ConvertObjtoType<string>(x.GetValue(obj, null));
-                                    p.Enabled= false;
+                                    p.Enabled = false;
                                 }
                             }
                         });
@@ -253,13 +253,13 @@ namespace CPS_App.Services
                                 if (id == x.Name)
                                 {
                                     c.SelectedItem = c.Items.ToDynamicList<string>().Where(c => c.ToString().Contains(x.GetValue(obj).ToString())).FirstOrDefault();
-                                    c.Enabled= false;
+                                    c.Enabled = false;
                                     //var idValue = c.SelectedItem.ToString().Split(":").ElementAt(0);
                                     //x.SetValue(obj, Convert.ChangeType(idValue, x.PropertyType, null));
                                 }
                                 else if (name == x.Name)
                                 {
-                                    
+
                                 }
                             }
                             else if (c.Tag != null && x.Name == c.Tag.ToString() && c.Enabled)
@@ -281,6 +281,69 @@ namespace CPS_App.Services
                         });
                     });
                 });
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+
+        }
+        public static async Task ResumeBlankPage<T>(Panel pan, List<T> List=null)
+        {
+
+            try
+            {
+                typeof(T).GetProperties().ToList().ForEach(x =>
+                {
+
+                    pan.Controls.OfType<KryptonTextBox>().ToList().ForEach(p =>
+                    {
+                        if (p.Tag != null && p.Tag.ToString() == x.Name)
+                        {
+
+                            p.Text = string.Empty;
+                            p.Enabled = true;
+
+                        }
+                    });
+                    pan.Controls.OfType<KryptonComboBox>().ToList().ForEach(c =>
+                    {
+
+                        if (c.Tag != null && c.Tag.ToString().Contains(":"))
+                        {
+                            var id = c.Tag.ToString().Split(":").ElementAt(0);
+                            var name = c.Tag.ToString().Split(":").ElementAt(1);
+                            if (id == x.Name)
+                            {
+                                c.SelectedIndex = -1;
+                                c.Enabled = true;
+                                //var idValue = c.SelectedItem.ToString().Split(":").ElementAt(0);
+                                //x.SetValue(obj, Convert.ChangeType(idValue, x.PropertyType, null));
+                            }
+                            else if (name == x.Name)
+                            {
+
+                            }
+                        }
+                        else if (c.Tag != null && x.Name == c.Tag.ToString() && c.Enabled)
+                        {
+                            c.SelectedIndex = -1;
+                            c.Enabled = true;
+                        }
+                    });
+                    pan.Controls.OfType<KryptonDateTimePicker>().ToList().ForEach(t =>
+                    {
+                        if (t.Tag != null && t.Tag.ToString() == x.Name)
+                        {
+
+                            t.Value = DateTime.Now;
+                            t.Enabled = true;
+
+                        }
+                    });
+                });
+
             }
             catch (Exception ex)
             {

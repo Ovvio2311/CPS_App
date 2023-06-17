@@ -158,24 +158,30 @@ namespace CPS_App.Services
 
             foreach (var item in obj)
             {
-                Dictionary<string, string> temp = new Dictionary<string, string>();
-                form.Controls.OfType<KryptonLabel>().ToList().ForEach(x =>
-                {
-                    if (item != null)
+                try {
+                    Dictionary<string, string> temp = new Dictionary<string, string>();
+                    form.Controls.OfType<KryptonLabel>().ToList().ForEach(x =>
                     {
-                        item.GetType().GetProperties().ToList().ForEach(p =>
+                        if (item != null)
                         {
-                            if (x.Tag != null && p.Name == x.Tag.ToString())
+                            item.GetType().GetProperties().ToList().ForEach(p =>
                             {
-                                if (p.GetValue(item).ToString() != null && p.GetValue(item) != "")
+                                if (x.Tag != null && p.Name == x.Tag.ToString())
                                 {
-                                    temp.Add(x.Text, p.GetValue(item).ToString());
+                                    if (p.GetValue(item).ToString() != null && p.GetValue(item) != "")
+                                    {
+                                        temp.Add(x.Text, p.GetValue(item).ToString());
+                                    }
                                 }
-                            }
-                        });
-                    }
-                });
-                confirmObj.Add(temp);
+                            });
+                        }
+                    });
+                    confirmObj.Add(temp);
+                }catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+                
             }
 
             string confirmStr = string.Empty;
@@ -360,7 +366,7 @@ namespace CPS_App.Services
                 obj.GetType().GetProperties().ToList().ForEach(p =>
                 {
                     if (x.Tag != null && p.Name == x.Tag.ToString() &&
-                    x.Text.Trim() != string.Empty && x.Enabled)
+                    x.Text.Trim() != string.Empty )
                     {
                         p.SetValue(obj, Convert.ChangeType(x.Text, p.PropertyType, null));
                     }
@@ -386,7 +392,7 @@ namespace CPS_App.Services
                             p.SetValue(obj, Convert.ChangeType(nameValue, p.PropertyType, null));
                         }
                     }
-                    else if (x.Tag != null && p.Name == x.Tag.ToString() && x.Enabled)
+                    else if (x.Tag != null && p.Name == x.Tag.ToString() )
                     {
                         var value = x.SelectedItem.ToString().Split(":").ElementAt(0);
                         p.SetValue(obj, Convert.ChangeType(value, p.PropertyType, null));
@@ -399,7 +405,7 @@ namespace CPS_App.Services
                 obj.GetType().GetProperties().ToList().ForEach(p =>
                 {
                     if (d.Tag != null && p.Name == d.Tag.ToString() &&
-                    d.Text.Trim() != string.Empty && d.Enabled)
+                    d.Text.Trim() != string.Empty )
                     {
                         p.SetValue(obj, Convert.ChangeType(d.Value.ToString("yyyy-MM-dd HH:mm:ss"), p.PropertyType, null));
                     }

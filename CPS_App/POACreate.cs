@@ -120,7 +120,7 @@ namespace CPS_App
                 MessageBox.Show("Effective date error");
                 return;
             }
-            var selectedComboBoxpn1 = pn1.Controls.OfType<KryptonComboBox>().Where(n => GenUtil.ConvertObjtoType<string>(n.SelectedItem) != null).Count();
+            var selectedComboBoxpn1 = pn1.Controls.OfType<KryptonComboBox>().Where(n => n.Text != string.Empty).Count();
             //var selectedComboBoxpn2 = pn2.Controls.OfType<KryptonComboBox>().Where(n => GenUtil.ConvertObjtoType<string>(n.SelectedItem) != null).Count();
 
 
@@ -257,6 +257,7 @@ namespace CPS_App
                     else
                     {
                         MessageBox.Show($"poa line id: {resitem.result}");
+                        await ClearContent();
                     }
                 });
             }
@@ -339,8 +340,8 @@ namespace CPS_App
             var idtype = cbxitid.SelectedItem;
             if (idtype != null) { idtype = idtype.ToString().Split(":").ElementAt(0); }
 
-            var selectedComboBoxpn1 = pn1.Controls.OfType<KryptonComboBox>().Where(n => GenUtil.ConvertObjtoType<string>(n.SelectedItem) != null).Count();
-            var selectedComboBoxpn2 = pn2.Controls.OfType<KryptonComboBox>().Where(n => GenUtil.ConvertObjtoType<string>(n.SelectedItem) != null).Count();
+            var selectedComboBoxpn1 = pn1.Controls.OfType<KryptonComboBox>().Where(n => n.Text != string.Empty).Count();
+            var selectedComboBoxpn2 = pn2.Controls.OfType<KryptonComboBox>().Where(n => n.Text != string.Empty).Count();
             var availablePn1 = pn1.Controls.OfType<KryptonTextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
             var availablePn2 = pn2.Controls.OfType<KryptonTextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
             return availablePn1 == 1 && availablePn2 == 7 && selectedComboBoxpn1 == 6 && selectedComboBoxpn2 == 2;

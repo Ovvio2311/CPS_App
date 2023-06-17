@@ -72,7 +72,7 @@ namespace CPS_App
             this.lblref = new Krypton.Toolkit.KryptonLabel();
             this.lblam = new Krypton.Toolkit.KryptonLabel();
             this.txtpri = new Krypton.Toolkit.KryptonTextBox();
-            this.txtproqty = new Krypton.Toolkit.KryptonTextBox();
+            this.txtactqty = new Krypton.Toolkit.KryptonTextBox();
             this.txtsupitid = new Krypton.Toolkit.KryptonTextBox();
             this.cbxitid = new Krypton.Toolkit.KryptonComboBox();
             this.lblpri = new Krypton.Toolkit.KryptonLabel();
@@ -470,7 +470,7 @@ namespace CPS_App
             this.pn2.Controls.Add(this.lblref);
             this.pn2.Controls.Add(this.lblam);
             this.pn2.Controls.Add(this.txtpri);
-            this.pn2.Controls.Add(this.txtproqty);
+            this.pn2.Controls.Add(this.txtactqty);
             this.pn2.Controls.Add(this.txtsupitid);
             this.pn2.Controls.Add(this.cbxitid);
             this.pn2.Controls.Add(this.lblpri);
@@ -592,13 +592,13 @@ namespace CPS_App
             this.txtpri.TabIndex = 18;
             this.txtpri.Tag = "dc_price";
             // 
-            // txtproqty
+            // txtactqty
             // 
-            this.txtproqty.Location = new System.Drawing.Point(228, 194);
-            this.txtproqty.Name = "txtproqty";
-            this.txtproqty.Size = new System.Drawing.Size(160, 23);
-            this.txtproqty.TabIndex = 14;
-            this.txtproqty.Tag = "dc_actual_qty";
+            this.txtactqty.Location = new System.Drawing.Point(228, 194);
+            this.txtactqty.Name = "txtactqty";
+            this.txtactqty.Size = new System.Drawing.Size(160, 23);
+            this.txtactqty.TabIndex = 14;
+            this.txtactqty.Tag = "dc_actual_qty";
             // 
             // txtsupitid
             // 
@@ -793,5 +793,6 @@ namespace CPS_App
         private KryptonLabel lblreffrom;
         private KryptonComboBox cbxreforderid;
         private KryptonLabel lblrefid;
+        private KryptonTextBox txtactqty;
     }
 }

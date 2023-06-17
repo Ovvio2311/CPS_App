@@ -740,8 +740,8 @@ namespace CPS_App.Models
             
             [Display(Name = "Po Id")]
             public int bi_po_id { get; set; }
-            [Display(Name = "Poa Id")]
-            public int bi_poa_id { get; set; }
+            [Display(Name = "Ref Id")]
+            public string vc_ref_id { get; set; }
             [Display(Name = "not_shown")]
             public int bi_po_header_id { get; set; }
             [Display(Name = "not_shown")]
@@ -782,6 +782,8 @@ namespace CPS_App.Models
             public string dt_created_date { get; set; }
             [Display(Name = "not_shown")]
             public string dt_updated_datetime { get; set; }
+            [Display(Name = "not_shown")]
+            public string bi_quot_no { get; set; }
             [Display(Name = "not_shown")]
             public List<PoItemList> itemLists { get; set; }
             public string GetSqlQuery()

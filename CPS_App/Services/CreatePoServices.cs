@@ -1,0 +1,141 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using static CPS_App.Models.CPSModel;
+using static CPS_App.Models.DbModels;
+
+namespace CPS_App.Services
+{
+
+    public class CreatePoServices
+    {
+        public DbServices _services;
+        public CreatePoServices(DbServices services)
+        {
+            _services = services;
+        }
+        public async Task<resObj> CreatePoASync(POTableObj obj)
+        {
+            try
+            {
+                resObj res = new resObj();
+                res.resCode = 0;
+                res.err_msg = null;
+                res.result = null;
+
+                if(await InsertTableHeader(obj) && await InsertPoLineAsync(obj))
+                {
+                    res.resCode = 1;
+                    res.result = true;
+                    res.err_msg = null;
+                    return res;
+                }
+                return res;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+
+        }
+        private async Task<bool> InsertTableHeader(POTableObj obj)
+        {
+            try
+            {
+                //insert tb_po
+                var tb_po = new insertObj()
+                {
+                    table = "tb_po",
+                    inserter = new Dictionary<string, string>
+                    {
+                        {nameof(obj.ti_po_type_id),obj.ti_po_type_id.ToString() },
+                        {nameof(obj.bi_po_status_id), obj.bi_po_status_id.ToString() },
+                        {nameof(obj.vc_ref_id), obj.vc_ref_id != string.Empty?obj.vc_ref_id:"null" }
+                    },
+                };
+                var respoa = await _services.InsertAsync(tb_po);
+                if (respoa.resCode != 1 || respoa.result == null)
+                {
+                    throw new Exception("insert po error");
+                    //MessageBox.Show("insert po error");
+                    //return;
+                }
+
+
+
+                obj.bi_po_id = GenUtil.ConvertObjtoType<int>(respoa.result);
+
+                //insert tb_poa_header
+                var tb_po_header = new insertObj()
+                {
+                    table = "tb_po_header",
+                    inserter = new Dictionary<string, string>
+                {
+                        { nameof(obj.bi_po_id), obj.bi_po_id.ToString() },
+                        { "vc_order_revision", "0" },
+                        { nameof(obj.bi_supp_id), obj.bi_supp_id.ToString() },
+                        //{ nameof(obj.bi_deli_loc_id), obj.bi_deli_loc_id.ToString() },
+                        { nameof(obj.i_cur_id), obj.i_cur_id.ToString()},
+                        { nameof(obj.ti_tc_id), obj.ti_tc_id.ToString() },
+                        { nameof(obj.ti_deli_sched_id), obj.ti_deli_sched_id.ToString() },
+                        { nameof(obj.dt_effect_date), obj.dt_effect_date.ToString() },
+                        { nameof(obj.bi_contract_no), obj.bi_contract_no },
+                }
+                };
+                var resheader = await _services.InsertAsync(tb_po_header);
+                if (resheader.resCode != 1 || resheader.result == null)
+                {
+                    throw new Exception("insert poa header error");
+
+                }
+                obj.bi_po_header_id = GenUtil.ConvertObjtoType<int>(resheader.result);
+                MessageBox.Show($"insert completed, poa id: {obj.bi_po_id}, poa header id: {obj.bi_po_header_id}");
+                return true;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+        private async Task<bool> InsertPoLineAsync(POTableObj obj)
+        {
+            obj.itemLists.ForEach(async row =>
+            {
+                try
+                {
+                    var po_line = new insertObj()
+                    {
+                        table = "tb_po_line",
+                        inserter = new Dictionary<string, string>
+                        {
+                        {nameof(row.bi_po_header_id), obj.bi_po_header_id.ToString() },
+                        {nameof(row.bi_item_id), row.bi_item_id.ToString() },
+                        {nameof(row.bi_supp_item_id),row.bi_supp_item_id.ToString() },
+                        {nameof(row.dc_actual_qty), row.dc_actual_qty.ToString() },
+                        {nameof(row.i_uom_id),row.i_uom_id.ToString() },
+                        {nameof(row.dc_price), row.dc_price.ToString() },
+                        {nameof(row.dc_actual_amount), row.dc_actual_amount.ToString() },
+                        {nameof(row.vc_reference), row.vc_reference.ToString() },
+                        {nameof(row.bi_quot_no),row.bi_quot_no.ToString() },
+                        }
+                    };
+                    var resitem = await _services.InsertAsync(po_line);
+                    if (resitem.resCode != 1 || resitem.result == null)
+                    {
+                        //_logger.LogDebug("insert error");
+                        throw new Exception("insert po line error");
+                    }
+                    MessageBox.Show($"po line id: {resitem.result}");
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(e.Message);
+                }                
+                
+            });
+            return true;
+        }
+    }
+}

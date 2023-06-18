@@ -140,6 +140,7 @@ namespace CPS_App.Models
         {
             public dynamic result { get; set; }
             public int resCode { get; set; }
+            public string err_msg { get; set; }
         }
         public class DbResObj
         {

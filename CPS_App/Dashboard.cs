@@ -27,11 +27,13 @@ namespace CPS_App
         private IConfiguration _configuration;
         private ScheduleTask _scheduleTask;
         private GenericTableViewWorker _genericTableViewWorker;
+        private CreatePoServices _createPoServices;
 
         public Dashboard(Register register, AuthService authService, 
             RequestMapping requestMapp, DbServices dbServices, 
             StockLevelWorker stockWorker, RegisterServices registerServices, 
-            POAWorker pOAWorker, SearchFunc searchFunc, IConfiguration configuration, ScheduleTask scheduleTask, GenericTableViewWorker genericTableViewWorker)
+            POAWorker pOAWorker, SearchFunc searchFunc, IConfiguration configuration,
+            ScheduleTask scheduleTask, GenericTableViewWorker genericTableViewWorker, CreatePoServices createPoServices)
         {
             _authService = authService;
             _register = register;
@@ -46,6 +48,7 @@ namespace CPS_App
             _configuration = configuration;
             _scheduleTask = scheduleTask;
             _genericTableViewWorker = genericTableViewWorker;
+            _createPoServices = createPoServices;
         }
         private async void Dashboard_Load(object sender, EventArgs e)
         {
@@ -127,7 +130,7 @@ namespace CPS_App
 
         private void strippo_Click(object sender, EventArgs e)
         {
-            POView poView = new POView(_dbServices, _pOAWorker, _searchFunc, _genericTableViewWorker);
+            POView poView = new POView(_dbServices, _pOAWorker, _searchFunc, _genericTableViewWorker,_createPoServices);
             poView.MdiParent = this;
             poView.AutoScroll = true;
             poView.Show();

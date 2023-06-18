@@ -79,6 +79,7 @@ namespace CPS_App
             services.AddScoped<GenericTableViewWorker>();
             services.AddScoped<ScheduleTask>();
             services.AddScoped<StockLevelWorker>();
+            services.AddScoped<CreatePoServices>();
             services.Configure<IdentityOptions>(options =>
             {
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);

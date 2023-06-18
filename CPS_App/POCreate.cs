@@ -33,7 +33,8 @@ namespace CPS_App
         private Dictionary<string, string> poaRefType;
         private GenericTableViewWorker _genericTableViewWorker;
         private PoCreateRefList preHandleList;
-        public POCreate(DbServices dbServices, GenericTableViewWorker genericTableViewWorker)
+        private CreatePoServices _createPoServices;
+        public POCreate(DbServices dbServices, GenericTableViewWorker genericTableViewWorker, CreatePoServices createPoServices)
         {
             InitializeComponent();
             obj = new POTableObj();
@@ -43,6 +44,7 @@ namespace CPS_App
             poaRefType = new Dictionary<string, string>();
             _genericTableViewWorker = genericTableViewWorker;
             preHandleList = new PoCreateRefList();
+            _createPoServices = createPoServices;
         }
 
         private async void POACreate_Load(object sender, EventArgs e)
@@ -242,44 +244,57 @@ namespace CPS_App
                 DialogResult response = MessageBox.Show(confirmStr1 + confirmStr2, "Confirm", MessageBoxButtons.YesNo);
                 if (response == DialogResult.Yes ? true : false)
                 {
-
-                    await InsertTableHeader();
+                    resObj res = await _createPoServices.CreatePoASync(obj);
+                    if (res.resCode != 1 && res.result != true && res.err_msg ==null)
+                    {
+                        MessageBox.Show("Cannot insert Po");
+                        return;
+                    }else if (res.resCode != 1 && res.result != true && res.err_msg != null)
+                    {
+                        MessageBox.Show(res.err_msg);
+                        return;
+                    }
+                    await ClearContent();
+                    await ReturnToAddNewPage();
+                    pn2.Hide();
+                    pn1.Show();
+                    //await InsertTableHeader();
 
                     //insert po_line
 
-                    obj.itemLists.ForEach(async row =>
-                    {
-                        var po_line = new insertObj()
-                        {
-                            table = "tb_po_line",
-                            inserter = new Dictionary<string, string>
-                        {
-                        {nameof(row.bi_po_header_id), obj.bi_po_header_id.ToString() },
-                        {nameof(row.bi_item_id), row.bi_item_id.ToString() },
-                        {nameof(row.bi_supp_item_id),row.bi_supp_item_id.ToString() },
-                        {nameof(row.dc_actual_qty), row.dc_actual_qty.ToString() },
-                        {nameof(row.i_uom_id),row.i_uom_id.ToString() },
-                        {nameof(row.dc_price), row.dc_price.ToString() },
-                        {nameof(row.dc_actual_amount), row.dc_actual_amount.ToString() },
-                        {nameof(row.vc_reference), row.vc_reference.ToString() },
-                        {nameof(row.bi_quot_no),row.bi_quot_no.ToString() },
-                        }
-                        };
-                        var resitem = await _dbServices.InsertAsync(po_line);
-                        if (resitem.resCode != 1 || resitem.result == null)
-                        {
-                            //_logger.LogDebug("insert error");
-                            MessageBox.Show("insert po line error");
-                        }
-                        else
-                        {
-                            MessageBox.Show($"po line id: {resitem.result}");
-                            await ClearContent();
-                            await ReturnToAddNewPage();
-                            pn2.Hide();
-                            pn1.Show();
-                        }
-                    });
+                    //obj.itemLists.ForEach(async row =>
+                    //{
+                    //    var po_line = new insertObj()
+                    //    {
+                    //        table = "tb_po_line",
+                    //        inserter = new Dictionary<string, string>
+                    //    {
+                    //    {nameof(row.bi_po_header_id), obj.bi_po_header_id.ToString() },
+                    //    {nameof(row.bi_item_id), row.bi_item_id.ToString() },
+                    //    {nameof(row.bi_supp_item_id),row.bi_supp_item_id.ToString() },
+                    //    {nameof(row.dc_actual_qty), row.dc_actual_qty.ToString() },
+                    //    {nameof(row.i_uom_id),row.i_uom_id.ToString() },
+                    //    {nameof(row.dc_price), row.dc_price.ToString() },
+                    //    {nameof(row.dc_actual_amount), row.dc_actual_amount.ToString() },
+                    //    {nameof(row.vc_reference), row.vc_reference.ToString() },
+                    //    {nameof(row.bi_quot_no),row.bi_quot_no.ToString() },
+                    //    }
+                    //    };
+                    //    var resitem = await _dbServices.InsertAsync(po_line);
+                    //    if (resitem.resCode != 1 || resitem.result == null)
+                    //    {
+                    //        //_logger.LogDebug("insert error");
+                    //        MessageBox.Show("insert po line error");
+                    //    }
+                    //    else
+                    //    {
+                    //        MessageBox.Show($"po line id: {resitem.result}");
+                    //        await ClearContent();
+                    //        await ReturnToAddNewPage();
+                    //        pn2.Hide();
+                    //        pn1.Show();
+                    //    }
+                    //});
                 }
             }
             catch (Exception ex)
@@ -288,7 +303,7 @@ namespace CPS_App
             }
 
         }
-
+        
         private async void btnclear_Click(object sender, EventArgs e)
         {
             await ClearContent();
@@ -381,55 +396,7 @@ namespace CPS_App
             return availablePn1 == 1 && availablePn2 == 6 && selectedComboBoxpn1 <= 8 && selectedComboBoxpn1 >= 7 && selectedComboBoxpn2 == 2;
 
         }
-        private async Task InsertTableHeader()
-        {
-            //insert tb_po
-            var tb_po = new insertObj()
-            {
-                table = "tb_po",
-                inserter = new Dictionary<string, string>
-                    {
-                        {nameof(obj.ti_po_type_id),obj.ti_po_type_id.ToString() },
-                        {nameof(obj.bi_po_status_id), obj.bi_po_status_id.ToString() },
-                        {nameof(obj.vc_ref_id), obj.vc_ref_id != string.Empty?obj.vc_ref_id:"null" }
-                    },
-            };
-            var respoa = await _dbServices.InsertAsync(tb_po);
-            if (respoa.resCode != 1 || respoa.result == null)
-            {
-                MessageBox.Show("insert po error");
-                return;
-            }
-
-            obj.bi_po_id = GenUtil.ConvertObjtoType<int>(respoa.result);
-
-            //insert tb_poa_header
-            var tb_po_header = new insertObj()
-            {
-                table = "tb_po_header",
-                inserter = new Dictionary<string, string>
-                {
-                        { nameof(obj.bi_po_id), obj.bi_po_id.ToString() },
-                        { "vc_order_revision", "0" },
-                        { nameof(obj.bi_supp_id), obj.bi_supp_id.ToString() },
-                        //{ nameof(obj.bi_deli_loc_id), obj.bi_deli_loc_id.ToString() },
-                        { nameof(obj.i_cur_id), obj.i_cur_id.ToString()},
-                        { nameof(obj.ti_tc_id), obj.ti_tc_id.ToString() },
-                        { nameof(obj.ti_deli_sched_id), obj.ti_deli_sched_id.ToString() },
-                        { nameof(obj.dt_effect_date), obj.dt_effect_date.ToString() },
-                        { nameof(obj.bi_contract_no), obj.bi_contract_no },
-                }
-            };
-            var resheader = await _dbServices.InsertAsync(tb_po_header);
-            if (resheader.resCode != 1 || resheader.result == null)
-            {
-                MessageBox.Show("insert poa header error");
-                return;
-            }
-            obj.bi_po_header_id = GenUtil.ConvertObjtoType<int>(resheader.result);
-            MessageBox.Show($"insert completed, poa id: {obj.bi_po_id}, poa header id: {obj.bi_po_header_id}");
-
-        }
+      
         private async Task ReturnToAddNewPage()
         {
             await GenUtil.ResumeBlankPage<POTableObj>(pn1);

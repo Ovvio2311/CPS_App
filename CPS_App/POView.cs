@@ -31,8 +31,9 @@ namespace CPS_App
         //private POAWorker _pOAWorker;
         private Dictionary<string, string> searchWords;
         private SearchFunc _searchFunc;
-        GenericTableViewWorker _genericTableViewWorker;
-        public POView(DbServices dbServices, POAWorker pOAWorker, SearchFunc searchFunc, GenericTableViewWorker genericTableViewWorker)
+        private GenericTableViewWorker _genericTableViewWorker;
+        private CreatePoServices _createPoServices;
+        public POView(DbServices dbServices, POAWorker pOAWorker, SearchFunc searchFunc, GenericTableViewWorker genericTableViewWorker,CreatePoServices createPoServices)
         {
             InitializeComponent();
             _dbServices = dbServices;
@@ -41,6 +42,7 @@ namespace CPS_App
             searchWords = new Dictionary<string, string>();
             _searchFunc = searchFunc;
             _genericTableViewWorker = genericTableViewWorker;
+            _createPoServices = createPoServices;
         }
 
         private async void POAView_Load(object sender, EventArgs e)
@@ -137,7 +139,7 @@ namespace CPS_App
 
         private void btnadd_Click(object sender, EventArgs e)
         {
-            POCreate poCre = new POCreate(_dbServices,_genericTableViewWorker);
+            POCreate poCre = new POCreate(_dbServices,_genericTableViewWorker,_createPoServices);
             poCre.MdiParent = this.MdiParent;
             poCre.AutoScroll = true;
             poCre.Show();

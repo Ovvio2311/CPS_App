@@ -506,25 +506,7 @@ namespace CPS_App.Models
         {
             public POATableObj()
             {
-                itemLists = new List<PoaItemList>();
-                sql = @"select * from (
-	                     select poa.bi_poa_id, poa.ti_poa_type_id, poatype.vc_poa_type_desc, poa.bi_poa_status_id, poast.vc_poa_status_desc, hd.bi_poa_header_id,
-                         hd.bi_supp_id, sup.vc_supp_desc, hd.i_cur_id, cur.vc_cur_desc , hd.ti_tc_id, tc.vc_tc_desc, 
-                         hd.ti_deli_sched_id, delisc.vc_deli_sched_desc, hd.dt_effect_date, hd.bi_contract_no, ln.bi_poa_line_id, ln.bi_item_id, it.vc_item_desc, 
-                         ln.bi_supp_item_id, ln.dc_promise_qty, uom.vc_uom_desc, ln.i_uom_id, ln.dc_min_qty, ln.dc_price, ln.dc_amount, ln.vc_reference, ln.bi_quot_no,
-                         poa.dt_created_date, poa.dt_updated_datetime
-                         from tb_poa poa
-                         inner join tb_poa_header hd on poa.bi_poa_id = hd.bi_poa_id
-                         left join tb_poa_line ln on hd.bi_poa_header_id = ln.bi_poa_header_id
-                         inner join tb_supplier sup on hd.bi_supp_id = sup.bi_supp_id
-                         inner join lut_term_and_con tc on hd.ti_tc_id = tc.ti_tc_id
-                         inner join lut_deli_schedule_type delisc on hd.ti_deli_sched_id = delisc.ti_deli_sched_id
-                         left join tb_item it on ln.bi_item_id = it.bi_item_id
-                         left join lut_uom_type uom on ln.i_uom_id = uom.i_uom_id
-                         left join lut_poa_type poatype on poa.ti_poa_type_id = poatype.ti_poa_type_id                         
-                         left join lut_poa_status poast on poa.bi_poa_status_id = poast.bi_poa_status_id
-                         left join lut_currency cur on hd.i_cur_id = cur.i_cur_id
-                         ) a ";
+                itemLists = new List<PoaItemList>();             
             }
             [Display(Name = "not_shown")]
             public string sql { get; set; }
@@ -620,6 +602,8 @@ namespace CPS_App.Models
             public decimal dc_price { get; set; }
             [Display(Name = "Amount")]
             public decimal dc_amount { get; set; }
+            [Display(Name = "not_shown")]
+            public string vc_deli_sched_desc { get; set; }
             [Display(Name = "Reference")]
             public string vc_reference { get; set; }
             [Display(Name = "not_shown")]
@@ -651,85 +635,85 @@ namespace CPS_App.Models
             public string item_loc_id_group { get; set; }
         }
 
-        public class PoCreateObj
-        {
-            public PoCreateObj()
-            {
-                itemLists = new List<PoCreateItem>();
-            }
-            [Display(Name = "Po Id")]
-            public int bi_po_id { get; set; }
-            [Display(Name = "Poa Id")]
-            public int bi_poa_id { get; set; }
-            [Display(Name = "not_shown")]
-            public int bi_po_header_id { get; set; }
-            [Display(Name = "not_shown")]
-            public int ti_po_type_id { get; set; }
-            [Display(Name = "Type")]
-            public string vc_po_type_desc { get; set; }
-            [Display(Name = "not_shown")]
-            public long bi_po_status_id { get; set; }
-            [Display(Name = "Status")]
-            public string vc_po_status_desc { get; set; }
-            [Display(Name = "not_shown")]
-            public int bi_deli_loc_id { get; set; }//no need
-            [Display(Name = "Delivery Location")]
-            public string vc_location_desc { get; set; }//no need
-            [Display(Name = "not_shown")]
-            public int bi_supp_id { get; set; }
-            [Display(Name = "Supplier")]
-            public string vc_supp_desc { get; set; }
-            [Display(Name = "not_shown")]
-            public int i_cur_id { get; set; }
-            [Display(Name = "currency")]
-            public string vc_cur_desc { get; set; }
-            [Display(Name = "not_shown")]
-            public int ti_tc_id { get; set; }
-            [Display(Name = "Terms and Conditions")]
-            public string vc_tc_desc { get; set; }
-            //[Display(Name = "not_shown")]
-            //public int ti_deli_sched_id { get; set; }
-            //[Display(Name = "Delivery Schedule")]
-            //public string vc_deli_sched_desc { get; set; }
-            [Display(Name = "Effective Date")]
-            public string dt_effect_date { get; set; }
-            //[Display(Name = "Contract No")]
-            //public string bi_contract_no { get; set; }
-            [Display(Name = "not_shown")]
-            public string dt_created_date { get; set; }
-            [Display(Name = "not_shown")]
-            public string dt_updated_datetime { get; set; }
-            [Display(Name = "not_shown")]
-            public List<PoCreateItem> itemLists { get; set; }
-        }
-        public class PoCreateItem
-        {
-            [Display(Name = "Po line Id")]
-            public int bi_po_line_id { get; set; }
-            [Display(Name = "not_shown")]
-            public int bi_po_header_id { get; set; }
-            [Display(Name = "Item Id")]
-            public int bi_item_id { get; set; }
-            [Display(Name = "Item")]
-            public string vc_item_desc { get; set; }
-            [Display(Name = "Supplier Item Id")]
-            public string bi_supp_item_id { get; set; }
-            [Display(Name = "Remain Qty")]
-            public decimal dc_actual_qty { get; set; }
-            [Display(Name = "not_shown")]
-            public int i_uom_id { get; set; }
-            [Display(Name = "Unit of Measurement")]
-            public string vc_uom_desc { get; set; }
-            [Display(Name = "Price")]
-            public decimal dc_price { get; set; }
-            [Display(Name = "Amount")]
-            public decimal dc_act_amount { get; set; }
-            [Display(Name = "Reference")]
-            public string vc_reference { get; set; }
-            [Display(Name = "not_shown")]
-            public string bi_quot_no { get; set; }
+        //public class PoCreateObj
+        //{
+        //    public PoCreateObj()
+        //    {
+        //        itemLists = new List<PoCreateItem>();
+        //    }
+        //    [Display(Name = "Po Id")]
+        //    public int bi_po_id { get; set; }
+        //    [Display(Name = "Poa Id")]
+        //    public int bi_poa_id { get; set; }
+        //    [Display(Name = "not_shown")]
+        //    public int bi_po_header_id { get; set; }
+        //    [Display(Name = "not_shown")]
+        //    public int ti_po_type_id { get; set; }
+        //    [Display(Name = "Type")]
+        //    public string vc_po_type_desc { get; set; }
+        //    [Display(Name = "not_shown")]
+        //    public long bi_po_status_id { get; set; }
+        //    [Display(Name = "Status")]
+        //    public string vc_po_status_desc { get; set; }
+        //    [Display(Name = "not_shown")]
+        //    public int bi_deli_loc_id { get; set; }//no need
+        //    [Display(Name = "Delivery Location")]
+        //    public string vc_location_desc { get; set; }//no need
+        //    [Display(Name = "not_shown")]
+        //    public int bi_supp_id { get; set; }
+        //    [Display(Name = "Supplier")]
+        //    public string vc_supp_desc { get; set; }
+        //    [Display(Name = "not_shown")]
+        //    public int i_cur_id { get; set; }
+        //    [Display(Name = "currency")]
+        //    public string vc_cur_desc { get; set; }
+        //    [Display(Name = "not_shown")]
+        //    public int ti_tc_id { get; set; }
+        //    [Display(Name = "Terms and Conditions")]
+        //    public string vc_tc_desc { get; set; }
+        //    //[Display(Name = "not_shown")]
+        //    //public int ti_deli_sched_id { get; set; }
+        //    //[Display(Name = "Delivery Schedule")]
+        //    //public string vc_deli_sched_desc { get; set; }
+        //    [Display(Name = "Effective Date")]
+        //    public string dt_effect_date { get; set; }
+        //    //[Display(Name = "Contract No")]
+        //    //public string bi_contract_no { get; set; }
+        //    [Display(Name = "not_shown")]
+        //    public string dt_created_date { get; set; }
+        //    [Display(Name = "not_shown")]
+        //    public string dt_updated_datetime { get; set; }
+        //    [Display(Name = "not_shown")]
+        //    public List<PoCreateItem> itemLists { get; set; }
+        //}
+        //public class PoCreateItem
+        //{
+        //    [Display(Name = "Po line Id")]
+        //    public int bi_po_line_id { get; set; }
+        //    [Display(Name = "not_shown")]
+        //    public int bi_po_header_id { get; set; }
+        //    [Display(Name = "Item Id")]
+        //    public int bi_item_id { get; set; }
+        //    [Display(Name = "Item")]
+        //    public string vc_item_desc { get; set; }
+        //    [Display(Name = "Supplier Item Id")]
+        //    public string bi_supp_item_id { get; set; }
+        //    [Display(Name = "Remain Qty")]
+        //    public decimal dc_actual_qty { get; set; }
+        //    [Display(Name = "not_shown")]
+        //    public int i_uom_id { get; set; }
+        //    [Display(Name = "Unit of Measurement")]
+        //    public string vc_uom_desc { get; set; }
+        //    [Display(Name = "Price")]
+        //    public decimal dc_price { get; set; }
+        //    [Display(Name = "Amount")]
+        //    public decimal dc_act_amount { get; set; }
+        //    [Display(Name = "Reference")]
+        //    public string vc_reference { get; set; }
+        //    [Display(Name = "not_shown")]
+        //    public string bi_quot_no { get; set; }
 
-        }
+        //}
         public class POTableObj
         {
             public POTableObj()

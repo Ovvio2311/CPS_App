@@ -508,16 +508,24 @@ namespace CPS_App.Services
             }
             return res;
         }
-        public async Task<DbResObj> GetGenericViewTable(string sql, Dictionary<string, string> loc = null, searchObj obj = null)
+        public async Task<DbResObj> GetGenericViewTable(string sql, Dictionary<string, string> loc = null, searchObj obj = null,string addionalSearch=null)
         {
             var res = new DbResObj();
             res.resCode = 0;
             
             if (obj != null)
             {
-                string seasrchList = string.Join(" and ", obj.searchWords.Select(x => $"{x.Key} in ({string.Join(",", x.Value.ToList().Select(i => $"'{i}'").ToList())})").ToList());
-                sql += $"where {seasrchList} ";
+                string searchList = string.Join(" and ", obj.searchWords.Select(x => $"{x.Key} in ({string.Join(",", x.Value.ToList().Select(i => $"'{i}'").ToList())})").ToList());
+                sql += $"where {searchList} ";
             }
+            if(addionalSearch != null)
+            {
+                if (obj == null)
+                    sql += " where ";
+                else
+                    sql += " and ";
+                sql += $" {addionalSearch} ";
+            }            
             if (loc != null)
             {
                 sql += $"order by {loc.ElementAt(0).Key} = '{loc.ElementAt(0).Value}' desc; ";
@@ -568,7 +576,7 @@ namespace CPS_App.Services
 	                     select poa.bi_poa_id, poa.ti_poa_type_id, poatype.vc_poa_type_desc, poa.bi_poa_status_id, poast.vc_poa_status_desc, hd.bi_poa_header_id,
                          hd.bi_supp_id, sup.vc_supp_desc, hd.i_cur_id, cur.vc_cur_desc , hd.ti_tc_id, tc.vc_tc_desc, 
                          hd.ti_deli_sched_id, delisc.vc_deli_sched_desc, hd.dt_effect_date, hd.bi_contract_no, ln.bi_poa_line_id, ln.bi_item_id, it.vc_item_desc, 
-                         ln.bi_supp_item_id, ln.dc_promise_qty, uom.vc_uom_desc, ln.i_uom_id, ln.dc_min_qty, ln.dc_price, ln.dc_amount, ln.vc_reference, ln.bi_quot_no,
+                         ln.bi_supp_item_id, ln.dc_promise_qty, uom.vc_uom_desc, ln.i_uom_id, ln.dc_remain_qty, ln.dc_min_qty, ln.dc_price, ln.dc_amount, ln.vc_reference, ln.bi_quot_no,
                          poa.dt_created_date, poa.dt_updated_datetime
                          from tb_poa poa
                          inner join tb_poa_header hd on poa.bi_poa_id = hd.bi_poa_id

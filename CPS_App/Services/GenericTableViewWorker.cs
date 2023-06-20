@@ -23,13 +23,13 @@ namespace CPS_App.Services
             _logger = logger;
             _services = dbServices;
         }
-        public async Task<List<T>> GetGenericWorker<T, i>(string sql,string keyName, Dictionary<string,string> loc = null, searchObj obj = null)
+        public async Task<List<T>> GetGenericWorker<T, i>(string sql,string keyName, Dictionary<string,string> loc = null, searchObj obj = null,string addSearch =null)
             where T : new()
             where i : new()
         {
             var reqPoaList = new List<T>();
             var res = new List<T>();
-            var resObj = await _services.GetGenericViewTable(sql,loc, obj);
+            var resObj = await _services.GetGenericViewTable(sql,loc, obj,addSearch);
             if (resObj.resCode == 1 && resObj.result != null)
             {
                 List<List<KeyValuePair<string, object>>> kvp = resObj.result;

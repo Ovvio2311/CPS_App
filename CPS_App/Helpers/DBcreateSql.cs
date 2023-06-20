@@ -13,7 +13,7 @@ namespace CPS_App.Helpers
     }
 }
 
-https://www.ikea.com.hk/zh/products/sideboards/bookcases/billy-oxberg-spr-59483671
+//https://www.ikea.com.hk/zh/products/sideboards/bookcases/billy-oxberg-spr-59483671
 
 //use cps_db;
 //CREATE TABLE `tb_users` (

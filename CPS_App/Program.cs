@@ -24,7 +24,19 @@ namespace CPS_App
 
         static void Main(string[] args)
         {
+            MainAsync(args).GetAwaiter().GetResult();
 
+            
+            
+            
+            
+            //Application.Run(ServiceProvider.GetRequiredService<ScheduleTask>());
+            //Application.Run(ServiceProvider.GetRequiredService<Dashboard>());
+            //Application.Run(ServiceProvider.GetRequiredService<Request_Create>());
+            //Application.Run(ServiceProvider.GetRequiredService<Register>());
+        }
+        static async Task MainAsync(string[] args)
+        {
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Override("Microsoft", Serilog.Events.LogEventLevel.Information)
                 .Enrich.FromLogContext()
@@ -50,12 +62,10 @@ namespace CPS_App
                             .Build();
 
             var ServiceProvider = host.Services;
-           Application.Run(ServiceProvider.GetRequiredService<Login>());
-           //Application.Run(ServiceProvider.GetRequiredService<Dashboard>());
-            //Application.Run(ServiceProvider.GetRequiredService<Request_Create>());
-            //Application.Run(ServiceProvider.GetRequiredService<Register>());
+            var scheduler = ServiceProvider.GetRequiredService<ScheduleTask>();
+            await scheduler.RequestMappingScheduler();
+            Application.Run(ServiceProvider.GetRequiredService<Login>());
         }
-
 
         private static void ConfigureServices(IServiceCollection services)
         {
@@ -77,7 +87,7 @@ namespace CPS_App
             services.AddScoped<POAWorker>();
             services.AddScoped<SearchFunc>();
             services.AddScoped<GenericTableViewWorker>();
-            services.AddScoped<ScheduleTask>();
+            services.AddSingleton<ScheduleTask>();
             services.AddScoped<StockLevelWorker>();
             services.AddScoped<CreatePoServices>();
             services.Configure<IdentityOptions>(options =>

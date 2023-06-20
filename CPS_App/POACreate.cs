@@ -240,6 +240,7 @@ namespace CPS_App
                         {nameof(row.bi_item_id), row.bi_item_id.ToString() },
                         {nameof(row.bi_supp_item_id),row.bi_supp_item_id.ToString() },
                         {nameof(row.dc_promise_qty), row.dc_promise_qty.ToString() },
+                        {nameof(row.dc_remain_qty),row.dc_promise_qty.ToString() },
                         {nameof(row.i_uom_id),row.i_uom_id.ToString() },
                         {nameof(row.dc_min_qty),row.dc_min_qty.ToString() },
                         {nameof(row.dc_price), row.dc_price.ToString() },

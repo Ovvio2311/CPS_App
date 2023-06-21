@@ -74,7 +74,7 @@ namespace CPS_App
             {
                 {nameof(viewObj.bi_location_id),loc }
             };
-            defPage = await _genericTableViewWorker.GetGenericWorker<RequestMappingReqObj, ItemRequest>(viewObj.sql, nameof(viewObj.bi_req_id), kvpLoc, obj);
+            defPage = await _genericTableViewWorker.GetGenericWorker<RequestMappingReqObj, ItemRequest>(viewObj.GetSqlQuery(), nameof(viewObj.bi_req_id), kvpLoc, obj);
             if (defPage == null)
             {
                 datagridview.Columns.Clear();

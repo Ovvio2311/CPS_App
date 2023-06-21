@@ -252,7 +252,7 @@ namespace CPS_App
             this.cbxreforderid.Size = new System.Drawing.Size(160, 21);
             this.cbxreforderid.StateCommon.ComboBox.Content.TextH = Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.cbxreforderid.TabIndex = 16;
-            this.cbxreforderid.Tag = "";
+            this.cbxreforderid.Tag = "vc_ref_id";
             this.cbxreforderid.SelectedIndexChanged += new System.EventHandler(this.cbxreforderid_SelectedIndexChanged);
             // 
             // lblrefid

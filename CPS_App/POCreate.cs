@@ -147,7 +147,7 @@ namespace CPS_App
 
             var availableItem = pn1.Controls.OfType<KryptonTextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
 
-            if (availableItem != 1 || selectedComboBoxpn1 != 8)
+            if (availableItem != 1 || (selectedComboBoxpn1 > 8 && selectedComboBoxpn1 < 7))
             {
                 MessageBox.Show("Please enter correct info");
                 return;

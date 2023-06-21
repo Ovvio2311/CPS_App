@@ -193,10 +193,14 @@ namespace CPS_App.Services
 
         public async Task<DbResObj> UpdateAsync(updateObj obj)
         {
+            var res = new DbResObj();
+            res.resCode = 0;
+            res.result = null;
+            res.err_msg = null;
             try
             {
-                var res = new DbResObj();
-                res.resCode = 0;
+                
+
                 string updateValue = string.Join(",", obj.updater.Select(x => $"{x.Key} = \'{x.Value}\'").ToList());
                 string selecter = string.Join(" and ", obj.selecter.Select(x => $"{x.Key}= \'{x.Value}\'").ToList());
                 string sql = $"update {obj.table} set {updateValue} where {selecter}; ";
@@ -206,12 +210,16 @@ namespace CPS_App.Services
                 {
                     res.result = result;
                     res.resCode = 1;
+                    res.err_msg = null;
                 }
                 return res;
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                res.result = null;
+                res.resCode = 1;
+                res.err_msg = ex.Message;
+                return res;
             }
         }
         public async Task<DbResObj> DeleteAsync(deleteObj obj)

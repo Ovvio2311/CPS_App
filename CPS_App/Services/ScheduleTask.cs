@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,16 +18,67 @@ namespace CPS_App.Services
         private POAWorker _pOAWorker;
         private RequestMapping _requestMapping;
         private GenericTableViewWorker _genericTableViewWorker;
+        private List<updateObj> _updateObjects;
+        private CreatePoServices _createPoServices;
 
-        public ScheduleTask(DbServices dbServices, ILogger<ScheduleTask> logger, POAWorker pOAWorker, RequestMapping requestMapping, GenericTableViewWorker genericTableViewWorker)
+        public ScheduleTask(DbServices dbServices, ILogger<ScheduleTask> logger, POAWorker pOAWorker, RequestMapping requestMapping, GenericTableViewWorker genericTableViewWorker, CreatePoServices createPoServices)
         {
             _services = dbServices;
             _logger = logger;
             _pOAWorker = pOAWorker;
             _requestMapping = requestMapping;
             _genericTableViewWorker = genericTableViewWorker;
+            _updateObjects = new List<updateObj>();
+            _createPoServices = createPoServices;
         }
         public async Task RequestMappingScheduler()
+        {
+            try
+            {
+                //Mapping process P1
+                List<POTableObj> newPo1 = await MappingScheduler_P1();
+                newPo1.ForEach(async x => await _createPoServices.CreatePoASync(x));
+                
+                if (_updateObjects.Any())
+                {
+                    _updateObjects.ForEach(async updateObj =>
+                    {
+                        DbResObj res = await _services.UpdateAsync(updateObj);
+                        if (res.resCode != 1 || res.err_msg != null)
+                        {
+                            _logger.LogDebug($"Mapping process P1 update Db Error: {res.err_msg}");
+                        }
+                    });
+                    _updateObjects.Clear();
+                }
+                //Mapping process p2
+                List<POTableObj> newPo2 = await MappingScheduler_P1();
+                if (_updateObjects.Any())
+                {
+                    _updateObjects.ForEach(async updateObj =>
+                    {
+                        DbResObj res = await _services.UpdateAsync(updateObj);
+                        if (res.resCode != 1 || res.err_msg != null)
+                        {
+                            _logger.LogDebug($"Mapping process P1 update Db Error: {res.err_msg}");
+                        }
+                    });
+                    _updateObjects.Clear();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+
+            //var poaObj = await _services.GetBPAResult<POATableObj>(lst);
+            //var inStock = await _services.GetInStockQty();//warehouse part
+
+
+
+        }
+        public async Task<List<RequestMappingReqObj>> RequestMapObjectGetter()
         {
             searchObj reqse = new searchObj()
             {
@@ -38,30 +90,17 @@ namespace CPS_App.Services
             };
             string addSearch = " i_remain_req_qty > 0";
             RequestMappingReqObj viewObj = new RequestMappingReqObj();
-            List<RequestMappingReqObj> reqObj = await _genericTableViewWorker.GetGenericWorker<RequestMappingReqObj, ItemRequest>(viewObj.sql, nameof(viewObj.bi_req_id), null, reqse, addSearch);
-
-            //List< RequestMappingReqObj> reqObj =  await _requestMapping.RequestMappingObjGetter(null, reqse);
-            //get request obj
-            var item_list_req = new List<ItemRequest>();
-            var poaTable = new List<POATableObj>();
-
-            foreach (RequestMappingReqObj row in reqObj)
+            try
             {
-                if (row.i_map_stat_id == 1 && row.itemLists.Count > 0)
-                {
-                    foreach (ItemRequest item in row.itemLists)
-                    {
-                        if (item.i_hd_map_stat_id == 1 && item.i_remain_req_qty > 0)
-                        {
-                            item_list_req.Add(item);
-                        }
-                    }
-                }
+                return await _genericTableViewWorker.GetGenericWorker<RequestMappingReqObj, ItemRequest>(viewObj.GetSqlQuery(), nameof(viewObj.bi_req_id), null, reqse, addSearch);
             }
-
-            List<int> itemIdLst = item_list_req.Select(x => x.bi_item_id).ToList();
-            string lst = string.Join(",", itemIdLst);
-            //get poa obj
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public async Task<List<POATableObj>> PoaMapObjectGetter()
+        {
             searchObj seObj = new searchObj()
             {
                 searchWords = new Dictionary<string, List<string>>
@@ -69,16 +108,21 @@ namespace CPS_App.Services
                     {"bi_poa_status_id",new List<string>() { "1" } },
                 }
             };
-            List<POATableObj> poaObj = await _pOAWorker.GetPoaWorker(null, seObj);
-            List<PoaItemList> poaitem = new List<PoaItemList>();
-         
-            //var poaObj = await _services.GetBPAResult<POATableObj>(lst);
-            //var inStock = await _services.GetInStockQty();//warehouse part
-            int cou = 0;
-            int couu = 0;
+            try
+            {
+                return await _pOAWorker.GetPoaWorker(null, seObj);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+        }
+        public async Task<List<POTableObj>> iterateAdequatePoaProcess(List<RequestMappingReqObj> reqObj, List<POATableObj> poaObj)
+        {
             List<POTableObj> PoCreateList = new List<POTableObj>();
             List<updateObj> update = new List<updateObj>();
-            
+
             reqObj.ForEach(reqObj =>
             {
                 reqObj.itemLists.ForEach(item =>
@@ -92,9 +136,10 @@ namespace CPS_App.Services
                                 var day = i.vc_deli_sched_desc.Split(' ');
                                 DateTime arrival = DateTime.Now.AddDays(GenUtil.ConvertObjtoType<int>(day.ElementAt(0)));
                                 //poa > request
-                                if (i.dc_remain_qty > item.i_remain_req_qty && item.i_remain_req_qty > i.dc_min_qty)
+                                if (i.dc_remain_qty > item.i_remain_req_qty && item.i_remain_req_qty > i.dc_min_qty &&
+                                arrival > item.dt_exp_deli_date)
                                 {
-                                    if (arrival > item.dt_exp_deli_date)
+                                    try
                                     {
                                         updateObj tempUpdate = new updateObj()
                                         {
@@ -106,12 +151,13 @@ namespace CPS_App.Services
                                             },
                                             updater = new Dictionary<string, string>
                                             {
-                                                { nameof(item.i_remain_req_qty), "0" },
+                                                { nameof(item.i_remain_req_qty), i.dc_remain_qty >= item.i_remain_req_qty ? "0": GenUtil.ConvertObjtoType<int>(item.i_remain_req_qty - i.dc_remain_qty).ToString() },
                                                 { nameof(item.i_hd_map_stat_id), "2" },
                                                 { nameof(item.bi_po_status_id), "3" },
                                             }
                                         };
-                                        update.Add(tempUpdate);
+                                        _updateObjects.Add(tempUpdate);
+
                                         POTableObj tempPoCreate = new POTableObj();
                                         row.GetType().GetProperties().ToList().ForEach(p =>
                                         {
@@ -145,7 +191,7 @@ namespace CPS_App.Services
                                                 }
                                             });
                                         });
-                                        tempPoItem.dc_actual_qty = item.i_remain_req_qty;
+                                        tempPoItem.dc_actual_qty = i.dc_remain_qty >= item.i_remain_req_qty ? item.i_remain_req_qty: i.dc_remain_qty;
                                         tempPoItem.dc_actual_amount = tempPoItem.dc_actual_qty * tempPoItem.dc_price;
                                         tempPoCreate.itemLists.Add(tempPoItem);
                                         tempPoCreate.vc_ref_id = row.bi_poa_id.ToString();
@@ -161,13 +207,33 @@ namespace CPS_App.Services
                                         {
                                             PoCreateList.Add(tempPoCreate);
                                         }
-                                        //adjust available items
-                                        i.dc_remain_qty = i.dc_remain_qty - item.i_remain_req_qty;
 
-                                        
+                                        //adjust available items
+                                        i.dc_remain_qty = i.dc_remain_qty >= item.i_remain_req_qty ? i.dc_remain_qty - item.i_remain_req_qty : 0;
+                                        updateObj tempPoaUpdate = new updateObj()
+                                        {
+                                            table = "tb_poa_line",
+                                            updater = new Dictionary<string, string>
+                                            {
+                                                {nameof(i.dc_remain_qty), i.dc_remain_qty.ToString()},
+                                            },
+                                            selecter = new Dictionary<string, string>
+                                                {
+                                                    {nameof(i.bi_poa_header_id), i.bi_poa_header_id.ToString()},
+                                                    {nameof(i.bi_poa_line_id), i.bi_poa_line_id.ToString()},
+                                                    {nameof(i.bi_item_id), i.bi_item_id.ToString()},
+                                                }
+                                        };
+                                        _updateObjects.Add(tempPoaUpdate);
                                         //update db
                                         //further process to po
+
                                     }
+                                    catch (Exception ex)
+                                    {
+                                        throw new Exception(ex.Message);
+                                    }
+
                                 }
                                 //request > poa
                                 //else if (i.dc_remain_qty < item.i_remain_req_qty && item.i_remain_req_qty > i.dc_min_qty)
@@ -179,7 +245,34 @@ namespace CPS_App.Services
                     });
                 });
             });
+            return PoCreateList;
+        }
+        public async Task<List<POTableObj>> MappingScheduler_P1()
+        {
+            try
+            {
+                //get request obj
+                List<RequestMappingReqObj> reqObj = await RequestMapObjectGetter();
 
+                //get poa obj            
+                List<POATableObj> poaObj = await PoaMapObjectGetter();
+                //iterate enough poa 
+                return await iterateAdequatePoaProcess(reqObj, poaObj);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+
+        }
+        public async Task MappingScheduler_P2()
+        {
+            //get request obj
+            List<RequestMappingReqObj> reqObj = await RequestMapObjectGetter();
+
+            //get poa obj            
+            List<POATableObj> poaObj = await PoaMapObjectGetter();
         }
     }
 }

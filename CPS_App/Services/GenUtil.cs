@@ -158,7 +158,8 @@ namespace CPS_App.Services
 
             foreach (var item in obj)
             {
-                try {
+                try
+                {
                     Dictionary<string, string> temp = new Dictionary<string, string>();
                     form.Controls.OfType<KryptonLabel>().ToList().ForEach(x =>
                     {
@@ -177,11 +178,12 @@ namespace CPS_App.Services
                         }
                     });
                     confirmObj.Add(temp);
-                }catch (Exception ex)
+                }
+                catch (Exception ex)
                 {
                     throw new Exception(ex.Message);
                 }
-                
+
             }
 
             string confirmStr = string.Empty;
@@ -295,7 +297,7 @@ namespace CPS_App.Services
 
 
         }
-        public static async Task ResumeBlankPage<T>(Panel pan, List<T> List=null)
+        public static async Task ResumeBlankPage<T>(Panel pan, List<T> List = null)
         {
 
             try
@@ -308,7 +310,7 @@ namespace CPS_App.Services
                         if (p.Tag != null && p.Tag.ToString() == x.Name)
                         {
 
-                            p.Text = string.Empty;
+                            p.Clear();
                             p.Enabled = true;
 
                         }
@@ -358,7 +360,7 @@ namespace CPS_App.Services
 
 
         }
-        //add textbox, combobox data to class obj
+        //only pocreate and poacreate add textbox, combobox data to class obj
         public static async Task AddingInputToObject<T>(Panel panel, T obj)
         {
             panel.Controls.OfType<KryptonTextBox>().ToList().ForEach(x =>
@@ -366,7 +368,7 @@ namespace CPS_App.Services
                 obj.GetType().GetProperties().ToList().ForEach(p =>
                 {
                     if (x.Tag != null && p.Name == x.Tag.ToString() &&
-                    x.Text.Trim() != string.Empty )
+                    x.Text.Trim() != string.Empty)
                     {
                         p.SetValue(obj, Convert.ChangeType(x.Text, p.PropertyType, null));
                     }
@@ -392,10 +394,11 @@ namespace CPS_App.Services
                             p.SetValue(obj, Convert.ChangeType(nameValue, p.PropertyType, null));
                         }
                     }
-                    else if (x.Tag != null && p.Name == x.Tag.ToString() )
+                    else if (x.Tag != null && p.Name == x.Tag.ToString() && x.SelectedItem != null)
                     {
-                        var value = x.SelectedItem.ToString().Split(":").ElementAt(0);
-                        p.SetValue(obj, Convert.ChangeType(value, p.PropertyType, null));
+                        //var value = x.SelectedItem.ToString().Split(":").ElementAt(0);
+                        //for vc_ref_id only
+                        p.SetValue(obj, Convert.ChangeType(x.SelectedItem.ToString(), p.PropertyType, null));
                     }
 
                 });
@@ -405,7 +408,7 @@ namespace CPS_App.Services
                 obj.GetType().GetProperties().ToList().ForEach(p =>
                 {
                     if (d.Tag != null && p.Name == d.Tag.ToString() &&
-                    d.Text.Trim() != string.Empty )
+                    d.Text.Trim() != string.Empty)
                     {
                         p.SetValue(obj, Convert.ChangeType(d.Value.ToString("yyyy-MM-dd HH:mm:ss"), p.PropertyType, null));
                     }

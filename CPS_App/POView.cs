@@ -92,7 +92,7 @@ namespace CPS_App
             if (poObj != null)
                 kryptonDataGridViewpoa.DataSource = source;
 
-            GenUtil.dataGridAttrName<POATableObj>(kryptonDataGridViewpoa, new List<string>() { "not_shown" });
+            GenUtil.dataGridAttrName<POTableObj>(kryptonDataGridViewpoa, new List<string>() { "not_shown" });
         }
         private void kryptonDataGridViewpoa_CellClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -102,10 +102,10 @@ namespace CPS_App
             if (e.RowIndex == kryptonDataGridViewpoa.CurrentRow.Index)
             {
                 lblsubitemtitle.Show();
-                int selectdId = GenUtil.ConvertObjtoType<int>(kryptonDataGridViewpoa.CurrentRow.Cells["bi_poa_header_id"].Value);
+                int selectdId = GenUtil.ConvertObjtoType<int>(kryptonDataGridViewpoa.CurrentRow.Cells["bi_po_header_id"].Value);
 
                 kryptonDataGridViewitem.DataSource = null;
-                if (GenUtil.ConvertObjtoType<int>(kryptonDataGridViewpoa.CurrentRow.Cells["ti_poa_type_id"].Value) == 2)
+                if (GenUtil.ConvertObjtoType<int>(kryptonDataGridViewpoa.CurrentRow.Cells["ti_po_type_id"].Value) == 2)
                 {
                     lblsubitemtitle.Hide();
                     return;
@@ -114,14 +114,14 @@ namespace CPS_App
                 var observableItems = new ObservableCollection<PoItemList>(itemViewSelect);
                 BindingList<PoItemList> source = observableItems.ToBindingList();
                 kryptonDataGridViewitem.DataSource = source;
-                GenUtil.dataGridAttrName<PoaItemList>(kryptonDataGridViewitem, new List<string>() { "not_shown" });                
+                GenUtil.dataGridAttrName<PoItemList>(kryptonDataGridViewitem, new List<string>() { "not_shown" });                
             }
         }
-        //edit POA and POA header
+        //edit PO and PO header
         private async void btnedit_Click(object sender, EventArgs e)
         {
-            var currentIndex = GenUtil.ConvertObjtoType<int>(kryptonDataGridViewpoa.CurrentRow.Cells["bi_poa_header_id"].Value);
-            var currentpoaType = GenUtil.ConvertObjtoType<int>(kryptonDataGridViewpoa.CurrentRow.Cells["ti_poa_type_id"].Value);
+            var currentIndex = GenUtil.ConvertObjtoType<int>(kryptonDataGridViewpoa.CurrentRow.Cells["bi_po_header_id"].Value);
+            var currentpoaType = GenUtil.ConvertObjtoType<int>(kryptonDataGridViewpoa.CurrentRow.Cells["ti_po_type_id"].Value);
             if (currentpoaType == 2)
             {
                 MessageBox.Show("Contract Agreement has no items to update");

@@ -254,7 +254,7 @@ namespace CPS_App
                         MessageBox.Show(res.err_msg);
                         return;
                     }
-                    await ClearContent();
+                    //await ClearContent();
                     await ReturnToAddNewPage();
                     pn2.Hide();
                     pn1.Show();
@@ -306,7 +306,7 @@ namespace CPS_App
         
         private async void btnclear_Click(object sender, EventArgs e)
         {
-            await ClearContent();
+            await ReturnToAddNewPage();
         }
         private async Task ClearContent()
         {
@@ -403,6 +403,8 @@ namespace CPS_App
             await GenUtil.ResumeBlankPage<PoItemList>(pn2);
             cbxuom.Enabled = false;
             txtam.Enabled = false;
+            itemList.Clear();
+            obj = new POTableObj();
         }
         private async void cbxreffrom_SelectedIndexChanged(object sender, EventArgs e)
         {

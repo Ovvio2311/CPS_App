@@ -97,7 +97,7 @@ namespace CPS_App
             var delisc = cbxdelisc.SelectedItem.ToString();
             if (delisc != null) { delisc = delisc.Split(":").ElementAt(0); }
 
-            if (txtmin.Text == readyToEdit.dc_min_qty.ToString() && txtp.Text == readyToEdit.dc_price.ToString() &&
+            if (txtp.Text == readyToEdit.dc_price.ToString() &&
                 txtam.Text == readyToEdit.dc_actual_amount.ToString() && txtref.Text == readyToEdit.vc_reference.ToString() &&
                 cbxst.SelectedItem.ToString().Contains(poView.bi_po_status_id.ToString()) &&
                 cbxdelisc.SelectedItem.ToString().Contains(poView.ti_deli_sched_id.ToString()))
@@ -157,8 +157,7 @@ namespace CPS_App
                         table = "tb_po_line",
                         updater = new Dictionary<string, string>
                     {
-                        {nameof(readyToEdit.vc_reference), txtref.Text.ToString() },
-                        {nameof(readyToEdit.dc_min_qty), txtmin.Text.ToString() },
+                        {nameof(readyToEdit.vc_reference), txtref.Text.ToString() },                        
                         {nameof(readyToEdit.dc_price), txtp.Text.ToString() },
                         {nameof(readyToEdit.dc_actual_amount), txtam.Text.ToString() },
                     },

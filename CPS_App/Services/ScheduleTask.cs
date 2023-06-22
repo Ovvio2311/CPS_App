@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿using Krypton.Toolkit.Suite.Extended.Data.Visualisation.ScottPlot;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -6,6 +7,7 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using static CPS_App.Models.CPSModel;
 using static CPS_App.Models.DbModels;
 
@@ -110,7 +112,9 @@ namespace CPS_App.Services
             };
             try
             {
-                return await _pOAWorker.GetPoaWorker(null, seObj);
+                POATableObj viewObj = new POATableObj();
+                return await _genericTableViewWorker.GetGenericWorker<POATableObj, PoaItemList>(viewObj.GetSqlQuery(), nameof(viewObj.bi_poa_header_id), null, seObj);
+                //return await _pOAWorker.GetPoaWorker(null, seObj);
             }
             catch (Exception ex)
             {
@@ -194,7 +198,7 @@ namespace CPS_App.Services
                                         tempPoItem.dc_actual_qty = i.dc_remain_qty >= item.i_remain_req_qty ? item.i_remain_req_qty: i.dc_remain_qty;
                                         tempPoItem.dc_actual_amount = tempPoItem.dc_actual_qty * tempPoItem.dc_price;
                                         tempPoCreate.itemLists.Add(tempPoItem);
-                                        tempPoCreate.vc_ref_id = row.bi_poa_id.ToString();
+                                        tempPoCreate.vc_ref_id = $"Poa Id: {row.bi_poa_id}" ;
                                         tempPoCreate.ti_po_type_id = 2;
                                         tempPoCreate.bi_deli_loc_id = reqObj.bi_location_id;
                                         tempPoCreate.bi_po_status_id = 1;

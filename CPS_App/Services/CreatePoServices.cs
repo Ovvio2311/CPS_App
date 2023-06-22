@@ -80,18 +80,18 @@ namespace CPS_App.Services
                         { nameof(obj.i_cur_id), obj.i_cur_id.ToString()},
                         { nameof(obj.ti_tc_id), obj.ti_tc_id.ToString() },
                         { nameof(obj.ti_deli_sched_id), obj.ti_deli_sched_id.ToString() },
-                        { nameof(obj.dt_effect_date), obj.dt_effect_date.ToString() },
+                        { nameof(obj.dt_effect_date), obj.dt_effect_date },
                         { nameof(obj.bi_contract_no), obj.bi_contract_no },
                 }
                 };
                 var resheader = await _services.InsertAsync(tb_po_header);
                 if (resheader.resCode != 1 || resheader.result == null)
                 {
-                    throw new Exception("insert poa header error");
+                    throw new Exception("insert po header error");
 
                 }
                 obj.bi_po_header_id = GenUtil.ConvertObjtoType<int>(resheader.result);
-                MessageBox.Show($"insert completed, poa id: {obj.bi_po_id}, poa header id: {obj.bi_po_header_id}");
+                MessageBox.Show($"insert completed, po id: {obj.bi_po_id}, po header id: {obj.bi_po_header_id}");
                 return true;
             }
             catch (Exception e)

@@ -53,7 +53,7 @@ namespace CPS_App
             if (!await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "poa", "read" } }))
             {
                 MessageBox.Show("No Access Permission");
-                btncancel_Click(null,EventArgs.Empty);
+                this.BeginInvoke(new MethodInvoker(this.Close));
             }
             if (await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "poa", "update" } }))
                 btnedit.Show();
@@ -66,21 +66,7 @@ namespace CPS_App
 
             var userLoc = userIden.Claims.FirstOrDefault(x => x.Type == "location_id").Value.ToString();
             await LoadViewTable(userLoc);
-            //kryptonDataGridViewpoa.Columns.ToDynamicList().ForEach(col =>
-            //{
-            //    DataGridViewColumn column = col;
-            //    col.HeaderText = typeof(POATableObj).GetProperties().ToList()
-            //    .Where(x => col.HeaderText == x.Name)
-            //    .Select(x => x.GetCustomAttribute<DisplayAttribute>())
-            //    .Where(x => x != null).Select(x => x.Name.ToString()).FirstOrDefault();
-            //    if (column.HeaderText == "bi_deli_loc_id" || column.HeaderText == "bi_supp_id"
-            //    || column.HeaderText == "ti_tc_id" || column.HeaderText == "ti_deli_sched_id"
-            //    || column.HeaderText == "itemLists")
-            //    {
-            //        column.Visible = false;
-            //    }
-
-            //});
+            await GetSearchWords(userIden, "poa");
 
 
             //var deliscType = await _dbServices.SelectAllAsync<lut_deli_schedule_type>();
@@ -225,10 +211,10 @@ namespace CPS_App
 
             await LoadViewTable(userLoc, obj);
         }
-        private async Task GetSearchWords(ClaimsIdentity identity)
+        private async Task GetSearchWords(ClaimsIdentity identity, string part)
         {
 
-            IEnumerable<tb_search_gen> searchString = await _searchFunc.SearchParaGenerator(identity);
+            IEnumerable<tb_search_gen> searchString = await _searchFunc.SearchParaGenerator(identity, part);
             if (searchString == null)
             {
                 return;

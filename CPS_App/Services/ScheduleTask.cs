@@ -22,8 +22,11 @@ namespace CPS_App.Services
         private GenericTableViewWorker _genericTableViewWorker;
         private List<updateObj> _updateObjects;
         private CreatePoServices _createPoServices;
+        private SearchFunc _searchFunc;
 
-        public ScheduleTask(DbServices dbServices, ILogger<ScheduleTask> logger, POAWorker pOAWorker, RequestMapping requestMapping, GenericTableViewWorker genericTableViewWorker, CreatePoServices createPoServices)
+        public ScheduleTask(DbServices dbServices, ILogger<ScheduleTask> logger, POAWorker pOAWorker, 
+            RequestMapping requestMapping, GenericTableViewWorker genericTableViewWorker, 
+            CreatePoServices createPoServices, SearchFunc searchFunc)
         {
             _services = dbServices;
             _logger = logger;
@@ -32,9 +35,27 @@ namespace CPS_App.Services
             _genericTableViewWorker = genericTableViewWorker;
             _updateObjects = new List<updateObj>();
             _createPoServices = createPoServices;
+            _searchFunc = searchFunc;
         }
         public async Task RequestMappingScheduler()
         {
+            JsonResponse jsonObj = new JsonResponse()
+            {
+                jsonRes = new Dictionary<string, string>
+                {
+                    { "Po Id", "bi_po_id" },
+                    { "Po Type", "vc_po_type_desc" },
+                    { "Po Status", "vc_po_status_desc" },
+                    //{ "Supplier", "vc_supp_desc" },
+                    //{ "Contract No", "vc_contract_no" },
+                    {"Delivery Location","vc_location_desc" },
+                    { "Expected Delievery Date", "dt_expect_delidate" },
+                    //{ "Staff Name","vc_staff_name" }
+                    {"Supplier Item Id", "bi_supp_item_id" },
+                    //{"Quot No", "vc_quot_no" }
+                },
+            };
+               await _searchFunc.insertJsonString("a06fae55-8c3d-46d8-8778-a19b149c7fe7", "po", jsonObj);
             try
             {
                 //Mapping process P1

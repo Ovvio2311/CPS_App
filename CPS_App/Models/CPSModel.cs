@@ -241,6 +241,8 @@ namespace CPS_App.Models
             public string vc_role_id { get; set; }
             [Display(Name = "Json")]
             public string js_search_para { get; set; }
+            [Display(Name = "Search Part")]
+            public string vc_search_part { get; set; }
             [Display(Name = "Create Date")]
             public string dt_created_date { get; set; }
             [Display(Name = "Update Date")]
@@ -320,9 +322,7 @@ namespace CPS_App.Models
             {
                 itemLists = new List<ItemRequest>();
             }
-
-            [Display(Name = "not_shown")]
-            public string sql { get; set; }
+            
             [Display(Name = "Request Id")]
             public int bi_req_id { get; set; }
             [Display(Name = "Staff Id")]

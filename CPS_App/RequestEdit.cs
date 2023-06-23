@@ -184,7 +184,7 @@ namespace CPS_App
         private async Task RefreshItemEditTable()
         {
             RequestMappingReqObj viewObj = new RequestMappingReqObj();
-            defPage = await _genericTableViewWorker.GetGenericWorker<RequestMappingReqObj, ItemRequest>(viewObj.sql, nameof(viewObj.bi_req_id));
+            defPage = await _genericTableViewWorker.GetGenericWorker<RequestMappingReqObj, ItemRequest>(viewObj.GetSqlQuery(), nameof(viewObj.bi_req_id));
 
             //defPage = await _requestMapp.RequestMappingObjGetter();
             await ReqEditInitialLoad();

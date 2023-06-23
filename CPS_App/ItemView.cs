@@ -46,7 +46,7 @@ namespace CPS_App
             if (!await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "item", "read" } }))
             {
                 MessageBox.Show("No Access Permission");
-                this.Close();
+                this.BeginInvoke(new MethodInvoker(this.Close));
             }
             if (await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "item", "update" } }))
                 btnupdate.Show();
@@ -61,6 +61,7 @@ namespace CPS_App
             var userLoc = userIden.Claims.FirstOrDefault(x => x.Type == "location_id").Value.ToString();
 
             await LoadViewTable(userLoc);
+            await GetSearchWords(userIden,"item");
             //stock = await _stockWorker.GetStockLevelWorker(userLoc);
             //if (stock != null)
             //{
@@ -189,10 +190,10 @@ namespace CPS_App
             await LoadViewTable(userLoc, obj);
         }
 
-        private async Task GetSearchWords(ClaimsIdentity identity)
+        private async Task GetSearchWords(ClaimsIdentity identity, string part)
         {
 
-            IEnumerable<tb_search_gen> searchString = await _searchFunc.SearchParaGenerator(identity);
+            IEnumerable<tb_search_gen> searchString = await _searchFunc.SearchParaGenerator(identity, part);
             if (searchString == null)
             {
                 return;

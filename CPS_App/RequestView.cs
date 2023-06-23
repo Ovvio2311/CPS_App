@@ -44,30 +44,31 @@ namespace CPS_App
             }
             //await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "request", "read" } })?
             if (!await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "request", "read" } }))
-            { MessageBox.Show("No Access Permission");
-                this.Close();
-            }                                       
+            {
+                MessageBox.Show("No Access Permission");
+                this.BeginInvoke(new MethodInvoker(this.Close));
+            }
             if (await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "request", "update" } }))
                 btnEdit.Show();
-            else 
+            else
                 btnEdit.Hide();
             if (await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "request", "write" } }))
                 btnAdd.Show();
             else
                 btnAdd.Hide();
-            
+
             lblitem.Hide();
             //var userRole = userIden.Claims.FirstOrDefault(x => x.Type == "role").Value.ToString();
             string userLoc = null;
             userLoc = userIden.Claims.FirstOrDefault(x => x.Type == "location_id").Value.ToString();
 
-            await GetSearchWords(userIden);
+            await GetSearchWords(userIden, "request");
             await LoadViewTable(userLoc);
 
         }
         private async Task LoadViewTable(string loc, searchObj obj = null)
         {
-            
+
             lblnoresult.Hide();
             datagridview.DataSource = null;
             //defPage = await _requestMapp.RequestMappingObjGetter(loc, obj);
@@ -126,7 +127,7 @@ namespace CPS_App
         {
             int selectdId = GenUtil.ConvertObjtoType<int>(datagridview.CurrentRow.Cells["bi_req_id"].Value);
 
-            RequestEdit reqEdit = new RequestEdit(selectdId, defPage, _dbServices, _requestMapp,_genericTableViewWorker);
+            RequestEdit reqEdit = new RequestEdit(selectdId, defPage, _dbServices, _requestMapp, _genericTableViewWorker);
             reqEdit.MdiParent = this.MdiParent;
             reqEdit.AutoScroll = true;
             this.Close();
@@ -189,10 +190,10 @@ namespace CPS_App
             await LoadViewTable(userLoc, obj);
 
         }
-        private async Task GetSearchWords(ClaimsIdentity identity)
+        private async Task GetSearchWords(ClaimsIdentity identity,string part)
         {
 
-            IEnumerable<tb_search_gen> searchString = await _searchFunc.SearchParaGenerator(identity);
+            IEnumerable<tb_search_gen> searchString = await _searchFunc.SearchParaGenerator(identity,part);
             if (searchString == null)
             {
                 return;

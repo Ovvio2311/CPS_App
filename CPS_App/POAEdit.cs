@@ -99,8 +99,8 @@ namespace CPS_App
             var delisc = cbxdelisc.SelectedItem.ToString();
             if (delisc != null) { delisc = delisc.Split(":").ElementAt(0); }
 
-            if (txtmin.Text == readyToEdit.dc_min_qty.ToString() && txtp.Text == readyToEdit.dc_price.ToString() &&
-                txtam.Text == readyToEdit.dc_amount.ToString() && txtref.Text == readyToEdit.vc_reference.ToString() &&
+            if (txtmin.Text == readyToEdit.i_min_qty.ToString() && txtp.Text == readyToEdit.i_price.ToString() &&
+                txtam.Text == readyToEdit.i_amount.ToString() && txtref.Text == readyToEdit.vc_reference.ToString() &&
                 cbxst.SelectedItem.ToString().Contains(poaView.bi_poa_status_id.ToString()) &&
                 cbxdelisc.SelectedItem.ToString().Contains(poaView.ti_deli_sched_id.ToString()))
             {
@@ -160,9 +160,9 @@ namespace CPS_App
                         updater = new Dictionary<string, string>
                     {
                         {nameof(readyToEdit.vc_reference), txtref.Text.ToString() },
-                        {nameof(readyToEdit.dc_min_qty), txtmin.Text.ToString() },
-                        {nameof(readyToEdit.dc_price), txtp.Text.ToString() },
-                        {nameof(readyToEdit.dc_amount), txtam.Text.ToString() },
+                        {nameof(readyToEdit.i_min_qty), txtmin.Text.ToString() },
+                        {nameof(readyToEdit.i_price), txtp.Text.ToString() },
+                        {nameof(readyToEdit.i_amount), txtam.Text.ToString() },
                     },
                         selecter = new Dictionary<string, string>
                 {
@@ -211,13 +211,13 @@ namespace CPS_App
                 //txtline.Text = readyToEdit.bi_poa_line_id.ToString();
                 //txtit.Text = readyToEdit.vc_item_desc.ToString();
                 //txtsupid.Text = readyToEdit.bi_supp_item_id.ToString();
-                //txtpro.Text = readyToEdit.dc_promise_qty.ToString();
+                //txtpro.Text = readyToEdit.i_promise_qty.ToString();
                 //txtuom.Text = readyToEdit.vc_uom_desc.ToString();
-                //txtmin.Text = readyToEdit.dc_min_qty.ToString();
-                //txtp.Text = readyToEdit.dc_price.ToString();
-                //txtam.Text = readyToEdit.dc_amount.ToString();
+                //txtmin.Text = readyToEdit.i_min_qty.ToString();
+                //txtp.Text = readyToEdit.i_price.ToString();
+                //txtam.Text = readyToEdit.i_amount.ToString();
                 //txtref.Text = readyToEdit.vc_reference.ToString();
-                //txtqu.Text = readyToEdit.bi_quot_no.ToString();
+                //txtqu.Text = readyToEdit.vc_quot_no.ToString();
                 //txtpoa.Text = poaView.bi_poa_id.ToString();
                 //txttype.Text = poaView.vc_poa_type_desc.ToString();
                 //cbxst.SelectedItem = cbxst.Items.ToDynamicList<string>()

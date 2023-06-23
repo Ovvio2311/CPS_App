@@ -551,7 +551,7 @@ namespace CPS_App.Models
             [Display(Name = "Effective Date")]
             public string dt_effect_date { get; set; }
             [Display(Name = "Contract No")]
-            public string bi_contract_no { get; set; }
+            public string vc_contract_no { get; set; }
             [Display(Name = "not_shown")]
             public string dt_created_date { get; set; }
             [Display(Name = "not_shown")]
@@ -564,8 +564,8 @@ namespace CPS_App.Models
                 sb.Append(@"select * from (
 	                     select poa.bi_poa_id, poa.ti_poa_type_id, poatype.vc_poa_type_desc, poa.bi_poa_status_id, poast.vc_poa_status_desc, hd.bi_poa_header_id,
                          hd.bi_supp_id, sup.vc_supp_desc, hd.i_cur_id, cur.vc_cur_desc , hd.ti_tc_id, tc.vc_tc_desc, 
-                         hd.ti_deli_sched_id, delisc.vc_deli_sched_desc, DATE_FORMAT(hd.dt_effect_date, '%Y-%m-%d %H:%i:%s') dt_effect_date, hd.bi_contract_no, ln.bi_poa_line_id, ln.bi_item_id, it.vc_item_desc, 
-                         ln.bi_supp_item_id, ln.dc_promise_qty, ln.dc_remain_qty, uom.vc_uom_desc, ln.i_uom_id, ln.dc_min_qty, ln.dc_price, ln.dc_amount, ln.vc_reference, ln.bi_quot_no,
+                         hd.ti_deli_sched_id, delisc.vc_deli_sched_desc, DATE_FORMAT(hd.dt_effect_date, '%Y-%m-%d %H:%i:%s') dt_effect_date, hd.vc_contract_no, ln.bi_poa_line_id, ln.bi_item_id, it.vc_item_desc, 
+                         ln.bi_supp_item_id, ln.i_promise_qty, ln.i_remain_qty, uom.vc_uom_desc, ln.i_uom_id, ln.i_min_qty, ln.i_price, ln.i_amount, ln.vc_reference, ln.vc_quot_no,
                          poa.dt_created_date, poa.dt_updated_datetime
                          from tb_poa poa
                          inner join tb_poa_header hd on poa.bi_poa_id = hd.bi_poa_id
@@ -595,25 +595,25 @@ namespace CPS_App.Models
             [Display(Name = "Supplier Item Id")]
             public string bi_supp_item_id { get; set; }
             [Display(Name = "Promise Qty")]
-            public decimal dc_promise_qty { get; set; }//add remain qty
+            public int i_promise_qty { get; set; }//add remain qty
             [Display(Name = "Remain Qty")]
-            public decimal dc_remain_qty { get; set; }
+            public int i_remain_qty { get; set; }
             [Display(Name = "not_shown")]
             public int i_uom_id { get; set; }
             [Display(Name = "Unit of Measurement")]
             public string vc_uom_desc { get; set; }
             [Display(Name = "Min Qty")]
-            public decimal dc_min_qty { get; set; }
+            public int i_min_qty { get; set; }
             [Display(Name = "Price")]
-            public decimal dc_price { get; set; }
+            public int i_price { get; set; }
             [Display(Name = "Amount")]
-            public decimal dc_amount { get; set; }
+            public int i_amount { get; set; }
             [Display(Name = "not_shown")]
             public string vc_deli_sched_desc { get; set; }
             [Display(Name = "Reference")]
             public string vc_reference { get; set; }
             [Display(Name = "not_shown")]
-            public string bi_quot_no { get; set; }
+            public string vc_quot_no { get; set; }
 
         }
         //Vip Mapping Table
@@ -684,7 +684,7 @@ namespace CPS_App.Models
         //    [Display(Name = "Effective Date")]
         //    public string dt_effect_date { get; set; }
         //    //[Display(Name = "Contract No")]
-        //    //public string bi_contract_no { get; set; }
+        //    //public string vc_contract_no { get; set; }
         //    [Display(Name = "not_shown")]
         //    public string dt_created_date { get; set; }
         //    [Display(Name = "not_shown")]
@@ -705,19 +705,19 @@ namespace CPS_App.Models
         //    [Display(Name = "Supplier Item Id")]
         //    public string bi_supp_item_id { get; set; }
         //    [Display(Name = "Remain Qty")]
-        //    public decimal dc_actual_qty { get; set; }
+        //    public int i_actual_qty { get; set; }
         //    [Display(Name = "not_shown")]
         //    public int i_uom_id { get; set; }
         //    [Display(Name = "Unit of Measurement")]
         //    public string vc_uom_desc { get; set; }
         //    [Display(Name = "Price")]
-        //    public decimal dc_price { get; set; }
+        //    public int i_price { get; set; }
         //    [Display(Name = "Amount")]
-        //    public decimal dc_act_amount { get; set; }
+        //    public int dc_act_amount { get; set; }
         //    [Display(Name = "Reference")]
         //    public string vc_reference { get; set; }
         //    [Display(Name = "not_shown")]
-        //    public string bi_quot_no { get; set; }
+        //    public string vc_quot_no { get; set; }
 
         //}
         public class POTableObj
@@ -764,7 +764,7 @@ namespace CPS_App.Models
             [Display(Name = "Delivery Date")]
             public string dt_expect_delidate { get; set; }
             [Display(Name = "Contract No")]
-            public string bi_contract_no { get; set; }
+            public string vc_contract_no { get; set; }
             [Display(Name = "Effective Date")]
             public string dt_effect_date { get; set; }
             [Display(Name = "not_shown")]
@@ -772,17 +772,17 @@ namespace CPS_App.Models
             [Display(Name = "not_shown")]
             public string dt_updated_datetime { get; set; }
             [Display(Name = "not_shown")]
-            public string bi_quot_no { get; set; }
+            public string vc_quot_no { get; set; }
             [Display(Name = "not_shown")]
             public List<PoItemList> itemLists { get; set; }
             public string GetSqlQuery()
             {
                 StringBuilder sb = new StringBuilder();
                 sb.Append($@"select * from (
-	                     select po.bi_po_id, po.bi_poa_id, po.ti_po_type_id, potype.vc_po_type_desc, po.bi_po_status_id, post.vc_po_status_desc, hd.bi_po_header_id,
+	                     select po.bi_po_id, po.bi_poa_id, po.vc_ref_id, po.ti_po_type_id, potype.vc_po_type_desc, po.bi_po_status_id, post.vc_po_status_desc, hd.bi_po_header_id,
                          hd.bi_supp_id, sup.vc_supp_desc, hd.i_cur_id, cur.vc_cur_desc , hd.ti_tc_id, tc.vc_tc_desc, hd.bi_deli_loc_id, loc.vc_location_desc,
                          hd.ti_deli_sched_id, delisc.vc_deli_sched_desc, hd.dt_expect_delidate, hd.dt_effect_date, ln.bi_po_line_id, ln.bi_item_id, it.vc_item_desc, 
-                         ln.bi_supp_item_id, ln.dc_actual_qty, uom.vc_uom_desc, ln.i_uom_id, ln.dc_price, ln.dc_actual_amount, ln.vc_reference, ln.bi_quot_no,
+                         ln.bi_supp_item_id, ln.i_actual_qty, uom.vc_uom_desc, ln.i_uom_id, ln.i_price, ln.i_actual_amount, ln.vc_reference, ln.vc_quot_no,
                          po.dt_created_date, po.dt_updated_datetime
                          from tb_po po
                          inner join tb_po_header hd on po.bi_po_id = hd.bi_po_id
@@ -813,21 +813,23 @@ namespace CPS_App.Models
             [Display(Name = "Supplier Item Id")]
             public string bi_supp_item_id { get; set; }
             [Display(Name = "Quantity")]
-            public decimal dc_actual_qty { get; set; }
+            public int i_actual_qty { get; set; }
             [Display(Name = "not_shown")]
             public int i_uom_id { get; set; }
             [Display(Name = "Unit of Measurement")]
             public string vc_uom_desc { get; set; }
             [Display(Name = "Min Qty")]
-            public decimal dc_min_qty { get; set; }
+            public int i_min_qty { get; set; }
             [Display(Name = "Price")]
-            public decimal dc_price { get; set; }
+            public int i_price { get; set; }
             [Display(Name = "Amount")]
-            public decimal dc_actual_amount { get; set; }
+            public int i_actual_amount { get; set; }
+            [Display(Name = "Contract No")]
+            public string vc_contract_no { get; set; }
             [Display(Name = "Reference")]
             public string vc_reference { get; set; }
             [Display(Name = "not_shown")]
-            public string bi_quot_no { get; set; }
+            public string vc_quot_no { get; set; }
 
         }
         public class PoCreateRefList

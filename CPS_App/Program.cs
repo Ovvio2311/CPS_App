@@ -35,6 +35,7 @@ namespace CPS_App
             //Application.Run(ServiceProvider.GetRequiredService<Request_Create>());
             //Application.Run(ServiceProvider.GetRequiredService<Register>());
         }
+        [STAThread]
         static async Task MainAsync(string[] args)
         {
             Log.Logger = new LoggerConfiguration()

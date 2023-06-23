@@ -66,7 +66,7 @@ namespace CPS_App.Services
 
 
                 obj.bi_po_id = GenUtil.ConvertObjtoType<int>(respoa.result);
-
+                obj.dt_expect_delidate = (DateTime.Now.AddDays(GenUtil.ConvertObjtoType<int>(obj.vc_deli_sched_desc.Trim().Split(' ').ElementAt(0)))).ToString("yyyy-MM-ddTHH:mm:ss");
                 //insert tb_poa_header
                 var tb_po_header = new insertObj()
                 {
@@ -76,13 +76,15 @@ namespace CPS_App.Services
                         { nameof(obj.bi_po_id), obj.bi_po_id.ToString() },
                         { "vc_order_revision", "0" },
                         { nameof(obj.bi_supp_id), obj.bi_supp_id.ToString() },
-                        //{ nameof(obj.bi_deli_loc_id), obj.bi_deli_loc_id.ToString() },
+                        { nameof(obj.bi_deli_loc_id), obj.bi_deli_loc_id.ToString() },
                         { nameof(obj.i_cur_id), obj.i_cur_id.ToString()},
                         { nameof(obj.ti_tc_id), obj.ti_tc_id.ToString() },
                         { nameof(obj.ti_deli_sched_id), obj.ti_deli_sched_id.ToString() },
                         { nameof(obj.dt_effect_date), obj.dt_effect_date },
-                        { nameof(obj.bi_contract_no), obj.bi_contract_no },
-                }
+                        {nameof(obj.dt_expect_delidate),obj.dt_expect_delidate}
+            },
+                        //{ nameof(obj.vc_contract_no), obj.vc_contract_no },
+                
                 };
                 var resheader = await _services.InsertAsync(tb_po_header);
                 if (resheader.resCode != 1 || resheader.result == null)
@@ -113,12 +115,13 @@ namespace CPS_App.Services
                         {nameof(row.bi_po_header_id), obj.bi_po_header_id.ToString() },
                         {nameof(row.bi_item_id), row.bi_item_id.ToString() },
                         {nameof(row.bi_supp_item_id),row.bi_supp_item_id.ToString() },
-                        {nameof(row.dc_actual_qty), row.dc_actual_qty.ToString() },
+                        {nameof(row.i_actual_qty), row.i_actual_qty.ToString() },
                         {nameof(row.i_uom_id),row.i_uom_id.ToString() },
-                        {nameof(row.dc_price), row.dc_price.ToString() },
-                        {nameof(row.dc_actual_amount), row.dc_actual_amount.ToString() },
+                        {nameof(row.i_price), row.i_price.ToString() },
+                        {nameof(row.i_actual_amount), row.i_actual_amount.ToString() },
                         {nameof(row.vc_reference), row.vc_reference.ToString() },
-                        {nameof(row.bi_quot_no),row.bi_quot_no.ToString() },
+                        {nameof(row.vc_quot_no),row.vc_quot_no.ToString() },
+                        {nameof(row.vc_contract_no),row.vc_contract_no }
                         }
                     };
                     var resitem = await _services.InsertAsync(po_line);

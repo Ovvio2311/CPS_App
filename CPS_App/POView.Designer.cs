@@ -30,7 +30,7 @@
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(POView));
-            kryptonDataGridViewpoa = new Krypton.Toolkit.KryptonDataGridView();
+            kryptonDataGridViewpo = new Krypton.Toolkit.KryptonDataGridView();
             kryptonPalettedatagridview = new Krypton.Toolkit.KryptonPalette(components);
             kryptonDataGridViewitem = new Krypton.Toolkit.KryptonDataGridView();
             btnedit = new Krypton.Toolkit.KryptonButton();
@@ -52,7 +52,7 @@
             lbltitle = new Krypton.Toolkit.KryptonLabel();
             lblnoresult = new Krypton.Toolkit.KryptonLabel();
             lblsubitemtitle = new Krypton.Toolkit.KryptonLabel();
-            ((System.ComponentModel.ISupportInitialize)kryptonDataGridViewpoa).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)kryptonDataGridViewpo).BeginInit();
             ((System.ComponentModel.ISupportInitialize)kryptonDataGridViewitem).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pnsearch1).BeginInit();
             pnsearch1.SuspendLayout();
@@ -64,15 +64,15 @@
             // 
             // kryptonDataGridViewpoa
             // 
-            kryptonDataGridViewpoa.AllowUserToAddRows = false;
-            kryptonDataGridViewpoa.Location = new Point(31, 123);
-            kryptonDataGridViewpoa.Name = "kryptonDataGridViewpoa";
-            kryptonDataGridViewpoa.Palette = kryptonPalettedatagridview;
-            kryptonDataGridViewpoa.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
-            kryptonDataGridViewpoa.RowTemplate.Height = 25;
-            kryptonDataGridViewpoa.Size = new Size(647, 221);
-            kryptonDataGridViewpoa.TabIndex = 0;
-            kryptonDataGridViewpoa.CellClick += kryptonDataGridViewpoa_CellClick;
+            kryptonDataGridViewpo.AllowUserToAddRows = false;
+            kryptonDataGridViewpo.Location = new Point(31, 123);
+            kryptonDataGridViewpo.Name = "kryptonDataGridViewpoa";
+            kryptonDataGridViewpo.Palette = kryptonPalettedatagridview;
+            kryptonDataGridViewpo.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            kryptonDataGridViewpo.RowTemplate.Height = 25;
+            kryptonDataGridViewpo.Size = new Size(647, 221);
+            kryptonDataGridViewpo.TabIndex = 0;
+            kryptonDataGridViewpo.CellClick += kryptonDataGridViewpoa_CellClick;
             // 
             // kryptonPalettedatagridview
             // 
@@ -277,11 +277,11 @@
             Controls.Add(btnadd);
             Controls.Add(btnedit);
             Controls.Add(kryptonDataGridViewitem);
-            Controls.Add(kryptonDataGridViewpoa);
+            Controls.Add(kryptonDataGridViewpo);
             Name = "POView";
             Text = "POView";
             Load += POAView_Load;
-            ((System.ComponentModel.ISupportInitialize)kryptonDataGridViewpoa).EndInit();
+            ((System.ComponentModel.ISupportInitialize)kryptonDataGridViewpo).EndInit();
             ((System.ComponentModel.ISupportInitialize)kryptonDataGridViewitem).EndInit();
             ((System.ComponentModel.ISupportInitialize)pnsearch1).EndInit();
             pnsearch1.ResumeLayout(false);
@@ -297,7 +297,7 @@
 
         #endregion
 
-        private Krypton.Toolkit.KryptonDataGridView kryptonDataGridViewpoa;
+        private Krypton.Toolkit.KryptonDataGridView kryptonDataGridViewpo;
         private Krypton.Toolkit.KryptonDataGridView kryptonDataGridViewitem;
         private Krypton.Toolkit.KryptonButton btnedit;
         private Krypton.Toolkit.KryptonPalette kryptonPalettelbl;

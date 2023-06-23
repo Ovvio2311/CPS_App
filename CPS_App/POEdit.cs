@@ -97,8 +97,8 @@ namespace CPS_App
             var delisc = cbxdelisc.SelectedItem.ToString();
             if (delisc != null) { delisc = delisc.Split(":").ElementAt(0); }
 
-            if (txtp.Text == readyToEdit.dc_price.ToString() &&
-                txtam.Text == readyToEdit.dc_actual_amount.ToString() && txtref.Text == readyToEdit.vc_reference.ToString() &&
+            if (txtp.Text == readyToEdit.i_price.ToString() &&
+                txtam.Text == readyToEdit.i_actual_amount.ToString() && txtref.Text == readyToEdit.vc_reference.ToString() &&
                 cbxst.SelectedItem.ToString().Contains(poView.bi_po_status_id.ToString()) &&
                 cbxdelisc.SelectedItem.ToString().Contains(poView.ti_deli_sched_id.ToString()))
             {
@@ -157,9 +157,9 @@ namespace CPS_App
                         table = "tb_po_line",
                         updater = new Dictionary<string, string>
                     {
-                        {nameof(readyToEdit.vc_reference), txtref.Text.ToString() },                        
-                        {nameof(readyToEdit.dc_price), txtp.Text.ToString() },
-                        {nameof(readyToEdit.dc_actual_amount), txtam.Text.ToString() },
+                        {nameof(readyToEdit.vc_reference), txtref.Text.ToString() },
+                        {nameof(readyToEdit.i_price), txtp.Text.ToString() },
+                        {nameof(readyToEdit.i_actual_amount), txtam.Text.ToString() },
                     },
                         selecter = new Dictionary<string, string>
                 {
@@ -187,7 +187,7 @@ namespace CPS_App
         private async Task RefreshPOEditTable()
         {
             POTableObj viewObj = new POTableObj();
-            
+
             poObj = await _genericTableViewWorker.GetGenericWorker<POTableObj, PoItemList>(viewObj.GetSqlQuery(), nameof(viewObj.bi_po_header_id));
 
             //poObj = await _pOAWorker.GetPoaWorker();
@@ -209,13 +209,13 @@ namespace CPS_App
                 //txtline.Text = readyToEdit.bi_po_line_id.ToString();
                 //txtit.Text = readyToEdit.vc_item_desc.ToString();
                 //txtsupid.Text = readyToEdit.bi_supp_item_id.ToString();
-                //txtpro.Text = readyToEdit.dc_promise_qty.ToString();
+                //txtpro.Text = readyToEdit.i_promise_qty.ToString();
                 //txtuom.Text = readyToEdit.vc_uom_desc.ToString();
-                //txtmin.Text = readyToEdit.dc_min_qty.ToString();
-                //txtp.Text = readyToEdit.dc_price.ToString();
-                //txtam.Text = readyToEdit.dc_amount.ToString();
+                //txtmin.Text = readyToEdit.i_min_qty.ToString();
+                //txtp.Text = readyToEdit.i_price.ToString();
+                //txtam.Text = readyToEdit.i_amount.ToString();
                 //txtref.Text = readyToEdit.vc_reference.ToString();
-                //txtqu.Text = readyToEdit.bi_quot_no.ToString();
+                //txtqu.Text = readyToEdit.vc_quot_no.ToString();
                 //txtpo.Text = poView.bi_po_id.ToString();
                 //txttype.Text = poView.vc_po_type_desc.ToString();
                 //cbxst.SelectedItem = cbxst.Items.ToDynamicList<string>()

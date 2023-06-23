@@ -347,9 +347,9 @@ namespace CPS_App.Services
 
             string sql = @$"select * from (
 	                     select p.bi_poa_id, p.ti_poa_type_id, pl.bi_item_id, p.vc_poa_status, ph.vc_order_revision, ph.bi_deli_loc_id, 
-                         ph.ti_tc_id, ph.bi_supp_id, ph.vc_currency, ph.dt_effect_date, ph.bi_contract_no, 
-                         pl.dc_promise_qty, pl.i_uom_id, pl.dc_min_qty, pl.dc_price, pl.dc_amount, pl.vc_reference,
-                         pl.bi_quot_no, p.dt_created_date, p.dt_updated_datetime
+                         ph.ti_tc_id, ph.bi_supp_id, ph.vc_currency, ph.dt_effect_date, ph.vc_contract_no, 
+                         pl.i_promise_qty, pl.i_uom_id, pl.i_min_qty, pl.i_price, pl.i_amount, pl.vc_reference,
+                         pl.vc_quot_no, p.dt_created_date, p.dt_updated_datetime
                          from tb_poa p
                          left join tb_poa_header ph on p.bi_poa_id = ph.bi_poa_id
                          left join tb_poa_line pl on ph.bi_poa_header_id = pl.bi_poa_header_id
@@ -583,8 +583,8 @@ namespace CPS_App.Services
             string sql = $@"select * from (
 	                     select poa.bi_poa_id, poa.ti_poa_type_id, poatype.vc_poa_type_desc, poa.bi_poa_status_id, poast.vc_poa_status_desc, hd.bi_poa_header_id,
                          hd.bi_supp_id, sup.vc_supp_desc, hd.i_cur_id, cur.vc_cur_desc , hd.ti_tc_id, tc.vc_tc_desc, 
-                         hd.ti_deli_sched_id, delisc.vc_deli_sched_desc, hd.dt_effect_date, hd.bi_contract_no, ln.bi_poa_line_id, ln.bi_item_id, it.vc_item_desc, 
-                         ln.bi_supp_item_id, ln.dc_promise_qty, uom.vc_uom_desc, ln.i_uom_id, ln.dc_remain_qty, ln.dc_min_qty, ln.dc_price, ln.dc_amount, ln.vc_reference, ln.bi_quot_no,
+                         hd.ti_deli_sched_id, delisc.vc_deli_sched_desc, hd.dt_effect_date, hd.vc_contract_no, ln.bi_poa_line_id, ln.bi_item_id, it.vc_item_desc, 
+                         ln.bi_supp_item_id, ln.i_promise_qty, uom.vc_uom_desc, ln.i_uom_id, ln.i_remain_qty, ln.i_min_qty, ln.i_price, ln.i_amount, ln.vc_reference, ln.vc_quot_no,
                          poa.dt_created_date, poa.dt_updated_datetime
                          from tb_poa poa
                          inner join tb_poa_header hd on poa.bi_poa_id = hd.bi_poa_id

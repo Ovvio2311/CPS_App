@@ -173,8 +173,8 @@ namespace CPS_App
             {
                 supid /*key*/= "required" /*fieldRule*/,
                 quantity = "int",
-                minqty = "decimal",
-                price = "decimal",
+                minqty = "int",
+                price = "int",
                 reference = "required",
                 quot = "required",
 
@@ -190,7 +190,7 @@ namespace CPS_App
             //if (uomtype != null) { uomtype = uomtype.ToString().Split(":").ElementAt(0); }
             PoaItemList req = new PoaItemList();
             await GenUtil.AddingInputToObject<PoaItemList>(pn2, req);
-            if (req.dc_promise_qty < req.dc_min_qty)
+            if (req.i_promise_qty < req.i_min_qty)
             {
                 MessageBox.Show("Min Qty must smaller than Promise Qty");
                 return;
@@ -239,14 +239,14 @@ namespace CPS_App
                         {nameof(row.bi_poa_header_id), obj.bi_poa_header_id.ToString() },
                         {nameof(row.bi_item_id), row.bi_item_id.ToString() },
                         {nameof(row.bi_supp_item_id),row.bi_supp_item_id.ToString() },
-                        {nameof(row.dc_promise_qty), row.dc_promise_qty.ToString() },
-                        {nameof(row.dc_remain_qty),row.dc_promise_qty.ToString() },
+                        {nameof(row.i_promise_qty), row.i_promise_qty.ToString() },
+                        {nameof(row.i_remain_qty),row.i_promise_qty.ToString() },
                         {nameof(row.i_uom_id),row.i_uom_id.ToString() },
-                        {nameof(row.dc_min_qty),row.dc_min_qty.ToString() },
-                        {nameof(row.dc_price), row.dc_price.ToString() },
-                        {nameof(row.dc_amount), row.dc_amount.ToString() },
+                        {nameof(row.i_min_qty),row.i_min_qty.ToString() },
+                        {nameof(row.i_price), row.i_price.ToString() },
+                        {nameof(row.i_amount), row.i_amount.ToString() },
                         {nameof(row.vc_reference), row.vc_reference.ToString() },
-                        {nameof(row.bi_quot_no),row.bi_quot_no.ToString() },
+                        {nameof(row.vc_quot_no),row.vc_quot_no.ToString() },
                         }
                     };
                     var resitem = await _dbServices.InsertAsync(poa_line);
@@ -308,7 +308,7 @@ namespace CPS_App
             {
                 if (txtpri.Text != string.Empty && txtproqty.Text != string.Empty)
                 {
-                    var dec = GenUtil.ConvertObjtoType<decimal>(txtpri.Text) * GenUtil.ConvertObjtoType<decimal>(txtproqty.Text);
+                    var dec = GenUtil.ConvertObjtoType<int>(txtpri.Text) * GenUtil.ConvertObjtoType<int>(txtproqty.Text);
                     txtam.Text = dec.ToString();
                 }
                 if (cbxitid.SelectedItem != null)
@@ -384,7 +384,7 @@ namespace CPS_App
                         { nameof(obj.ti_tc_id), obj.ti_tc_id.ToString() },
                         { nameof(obj.ti_deli_sched_id), obj.ti_deli_sched_id.ToString() },
                         { nameof(obj.dt_effect_date), obj.dt_effect_date.ToString() },
-                        { nameof(obj.bi_contract_no), obj.bi_contract_no },
+                        { nameof(obj.vc_contract_no), obj.vc_contract_no },
                 }
             };
             var resheader = await _dbServices.InsertAsync(tb_boa_header);

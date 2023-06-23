@@ -42,18 +42,20 @@ namespace CPS_App
             {
                 //throw new Exception("user claim is null");
             }
-
-
+            //await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "request", "read" } })?
+            if (!await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "request", "read" } }))
+            { MessageBox.Show("No Access Permission");
+                this.Close();
+            }                                       
             if (await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "request", "update" } }))
-            {
-                btnAdd.Hide();
-                //btnEdit.Hide();
-            }
-            else if (await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "request", "read" } }))
-            {
-                btnAdd.Hide();
+                btnEdit.Show();
+            else 
                 btnEdit.Hide();
-            }
+            if (await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "request", "write" } }))
+                btnAdd.Show();
+            else
+                btnAdd.Hide();
+            
             lblitem.Hide();
             //var userRole = userIden.Claims.FirstOrDefault(x => x.Type == "role").Value.ToString();
             string userLoc = null;
@@ -73,6 +75,13 @@ namespace CPS_App
             var kvpLoc = new Dictionary<string, string>()
             {
                 {nameof(viewObj.bi_location_id),loc }
+            };
+            searchObj searchObj = new searchObj()
+            {
+                searchWords = new Dictionary<string, List<string>>
+                {
+                    { nameof(viewObj.i_map_stat_id), new List<string>(){"1","3"} }
+                }
             };
             defPage = await _genericTableViewWorker.GetGenericWorker<RequestMappingReqObj, ItemRequest>(viewObj.GetSqlQuery(), nameof(viewObj.bi_req_id), kvpLoc, obj);
             if (defPage == null)

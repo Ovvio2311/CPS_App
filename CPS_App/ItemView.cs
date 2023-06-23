@@ -43,16 +43,20 @@ namespace CPS_App
                 //throw new Exception("user claim is null");
 
             }
-            if (await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "item", "update" } }))
+            if (!await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "item", "read" } }))
             {
+                MessageBox.Show("No Access Permission");
+                this.Close();
+            }
+            if (await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "item", "update" } }))
+                btnupdate.Show();
+            else
+                btnupdate.Hide();
+            if (await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "item", "write" } }))
+                btncreate.Show();
+            else
                 btncreate.Hide();
 
-            }
-            else if (await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "item", "read" } }))
-            {
-                btncreate.Hide();
-                btnupdate.Hide();
-            }
             lblnoresult.Hide();
             var userLoc = userIden.Claims.FirstOrDefault(x => x.Type == "location_id").Value.ToString();
 

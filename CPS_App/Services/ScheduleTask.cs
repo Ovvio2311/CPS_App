@@ -122,7 +122,7 @@ namespace CPS_App.Services
             }
 
         }
-        public async Task<List<POTableObj>> iterateAdequatePoaProcess(List<RequestMappingReqObj> reqObj, List<POATableObj> poaObj)
+        public async Task<List<POTableObj>> iteratePoaProcess(List<RequestMappingReqObj> reqObj, List<POATableObj> poaObj)
         {
             List<POTableObj> PoCreateList = new List<POTableObj>();
             List<updateObj> update = new List<updateObj>();
@@ -140,7 +140,7 @@ namespace CPS_App.Services
                                 var day = i.vc_deli_sched_desc.Split(' ');
                                 DateTime arrival = DateTime.Now.AddDays(GenUtil.ConvertObjtoType<int>(day.ElementAt(0)));
                                 //poa > request
-                                if (i.dc_remain_qty > item.i_remain_req_qty && item.i_remain_req_qty > i.dc_min_qty &&
+                                if (i.i_remain_qty > item.i_remain_req_qty && item.i_remain_req_qty > i.i_min_qty &&
                                 arrival > item.dt_exp_deli_date)
                                 {
                                     try
@@ -155,7 +155,7 @@ namespace CPS_App.Services
                                             },
                                             updater = new Dictionary<string, string>
                                             {
-                                                { nameof(item.i_remain_req_qty), i.dc_remain_qty >= item.i_remain_req_qty ? "0": GenUtil.ConvertObjtoType<int>(item.i_remain_req_qty - i.dc_remain_qty).ToString() },
+                                                { nameof(item.i_remain_req_qty), i.i_remain_qty >= item.i_remain_req_qty ? "0": GenUtil.ConvertObjtoType<int>(item.i_remain_req_qty - i.i_remain_qty).ToString() },
                                                 { nameof(item.i_hd_map_stat_id), "2" },
                                                 { nameof(item.bi_po_status_id), "3" },
                                             }
@@ -195,8 +195,8 @@ namespace CPS_App.Services
                                                 }
                                             });
                                         });
-                                        tempPoItem.dc_actual_qty = i.dc_remain_qty >= item.i_remain_req_qty ? item.i_remain_req_qty: i.dc_remain_qty;
-                                        tempPoItem.dc_actual_amount = tempPoItem.dc_actual_qty * tempPoItem.dc_price;
+                                        tempPoItem.i_actual_qty = i.i_remain_qty >= item.i_remain_req_qty ? item.i_remain_req_qty: i.i_remain_qty;
+                                        tempPoItem.i_actual_amount = tempPoItem.i_actual_qty * tempPoItem.i_price;
                                         tempPoCreate.itemLists.Add(tempPoItem);
                                         tempPoCreate.vc_ref_id = $"Poa Id: {row.bi_poa_id}" ;
                                         tempPoCreate.ti_po_type_id = 2;
@@ -213,13 +213,13 @@ namespace CPS_App.Services
                                         }
 
                                         //adjust available items
-                                        i.dc_remain_qty = i.dc_remain_qty >= item.i_remain_req_qty ? i.dc_remain_qty - item.i_remain_req_qty : 0;
+                                        i.i_remain_qty = i.i_remain_qty >= item.i_remain_req_qty ? i.i_remain_qty - item.i_remain_req_qty : 0;
                                         updateObj tempPoaUpdate = new updateObj()
                                         {
                                             table = "tb_poa_line",
                                             updater = new Dictionary<string, string>
                                             {
-                                                {nameof(i.dc_remain_qty), i.dc_remain_qty.ToString()},
+                                                {nameof(i.i_remain_qty), i.i_remain_qty.ToString()},
                                             },
                                             selecter = new Dictionary<string, string>
                                                 {
@@ -240,7 +240,7 @@ namespace CPS_App.Services
 
                                 }
                                 //request > poa
-                                //else if (i.dc_remain_qty < item.i_remain_req_qty && item.i_remain_req_qty > i.dc_min_qty)
+                                //else if (i.i_remain_qty < item.i_remain_req_qty && item.i_remain_req_qty > i.i_min_qty)
                                 //{
                                 //    couu++;
                                 //}
@@ -261,7 +261,7 @@ namespace CPS_App.Services
                 //get poa obj            
                 List<POATableObj> poaObj = await PoaMapObjectGetter();
                 //iterate enough poa 
-                return await iterateAdequatePoaProcess(reqObj, poaObj);
+                return await iteratePoaProcess(reqObj, poaObj);
             }
             catch (Exception ex)
             {

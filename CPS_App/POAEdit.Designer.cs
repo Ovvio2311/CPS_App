@@ -137,7 +137,7 @@
             lblmin.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
             lblmin.Size = new Size(65, 21);
             lblmin.TabIndex = 6;
-            lblmin.Tag = "dc_min_qty";
+            lblmin.Tag = "i_min_qty";
             lblmin.Values.Text = "Min Qty";
             // 
             // lblp
@@ -148,7 +148,7 @@
             lblp.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
             lblp.Size = new Size(47, 21);
             lblp.TabIndex = 7;
-            lblp.Tag = "dc_price";
+            lblp.Tag = "i_price";
             lblp.Values.Text = "Price";
             // 
             // lblam
@@ -159,7 +159,7 @@
             lblam.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
             lblam.Size = new Size(65, 21);
             lblam.TabIndex = 8;
-            lblam.Tag = "dc_amount";
+            lblam.Tag = "i_amount";
             lblam.Values.Text = "Amount";
             // 
             // lblref
@@ -233,7 +233,7 @@
             txtpro.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
             txtpro.Size = new Size(160, 23);
             txtpro.TabIndex = 16;
-            txtpro.Tag = "dc_promise_qty";
+            txtpro.Tag = "i_promise_qty";
             // 
             // txtuom
             // 
@@ -253,7 +253,7 @@
             txtmin.Name = "txtmin";
             txtmin.Size = new Size(160, 23);
             txtmin.TabIndex = 18;
-            txtmin.Tag = "dc_min_qty";
+            txtmin.Tag = "i_min_qty";
             // 
             // txtp
             // 
@@ -261,7 +261,7 @@
             txtp.Name = "txtp";
             txtp.Size = new Size(160, 23);
             txtp.TabIndex = 19;
-            txtp.Tag = "dc_price";
+            txtp.Tag = "i_price";
             // 
             // txtam
             // 
@@ -269,7 +269,7 @@
             txtam.Name = "txtam";
             txtam.Size = new Size(160, 23);
             txtam.TabIndex = 20;
-            txtam.Tag = "dc_amount";
+            txtam.Tag = "i_amount";
             // 
             // txtref
             // 
@@ -289,7 +289,7 @@
             txtqu.ReadOnly = true;
             txtqu.Size = new Size(160, 23);
             txtqu.TabIndex = 22;
-            txtqu.Tag = "bi_quot_no";
+            txtqu.Tag = "vc_quot_no";
             // 
             // kryptonDataGridViewit
             // 

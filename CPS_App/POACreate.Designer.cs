@@ -469,7 +469,7 @@ namespace CPS_App
             this.txtquot.Name = "txtquot";
             this.txtquot.Size = new System.Drawing.Size(160, 23);
             this.txtquot.TabIndex = 20;
-            this.txtquot.Tag = "bi_quot_no";
+            this.txtquot.Tag = "vc_quot_no";
             // 
             // txtref
             // 
@@ -486,7 +486,7 @@ namespace CPS_App
             this.txtam.Name = "txtam";
             this.txtam.Size = new System.Drawing.Size(160, 23);
             this.txtam.TabIndex = 15;
-            this.txtam.Tag = "dc_amount";
+            this.txtam.Tag = "i_amount";
             // 
             // lblquot
             // 
@@ -496,7 +496,7 @@ namespace CPS_App
             this.lblquot.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
             this.lblquot.Size = new System.Drawing.Size(107, 21);
             this.lblquot.TabIndex = 47;
-            this.lblquot.Tag = "bi_quot_no";
+            this.lblquot.Tag = "vc_quot_no";
             this.lblquot.Values.Text = "Quotation No.";
             // 
             // lblref
@@ -518,7 +518,7 @@ namespace CPS_App
             this.lblam.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
             this.lblam.Size = new System.Drawing.Size(65, 21);
             this.lblam.TabIndex = 45;
-            this.lblam.Tag = "dc_amount";
+            this.lblam.Tag = "i_amount";
             this.lblam.Values.Text = "Amount";
             // 
             // txtpri
@@ -527,7 +527,7 @@ namespace CPS_App
             this.txtpri.Name = "txtpri";
             this.txtpri.Size = new System.Drawing.Size(160, 23);
             this.txtpri.TabIndex = 18;
-            this.txtpri.Tag = "dc_price";
+            this.txtpri.Tag = "i_price";
             // 
             // txtminqty
             // 
@@ -535,7 +535,7 @@ namespace CPS_App
             this.txtminqty.Name = "txtminqty";
             this.txtminqty.Size = new System.Drawing.Size(160, 23);
             this.txtminqty.TabIndex = 17;
-            this.txtminqty.Tag = "dc_min_qty";
+            this.txtminqty.Tag = "i_min_qty";
             // 
             // txtproqty
             // 
@@ -543,7 +543,7 @@ namespace CPS_App
             this.txtproqty.Name = "txtproqty";
             this.txtproqty.Size = new System.Drawing.Size(160, 23);
             this.txtproqty.TabIndex = 14;
-            this.txtproqty.Tag = "dc_promise_qty";
+            this.txtproqty.Tag = "i_promise_qty";
             // 
             // txtsupitid
             // 
@@ -573,7 +573,7 @@ namespace CPS_App
             this.lblpri.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
             this.lblpri.Size = new System.Drawing.Size(47, 21);
             this.lblpri.TabIndex = 38;
-            this.lblpri.Tag = "dc_price";
+            this.lblpri.Tag = "i_price";
             this.lblpri.Values.Text = "Price";
             // 
             // lblminqty
@@ -584,7 +584,7 @@ namespace CPS_App
             this.lblminqty.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
             this.lblminqty.Size = new System.Drawing.Size(65, 21);
             this.lblminqty.TabIndex = 37;
-            this.lblminqty.Tag = "dc_min_qty";
+            this.lblminqty.Tag = "i_min_qty";
             this.lblminqty.Values.Text = "Min Qty";
             // 
             // lbluom
@@ -606,7 +606,7 @@ namespace CPS_App
             this.lblproqty.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
             this.lblproqty.Size = new System.Drawing.Size(96, 21);
             this.lblproqty.TabIndex = 35;
-            this.lblproqty.Tag = "dc_promise_qty";
+            this.lblproqty.Tag = "i_promise_qty";
             this.lblproqty.Values.Text = "Promise Qty";
             // 
             // lblsupid

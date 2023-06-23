@@ -50,15 +50,20 @@ namespace CPS_App
             {
                 //throw new Exception("user claim is null");                
             }
+            if (!await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "poa", "read" } }))
+            {
+                MessageBox.Show("No Access Permission");
+                btncancel_Click(null,EventArgs.Empty);
+            }
             if (await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "poa", "update" } }))
-            {
-                btnadd.Hide();
+                btnedit.Show();
+            else
                 btnedit.Hide();
-            }
-            else if (await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "poa", "read" } }))
-            {
+            if (await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "poa", "write" } }))
+                btnadd.Show();
+            else
                 btnadd.Hide();
-            }
+
             var userLoc = userIden.Claims.FirstOrDefault(x => x.Type == "location_id").Value.ToString();
             await LoadViewTable(userLoc);
             //kryptonDataGridViewpoa.Columns.ToDynamicList().ForEach(col =>
@@ -93,7 +98,7 @@ namespace CPS_App
             {
                 {nameof(viewObj.vc_deli_sched_desc),loc }
             };
-            poaObj = await _genericTableViewWorker.GetGenericWorker<POATableObj, PoaItemList>(viewObj.sql, nameof(viewObj.bi_poa_header_id), null, obj);
+            poaObj = await _genericTableViewWorker.GetGenericWorker<POATableObj, PoaItemList>(viewObj.GetSqlQuery(), nameof(viewObj.bi_poa_header_id), null, obj);
             //poaObj = await _pOAWorker.GetPoaWorker(loc, obj);
 
             if (poaObj == null)

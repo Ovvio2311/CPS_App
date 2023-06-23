@@ -193,7 +193,7 @@ namespace CPS_App
             {
                 supid /*key*/= "required" /*fieldRule*/,
                 quantity = "int",
-                price = "decimal",
+                price = "int",
                 reference = "required",
                 quot = "required",
 
@@ -205,10 +205,10 @@ namespace CPS_App
             }
             var itemidtype = cbxitid.SelectedItem;
             if (itemidtype != null) { itemidtype = itemidtype.ToString().Split(":").ElementAt(0); }
-     
+
             PoItemList req = new PoItemList();
             await GenUtil.AddingInputToObject<PoItemList>(pn2, req);
-            
+            req.vc_contract_no = obj.vc_contract_no;
             if (itemList.Count > 0 && itemList.Select(x => x.bi_item_id == req.bi_item_id).FirstOrDefault())
             {
                 MessageBox.Show("Item duplicate entry");
@@ -216,7 +216,7 @@ namespace CPS_App
             }
             itemList.Add(req);
             MessageBox.Show("Item added");
-            
+
             if (await ValidateCheck() && itemList.Count() > 0)
             {
                 enableValidation();
@@ -245,11 +245,12 @@ namespace CPS_App
                 if (response == DialogResult.Yes ? true : false)
                 {
                     resObj res = await _createPoServices.CreatePoASync(obj);
-                    if (res.resCode != 1 && res.result != true && res.err_msg ==null)
+                    if (res.resCode != 1 && res.result != true && res.err_msg == null)
                     {
                         MessageBox.Show("Cannot insert Po");
                         return;
-                    }else if (res.resCode != 1 && res.result != true && res.err_msg != null)
+                    }
+                    else if (res.resCode != 1 && res.result != true && res.err_msg != null)
                     {
                         MessageBox.Show(res.err_msg);
                         return;
@@ -272,12 +273,12 @@ namespace CPS_App
                     //    {nameof(row.bi_po_header_id), obj.bi_po_header_id.ToString() },
                     //    {nameof(row.bi_item_id), row.bi_item_id.ToString() },
                     //    {nameof(row.bi_supp_item_id),row.bi_supp_item_id.ToString() },
-                    //    {nameof(row.dc_actual_qty), row.dc_actual_qty.ToString() },
+                    //    {nameof(row.i_actual_qty), row.i_actual_qty.ToString() },
                     //    {nameof(row.i_uom_id),row.i_uom_id.ToString() },
-                    //    {nameof(row.dc_price), row.dc_price.ToString() },
-                    //    {nameof(row.dc_actual_amount), row.dc_actual_amount.ToString() },
+                    //    {nameof(row.i_price), row.i_price.ToString() },
+                    //    {nameof(row.i_actual_amount), row.i_actual_amount.ToString() },
                     //    {nameof(row.vc_reference), row.vc_reference.ToString() },
-                    //    {nameof(row.bi_quot_no),row.bi_quot_no.ToString() },
+                    //    {nameof(row.vc_quot_no),row.vc_quot_no.ToString() },
                     //    }
                     //    };
                     //    var resitem = await _dbServices.InsertAsync(po_line);
@@ -303,7 +304,7 @@ namespace CPS_App
             }
 
         }
-        
+
         private async void btnclear_Click(object sender, EventArgs e)
         {
             await ReturnToAddNewPage();
@@ -356,7 +357,7 @@ namespace CPS_App
             {
                 if (txtpri.Text != string.Empty && txtactqty.Text != string.Empty)
                 {
-                    var dec = GenUtil.ConvertObjtoType<decimal>(txtpri.Text) * GenUtil.ConvertObjtoType<decimal>(txtactqty.Text);
+                    var dec = GenUtil.ConvertObjtoType<int>(txtpri.Text) * GenUtil.ConvertObjtoType<int>(txtactqty.Text);
                     txtam.Text = dec.ToString();
                 }
                 if (cbxitid.SelectedItem != null)
@@ -396,7 +397,7 @@ namespace CPS_App
             return availablePn1 == 1 && availablePn2 == 6 && selectedComboBoxpn1 <= 8 && selectedComboBoxpn1 >= 7 && selectedComboBoxpn2 == 2;
 
         }
-      
+
         private async Task ReturnToAddNewPage()
         {
             await GenUtil.ResumeBlankPage<POTableObj>(pn1);

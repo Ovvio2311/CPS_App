@@ -52,15 +52,19 @@ namespace CPS_App
             {
                 //throw new Exception("user claim is null");                
             }
-            if (await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "poa", "update" } }))
+            if (!await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "po", "read" } }))
             {
-                btnadd.Hide();
+                MessageBox.Show("No Access Permission");
+                this.Close();
+            }
+            if (await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "po", "update" } }))
+                btnedit.Show();
+            else
                 btnedit.Hide();
-            }
-            else if (await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "poa", "read" } }))
-            {
+            if (await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "po", "write" } }))
+                btnadd.Show();
+            else
                 btnadd.Hide();
-            }
             var userLoc = userIden.Claims.FirstOrDefault(x => x.Type == "location_id").Value.ToString();
             await LoadViewTable(userLoc);
            
@@ -69,7 +73,7 @@ namespace CPS_App
         {
             
             lblnoresult.Hide();
-            kryptonDataGridViewpoa.DataSource = null;
+            kryptonDataGridViewpo.DataSource = null;
             //poObj = await _pOAWorker.GetPoaWorker(loc, obj);
             POTableObj viewObj = new POTableObj();
             var kvpLoc = new Dictionary<string, string>()
@@ -80,7 +84,7 @@ namespace CPS_App
 
             if (poObj == null)
             {
-                kryptonDataGridViewpoa.Columns.Clear();
+                kryptonDataGridViewpo.Columns.Clear();
                 lblnoresult.Show();
                 //btnadd.Hide();
                 btnedit.Hide();
@@ -90,26 +94,27 @@ namespace CPS_App
             BindingList<POTableObj> source = observableItems.ToBindingList();
 
             if (poObj != null)
-                kryptonDataGridViewpoa.DataSource = source;
+                kryptonDataGridViewpo.DataSource = source;
 
-            GenUtil.dataGridAttrName<POTableObj>(kryptonDataGridViewpoa, new List<string>() { "not_shown" });
+            GenUtil.dataGridAttrName<POTableObj>(kryptonDataGridViewpo, new List<string>() { "not_shown" });
         }
         private void kryptonDataGridViewpoa_CellClick(object sender, DataGridViewCellEventArgs e)
         {
 
             if (e.ColumnIndex < 0 || e.RowIndex < 0) return; // header clicked
 
-            if (e.RowIndex == kryptonDataGridViewpoa.CurrentRow.Index)
+            if (e.RowIndex == kryptonDataGridViewpo.CurrentRow.Index)
             {
                 lblsubitemtitle.Show();
-                int selectdId = GenUtil.ConvertObjtoType<int>(kryptonDataGridViewpoa.CurrentRow.Cells["bi_po_header_id"].Value);
+                int selectdId = GenUtil.ConvertObjtoType<int>(kryptonDataGridViewpo.CurrentRow.Cells["bi_po_header_id"].Value);
 
                 kryptonDataGridViewitem.DataSource = null;
-                if (GenUtil.ConvertObjtoType<int>(kryptonDataGridViewpoa.CurrentRow.Cells["ti_po_type_id"].Value) == 2)
-                {
-                    lblsubitemtitle.Hide();
-                    return;
-                }
+                //prevent po do not hv items
+                //if (GenUtil.ConvertObjtoType<int>(kryptonDataGridViewpoa.CurrentRow.Cells["ti_po_type_id"].Value) == 2)
+                //{
+                //    lblsubitemtitle.Hide();
+                //    return;
+                //}
                 List<PoItemList> itemViewSelect = poObj.Where(x => x.bi_po_header_id == selectdId).FirstOrDefault().itemLists;
                 var observableItems = new ObservableCollection<PoItemList>(itemViewSelect);
                 BindingList<PoItemList> source = observableItems.ToBindingList();
@@ -120,13 +125,13 @@ namespace CPS_App
         //edit PO and PO header
         private async void btnedit_Click(object sender, EventArgs e)
         {
-            var currentIndex = GenUtil.ConvertObjtoType<int>(kryptonDataGridViewpoa.CurrentRow.Cells["bi_po_header_id"].Value);
-            var currentpoaType = GenUtil.ConvertObjtoType<int>(kryptonDataGridViewpoa.CurrentRow.Cells["ti_po_type_id"].Value);
-            if (currentpoaType == 2)
-            {
-                MessageBox.Show("Contract Agreement has no items to update");
-                return;
-            }
+            var currentIndex = GenUtil.ConvertObjtoType<int>(kryptonDataGridViewpo.CurrentRow.Cells["bi_po_header_id"].Value);
+            var currentpoaType = GenUtil.ConvertObjtoType<int>(kryptonDataGridViewpo.CurrentRow.Cells["ti_po_type_id"].Value);
+            //if (currentpoaType == 2)
+            //{
+            //    MessageBox.Show("Contract Agreement has no items to update");
+            //    return;
+            //}
             var readyToEdit = poObj.Where(x => x.bi_po_header_id == currentIndex).ToList();
 
             POEdit poaEdit = new POEdit(currentIndex, readyToEdit, _dbServices, _genericTableViewWorker);
@@ -161,7 +166,7 @@ namespace CPS_App
             }
             lblnoresult.Hide();
             lblsubitemtitle.Hide();
-            kryptonDataGridViewpoa.DataSource = null;
+            kryptonDataGridViewpo.DataSource = null;
             string userLoc = userIden.Claims.FirstOrDefault(x => x.Type == "location_id").Value.ToString();
 
             if (txtsearch1.Text == string.Empty && txtsearch2.Text == string.Empty)

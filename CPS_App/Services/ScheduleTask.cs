@@ -39,25 +39,26 @@ namespace CPS_App.Services
         }
         public async Task RequestMappingScheduler()
         {
-            JsonResponse jsonObj = new JsonResponse()
-            {
-                jsonRes = new Dictionary<string, string>
-                {
-                    { "Po Id", "bi_po_id" },
-                    { "Po Type", "vc_po_type_desc" },
-                    { "Po Status", "vc_po_status_desc" },
-                    //{ "Supplier", "vc_supp_desc" },
-                    //{ "Contract No", "vc_contract_no" },
-                    {"Delivery Location","vc_location_desc" },
-                    { "Expected Delievery Date", "dt_expect_delidate" },
-                    //{ "Staff Name","vc_staff_name" }
-                    {"Supplier Item Id", "bi_supp_item_id" },
-                    //{"Quot No", "vc_quot_no" }
-                },
-            };
-               await _searchFunc.insertJsonString("a06fae55-8c3d-46d8-8778-a19b149c7fe7", "po", jsonObj);
+            //JsonResponse jsonObj = new JsonResponse()
+            //{
+            //    jsonRes = new Dictionary<string, string>
+            //    {
+            //        { "Po Id", "bi_po_id" },
+            //        { "Po Type", "vc_po_type_desc" },
+            //        { "Po Status", "vc_po_status_desc" },
+            //        //{ "Supplier", "vc_supp_desc" },
+            //        //{ "Contract No", "vc_contract_no" },
+            //        {"Delivery Location","vc_location_desc" },
+            //        { "Expected Delievery Date", "dt_expect_delidate" },
+            //        //{ "Staff Name","vc_staff_name" }
+            //        {"Supplier Item Id", "bi_supp_item_id" },
+            //        //{"Quot No", "vc_quot_no" }
+            //    },
+            //};
+            //   await _searchFunc.insertJsonString("a06fae55-8c3d-46d8-8778-a19b149c7fe7", "po", jsonObj);
             try
             {
+                await MappingProcessWarehouse();
                 //Mapping process P1
                 List<POTableObj> newPo1 = await MappingScheduler_P1();
                 newPo1.ForEach(async x => await _createPoServices.CreatePoASync(x));
@@ -88,6 +89,8 @@ namespace CPS_App.Services
                     });
                     _updateObjects.Clear();
                 }
+                //Mapping Process Warehouse
+                await MappingProcessWarehouse();
             }
             catch (Exception ex)
             {
@@ -135,6 +138,27 @@ namespace CPS_App.Services
             {
                 POATableObj viewObj = new POATableObj();
                 return await _genericTableViewWorker.GetGenericWorker<POATableObj, PoaItemList>(viewObj.GetSqlQuery(), nameof(viewObj.bi_poa_header_id), null, seObj);
+                //return await _pOAWorker.GetPoaWorker(null, seObj);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+        }
+        public async Task<List<StockLevelViewObj>> StockMapObjectGetter()
+        {
+            searchObj seObj = new searchObj()
+            {
+                searchWords = new Dictionary<string, List<string>>
+                {
+                    {"bi_location_id",new List<string>() { "71" } },
+                }
+            };
+            try
+            {
+                StockLevelViewObj viewObj = new StockLevelViewObj();
+                return await _genericTableViewWorker.GetGenericWorker<StockLevelViewObj, StockLevelSubItem>(viewObj.sql, nameof(viewObj.bi_item_id), null, seObj);
                 //return await _pOAWorker.GetPoaWorker(null, seObj);
             }
             catch (Exception ex)
@@ -298,6 +322,14 @@ namespace CPS_App.Services
 
             //get poa obj            
             List<POATableObj> poaObj = await PoaMapObjectGetter();
+        }
+        public async Task MappingProcessWarehouse()
+        {
+            //get request obj
+            List<RequestMappingReqObj> reqObj = await RequestMapObjectGetter();
+
+            //get stock in warehouse
+            List<StockLevelViewObj> stockObj = await StockMapObjectGetter();
         }
     }
 }

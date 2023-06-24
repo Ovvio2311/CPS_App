@@ -762,7 +762,7 @@ namespace CPS_App.Services
                 DynamicParameters para = new DynamicParameters();
                 para.Add($"@bi_item_id", obj.selecter.Values.FirstOrDefault());
                 var result = await _db.QueryAsync<tb_item_vid_mapping>(selectsql, para);
-                if (result.Count() > 0)
+                if (result.Count() >0)
                 {
                     res.result = result;
                     res.resCode = 1;

@@ -419,10 +419,11 @@ namespace CPS_App.Models
         {
             public StockLevelViewObj() {
                 itemLists = new List<StockLevelSubItem>();
-                sql = @"SELECT * FROM
+                sql = @"set sql_mode = 'STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+                        SELECT * FROM
                          (SELECT 
                              it.bi_item_id,
-                                 vid.bi_item_vid,
+                                 v.bi_item_vid,
                                  vc_item_desc,
                                  it.bi_category_id,
                                  cat.vc_category_desc,
@@ -436,10 +437,13 @@ namespace CPS_App.Models
                          FROM
                              tb_item it
                          INNER JOIN tb_item_category cat ON it.bi_category_id = cat.bi_category_id
-                         INNER JOIN tb_item_vid_mapping vid ON it.bi_item_id = vid.bi_item_id
+                         -- INNER JOIN tb_item_vid_mapping vid ON it.bi_item_id = vid.bi_item_id
                          LEFT JOIN tb_item_unit uni ON it.bi_item_id = uni.bi_item_id
                          LEFT JOIN tb_location loc ON uni.bi_location_id = loc.bi_location_id
                          LEFT JOIN lut_uom_type uom ON it.i_uom_id = uom.i_uom_id
+                         inner join (
+                         select * from tb_item_vid_mapping group by bi_item_id, bi_item_vid
+                         )v on it.bi_item_id = v.bi_item_id
                          )a ";
             }
             [Display(Name = "not_shown")]

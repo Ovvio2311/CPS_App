@@ -64,7 +64,7 @@ namespace CPS_App
 
             var ServiceProvider = host.Services;
             var scheduler = ServiceProvider.GetRequiredService<ScheduleTask>();
-            //await scheduler.RequestMappingScheduler();
+            await scheduler.RequestMappingScheduler();
             Application.Run(ServiceProvider.GetRequiredService<Login>());
         }
 

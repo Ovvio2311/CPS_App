@@ -266,88 +266,165 @@ namespace CPS_App
 
 
         }
-        private async void btnidinsert_Click(object sender, EventArgs e)
+        private async Task InsertNewVid(selectObj selObj)
         {
-            if (cbxvidmapitemid.SelectedItem == null || cbxvidmaploc.SelectedItem == null || cbxvidmapvid.SelectedItem == null)
+            try
             {
-                MessageBox.Show("Please select Item Id and Location");
-                return;
-            }
-            var selObj = new selectObj();
-            foreach (var prop in typeof(tb_item_vid_mapping).GetProperties())
-            {
-                tabpagevid.Controls.OfType<KryptonComboBox>().ToList().ForEach(x =>
+                selectObj selObj2 = new selectObj();
+                if (selObj != null)
                 {
-                    if (x.Tag.ToString() == prop.Name)
-                    {
-                        var id = x.SelectedItem.ToString().Split(":").ElementAt(0);
-                        selObj.selecter.Add(prop.Name, id);
-                    }
-                });
-            }
-            selObj.table = nameof(tb_item_vid_mapping);
-            if (selObj.selecter["bi_item_vid"] == "Add new Vid")
-            {
-                selObj.selecter.Remove("bi_item_vid");
-            }
+                    selObj2 = selObj.Clone();
+                    selObj2.selecter.Remove("bi_item_vid");
+                    selObj2.selecter.Remove("bi_prefer_loc_id");
+                }
 
-            DbResObj selduplicate = await _dbServices.SelectWhereAsync<tb_item_vid_mapping>(selObj);
-            if (selduplicate.resCode == 0 && selduplicate.result == null && selduplicate.err_msg == null)
-            {
-                selectObj selObj2 = selObj.Clone();
-
-
-
-                selObj2.selecter.Remove("bi_item_vid");
-                selObj2.selecter.Remove("bi_prefer_loc_id");
                 DbResObj res2 = await _dbServices.CheckVidmapDupItemId(selObj2);
-                if (res2.resCode == 1 && res2.result.Count >= 1)
+                if (res2.resCode == 0 && res2.result == null)
                 {
-                    tb_item_vid_mapping temp1 = res2.result[0];
-                    if (res2.result.Count == 1 && temp1.bi_item_vid.ToString() != cbxvidmapvid.SelectedItem.ToString())
+                    selObj!.selecter.Remove("bi_item_vid");
+                    insertObj insertvid = new insertObj()
                     {
-                        MessageBox.Show("Item id cannot assgined to another Vid");
+                        table = nameof(tb_item_vid_mapping),
+                        inserter = selObj!.selecter
+                    };
+
+                    //int lastitemIndex = cbxvidmapvid.Items.Count <= 1 ? 0 : cbxvidmapvid.Items.Count - 2;
+                    int newVid = cbxvidmapvid.Items.Count <= 1 ? 1 : GenUtil.ConvertObjtoType<int>(cbxvidmapvid.Items[cbxvidmapvid.Items.Count - 2]) + 1;
+                    insertvid.inserter.Add("bi_item_vid", newVid.ToString());
+
+                    DbResObj insertRes = await _dbServices.InsertAsync(insertvid);
+                    if (insertRes.resCode != 1)
+                    {
+                        MessageBox.Show("insert in vid error");
                         return;
                     }
+                    MessageBox.Show("insert vid success");
+
+                    await CleanVipMapselectedItem();
+                    await VidMappingInitialLoad();
+                    await VidMappListBoxRefresh();
+                }
+                else
+                {
                     MessageBox.Show("Item id was assgined to another Vid");
                     return;
                 }
-                else if (res2.resCode == 0 || res2.err_msg != null)
-                {
-                    MessageBox.Show(res2.err_msg != null ? res2.err_msg : "CheckVidmapDupItemId error");
-                    return;
-                }
-                insertObj insertvid = new insertObj()
-                {
-                    table = nameof(tb_item_vid_mapping),
-                    inserter = selObj.selecter
-                };
-                if (insertvid.inserter.Count == 2)
-                {
-                    int lastitemIndex = cbxvidmapvid.Items.Count - 2;
-                    int newVid = GenUtil.ConvertObjtoType<int>(cbxvidmapvid.Items[lastitemIndex]) + 1;
-                    insertvid.inserter.Add("bi_item_vid", newVid.ToString());
-                }
-                DbResObj insertRes = await _dbServices.InsertAsync(insertvid);
-                if (insertRes.resCode != 1)
-                {
-                    MessageBox.Show("insert in vid error");
-                    return;
-                }
-                MessageBox.Show("insert vid success");
 
-                await CleanVipMapselectedItem();
-                await VidMappingInitialLoad();
-                await VidMappListBoxRefresh();
             }
-            else if (selduplicate.resCode == 1 && selduplicate.result.Count > 0 && selduplicate.err_msg == null)
+            catch (Exception e)
             {
-                MessageBox.Show("duplicate vid, drop and retry");
+                MessageBox.Show(e.Message);
             }
-            else if (selduplicate.err_msg != null)
+
+        }
+        private async void btnidinsert_Click(object sender, EventArgs e)
+        {
+            try
             {
-                MessageBox.Show(selduplicate.err_msg);
+                if (cbxvidmapitemid.SelectedItem == null || cbxvidmaploc.SelectedItem == null || cbxvidmapvid.SelectedItem == null)
+                {
+                    MessageBox.Show("Please select Item Id and Location");
+                    return;
+                }
+                var selObj = new selectObj();
+                foreach (var prop in typeof(tb_item_vid_mapping).GetProperties())
+                {
+                    tabpagevid.Controls.OfType<KryptonComboBox>().ToList().ForEach(x =>
+                    {
+                        if (x.Tag.ToString() == prop.Name)
+                        {
+                            var id = x.SelectedItem.ToString().Split(":").ElementAt(0);
+                            selObj.selecter.Add(prop.Name, id);
+                        }
+                    });
+                }
+                selObj.table = nameof(tb_item_vid_mapping);
+
+                if (selObj.selecter["bi_item_vid"] == "Add new Vid")
+                {
+                    await InsertNewVid(selObj);
+                    return;
+                    //selObj.selecter.Remove("bi_item_vid");
+                }
+
+                //find duplicate id,vid loc id
+                DbResObj selduplicate = await _dbServices.SelectWhereAsync<tb_item_vid_mapping>(selObj);
+                if (selduplicate.resCode == 0 && selduplicate.result == null && selduplicate.err_msg == null)
+                {
+                    selectObj selObj2 = selObj.Clone();
+
+
+
+                    selObj2.selecter.Remove("bi_item_vid");
+                    selObj2.selecter.Remove("bi_prefer_loc_id");
+                    //find id assign to another vid
+                    DbResObj res2 = await _dbServices.CheckVidmapDupItemId(selObj2);
+                    if (res2.resCode==0 && res2.result == null || res2.resCode == 1 && res2.result.Count == 1)
+                    {
+
+
+
+                        if (res2.resCode == 1  && res2.result.Count == 1)
+                        {
+                            tb_item_vid_mapping temp1 = res2.result[0];
+                            if (temp1.bi_item_vid.ToString() != cbxvidmapvid.SelectedItem.ToString())
+                            {
+                                MessageBox.Show("Item id was assgined to another Vid");
+                                return;
+
+                            }
+                        }
+                        insertObj insertvid = new insertObj()
+                        {
+                            table = nameof(tb_item_vid_mapping),
+                            inserter = selObj.selecter
+                        };
+                        DbResObj insertRes = await _dbServices.InsertAsync(insertvid);
+                        if (insertRes.resCode != 1)
+                        {
+                            MessageBox.Show("insert in vid error");
+                            return;
+                        }
+                        MessageBox.Show("insert vid success");
+
+
+
+
+
+
+                    }
+                    else if (res2.err_msg != null)
+                    {
+                        MessageBox.Show(res2.err_msg);
+                        return;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Item id was assgined to another Vid");
+                        return;
+                    }
+
+
+
+
+                    await CleanVipMapselectedItem();
+                    await VidMappingInitialLoad();
+                    await VidMappListBoxRefresh();
+                }
+                else if (selduplicate.resCode == 1 && selduplicate.result.Count > 0 && selduplicate.err_msg == null)
+                {
+                    MessageBox.Show("duplicate vid, drop and retry");
+                }
+                else if (selduplicate.err_msg != null)
+                {
+                    MessageBox.Show(selduplicate.err_msg);
+                }
             }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            
         }
 
         private async void btniddrop_Click(object sender, EventArgs e)

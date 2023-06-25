@@ -169,7 +169,7 @@ namespace CPS_App.Services
                             {
                                 if (x.Tag != null && p.Name == x.Tag.ToString())
                                 {
-                                    if (p.GetValue(item).ToString() != null && p.GetValue(item) != "")
+                                    if (p.GetValue(item,null) != null && p.GetValue(item,null) != "")
                                     {
                                         temp.Add(x.Text, p.GetValue(item).ToString());
                                     }

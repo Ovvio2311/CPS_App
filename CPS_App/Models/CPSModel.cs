@@ -306,7 +306,7 @@ namespace CPS_App.Models
             [Display(Name = "not_shown")]
             public int bi_supp_id { get; set; }
             [Display(Name = "Mapping Id")]
-            public int i_map_stat_id { get; set; }
+            public int i_hd_map_stat_id { get; set; }
             [Display(Name = "Po Status Id")]
             public int bi_po_status_id { get; set; }
             [Display(Name = "Remark")]
@@ -366,7 +366,7 @@ namespace CPS_App.Models
                              (SELECT 
                              det.bi_req_id det_bi_req_id, mapp.bi_item_vid, det.bi_item_id, det.i_item_req_qty, det.i_remain_req_qty, det.i_uom_id, 
                              det.i_hd_map_stat_id, stat.vc_status_desc item_mapping_status, postat.bi_po_status_id, 
-                             postat.vc_po_status_desc, det.dt_exp_deli_date, uom.vc_uom_desc, it.vc_item_desc, 
+                             postat.vc_po_status_desc, DATE_FORMAT(det.dt_exp_deli_date, '%Y-%m-%d %H:%i:%s') dt_exp_deli_date, uom.vc_uom_desc, it.vc_item_desc, 
                              it.bi_category_id, cat.vc_category_desc
                          FROM
                              tb_request_detail det
@@ -411,7 +411,7 @@ namespace CPS_App.Models
             [Display(Name = "PO Status")]
             public string vc_po_status_desc { get; set; }
             [Display(Name = "Expected Delievery Date")]
-            public DateTime dt_exp_deli_date { get; set; }
+            public string dt_exp_deli_date { get; set; }
         }
 
         //item view
@@ -481,9 +481,9 @@ namespace CPS_App.Models
             [Display(Name = "not_shown")]
             public string items_group { get; set; }
             [Display(Name = "not_shown")]
-            public DateTime dt_created_date { get; set; }
+            public string dt_created_date { get; set; }
             [Display(Name = "not_shown")]
-            public DateTime dt_updated_datetime { get; set; }
+            public string dt_updated_datetime { get; set; }
         }
         public class CreateStockObj
         {
@@ -844,6 +844,50 @@ namespace CPS_App.Models
             {
                 poList = new List<POTableObj>();
                 poaList= new List<POATableObj>();
+            }
+        }
+        public class DispatchInstruction
+        {
+            [Display(Name = "Dispatch Id")]
+            public int bi_di_id { get; set; }
+            [Display(Name = "Ref Req Id")]
+            public int bi_req_id { get; set; }
+            [Display(Name = "not_shown")]
+            public int i_di_status_id { get; set; }
+            [Display(Name = "Item Id")]
+            public int bi_item_id { get; set; }
+            [Display(Name = "Item Vid")]
+            public int bi_item_vid { get; set; }
+            [Display(Name = "Item Name")]
+            public string vc_item_desc { get; set; }
+            [Display(Name = "Quantity")]
+            public int i_item_qty { get; set; }
+            [Display(Name = "not_shown")]
+            public int bi_category_id { get; set; }
+            [Display(Name = "Category")]
+            public string vc_category_desc { get; set; }
+            [Display(Name = "not_shown")]
+            public int bi_location_id { get; set; }
+            [Display(Name = "Location")]
+            public string vc_location_desc { get; set; }
+            [Display(Name = "not_shown")]
+            public string dt_created_date { get; set; }
+            [Display(Name = "Expected Delievery Date")]
+            public string dt_exp_deli_date { get; set; }
+            public string GetSqlQuery()
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.Append(@"select * from (
+                select di.bi_di_id, di.bi_item_id, di.bi_item_vid, di.bi_req_id, it.vc_item_desc, di.i_di_status_id, dist.vc_di_status_desc, 
+                di.i_item_qty, di.bi_category_id, cat.vc_category_desc, di.bi_location_id, loc.vc_location_desc, 
+                DATE_FORMAT(di.dt_exp_deli_date, '%Y-%m-%d %H:%i:%s') dt_exp_deli_date, di.dt_created_date 
+                from tb_dispatch_instruction di
+                left join tb_item it on di.bi_item_id = it.bi_item_id
+                left join lut_di_status dist on di.i_di_status_id = dist.i_di_status_id
+                left join tb_item_category cat on di.bi_category_id = cat.bi_category_id
+                left join tb_location loc on di.bi_location_id = loc.bi_location_id
+                ) a ");
+                return sb.ToString();
             }
         }
     }

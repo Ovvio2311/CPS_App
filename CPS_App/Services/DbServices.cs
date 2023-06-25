@@ -132,6 +132,8 @@ namespace CPS_App.Services
         {
             var res = new DbResObj();
             res.resCode = 0;
+            res.err_msg = null;
+            res.result = null;
             try
             {
                 string inserter = string.Join(",", obj.inserter.Select(x => x.Key).ToList());
@@ -160,6 +162,8 @@ namespace CPS_App.Services
         {
             var res = new DbResObj();
             res.resCode = 0;
+            res.err_msg = null;
+            res.result = null;
             try
             {
 
@@ -175,7 +179,7 @@ namespace CPS_App.Services
                              "SELECT LAST_INSERT_ID();";
 
                 var result = await _db.ExecuteAsync(sql, obj);
-                if (result > 0)
+                if (result != null)
                 {
                     res.result = result;
                     res.resCode = 1;
@@ -217,7 +221,7 @@ namespace CPS_App.Services
             catch (Exception ex)
             {
                 res.result = null;
-                res.resCode = 1;
+                res.resCode = 0;
                 res.err_msg = ex.Message;
                 return res;
             }
@@ -783,6 +787,65 @@ namespace CPS_App.Services
                 res.err_msg = ex.Message;
             }
             return res;
+        }
+        public async Task<DbResObj> GetDisPatchObj(string loc = null, searchObj obj = null)
+        {
+            string sql = $@"select * from (
+                select di.bi_di_id,di.bi_item_id, di.bi_item_vid, di.bi_req_id, it.vc_item_desc, di.i_di_status_id, dist.vc_di_status_desc, 
+                di.i_item_qty, di.bi_category_id, cat.vc_category_desc, di.bi_location_id, loc.vc_location_desc, 
+                DATE_FORMAT(di.dt_exp_deli_date, '%Y-%m-%d %H:%i:%s') dt_exp_deli_date, di.dt_created_date
+                from tb_dispatch_instruction di
+                left join tb_item it on di.bi_item_id = it.bi_item_id
+                left join lut_di_status dist on di.i_di_status_id = dist.i_di_status_id
+                left join tb_item_category cat on di.bi_category_id = cat.bi_category_id
+                left join tb_location loc on di.bi_location_id = loc.bi_location_id
+                ) a  ";
+            if (obj != null)
+            {
+                string seasrchList = string.Join(" and ", obj.searchWords.Select(x => $"{x.Key} in ({string.Join(",", x.Value.ToList().Select(i => $"'{i}'").ToList())})").ToList());
+                sql += $"where {seasrchList} ";
+            }
+            if (loc != null)
+            {
+                //sql += $"order by bi_deli_loc_id = '{loc}' desc; ";
+            }
+            else
+            {
+                sql += ";";
+            }
+            try
+            {
+                var result = await _db.QueryAsync<DispatchInstruction>(sql, null);
+                if (result.Count() > 0)
+                {
+
+                    return new DbResObj
+                    {
+                        resCode = 1,
+                        result = result,
+                        err_msg = null
+                    };
+
+                }
+                else
+                {
+                    return new DbResObj
+                    {
+                        resCode = 0,
+                        result = null,
+                        err_msg = null
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new DbResObj
+                {
+                    resCode = 0,
+                    result = null,
+                    err_msg = ex.Message
+                };
+            }
         }
     }
 }

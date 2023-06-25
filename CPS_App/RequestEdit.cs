@@ -96,7 +96,7 @@ namespace CPS_App
                 //txtrs.Text = GenUtil.ConvertObjtoType<string>(readyToEdit.vc_po_status_desc);
                 //txtremain.Text = readyToEdit.i_remain_req_qty.ToString();
                 //txtqty.Text = readyToEdit.i_item_req_qty.ToString();
-                dateTimePickerEDD.Value = readyToEdit.dt_exp_deli_date; // for testing only
+                dateTimePickerEDD.Value = GenUtil.ConvertObjtoType<DateTime>(readyToEdit.dt_exp_deli_date); // for testing only
                 //txtitname.Text = GenUtil.ConvertObjtoType<string>(readyToEdit.vc_item_desc);
                 //txtcat.Text = readyToEdit.vc_category_desc.ToString();
                 //txtreqst.Text = GenUtil.ConvertObjtoType<string>(readyToEdit.item_mapping_status);
@@ -112,7 +112,7 @@ namespace CPS_App
         {
             int selectdId = GenUtil.ConvertObjtoType<int>(datagridviewitem.CurrentRow.Cells["bi_item_id"].Value);
             ItemRequest readyToEdit = itemsReq.Where(x => x.bi_item_id == selectdId).FirstOrDefault();
-            if (txtremain.Text == readyToEdit.i_remain_req_qty.ToString() && dateTimePickerEDD.Value == readyToEdit.dt_exp_deli_date)
+            if (txtremain.Text == readyToEdit.i_remain_req_qty.ToString() && dateTimePickerEDD.Value ==GenUtil.ConvertObjtoType<DateTime>( readyToEdit.dt_exp_deli_date))
             {
                 MessageBox.Show("Value haven't change");
                 return;
@@ -131,7 +131,7 @@ namespace CPS_App
             if (confirmStr != string.Empty)
             {
                 DialogResult response = MessageBox.Show(confirmStr, "Confirm", MessageBoxButtons.YesNo);
-                if(response == DialogResult.Yes ? true : false)
+                if (response == DialogResult.Yes ? true : false)
                 {
                     var updateObj = new updateObj();
                     updateObj.table = "tb_request_detail";
@@ -156,7 +156,7 @@ namespace CPS_App
             {
                 MessageBox.Show("confirmStr is null");
             }
-            
+
 
 
         }

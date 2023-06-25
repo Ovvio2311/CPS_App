@@ -27,68 +27,75 @@ namespace CPS_App.Services
             where T : new()
             where i : new()
         {
-            var reqPoaList = new List<T>();
-            var res = new List<T>();
-            var resObj = await _services.GetGenericViewTable(sql,loc, obj,addSearch);
-            if (resObj.resCode == 1 && resObj.result != null)
+            try
             {
-                List<List<KeyValuePair<string, object>>> kvp = resObj.result;
-                var itemLst = new List<i>();
-                var workerLst = new List<T>();
-                kvp.ForEach(row =>
+                var reqPoaList = new List<T>();
+                var res = new List<T>();
+                var resObj = await _services.GetGenericViewTable(sql, loc, obj, addSearch);
+                if (resObj.resCode == 1 && resObj.result != null)
                 {
-                    T mappingObj = new T();
-                    var item = new i();
-                    row.ForEach(col =>
+                    List<List<KeyValuePair<string, object>>> kvp = resObj.result;
+                    var itemLst = new List<i>();
+                    var workerLst = new List<T>();
+                    kvp.ForEach(row =>
                     {
-                        mappingObj.GetType().GetProperties()
-                        .Where(prop => col.Key.Equals(prop.Name) && col.Value != null).ToList()
-                        .ForEach(p =>
+                        T mappingObj = new T();
+                        var item = new i();
+                        row.ForEach(col =>
                         {
-                            p.SetValue(mappingObj, Convert.ChangeType(col.Value, p.PropertyType), null);
-                        });
+                            mappingObj.GetType().GetProperties()
+                            .Where(prop => col.Key.Equals(prop.Name) && col.Value != null).ToList()
+                            .ForEach(p =>
+                            {
+                                p.SetValue(mappingObj, Convert.ChangeType(col.Value, p.PropertyType), null);
+                            });
 
-                        item.GetType().GetProperties()
-                        .Where(it => col.Key.Equals(it.Name) && col.Value != null).ToList()
-                        .ForEach(i => i.SetValue(item, Convert.ChangeType(col.Value, i.PropertyType), null));
+                            item.GetType().GetProperties()
+                            .Where(it => col.Key.Equals(it.Name) && col.Value != null).ToList()
+                            .ForEach(i => i.SetValue(item, Convert.ChangeType(col.Value, i.PropertyType), null));
+                        });
+                        workerLst.Add(mappingObj);
+                        itemLst.Add(item);
                     });
-                    workerLst.Add(mappingObj);
-                    itemLst.Add(item);
-                });
-                var keylst = workerLst.GroupBy(g => g.GetType().GetProperty(keyName)!.GetValue(g)).Select(g => g.Key).ToList();
-                //use function to get group by
-                //var keyls = workerLst.GroupBy(GroupByExpression<T>(keyName).Compile()).Select(g => g.Key).ToList();
-                keylst.ForEach(key =>
+                    var keylst = workerLst.GroupBy(g => g.GetType().GetProperty(keyName)!.GetValue(g)).Select(g => g.Key).ToList();
+                    //use function to get group by
+                    //var keyls = workerLst.GroupBy(GroupByExpression<T>(keyName).Compile()).Select(g => g.Key).ToList();
+                    keylst.ForEach(key =>
+                    {
+                        var resRow = new T();
+
+
+                        var templst = itemLst.Where(x => x.GetType().GetProperty(keyName).GetValue(x).Equals(key)).ToList();
+                        //var templst = itemLst.Where(x => x.bi_poa_header_id.Equals(key)).ToList();
+                        resRow.GetType().GetProperties().ToList()
+                        .ForEach(prop =>
+                        {
+                            var fstKey = workerLst.Where(x => x.GetType().GetProperty(keyName).GetValue(x).Equals(key)).FirstOrDefault();
+                            //var fstKey = workerLst.Where(x => x.bi_poa_header_id.Equals(key)).FirstOrDefault();
+                            fstKey.GetType().GetProperties().ToList()
+                            .ForEach(col =>
+                            {
+                                if (col.Name.Equals(prop.Name))
+                                    prop.SetValue(resRow, col.GetValue(fstKey), null);
+                                if (prop.Name.Equals("itemLists"))
+                                    prop.SetValue(resRow, templst, null);
+                            });
+                        });
+                        res.Add(resRow);
+
+                    });
+                    return res;
+                }
+                else
                 {
-                var resRow = new T();
-
-              
-                    var templst = itemLst.Where(x => x.GetType().GetProperty(keyName).GetValue(x).Equals(key)).ToList();
-                    //var templst = itemLst.Where(x => x.bi_poa_header_id.Equals(key)).ToList();
-                    resRow.GetType().GetProperties().ToList()
-                    .ForEach(prop =>
-                    {
-                        var fstKey = workerLst.Where(x => x.GetType().GetProperty(keyName).GetValue(x).Equals(key)).FirstOrDefault();
-                        //var fstKey = workerLst.Where(x => x.bi_poa_header_id.Equals(key)).FirstOrDefault();
-                        fstKey.GetType().GetProperties().ToList()
-                        .ForEach(col =>
-                        {
-                            if (col.Name.Equals(prop.Name))
-                                prop.SetValue(resRow, col.GetValue(fstKey), null);
-                            if (prop.Name.Equals("itemLists"))
-                                prop.SetValue(resRow, templst, null);
-                        });
-                    });
-                    res.Add(resRow);
-
-                });
-                return res;
+                    _logger.LogDebug("POA table has no value!");
+                    return null;
+                }
             }
-            else
-            {
-                _logger.LogDebug("POA table has no value!");
-                return null;
+            catch(Exception ex) {
+                throw new Exception(ex.Message);
             }
+            
         }
 
         //public object GetProperty(this object source, string name)

@@ -24,8 +24,8 @@ namespace CPS_App.Services
         private CreatePoServices _createPoServices;
         private SearchFunc _searchFunc;
 
-        public ScheduleTask(DbServices dbServices, ILogger<ScheduleTask> logger, POAWorker pOAWorker, 
-            RequestMapping requestMapping, GenericTableViewWorker genericTableViewWorker, 
+        public ScheduleTask(DbServices dbServices, ILogger<ScheduleTask> logger, POAWorker pOAWorker,
+            RequestMapping requestMapping, GenericTableViewWorker genericTableViewWorker,
             CreatePoServices createPoServices, SearchFunc searchFunc)
         {
             _services = dbServices;
@@ -58,39 +58,24 @@ namespace CPS_App.Services
             //   await _searchFunc.insertJsonString("a06fae55-8c3d-46d8-8778-a19b149c7fe7", "po", jsonObj);
             try
             {
-                await MappingProcessWarehouse();
+                //Mapping Process Warehouse
+                List<DispatchInstruction> dis = await MappingProcessWarehouse();
+                await CreateDispatchAsync(dis);
+                await UpdateRecordAsync();
+
                 //Mapping process P1
                 List<POTableObj> newPo1 = await MappingScheduler_P1();
                 newPo1.ForEach(async x => await _createPoServices.CreatePoASync(x));
+                await UpdateRecordAsync();
                 
-                if (_updateObjects.Any())
-                {
-                    _updateObjects.ForEach(async updateObj =>
-                    {
-                        DbResObj res = await _services.UpdateAsync(updateObj);
-                        if (res.resCode != 1 || res.err_msg != null)
-                        {
-                            _logger.LogDebug($"Mapping process P1 update Db Error: {res.err_msg}");
-                        }
-                    });
-                    _updateObjects.Clear();
-                }
                 //Mapping process p2
                 List<POTableObj> newPo2 = await MappingScheduler_P1();
-                if (_updateObjects.Any())
-                {
-                    _updateObjects.ForEach(async updateObj =>
-                    {
-                        DbResObj res = await _services.UpdateAsync(updateObj);
-                        if (res.resCode != 1 || res.err_msg != null)
-                        {
-                            _logger.LogDebug($"Mapping process P1 update Db Error: {res.err_msg}");
-                        }
-                    });
-                    _updateObjects.Clear();
-                }
+                await UpdateRecordAsync();
+
                 //Mapping Process Warehouse
-                await MappingProcessWarehouse();
+                //List<DispatchInstruction> dis = await MappingProcessWarehouse();
+                //await CreateDispatchAsync(dis);
+                //await UpdateRecordAsync();
             }
             catch (Exception ex)
             {
@@ -186,7 +171,7 @@ namespace CPS_App.Services
                                 DateTime arrival = DateTime.Now.AddDays(GenUtil.ConvertObjtoType<int>(day.ElementAt(0)));
                                 //poa > request
                                 if (i.i_remain_qty > item.i_remain_req_qty && item.i_remain_req_qty > i.i_min_qty &&
-                                arrival > item.dt_exp_deli_date)
+                                arrival > GenUtil.ConvertObjtoType<DateTime>(item.dt_exp_deli_date))
                                 {
                                     try
                                     {
@@ -240,10 +225,10 @@ namespace CPS_App.Services
                                                 }
                                             });
                                         });
-                                        tempPoItem.i_actual_qty = i.i_remain_qty >= item.i_remain_req_qty ? item.i_remain_req_qty: i.i_remain_qty;
+                                        tempPoItem.i_actual_qty = i.i_remain_qty >= item.i_remain_req_qty ? item.i_remain_req_qty : i.i_remain_qty;
                                         tempPoItem.i_actual_amount = tempPoItem.i_actual_qty * tempPoItem.i_price;
                                         tempPoCreate.itemLists.Add(tempPoItem);
-                                        tempPoCreate.vc_ref_id = $"Poa Id: {row.bi_poa_id}" ;
+                                        tempPoCreate.vc_ref_id = $"Poa Id: {row.bi_poa_id}";
                                         tempPoCreate.ti_po_type_id = 2;
                                         tempPoCreate.bi_deli_loc_id = reqObj.bi_location_id;
                                         tempPoCreate.bi_po_status_id = 1;
@@ -296,6 +281,96 @@ namespace CPS_App.Services
             });
             return PoCreateList;
         }
+        public async Task<List<DispatchInstruction>> iterateWarehouseProcess(List<RequestMappingReqObj> reqObj, List<StockLevelViewObj> stockObj)
+        {
+            List<DispatchInstruction> createDispatch = new List<DispatchInstruction>();
+            List<updateObj> updateObj = new List<updateObj>();
+            reqObj.ForEach(reqObj =>
+            {
+                reqObj.itemLists.ForEach(reqitem =>
+                {
+                    stockObj.ForEach(stockItem =>
+                    {
+                        if (stockItem.itemLists.Count > 0)
+                        {
+                            stockItem.itemLists.Where(x => x.bi_item_id == reqitem.bi_item_id).ToList().ForEach(item =>
+                            {
+                                if (item.i_item_qty > 0)
+                                {
+
+                                    updateObj tempUpdate = new updateObj()
+                                    {
+                                        table = "tb_request_detail",
+                                        selecter = new Dictionary<string, string>
+                                            {
+                                                { nameof(reqObj.bi_req_id), reqObj.bi_req_id.ToString() },
+                                                { nameof(item.bi_item_id), item.bi_item_id.ToString() },
+                                            },
+                                        updater = new Dictionary<string, string>
+                                            {
+                                                { nameof(reqitem.i_remain_req_qty), item.i_item_qty >= reqitem.i_remain_req_qty ? "0": GenUtil.ConvertObjtoType<int>(reqitem.i_remain_req_qty - item.i_item_qty).ToString() },
+                                                { nameof(reqitem.i_hd_map_stat_id), "2" },
+                                                { nameof(reqitem.bi_po_status_id), "3" },
+                                            }
+                                    };
+                                    _updateObjects.Add(tempUpdate);
+                                }
+
+                                DispatchInstruction tempDis = new DispatchInstruction();
+                                reqObj.GetType().GetProperties().ToList().ForEach(p =>
+                                {
+                                    tempDis.GetType().GetProperties().ToList().ForEach(t =>
+                                    {
+                                        if (t.Name == p.Name && t.Name != "itemLists")//&& t.GetValue(tempDis) == null)
+                                        {
+                                            t.SetValue(tempDis, Convert.ChangeType(p.GetValue(reqObj), p.PropertyType, null));
+                                        }
+                                    });
+                                });
+                                stockItem.GetType().GetProperties().ToList().ForEach(p =>
+                                {
+                                    tempDis.GetType().GetProperties().ToList().ForEach(t =>
+                                    {
+                                        if (t.Name == p.Name && t.Name != "itemLists")//&& t.GetValue(tempDis) == null)
+                                        {
+                                            t.SetValue(tempDis, Convert.ChangeType(p.GetValue(stockItem), p.PropertyType, null));
+                                        }
+                                    });
+
+                                });
+                                reqitem.GetType().GetProperties().ToList().ForEach(it =>
+                                {
+                                    tempDis.GetType().GetProperties().ToList().ForEach(y =>
+                                    {
+                                        if (y.Name == it.Name)//&& y.GetValue(tempDis) == null)
+                                        {
+                                            y.SetValue(tempDis, Convert.ChangeType(it.GetValue(reqitem), it.PropertyType, null));
+                                        }
+                                    });
+                                });
+                                //item.GetType().GetProperties().ToList().ForEach(it =>
+                                //{
+                                //    tempDis.GetType().GetProperties().ToList().ForEach(y =>
+                                //    {
+                                //        if (y.Name == it.Name)//&& y.GetValue(tempDis) == null)
+                                //        {
+                                //            y.SetValue(tempDis, Convert.ChangeType(it.GetValue(item), it.PropertyType, null));
+                                //        }
+                                //    });
+                                //});
+                                tempDis.i_di_status_id = 1;
+                                tempDis.i_item_qty = item.i_item_qty >= reqitem.i_remain_req_qty ? reqitem.i_remain_req_qty : item.i_item_qty;
+                                createDispatch.Add(tempDis);
+                                
+                            });
+                        }
+
+
+                    });
+                });
+            });
+            return createDispatch;
+        }
         public async Task<List<POTableObj>> MappingScheduler_P1()
         {
             try
@@ -323,13 +398,62 @@ namespace CPS_App.Services
             //get poa obj            
             List<POATableObj> poaObj = await PoaMapObjectGetter();
         }
-        public async Task MappingProcessWarehouse()
+        public async Task<List<DispatchInstruction>> MappingProcessWarehouse()
         {
             //get request obj
             List<RequestMappingReqObj> reqObj = await RequestMapObjectGetter();
 
             //get stock in warehouse
             List<StockLevelViewObj> stockObj = await StockMapObjectGetter();
+            return await iterateWarehouseProcess(reqObj, stockObj);
+        }
+        public async Task CreateDispatchAsync(List<DispatchInstruction> disObj)
+        {
+            foreach (DispatchInstruction instruction in disObj)
+            {
+                insertObj inObj = new insertObj()
+                {
+                    table = "tb_dispatch_instruction",
+                    inserter = new Dictionary<string, string>
+                {
+                    //{nameof(disObj.bi_di_id),disObj.bi_di_id.ToString() },
+                    {nameof(instruction.bi_req_id),instruction.bi_req_id.ToString() },
+                    {nameof(instruction.bi_item_id),instruction.bi_item_id.ToString() },
+                    {nameof(instruction.i_di_status_id),instruction.i_di_status_id.ToString() },
+                    {nameof(instruction.i_item_qty),instruction.i_item_qty.ToString() },
+                    {nameof(instruction.bi_category_id),instruction.bi_category_id.ToString() },
+                    {nameof(instruction.dt_exp_deli_date),instruction.dt_exp_deli_date},
+                    {nameof(instruction.bi_location_id),instruction.bi_location_id.ToString() }
+                }
+                };
+                DbResObj res = await _services.InsertAsync(inObj);
+                if (res.resCode != 1)
+                {
+                    MessageBox.Show("insert Dispatch error");
+                    return;
+                }
+                if (res.err_msg != null)
+                {
+                    MessageBox.Show(res.err_msg);
+                    return;
+                }
+            }
+            MessageBox.Show("Insert Dispatch success");
+        }
+        public async Task UpdateRecordAsync()
+        {
+            if (_updateObjects.Any())
+            {
+                foreach (var obj in _updateObjects)
+                {
+                    DbResObj res = await _services.UpdateAsync(obj);
+                    if (res.resCode != 1 || res.err_msg != null)
+                    {
+                        _logger.LogDebug($"Mapping process update Db Error: {res.err_msg}");
+                    }
+                }
+                _updateObjects.Clear();
+            }
         }
     }
 }

@@ -270,10 +270,10 @@ namespace CPS_App
         }
         private async Task ClearContent()
         {
-            pn1.Controls.OfType<TextBox>().ToList().ForEach(t => t.Clear());
-            pn1.Controls.OfType<ComboBox>().ToList().ForEach(t => t.SelectedIndex = 0);
-            pn2.Controls.OfType<TextBox>().ToList().ForEach(t => t.Clear());
-            pn2.Controls.OfType<ComboBox>().ToList().ForEach(t => t.SelectedIndex = 0);
+            pn1.Controls.OfType<KryptonTextBox>().ToList().ForEach(t => t.Clear());
+            pn1.Controls.OfType<KryptonComboBox>().ToList().ForEach(t => t.SelectedIndex = 0);
+            pn2.Controls.OfType<KryptonTextBox>().ToList().ForEach(t => t.Clear());
+            pn2.Controls.OfType<KryptonComboBox>().ToList().ForEach(t => t.SelectedIndex = 0);
         }
 
 
@@ -400,18 +400,30 @@ namespace CPS_App
 
         private void cbxtype_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cbxtype.SelectedItem.ToString().Contains("1"))
+            try
             {
-                txtcont.Enabled = false;
-                txtquot.Enabled = false;
-                txtcont.Text = "Null";
+                if(cbxtype.SelectedItem != null)
+                {
+                    if (cbxtype.SelectedItem.ToString().Contains("1"))
+                    {
+                        txtcont.Enabled = false;
+                        txtquot.Enabled = false;
+                        txtcont.Text = "Null";
+                    }
+                    else
+                    {
+                        txtcont.Enabled = true;
+                        txtquot.Enabled = true;
+                        txtcont.Text = string.Empty;
+                    }
+                }
+                
             }
-            else
+            catch(Exception ex)
             {
-                txtcont.Enabled = true;
-                txtquot.Enabled = true;
-                txtcont.Text = string.Empty;
+                MessageBox.Show(ex.Message);
             }
+            
         }
     }
 }

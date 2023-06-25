@@ -19,6 +19,9 @@ using static CPS_App.Models.RegisterModel;
 using Krypton.Toolkit;
 using System.Xml.Linq;
 using System.Net.WebSockets;
+using System.Runtime.CompilerServices;
+using System.Xml.Serialization;
+using System.Linq.Dynamic.Core;
 
 namespace CPS_App
 {
@@ -29,14 +32,15 @@ namespace CPS_App
         public ClaimsIdentity userIden;
         public StockLevelViewObj req;
         public List<CreateStockObj> createStock;
-        public ItemCreate(DbServices dbServices)
+        private GenericTableViewWorker _genericTableViewWorker;
+        public ItemCreate(DbServices dbServices, GenericTableViewWorker genericTableViewWorker)
         {
             InitializeComponent();
             _dbServices = dbServices;
             req = new StockLevelViewObj();
             _validator = new Validator();
             createStock = new List<CreateStockObj>();
-
+            _genericTableViewWorker = genericTableViewWorker;
         }
 
         private async void ItemCreate_Load(object sender, EventArgs e)
@@ -45,12 +49,18 @@ namespace CPS_App
             if (userIden != null)
             {
 
-                if (!(userIden.Claims.FirstOrDefault(x => x.Type == "role").Value.ToLower() == "admin"))//warehouse admin
-                {
-                    MessageBox.Show("You are not the warehouse admin");
-                    return;
-                }
+
             }
+            cbxitid.Hide();
+            pnit.Controls.OfType<KryptonComboBox>().ToList().ForEach(x => x.Validating += requiredFieldCheck);
+            pnit.Controls.OfType<KryptonTextBox>().ToList().ForEach(x => x.Validating += requiredFieldCheck);
+
+
+
+            var itemType = await _dbServices.SelectAllAsync<tb_item>();
+            List<tb_item> itid = JsonConvert.DeserializeObject<List<tb_item>>(JsonConvert.SerializeObject(itemType.result));
+            itid.ForEach(x => cbxitid.Items.Add($"{x.bi_item_id}: {x.vc_item_desc}"));
+
             var catType = await _dbServices.SelectAllAsync<tb_item_category>();
             List<tb_item_category> cat = JsonConvert.DeserializeObject<List<tb_item_category>>(JsonConvert.SerializeObject(catType.result));
             cat.ForEach(x => cbxcat.Items.Add($"{x.bi_category_id}: {x.vc_category_desc}"));
@@ -85,7 +95,7 @@ namespace CPS_App
         {
             var temp = new CreateStockObj();
             //insert input value to createStock
-            if (txtqty.Text.Trim() != string.Empty)
+            if (chkstock.Checked && txtqty.Text.Trim() != null)
             {
                 if (!int.TryParse(txtqty.Text, out int output))
                 {
@@ -131,14 +141,23 @@ namespace CPS_App
 
                 });
             });
+            temp.bi_item_vid =GenUtil.ConvertObjtoType<int>( cbxvid.SelectedItem.ToString().Split(':').ElementAt(0));
+            temp.i_uom_id = GenUtil.ConvertObjtoType<int>(cbxuom.SelectedItem.ToString().Split(':').ElementAt(0));
+            temp.bi_category_id = GenUtil.ConvertObjtoType<int>(cbxcat.SelectedItem.ToString().Split(':').ElementAt(0));
+
             createStock.Add(temp);
             //confirmation
             string confirmStr = await GenUtil.ConfirmListAttach(pnit, createStock);
-            if(confirmStr != string.Empty)
+            if (confirmStr != string.Empty)
             {
                 DialogResult response = MessageBox.Show(confirmStr, "Confirm", MessageBoxButtons.YesNo);
-                if(response == DialogResult.Yes ? true : false)
+                if (response == DialogResult.Yes ? true : false)
                 {
+                    if (chkcrloc.Checked)
+                    {
+                       await InsertItemUnit();
+                        return;
+                    }
                     foreach (var i in createStock)
                     {
                         try
@@ -206,6 +225,10 @@ namespace CPS_App
                                 return;
                             }
                             MessageBox.Show("item unit insert into location");
+                            await GenUtil.ResumeBlankPage(pnit, createStock);
+                            createStock = new List<CreateStockObj>();
+                            req = new StockLevelViewObj();
+                            cbxvid.SelectedIndex = -1;
                         }
                         catch (Exception ex)
                         {
@@ -218,8 +241,8 @@ namespace CPS_App
             {
                 MessageBox.Show("confirmStr is null");
             }
-                
-            
+
+
             //DialogResult dialogResult = MessageBox.Show("Are you confirm the information to create", "Confirm", MessageBoxButtons.YesNo);
             //if (!(dialogResult == DialogResult.Yes))
             //{
@@ -235,8 +258,9 @@ namespace CPS_App
             this.Close();
         }
 
-        private void btnitcr_Click(object sender, EventArgs e)
+        private async void btnitcr_Click(object sender, EventArgs e)
         {
+            await GenUtil.ResumeBlankPage(pnit, createStock);
             this.Controls.OfType<KryptonTextBox>().ToList().ForEach(t => { t.Text = string.Empty; });
             this.Controls.OfType<KryptonComboBox>().ToList().ForEach(x => x.SelectedIndex = 0);
         }
@@ -244,6 +268,7 @@ namespace CPS_App
         private void requiredFieldCheck(object sender, CancelEventArgs e)
         {
             CheckBoxChange();
+            itemNameCheckBoxChange();
             ValidationCheck();
         }
 
@@ -257,6 +282,10 @@ namespace CPS_App
                     return;
                 }
             }
+
+
+            var itname = chkcrloc.Checked ? cbxcat.SelectedItem != null ? cbxcat.SelectedItem.ToString() : null : txtitname.Text;
+
             var cat = cbxcat.SelectedItem;
             if (cat != null) { cat = cat.ToString().Split(":").ElementAt(0); }
 
@@ -267,7 +296,7 @@ namespace CPS_App
             if (vid != null) { vid = vid.ToString().Split(":").ElementAt(0); }
 
             //var availableItem = pnit.Controls.OfType<KryptonTextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
-            if (txtitname.Text == string.Empty || cat == null || uom == null || vid == null)
+            if (itname == string.Empty || itname == null || cat == null || uom == null || vid == null)
             {
                 //MessageBox.Show("Please completed the item form");
                 disableValidation();
@@ -276,7 +305,7 @@ namespace CPS_App
             {
                 enableValidation();
             }
-      
+
         }
         private bool CheckBoxValidate()
         {
@@ -315,6 +344,101 @@ namespace CPS_App
                 cbxsup.Enabled = false;
                 cbxloc.Enabled = false;
             }
+        }
+
+        private void chkcrloc_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkcrloc.Checked)
+            {
+                disableValidation();
+            }
+            itemNameCheckBoxChange();
+        }
+        private void itemNameCheckBoxChange()
+        {
+            if (chkcrloc.Checked)
+            {
+                cbxitid.Show();
+                cbxitid.Enabled = true;
+                txtitname.Hide();
+                txtitname.Enabled = false;
+                cbxcat.Enabled = false;
+                cbxvid.Enabled = false;
+                cbxuom.Enabled = false;
+                chkstock.Checked = true;
+                chkstock.Hide();
+            }
+            else
+            {
+                cbxitid.Hide();
+                cbxitid.Enabled = false;
+                txtitname.Show();
+                txtitname.Enabled = true;
+                cbxcat.Enabled = true;
+                cbxvid.Enabled = true;
+                cbxuom.Enabled = true;
+                chkstock.Show();
+            }
+        }
+
+        private async void cbxitid_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            await AutoAddItemInfo();
+        }
+        private async Task AutoAddItemInfo()
+        {
+            try
+            {
+                if (cbxitid.SelectedItem != null)
+                {
+                    var id = cbxitid.SelectedItem.ToString().Split(':').ElementAt(0);
+                    var name = cbxitid.SelectedItem.ToString().Split(':').ElementAt(1);
+                    StockLevelViewObj viewObj = new StockLevelViewObj();
+                    searchObj selObj = new searchObj();
+                    selObj.searchWords.Add(nameof(viewObj.bi_item_id), new List<string>() { id.ToString() });
+                    List<StockLevelViewObj> result = await _genericTableViewWorker.GetGenericWorker<StockLevelViewObj, StockLevelSubItem>(viewObj.sql, nameof(viewObj.bi_item_id), null, selObj);
+                    if (result.Count > 0)
+                    {
+                        await GenUtil.AutoLabelAddingTextBox(pnit, result);
+                        cbxvid.SelectedItem = cbxvid.Items.ToDynamicList<string>().Where(c => c.ToString().Contains(result[0].bi_item_vid.ToString())).FirstOrDefault();
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            
+
+        }
+       
+        private async Task InsertItemUnit()
+        {
+            foreach (var i in createStock)
+            {
+                //insert tb_item_unit
+                var itemUnit = new tb_item_unit()
+                {
+                    bi_item_id = GenUtil.ConvertObjtoType<int>(i.bi_item_id),
+                    bi_location_id = GenUtil.ConvertObjtoType<int>(i.bi_location_id),
+                    i_uom_id = GenUtil.ConvertObjtoType<int>(i.i_uom_id),
+                    bi_supp_id = GenUtil.ConvertObjtoType<int>(i.bi_supp_id),
+                    i_item_qty = GenUtil.ConvertObjtoType<int>(i.i_item_qty),
+                    dt_created_date = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss")
+                };
+                var iUnitres = await _dbServices.InsertAsync<tb_item_unit>(itemUnit);
+                if (iUnitres.resCode != 1)
+                {
+                    MessageBox.Show("insert tb_item_unit error");
+                    return;
+                }
+                MessageBox.Show("item unit insert into location");
+                await GenUtil.ResumeBlankPage(pnit,createStock);
+                createStock = new List<CreateStockObj>();
+                req = new StockLevelViewObj();
+                cbxvid.SelectedIndex = -1;
+            }
+                
         }
     }
 }

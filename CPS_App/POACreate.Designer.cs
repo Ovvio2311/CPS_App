@@ -256,6 +256,7 @@ namespace CPS_App
             this.btncancel.Size = new System.Drawing.Size(115, 38);
             this.btncancel.TabIndex = 10;
             this.btncancel.Values.Text = "Cancel";
+            this.btncancel.Click += new System.EventHandler(this.btncancel_Click);
             // 
             // kryptonPalettebtn
             // 
@@ -278,6 +279,7 @@ namespace CPS_App
             this.btnclear1.Size = new System.Drawing.Size(114, 38);
             this.btnclear1.TabIndex = 9;
             this.btnclear1.Values.Text = "Clear";
+            this.btnclear1.Click += new System.EventHandler(this.btnclear_Click);
             // 
             // btnnext
             // 
@@ -289,6 +291,7 @@ namespace CPS_App
             this.btnnext.Size = new System.Drawing.Size(115, 38);
             this.btnnext.TabIndex = 11;
             this.btnnext.Values.Text = "Next";
+            this.btnnext.Click += new System.EventHandler(this.btnnext_Click);
             // 
             // kryptonDateTimePickerec
             // 
@@ -377,6 +380,7 @@ namespace CPS_App
             this.cbxtype.StateCommon.ComboBox.Content.TextH = Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.cbxtype.TabIndex = 1;
             this.cbxtype.Tag = "ti_poa_type_id:vc_poa_type_desc";
+            this.cbxtype.SelectedIndexChanged += new System.EventHandler(this.cbxtype_SelectedIndexChanged);
             // 
             // kryptonPalettepanel
             // 
@@ -393,6 +397,7 @@ namespace CPS_App
             this.btnclear.Size = new System.Drawing.Size(114, 38);
             this.btnclear.TabIndex = 21;
             this.btnclear.Values.Text = "Clear";
+            this.btnclear.Click += new System.EventHandler(this.btnclear_Click);
             // 
             // pn2
             // 
@@ -449,6 +454,7 @@ namespace CPS_App
             this.btnback.Size = new System.Drawing.Size(115, 38);
             this.btnback.TabIndex = 22;
             this.btnback.Values.Text = "Back";
+            this.btnback.Click += new System.EventHandler(this.btnback_Click);
             // 
             // lblitemcr
             // 
@@ -641,6 +647,7 @@ namespace CPS_App
             this.btnAdd.Size = new System.Drawing.Size(115, 38);
             this.btnAdd.TabIndex = 23;
             this.btnAdd.Values.Text = "Add";
+            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
             // btnsubmit
             // 
@@ -652,6 +659,7 @@ namespace CPS_App
             this.btnsubmit.Size = new System.Drawing.Size(112, 38);
             this.btnsubmit.TabIndex = 24;
             this.btnsubmit.Values.Text = "Submit";
+            this.btnsubmit.Click += new System.EventHandler(this.btnsubmit_Click);
             // 
             // kryptonPalettereadonly
             // 
@@ -667,6 +675,7 @@ namespace CPS_App
             this.Controls.Add(this.pn2);
             this.Name = "POACreate";
             this.Text = "POACreate";
+            this.Load += new System.EventHandler(this.POACreate_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pn1)).EndInit();
             this.pn1.ResumeLayout(false);
             this.pn1.PerformLayout();

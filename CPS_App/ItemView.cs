@@ -53,10 +53,17 @@ namespace CPS_App
             else
                 btnupdate.Hide();
             if (await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "item", "write" } }))
+            {
                 btncreate.Show();
+                btndispatch.Show();
+            }
             else
+            {
                 btncreate.Hide();
-
+                btndispatch.Hide();
+            }
+                
+          
             lblnoresult.Hide();
             var userLoc = userIden.Claims.FirstOrDefault(x => x.Type == "location_id").Value.ToString();
 
@@ -138,7 +145,7 @@ namespace CPS_App
 
         private void btncreate_Click(object sender, EventArgs e)
         {
-            ItemCreate itemCreate = new ItemCreate(_dbServices);
+            ItemCreate itemCreate = new ItemCreate(_dbServices,_genericTableViewWorker);
             itemCreate.MdiParent = this.MdiParent;
             itemCreate.AutoScroll = true;
             itemCreate.Show();
@@ -203,6 +210,15 @@ namespace CPS_App
             searchWords = words;
             cbxsearch1.DataSource = words.Keys.ToList();
             cbxsearch2.DataSource = words.Keys.ToList();
+        }
+
+        private void btndispatch_Click(object sender, EventArgs e)
+        {
+            DisPatch disform = new DisPatch(_genericTableViewWorker,_dbServices);
+            disform.MdiParent = this.MdiParent;
+            disform.AutoScroll = true;
+            disform.Show();
+            this.Close();
         }
     }
 }

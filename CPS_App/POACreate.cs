@@ -270,10 +270,14 @@ namespace CPS_App
         }
         private async Task ClearContent()
         {
-            pn1.Controls.OfType<KryptonTextBox>().ToList().ForEach(t => t.Clear());
-            pn1.Controls.OfType<KryptonComboBox>().ToList().ForEach(t => t.SelectedIndex = 0);
-            pn2.Controls.OfType<KryptonTextBox>().ToList().ForEach(t => t.Clear());
-            pn2.Controls.OfType<KryptonComboBox>().ToList().ForEach(t => t.SelectedIndex = 0);
+            await GenUtil.ResumeBlankPage<POATableObj>(pn1);
+            await GenUtil.ResumeBlankPage<POATableObj>(pn2);
+            await GenUtil.ResumeBlankPage<PoaItemList>(pn1);
+            await GenUtil.ResumeBlankPage<PoaItemList>(pn2);
+            //pn1.Controls.OfType<KryptonTextBox>().ToList().ForEach(t => t.Clear());
+            //pn1.Controls.OfType<KryptonComboBox>().ToList().ForEach(t => t.SelectedIndex = 0);
+            //pn2.Controls.OfType<KryptonTextBox>().ToList().ForEach(t => t.Clear());
+            //pn2.Controls.OfType<KryptonComboBox>().ToList().ForEach(t => t.SelectedIndex = 0);
         }
 
 
@@ -402,7 +406,7 @@ namespace CPS_App
         {
             try
             {
-                if(cbxtype.SelectedItem != null)
+                if (cbxtype.SelectedItem != null)
                 {
                     if (cbxtype.SelectedItem.ToString().Contains("1"))
                     {
@@ -417,13 +421,13 @@ namespace CPS_App
                         txtcont.Text = string.Empty;
                     }
                 }
-                
+
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
-            
+
         }
     }
 }

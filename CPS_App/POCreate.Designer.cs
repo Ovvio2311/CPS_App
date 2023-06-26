@@ -253,7 +253,7 @@ namespace CPS_App
             cbxreforderid.StateCommon.ComboBox.Content.TextH = PaletteRelativeAlign.Near;
             cbxreforderid.TabIndex = 16;
             cbxreforderid.Tag = "vc_ref_id";
-            cbxreforderid.SelectedIndexChanged += cbxreforderid_SelectedIndexChanged;
+            cbxreforderid.SelectedIndexChanged += cbxRefOrderId_SelectedIndexChanged;
             // 
             // lblrefid
             // 
@@ -438,6 +438,7 @@ namespace CPS_App
             cbxtype.StateCommon.ComboBox.Content.TextH = PaletteRelativeAlign.Near;
             cbxtype.TabIndex = 1;
             cbxtype.Tag = "ti_po_type_id:vc_po_type_desc";
+            cbxtype.SelectedIndexChanged += cbxtype_SelectedIndexChanged;
             // 
             // kryptonPalettepanel
             // 
@@ -711,7 +712,7 @@ namespace CPS_App
             Controls.Add(pn1);
             Controls.Add(pn2);
             Name = "POCreate";
-            Text = "POACreate";
+            Text = "POCreate";
             Load += POACreate_Load;
             ((System.ComponentModel.ISupportInitialize)pn1).EndInit();
             pn1.ResumeLayout(false);

@@ -15,6 +15,7 @@ using System.Windows.Forms;
 using CPS_App.Helpers;
 using CPS_App.Services;
 using Krypton.Toolkit;
+using Krypton.Toolkit.Suite.Extended.Data.Visualisation.ScottPlot;
 using Newtonsoft.Json;
 using Pomelo.EntityFrameworkCore.MySql.Query.ExpressionTranslators.Internal;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Header;
@@ -123,7 +124,11 @@ namespace CPS_App
 
         private async void btnnext_Click(object sender, EventArgs e)
         {
-
+            if (!Checkpn1Validate())
+            {
+                MessageBox.Show("Please Complete the form");
+                return;
+            }
             var potype = cbxtype.SelectedItem;
             if (potype != null) { potype = potype.ToString().Split(":").ElementAt(0); }
             var loc = cbxloc.SelectedItem;
@@ -259,43 +264,9 @@ namespace CPS_App
                     await ReturnToAddNewPage();
                     pn2.Hide();
                     pn1.Show();
-                    //await InsertTableHeader();
+                    //await InsertTableHeader();                    
 
-                    //insert po_line
-
-                    //obj.itemLists.ForEach(async row =>
-                    //{
-                    //    var po_line = new insertObj()
-                    //    {
-                    //        table = "tb_po_line",
-                    //        inserter = new Dictionary<string, string>
-                    //    {
-                    //    {nameof(row.bi_po_header_id), obj.bi_po_header_id.ToString() },
-                    //    {nameof(row.bi_item_id), row.bi_item_id.ToString() },
-                    //    {nameof(row.bi_supp_item_id),row.bi_supp_item_id.ToString() },
-                    //    {nameof(row.i_actual_qty), row.i_actual_qty.ToString() },
-                    //    {nameof(row.i_uom_id),row.i_uom_id.ToString() },
-                    //    {nameof(row.i_price), row.i_price.ToString() },
-                    //    {nameof(row.i_actual_amount), row.i_actual_amount.ToString() },
-                    //    {nameof(row.vc_reference), row.vc_reference.ToString() },
-                    //    {nameof(row.vc_quot_no),row.vc_quot_no.ToString() },
-                    //    }
-                    //    };
-                    //    var resitem = await _dbServices.InsertAsync(po_line);
-                    //    if (resitem.resCode != 1 || resitem.result == null)
-                    //    {
-                    //        //_logger.LogDebug("insert error");
-                    //        MessageBox.Show("insert po line error");
-                    //    }
-                    //    else
-                    //    {
-                    //        MessageBox.Show($"po line id: {resitem.result}");
-                    //        await ClearContent();
-                    //        await ReturnToAddNewPage();
-                    //        pn2.Hide();
-                    //        pn1.Show();
-                    //    }
-                    //});
+                    
                 }
             }
             catch (Exception ex)
@@ -350,6 +321,21 @@ namespace CPS_App
             }
 
 
+        }
+        private bool Checkpn1Validate()
+        {
+            try
+            {
+                var availableItem = pn1.Controls.OfType<KryptonTextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
+                var selectedComboBoxpn1 = pn1.Controls.OfType<KryptonComboBox>().Where(n => n.Text != string.Empty).Count();
+
+                return cbxreforderid.SelectedIndex == -1 ? availableItem == 1 && selectedComboBoxpn1 == 7 ? true : false : availableItem == 1 && selectedComboBoxpn1 == 8 ? true : false;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return false;
+            }
         }
         private async Task<bool> ValidateCheck()
         {
@@ -412,7 +398,8 @@ namespace CPS_App
             cbxreforderid.FormattingEnabled = true;
             cbxreforderid.SelectedIndex = -1;
             cbxreforderid.Items.Clear();
-
+            await GenUtil.ResumeBlankPage<POTableObj>(pn1);
+            await GenUtil.ResumeBlankPage<PoItemList>(pn2);
             if (cbxreffrom.Text == "New")
             {
                 cbxitid.FormattingEnabled = true;
@@ -447,7 +434,7 @@ namespace CPS_App
                     });
                 }
             }
-            else if (poaRes.resCode == 0 && poaRes.result.Count == 0)
+            else if (poaRes.resCode == 1 && poaRes.result.Count == 0)
             {
                 var pores = await selectWhere(nameof(tb_po_type), new Dictionary<string, string> { { "vc_po_type_desc", selectedRef } });
                 if (pores.resCode == 1 && pores.result.Count == 1)
@@ -465,6 +452,19 @@ namespace CPS_App
                     }
                 }
             }
+            cbxtype.Items.Clear();
+            var po_type = await _dbServices.SelectAllAsync<tb_po_type>();
+            List<tb_po_type> potype = JsonConvert.DeserializeObject<List<tb_po_type>>(JsonConvert.SerializeObject(po_type.result));
+            potype.ForEach(x =>
+            {
+
+                if (cbxreffrom.SelectedIndex != -1 && x.vc_derive_order.Contains(selectedRef))
+                {
+                    cbxtype.Items.Add($"{x.ti_po_type_id}: {x.vc_po_type_desc}");
+                }
+
+
+            });
         }
         public async Task<DbResObj> selectWhere(string table, Dictionary<string, string> obj)
         {
@@ -492,14 +492,14 @@ namespace CPS_App
             }
         }
 
-        private async void cbxreforderid_SelectedIndexChanged(object sender, EventArgs e)
+        private async void cbxRefOrderId_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cbxreforderid.SelectedIndex != -1)
             {
                 var refType = cbxreforderid.SelectedItem.ToString().Split(":").ElementAt(0);
                 var refId = cbxreforderid.SelectedItem.ToString().Split(":").ElementAt(1);
 
-
+                var refid_value = cbxreforderid.SelectedItem;
                 if (refType.Contains("Poa"))
                 {
                     POATableObj obj = new POATableObj();
@@ -520,7 +520,11 @@ namespace CPS_App
                     POTableObj obj = new POTableObj();
                     preHandleList.poList = await _genericTableViewWorker.GetGenericWorker<POTableObj, PoItemList>(obj.GetSqlQuery(), nameof(obj.bi_po_header_id), null,
                        new searchObj() { searchWords = new Dictionary<string, List<string>> { { nameof(obj.bi_po_id), new List<string>() { refId } } } });
+                    // preHandleList.poList.ForEach(x=>x.ti_po_type_id== )
                     await AllocatePrehandleList<POTableObj>(preHandleList.poList);
+                    cbxreforderid.Enabled = true;
+                    cbxtype.Enabled = true;
+
                     cbxitid.Items.Clear();
                     preHandleList.poList.ForEach(p =>
                     {
@@ -534,7 +538,7 @@ namespace CPS_App
         }
         private async Task AllocatePrehandleList<T>(List<T> obj)
         {
-            await GenUtil.AutoLabelAddingTextBox<T>(pn1, obj);
+            await GenUtil.AutoLabelAddingTextBox<T>(pn1, obj, "vc_ref_id");
         }
         //item id reference
         private async void cbxitid_SelectedIndexChanged(object sender, EventArgs e)
@@ -562,12 +566,37 @@ namespace CPS_App
                         var itemRef = i.itemLists.Where(x => x.bi_item_id.ToString() == id).ToList();
                         await GenUtil.AutoLabelAddingTextBox<PoItemList>(pn2, itemRef);
                         txtref.Enabled = true;
+                        txtactqty.Enabled = true;
+                        
                         break;
                     }
                 }
 
 
 
+            }
+        }
+
+        private async void cbxtype_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbxreforderid.SelectedIndex != -1 && cbxtype.SelectedIndex != -1)
+            {
+                var Type = cbxtype.SelectedItem.ToString()!.Split(":").ElementAt(1);
+
+                var id = cbxtype.SelectedItem.ToString()!.Split(":").ElementAt(0);
+
+                if (id.Contains("1") || id.Contains("3"))
+                {
+                    cbxitid.Items.Clear();
+                    var itemType = await _dbServices.SelectAllAsync<tb_item>();
+                    List<tb_item> itid = JsonConvert.DeserializeObject<List<tb_item>>(JsonConvert.SerializeObject(itemType.result));
+                    itid.ForEach(x => cbxitid.Items.Add($"{x.bi_item_id}: {x.vc_item_desc}"));
+
+                }
+            }
+            if(cbxreffrom.SelectedItem.ToString().Contains("Planned Purchase Order"))
+            {
+               cbxloc.Enabled= true;
             }
         }
     }

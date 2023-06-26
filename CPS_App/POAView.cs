@@ -32,6 +32,7 @@ namespace CPS_App
         private Dictionary<string, string> searchWords;
         private SearchFunc _searchFunc;
         private GenericTableViewWorker _genericTableViewWorker;
+        private int currentIndex;
         public POAView(DbServices dbServices, POAWorker pOAWorker, SearchFunc searchFunc, GenericTableViewWorker genericTableViewWorker)
         {
             InitializeComponent();
@@ -143,7 +144,8 @@ namespace CPS_App
         //edit POA and POA header
         private async void btnedit_Click(object sender, EventArgs e)
         {
-            var currentIndex = GenUtil.ConvertObjtoType<int>(kryptonDataGridViewpoa.CurrentRow.Cells["bi_poa_header_id"].Value);
+            if ( currentIndex == 0) return;
+            currentIndex = GenUtil.ConvertObjtoType<int>(kryptonDataGridViewpoa.CurrentRow.Cells["bi_poa_header_id"].Value);
             var currentpoaType = GenUtil.ConvertObjtoType<int>(kryptonDataGridViewpoa.CurrentRow.Cells["ti_poa_type_id"].Value);
             if (currentpoaType == 2)
             {

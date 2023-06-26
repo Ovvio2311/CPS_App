@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualBasic;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,13 +26,14 @@ namespace CPS_App.Services
                 res.err_msg = null;
                 res.result = null;
 
-                if(await InsertTableHeader(obj) && await InsertPoLineAsync(obj))
+                if (await InsertTableHeader(obj) && await InsertPoLineAsync(obj))
                 {
                     res.resCode = 1;
                     res.result = true;
                     res.err_msg = null;
-                    return res;
+
                 }
+
                 return res;
             }
             catch (Exception e)
@@ -83,8 +85,8 @@ namespace CPS_App.Services
                         { nameof(obj.dt_effect_date), obj.dt_effect_date },
                         {nameof(obj.dt_expect_delidate),obj.dt_expect_delidate}
             },
-                        //{ nameof(obj.vc_contract_no), obj.vc_contract_no },
-                
+                    //{ nameof(obj.vc_contract_no), obj.vc_contract_no },
+
                 };
                 var resheader = await _services.InsertAsync(tb_po_header);
                 if (resheader.resCode != 1 || resheader.result == null)
@@ -103,7 +105,7 @@ namespace CPS_App.Services
         }
         private async Task<bool> InsertPoLineAsync(POTableObj obj)
         {
-            obj.itemLists.ForEach(async row =>
+            foreach (PoItemList row in obj.itemLists)
             {
                 try
                 {
@@ -131,13 +133,48 @@ namespace CPS_App.Services
                         throw new Exception("insert po line error");
                     }
                     MessageBox.Show($"po line id: {resitem.result}");
+
+                    if (obj.ti_po_type_id == 4)
+                    {
+                        var poId = obj.vc_ref_id.Split(':').ElementAt(1).Trim();
+                        var respo = await _services.GetOriginalPoQty(poId);
+                        if (respo.resCode != 1)
+                        {
+                            MessageBox.Show("update planned purchase order error");
+                        }
+                        List<List<KeyValuePair<string, object>>> kvp = respo.result;
+                        var actQty = kvp.ElementAt(0).FirstOrDefault(x => x.Key == "i_actual_qty").Value;
+                        var actheader = kvp.ElementAt(0).FirstOrDefault(x => x.Key == "bi_po_header_id").Value.ToString();
+                        int relQty = GenUtil.ConvertObjtoType<int>(actQty) - row.i_actual_qty;
+                        updateObj updObj = new updateObj()
+                        {
+                            table = "tb_po_line",
+                            updater = new Dictionary<string, string>
+                            {
+                                { nameof(row.i_actual_qty), relQty.ToString()  }
+                            },
+                            selecter = new Dictionary<string, string>
+                            {
+                                { nameof(row.bi_po_header_id), actheader },
+                                { nameof(row.bi_item_id), row.bi_item_id.ToString() }
+                            }
+
+                        };
+                        var resorin = await _services.UpdateAsync(updObj);
+                        if (resitem.resCode != 1 || resitem.result == null)
+                        {
+                            //_logger.LogDebug("insert error");
+                            throw new Exception("Update Planned Purchase order error");
+                        }
+
+                    }
                 }
                 catch (Exception e)
                 {
-                    throw new Exception(e.Message);
-                }                
-                
-            });
+                    MessageBox.Show(e.Message);
+                }
+
+            }
             return true;
         }
     }

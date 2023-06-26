@@ -13,6 +13,7 @@ using System.Security.Cryptography;
 using System.CodeDom;
 using System.Xml.Linq;
 using static CPS_App.Models.DbModels;
+using System.Windows.Controls;
 
 namespace CPS_App.Services
 {
@@ -155,6 +156,7 @@ namespace CPS_App.Services
                 res.result = null;
                 res.resCode = 0;
                 res.err_msg = ex.Message;
+                throw new Exception(ex.Message);
             }
             return res;
         }
@@ -348,8 +350,13 @@ namespace CPS_App.Services
         {
             var res = new resObj();
             res.resCode = 0;
+            res.result = null;
+            res.err_msg = null;
+            try
+            {
+               
 
-            string sql = @$"select * from (
+                string sql = @$"select * from (
 	                     select p.bi_poa_id, p.ti_poa_type_id, pl.bi_item_id, p.vc_poa_status, ph.vc_order_revision, ph.bi_deli_loc_id, 
                          ph.ti_tc_id, ph.bi_supp_id, ph.vc_currency, ph.dt_effect_date, ph.vc_contract_no, 
                          pl.i_promise_qty, pl.i_uom_id, pl.i_min_qty, pl.i_price, pl.i_amount, pl.vc_reference,
@@ -369,14 +376,26 @@ namespace CPS_App.Services
                          ) a)c 
                          on a.bi_item_id = c.bi_item_id;";
 
-            var result = await _db.QueryAsync<T>(sql, null);
+                var result = await _db.QueryAsync<T>(sql, null);
 
-            if (result != null)
-            {
-                res.result = result;
-                res.resCode = 1;
+                if (result.Count() > 0)
+                {
+                    res.result = result;
+                    res.resCode = 1;
+                }
+                else
+                {
+                    res.resCode = 0;
+                }
+                return res;
             }
-            return res;
+            catch(Exception e)
+            {
+                res.err_msg = e.Message;
+                return res;
+            }
+            
+            
         }
         public async Task<DbResObj> GetInStockQty()
         {
@@ -845,6 +864,40 @@ namespace CPS_App.Services
                     result = null,
                     err_msg = ex.Message
                 };
+            }
+        }
+        public async Task<DbResObj> GetOriginalPoQty(string poId)
+        {
+            var res = new DbResObj();
+            res.resCode = 0;
+            res.result = null;
+            res.err_msg = null;
+            try
+            {
+
+
+                string sql = @$"select i_actual_qty , ln.bi_po_header_id from tb_po_line ln
+                            left join tb_po_header hd on hd.bi_po_header_id = ln.bi_po_header_id
+                            where bi_po_id = @bi_po_id ;";
+                DynamicParameters para = new DynamicParameters();
+                para.Add($"bi_po_id", poId);
+                var result = await _db.QueryAsync<dynamic>(sql, para);
+
+                if (result.Count() > 0)
+                {
+                    res.result = GenUtil.DbResulttoKVP(result);
+                    res.resCode = 1;
+                }
+                else
+                {
+                    res.resCode = 0;
+                }
+                return res;
+            }
+            catch (Exception e)
+            {
+                res.err_msg = e.Message;
+                return res;
             }
         }
     }

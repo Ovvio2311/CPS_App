@@ -31,10 +31,11 @@ namespace CPS_App
         private POTableObj obj;
         private List<PoItemList> itemList;
         private Validator _validator;
-        private Dictionary<string, string> poaRefType;
+        //private Dictionary<string, string> poaRefType;
         private GenericTableViewWorker _genericTableViewWorker;
         private PoCreateRefList preHandleList;
         private CreatePoServices _createPoServices;
+        private RequestMappingReqObj _requestMappingReqObj;
         public POCreate(DbServices dbServices, GenericTableViewWorker genericTableViewWorker, CreatePoServices createPoServices)
         {
             InitializeComponent();
@@ -42,10 +43,11 @@ namespace CPS_App
             itemList = new List<PoItemList>();
             _dbServices = dbServices;
             _validator = new Validator();
-            poaRefType = new Dictionary<string, string>();
+            // poaRefType = new Dictionary<string, string>();
             _genericTableViewWorker = genericTableViewWorker;
             preHandleList = new PoCreateRefList();
             _createPoServices = createPoServices;
+            _requestMappingReqObj = new RequestMappingReqObj();
         }
 
         private async void POACreate_Load(object sender, EventArgs e)
@@ -462,7 +464,6 @@ namespace CPS_App
                 {
                     cbxtype.Items.Add($"{x.ti_po_type_id}: {x.vc_po_type_desc}");
                 }
-
 
             });
         }

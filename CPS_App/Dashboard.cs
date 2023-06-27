@@ -30,9 +30,9 @@ namespace CPS_App
         private CreatePoServices _createPoServices;
         private ManualMappingProcess _manualMappingProcess;
 
-        public Dashboard(Register register, AuthService authService, 
-            RequestMapping requestMapp, DbServices dbServices, 
-            StockLevelWorker stockWorker, RegisterServices registerServices, 
+        public Dashboard(Register register, AuthService authService,
+            RequestMapping requestMapp, DbServices dbServices,
+            StockLevelWorker stockWorker, RegisterServices registerServices,
             POAWorker pOAWorker, SearchFunc searchFunc, IConfiguration configuration,
             ScheduleTask scheduleTask, GenericTableViewWorker genericTableViewWorker, CreatePoServices createPoServices, ManualMappingProcess manualMappingProcess)
         {
@@ -100,7 +100,7 @@ namespace CPS_App
         //        list.OrderBy(_ => _.GetType().GetProperty(column).GetValue(_)).ToList() :
         //        list.OrderByDescending(_ => _.GetType().GetProperty(column).GetValue(_)).ToList();
         //}
-       
+
 
 
 
@@ -108,15 +108,15 @@ namespace CPS_App
 
         private void stripreq_Click(object sender, EventArgs e)
         {
-            RequestView reqView = new RequestView(_dbServices, _requestMapp,_searchFunc, _genericTableViewWorker, _createPoServices, _manualMappingProcess);
-            reqView.MdiParent = this;            
+            RequestView reqView = new RequestView(_dbServices, _requestMapp, _searchFunc, _genericTableViewWorker, _createPoServices, _manualMappingProcess);
+            reqView.MdiParent = this;
             reqView.AutoScroll = true;
             reqView.Show();
         }
 
         private void stripitem_Click(object sender, EventArgs e)
         {
-            ItemView itemView = new ItemView(_dbServices, _stockWorker,_searchFunc,_genericTableViewWorker);
+            ItemView itemView = new ItemView(_dbServices, _stockWorker, _searchFunc, _genericTableViewWorker);
             itemView.MdiParent = this;
             itemView.AutoScroll = true;
             itemView.Show();
@@ -124,7 +124,7 @@ namespace CPS_App
 
         private void strippoa_Click(object sender, EventArgs e)
         {
-            POAView poaView = new POAView(_dbServices, _pOAWorker,_searchFunc,_genericTableViewWorker);
+            POAView poaView = new POAView(_dbServices, _pOAWorker, _searchFunc, _genericTableViewWorker);
             poaView.MdiParent = this;
             poaView.AutoScroll = true;
             poaView.Show();
@@ -132,7 +132,7 @@ namespace CPS_App
 
         private void strippo_Click(object sender, EventArgs e)
         {
-            POView poView = new POView(_dbServices, _pOAWorker, _searchFunc, _genericTableViewWorker,_createPoServices,_manualMappingProcess);
+            POView poView = new POView(_dbServices, _pOAWorker, _searchFunc, _genericTableViewWorker, _createPoServices, _manualMappingProcess);
             poView.MdiParent = this;
             poView.AutoScroll = true;
             poView.Show();
@@ -148,12 +148,12 @@ namespace CPS_App
 
         private async void striplogout_Click(object sender, EventArgs e)
         {
-            DialogResult dialogResult= MessageBox.Show("Are You sure want to Logout?", "Confirm",MessageBoxButtons.YesNo);
-            if(dialogResult == DialogResult.Yes)
+            DialogResult dialogResult = MessageBox.Show("Are You sure want to Logout?", "Confirm", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
             {
                 userIden = null;
                 this.Hide();
-                Login login = new Login(_configuration, _authService, this,_scheduleTask);
+                Login login = new Login(_configuration, _authService, this, _scheduleTask);
                 login.Show();
             }
         }

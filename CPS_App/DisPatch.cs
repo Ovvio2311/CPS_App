@@ -93,7 +93,6 @@ namespace CPS_App
 
                 selectdId = GenUtil.ConvertObjtoType<int>(datagridview.CurrentRow.Cells["bi_di_id"].Value);
 
-
             }
         }
 
@@ -106,7 +105,7 @@ namespace CPS_App
         {
             try
             {
-                if(await InsertDeliveryNote(dispatchObj))
+                if (await InsertDeliveryNote(dispatchObj))
                 {
                     await UpdateDispatch(dispatchObj);
                 }

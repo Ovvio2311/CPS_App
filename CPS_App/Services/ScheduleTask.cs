@@ -72,10 +72,14 @@ namespace CPS_App.Services
                 List<POTableObj> newPo2 = await MappingScheduler_P1();
                 await UpdateRecordAsync();
 
-                //Mapping Process Warehouse
+                //Mapping Process Warehouse p3
                 //List<DispatchInstruction> dis = await MappingProcessWarehouse();
                 //await CreateDispatchAsync(dis);
                 //await UpdateRecordAsync();
+
+                //Record remaining req to fail
+                await UpdateMappRecordtoFail();
+                await UpdateRecordAsync();
             }
             catch (Exception ex)
             {
@@ -449,10 +453,70 @@ namespace CPS_App.Services
                     DbResObj res = await _services.UpdateAsync(obj);
                     if (res.resCode != 1 || res.err_msg != null)
                     {
-                        _logger.LogDebug($"Mapping process update Db Error: {res.err_msg}");
+                        _logger.LogDebug($"Process update Db Error: {res.err_msg}");
                     }
                 }
                 _updateObjects.Clear();
+            }
+        }
+        public async Task UpdateMappRecordtoFail()
+        {
+            try
+            {
+                List<RequestMappingReqObj> reqRemain = await RequestMapObjectGetter();
+                await CreateUpdateObject(reqRemain);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            
+        }
+        public async Task CreateUpdateObject(List<RequestMappingReqObj> reqRemain)
+        {
+            try
+            {
+                foreach(RequestMappingReqObj row in  reqRemain)
+                {
+                    updateObj updateObj = new updateObj()
+                    {
+                        table = "tb_request",
+                        updater = new Dictionary<string, string>
+                            {
+                                {nameof(row.i_map_stat_id),"3" }
+                            },
+                        selecter = new Dictionary<string, string>
+                            {
+                                {nameof(row.bi_req_id),row.bi_req_id.ToString()},
+                                {nameof(row.i_map_stat_id), "1"}
+                            }
+                    };
+                    _updateObjects.Add(updateObj);
+
+                    row.itemLists.ForEach(it =>
+                    {
+                        updateObj updateObj = new updateObj()
+                        {
+                            table = "tb_request_detail",
+                            updater = new Dictionary<string, string>
+                            {
+                                {nameof(it.i_hd_map_stat_id),"3" }
+                            },
+                            selecter = new Dictionary<string, string>
+                            {
+                                {nameof(it.bi_req_id),it.bi_req_id.ToString()},
+                                {nameof(it.bi_item_id), it.bi_item_id.ToString()},
+                                {nameof(it.i_hd_map_stat_id),"1"},
+                            }
+                        };
+                        _updateObjects.Add(updateObj);
+                    });
+                    
+                }
+
+            }catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
             }
         }
     }

@@ -31,169 +31,169 @@ namespace CPS_App
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Dashboard));
-            this.kryptonPalette1 = new Krypton.Toolkit.KryptonPalette(this.components);
-            this.stripreq = new System.Windows.Forms.ToolStripButton();
-            this.stripitem = new System.Windows.Forms.ToolStripButton();
-            this.strippoa = new System.Windows.Forms.ToolStripButton();
-            this.strippo = new System.Windows.Forms.ToolStripButton();
-            this.stripset = new System.Windows.Forms.ToolStripButton();
-            this.kryptonEnhancedToolStrip3 = new Krypton.Toolkit.Suite.Extended.Tool.Strip.Items.KryptonEnhancedToolStrip();
-            this.striplogout = new System.Windows.Forms.ToolStripButton();
-            this.striplblwelcome = new System.Windows.Forms.ToolStripLabel();
-            this.kryptonPalettelbl = new Krypton.Toolkit.KryptonPalette(this.components);
-            this.kryptonEnhancedToolStrip3.SuspendLayout();
-            this.SuspendLayout();
+            components = new Container();
+            ComponentResourceManager resources = new ComponentResourceManager(typeof(Dashboard));
+            kryptonPalette1 = new Krypton.Toolkit.KryptonPalette(components);
+            stripreq = new ToolStripButton();
+            stripitem = new ToolStripButton();
+            strippoa = new ToolStripButton();
+            strippo = new ToolStripButton();
+            stripset = new ToolStripButton();
+            kryptonEnhancedToolStrip3 = new Krypton.Toolkit.Suite.Extended.Tool.Strip.Items.KryptonEnhancedToolStrip();
+            striplogout = new ToolStripButton();
+            striplblwelcome = new ToolStripLabel();
+            btndn = new ToolStripButton();
+            kryptonPalettelbl = new Krypton.Toolkit.KryptonPalette(components);
+            kryptonEnhancedToolStrip3.SuspendLayout();
+            SuspendLayout();
             // 
             // kryptonPalette1
             // 
-            this.kryptonPalette1.ButtonStyles.ButtonCommand.StateCommon.Content.Padding = new System.Windows.Forms.Padding(0);
-            this.kryptonPalette1.ButtonStyles.ButtonCommand.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.kryptonPalette1.ButtonStyles.ButtonCommon.OverrideDefault.Back.Color1 = System.Drawing.Color.White;
-            this.kryptonPalette1.ButtonStyles.ButtonCommon.OverrideDefault.Back.Color2 = System.Drawing.Color.White;
-            this.kryptonPalette1.ButtonStyles.ButtonCommon.OverrideDefault.Border.Color1 = System.Drawing.Color.Transparent;
-            this.kryptonPalette1.ButtonStyles.ButtonCommon.OverrideDefault.Border.Color2 = System.Drawing.Color.Transparent;
-            this.kryptonPalette1.ButtonStyles.ButtonCommon.OverrideDefault.Border.DrawBorders = ((Krypton.Toolkit.PaletteDrawBorders)((((Krypton.Toolkit.PaletteDrawBorders.Top | Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.kryptonPalette1.ButtonStyles.ButtonCommon.StateCommon.Back.Color1 = System.Drawing.Color.White;
-            this.kryptonPalette1.ButtonStyles.ButtonCommon.StateCommon.Back.Color2 = System.Drawing.Color.White;
-            this.kryptonPalette1.ButtonStyles.ButtonCommon.StateCommon.Border.Color1 = System.Drawing.Color.Transparent;
-            this.kryptonPalette1.ButtonStyles.ButtonCommon.StateCommon.Border.Color2 = System.Drawing.Color.Transparent;
-            this.kryptonPalette1.ButtonStyles.ButtonCommon.StateCommon.Border.DrawBorders = ((Krypton.Toolkit.PaletteDrawBorders)((((Krypton.Toolkit.PaletteDrawBorders.Top | Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.kryptonPalette1.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            kryptonPalette1.ButtonStyles.ButtonCommand.StateCommon.Content.Padding = new Padding(0);
+            kryptonPalette1.ButtonStyles.ButtonCommand.StateCommon.Content.ShortText.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point);
+            kryptonPalette1.ButtonStyles.ButtonCommon.OverrideDefault.Back.Color1 = Color.White;
+            kryptonPalette1.ButtonStyles.ButtonCommon.OverrideDefault.Back.Color2 = Color.White;
+            kryptonPalette1.ButtonStyles.ButtonCommon.OverrideDefault.Border.Color1 = Color.Transparent;
+            kryptonPalette1.ButtonStyles.ButtonCommon.OverrideDefault.Border.Color2 = Color.Transparent;
+            kryptonPalette1.ButtonStyles.ButtonCommon.OverrideDefault.Border.DrawBorders = Krypton.Toolkit.PaletteDrawBorders.Top | Krypton.Toolkit.PaletteDrawBorders.Bottom | Krypton.Toolkit.PaletteDrawBorders.Left | Krypton.Toolkit.PaletteDrawBorders.Right;
+            kryptonPalette1.ButtonStyles.ButtonCommon.StateCommon.Back.Color1 = Color.White;
+            kryptonPalette1.ButtonStyles.ButtonCommon.StateCommon.Back.Color2 = Color.White;
+            kryptonPalette1.ButtonStyles.ButtonCommon.StateCommon.Border.Color1 = Color.Transparent;
+            kryptonPalette1.ButtonStyles.ButtonCommon.StateCommon.Border.Color2 = Color.Transparent;
+            kryptonPalette1.ButtonStyles.ButtonCommon.StateCommon.Border.DrawBorders = Krypton.Toolkit.PaletteDrawBorders.Top | Krypton.Toolkit.PaletteDrawBorders.Bottom | Krypton.Toolkit.PaletteDrawBorders.Left | Krypton.Toolkit.PaletteDrawBorders.Right;
+            kryptonPalette1.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Font = new Font("Microsoft Sans Serif", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
             // 
             // stripreq
             // 
-            this.stripreq.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.stripreq.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.stripreq.Image = ((System.Drawing.Image)(resources.GetObject("stripreq.Image")));
-            this.stripreq.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.stripreq.Name = "stripreq";
-            this.stripreq.Padding = new System.Windows.Forms.Padding(30, 5, 30, 5);
-            this.stripreq.Size = new System.Drawing.Size(134, 32);
-            this.stripreq.Text = "Request";
-            this.stripreq.Click += new System.EventHandler(this.stripreq_Click);
+            stripreq.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            stripreq.Font = new Font("Microsoft Sans Serif", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
+            stripreq.Image = (Image)resources.GetObject("stripreq.Image");
+            stripreq.ImageTransparentColor = Color.Magenta;
+            stripreq.Name = "stripreq";
+            stripreq.Padding = new Padding(20, 5, 20, 5);
+            stripreq.Size = new Size(114, 32);
+            stripreq.Text = "Request";
+            stripreq.Click += stripreq_Click;
             // 
             // stripitem
             // 
-            this.stripitem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.stripitem.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.stripitem.Image = ((System.Drawing.Image)(resources.GetObject("stripitem.Image")));
-            this.stripitem.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.stripitem.Name = "stripitem";
-            this.stripitem.Padding = new System.Windows.Forms.Padding(30, 5, 30, 5);
-            this.stripitem.Size = new System.Drawing.Size(104, 32);
-            this.stripitem.Text = "Item";
-            this.stripitem.Click += new System.EventHandler(this.stripitem_Click);
+            stripitem.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            stripitem.Font = new Font("Microsoft Sans Serif", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
+            stripitem.Image = (Image)resources.GetObject("stripitem.Image");
+            stripitem.ImageTransparentColor = Color.Magenta;
+            stripitem.Name = "stripitem";
+            stripitem.Padding = new Padding(20, 5, 20, 5);
+            stripitem.Size = new Size(84, 32);
+            stripitem.Text = "Item";
+            stripitem.Click += stripitem_Click;
             // 
             // strippoa
             // 
-            this.strippoa.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.strippoa.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.strippoa.Image = ((System.Drawing.Image)(resources.GetObject("strippoa.Image")));
-            this.strippoa.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.strippoa.Name = "strippoa";
-            this.strippoa.Padding = new System.Windows.Forms.Padding(30, 5, 30, 5);
-            this.strippoa.Size = new System.Drawing.Size(106, 32);
-            this.strippoa.Text = "POA";
-            this.strippoa.Click += new System.EventHandler(this.strippoa_Click);
+            strippoa.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            strippoa.Font = new Font("Microsoft Sans Serif", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
+            strippoa.Image = (Image)resources.GetObject("strippoa.Image");
+            strippoa.ImageTransparentColor = Color.Magenta;
+            strippoa.Name = "strippoa";
+            strippoa.Padding = new Padding(20, 5, 20, 5);
+            strippoa.Size = new Size(86, 32);
+            strippoa.Text = "POA";
+            strippoa.Click += strippoa_Click;
             // 
             // strippo
             // 
-            this.strippo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.strippo.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.strippo.Image = ((System.Drawing.Image)(resources.GetObject("strippo.Image")));
-            this.strippo.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.strippo.Name = "strippo";
-            this.strippo.Padding = new System.Windows.Forms.Padding(30, 5, 30, 5);
-            this.strippo.Size = new System.Drawing.Size(96, 32);
-            this.strippo.Text = "PO";
-            this.strippo.Click += new System.EventHandler(this.strippo_Click);
+            strippo.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            strippo.Font = new Font("Microsoft Sans Serif", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
+            strippo.Image = (Image)resources.GetObject("strippo.Image");
+            strippo.ImageTransparentColor = Color.Magenta;
+            strippo.Name = "strippo";
+            strippo.Padding = new Padding(20, 5, 20, 5);
+            strippo.Size = new Size(76, 32);
+            strippo.Text = "PO";
+            strippo.Click += strippo_Click;
             // 
             // stripset
             // 
-            this.stripset.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.stripset.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.stripset.Image = ((System.Drawing.Image)(resources.GetObject("stripset.Image")));
-            this.stripset.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.stripset.Name = "stripset";
-            this.stripset.Padding = new System.Windows.Forms.Padding(30, 5, 30, 5);
-            this.stripset.Size = new System.Drawing.Size(124, 32);
-            this.stripset.Text = "Setting";
-            this.stripset.Click += new System.EventHandler(this.stripset_Click);
+            stripset.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            stripset.Font = new Font("Microsoft Sans Serif", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
+            stripset.Image = (Image)resources.GetObject("stripset.Image");
+            stripset.ImageTransparentColor = Color.Magenta;
+            stripset.Name = "stripset";
+            stripset.Padding = new Padding(20, 5, 20, 5);
+            stripset.Size = new Size(104, 32);
+            stripset.Text = "Setting";
+            stripset.Click += stripset_Click;
             // 
             // kryptonEnhancedToolStrip3
             // 
-            this.kryptonEnhancedToolStrip3.BackColor = System.Drawing.Color.White;
-            this.kryptonEnhancedToolStrip3.ClickThrough = false;
-            this.kryptonEnhancedToolStrip3.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.kryptonEnhancedToolStrip3.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.stripreq,
-            this.stripitem,
-            this.strippoa,
-            this.strippo,
-            this.stripset,
-            this.striplogout,
-            this.striplblwelcome});
-            this.kryptonEnhancedToolStrip3.Location = new System.Drawing.Point(0, 0);
-            this.kryptonEnhancedToolStrip3.Name = "kryptonEnhancedToolStrip3";
-            this.kryptonEnhancedToolStrip3.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.kryptonEnhancedToolStrip3.Size = new System.Drawing.Size(1002, 35);
-            this.kryptonEnhancedToolStrip3.TabIndex = 33;
-            this.kryptonEnhancedToolStrip3.Text = "kryptonEnhancedToolStrip3";
+            kryptonEnhancedToolStrip3.BackColor = Color.White;
+            kryptonEnhancedToolStrip3.ClickThrough = false;
+            kryptonEnhancedToolStrip3.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            kryptonEnhancedToolStrip3.Items.AddRange(new ToolStripItem[] { stripreq, stripitem, strippoa, strippo, btndn, stripset, striplogout, striplblwelcome });
+            kryptonEnhancedToolStrip3.Location = new Point(0, 0);
+            kryptonEnhancedToolStrip3.Name = "kryptonEnhancedToolStrip3";
+            kryptonEnhancedToolStrip3.RenderMode = ToolStripRenderMode.System;
+            kryptonEnhancedToolStrip3.Size = new Size(1002, 35);
+            kryptonEnhancedToolStrip3.TabIndex = 33;
+            kryptonEnhancedToolStrip3.Text = "kryptonEnhancedToolStrip3";
             // 
             // striplogout
             // 
-            this.striplogout.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.striplogout.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.striplogout.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.striplogout.Image = ((System.Drawing.Image)(resources.GetObject("striplogout.Image")));
-            this.striplogout.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.striplogout.Name = "striplogout";
-            this.striplogout.Padding = new System.Windows.Forms.Padding(30, 5, 30, 5);
-            this.striplogout.Size = new System.Drawing.Size(124, 32);
-            this.striplogout.Text = "Logout";
-            this.striplogout.Click += new System.EventHandler(this.striplogout_Click);
+            striplogout.Alignment = ToolStripItemAlignment.Right;
+            striplogout.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            striplogout.Font = new Font("Microsoft Sans Serif", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
+            striplogout.Image = (Image)resources.GetObject("striplogout.Image");
+            striplogout.ImageTransparentColor = Color.Magenta;
+            striplogout.Name = "striplogout";
+            striplogout.Padding = new Padding(30, 5, 30, 5);
+            striplogout.Size = new Size(124, 32);
+            striplogout.Text = "Logout";
+            striplogout.Click += striplogout_Click;
             // 
             // striplblwelcome
             // 
-            this.striplblwelcome.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.striplblwelcome.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point);
-            this.striplblwelcome.Name = "striplblwelcome";
-            this.striplblwelcome.Size = new System.Drawing.Size(0, 32);
+            striplblwelcome.Alignment = ToolStripItemAlignment.Right;
+            striplblwelcome.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Italic, GraphicsUnit.Point);
+            striplblwelcome.Name = "striplblwelcome";
+            striplblwelcome.Size = new Size(0, 32);
+            // 
+            // btndn
+            // 
+            btndn.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            btndn.Font = new Font("Microsoft Sans Serif", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
+            btndn.Image = (Image)resources.GetObject("btndn.Image");
+            btndn.ImageTransparentColor = Color.Magenta;
+            btndn.Name = "btndn";
+            btndn.Padding = new Padding(20, 5, 20, 5);
+            btndn.Size = new Size(153, 32);
+            btndn.Text = "Delivery Note";
             // 
             // kryptonPalettelbl
             // 
-            this.kryptonPalettelbl.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Microsoft YaHei", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.kryptonPalettelbl.LabelStyles.LabelCommon.StateCommon.ShortText.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            kryptonPalettelbl.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Font = new Font("Microsoft YaHei", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
+            kryptonPalettelbl.LabelStyles.LabelCommon.StateCommon.ShortText.Font = new Font("Microsoft Sans Serif", 11.25F, FontStyle.Regular, GraphicsUnit.Point);
             // 
             // Dashboard
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.White;
-            this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
-            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(1002, 529);
-            this.Controls.Add(this.kryptonEnhancedToolStrip3);
-            this.IsMdiContainer = true;
-            this.Name = "Dashboard";
-            this.Palette = this.kryptonPalette1;
-            this.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
-            this.StateCommon.Back.Color1 = System.Drawing.Color.White;
-            this.StateCommon.Back.Color2 = System.Drawing.Color.White;
-            this.StateCommon.Back.ColorAlign = Krypton.Toolkit.PaletteRectangleAlign.Local;
-            this.Text = "Dashboard";
-            this.Load += new System.EventHandler(this.Dashboard_Load);
-            this.kryptonEnhancedToolStrip3.ResumeLayout(false);
-            this.kryptonEnhancedToolStrip3.PerformLayout();
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.White;
+            BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
+            BackgroundImageLayout = ImageLayout.Stretch;
+            ClientSize = new Size(1002, 529);
+            Controls.Add(kryptonEnhancedToolStrip3);
+            IsMdiContainer = true;
+            Name = "Dashboard";
+            Palette = kryptonPalette1;
+            PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            StateCommon.Back.Color1 = Color.White;
+            StateCommon.Back.Color2 = Color.White;
+            StateCommon.Back.ColorAlign = Krypton.Toolkit.PaletteRectangleAlign.Local;
+            Text = "Dashboard";
+            Load += Dashboard_Load;
+            kryptonEnhancedToolStrip3.ResumeLayout(false);
+            kryptonEnhancedToolStrip3.PerformLayout();
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -210,5 +210,6 @@ namespace CPS_App
         private ToolStripLabel striplblwelcome;
         private ToolStripButton striplogout;
         private Krypton.Toolkit.KryptonPalette kryptonPalettelbl;
+        private ToolStripButton btndn;
     }
 }

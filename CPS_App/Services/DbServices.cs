@@ -900,5 +900,66 @@ namespace CPS_App.Services
                 return res;
             }
         }
+        public async Task<DbResObj> GetDiliveryNote(string loc = null, searchObj obj = null)
+        {
+            string sql = $@"select * from (
+                          select dn.bi_dn_id, bi_po_id, dn.i_dn_type_id, ty.vc_dn_type_desc, dn.bi_req_id, dn.bi_item_id, v.bi_item_vid,
+                          it.vc_item_desc, dn.i_item_qty, dn.bi_location_id, loc.vc_location_desc, dn.dt_exp_deli_date, dn.dt_created_date, dn.dt_updated_datetime
+                          from tb_delivery_note dn
+                          left join lut_dn_type ty on dn.i_dn_type_id = ty.i_dn_type_id 
+                          left join tb_item it on dn.bi_item_id = it.bi_item_id
+                          left join tb_location loc on dn.bi_location_id = loc.bi_location_id
+                          inner join (
+                          select * from tb_item_vid_mapping group by bi_item_id, bi_item_vid
+                          )v on it.bi_item_id = v.bi_item_id
+                          )a ";
+            if (obj != null)
+            {
+                string seasrchList = string.Join(" and ", obj.searchWords.Select(x => $"{x.Key} in ({string.Join(",", x.Value.ToList().Select(i => $"'{i}'").ToList())})").ToList());
+                sql += $"where {seasrchList} ";
+            }
+            if (loc != null)
+            {
+                //sql += $"order by bi_deli_loc_id = '{loc}' desc; ";
+            }
+            else
+            {
+                sql += ";";
+            }
+            try
+            {
+                var result = await _db.QueryAsync<DeliveryNoteObj>(sql, null);
+                if (result.Count() > 0)
+                {
+
+                    return new DbResObj
+                    {
+                        resCode = 1,
+                        result = result,
+                        err_msg = null
+                    };
+
+                }
+                else
+                {
+                    return new DbResObj
+                    {
+                        resCode = 0,
+                        result = null,
+                        err_msg = null
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new DbResObj
+                {
+                    resCode = 0,
+                    result = null,
+                    err_msg = ex.Message
+                };
+            }
+        }
+       
     }
 }

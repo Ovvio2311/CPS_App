@@ -892,5 +892,50 @@ namespace CPS_App.Models
                 return sb.ToString();
             }
         }
+        public class DeliveryNoteObj
+        {
+            [Display(Name = "Delivery Note Id")]
+            public int bi_dn_id { get; set; }
+            [Display(Name = "Ref Po Id")]
+            public int bi_po_id { get; set; }
+            [Display(Name = "Ref Req Id")]
+            public int bi_req_id { get; set; }
+            [Display(Name = "not_shown")]
+            public int i_dn_type_id { get; set; }
+            [Display(Name = "Type")]
+            public string vc_dn_type_desc { get; set; }                        
+            [Display(Name = "not_shown")]
+            public int bi_item_id { get; set; }
+            [Display(Name = "Item")]
+            public string vc_item_desc { get; set; }
+            [Display(Name = "Item Vid")]
+            public int bi_item_vid { get; set; }            
+            [Display(Name = "Quantity")]
+            public int i_item_qty { get; set; }                  
+            [Display(Name = "not_shown")]
+            public int bi_location_id { get; set; }
+            [Display(Name = "Location")]
+            public string vc_location_desc { get; set; }
+            [Display(Name = "Expected Delievery Date")]
+            public string dt_exp_deli_date { get; set; }
+            [Display(Name = "not_shown")]
+            public string dt_created_date { get; set; }
+            public string GetSqlQuery()
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.Append(@"select * from (
+                          select dn.bi_dn_id, bi_po_id, dn.i_dn_type_id, ty.vc_dn_type_desc, dn.bi_req_id, dn.bi_item_id, v.bi_item_vid,
+                          it.vc_item_desc, dn.i_item_qty, dn.bi_location_id, loc.vc_location_desc, dn.dt_exp_deli_date, dn.dt_created_date, dn.dt_updated_datetime
+                          from tb_delivery_note dn
+                          left join lut_dn_type ty on dn.i_dn_type_id = ty.i_dn_type_id 
+                          left join tb_item it on dn.bi_item_id = it.bi_item_id
+                          left join tb_location loc on dn.bi_location_id = loc.bi_location_id
+                          inner join (
+                          select * from tb_item_vid_mapping group by bi_item_id, bi_item_vid
+                          )v on it.bi_item_id = v.bi_item_id
+                          )a ");
+                return sb.ToString();
+            }
+        }
     }
 }

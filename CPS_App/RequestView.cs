@@ -49,7 +49,8 @@ namespace CPS_App
             {
                 //throw new Exception("user claim is null");
             }
-            //await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "request", "read" } })?
+            btnOrderMap.Hide();
+            lblitem.Hide();
             if (!await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "request", "read" } }))
             {
                 MessageBox.Show("No Access Permission");
@@ -63,9 +64,12 @@ namespace CPS_App
                 btnAdd.Show();
             else
                 btnAdd.Hide();
-
-            lblitem.Hide();
-            //var userRole = userIden.Claims.FirstOrDefault(x => x.Type == "role").Value.ToString();
+            if (await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "reqmapping", "true" } }))
+            {
+                btnOrderMap.Show();
+            }
+            
+            var userRole = userIden.Claims.FirstOrDefault(x => x.Type == "role").Value.ToString();
             string userLoc = null;
             userLoc = userIden.Claims.FirstOrDefault(x => x.Type == "location_id").Value.ToString();
 

@@ -33,7 +33,7 @@ namespace CPS_App
             _updateObjs = new List<updateObj>();
         }
 
-        
+
         private async void DNView_Load(object sender, EventArgs e)
         {
             userIden = AuthService._userClaim;
@@ -52,12 +52,13 @@ namespace CPS_App
             datagridview.DataSource = null;
             //defPage = await _requestMapp.RequestMappingObjGetter(loc, obj);
             DeliveryNoteObj viewObj = new DeliveryNoteObj();
-            
+
             searchObj searchObj = new searchObj()
             {
                 searchWords = new Dictionary<string, List<string>>
                 {
-                    { nameof(viewObj.bi_location_id), new List<string>(){ userLoc } }
+                    { nameof(viewObj.bi_location_id), new List<string>(){ userLoc } },
+                    { nameof(viewObj.i_dn_type_id), new List<string>(){ "1" } }
                 }
             };
             DbResObj res = await _dbServices.GetDiliveryNote(loc, searchObj);
@@ -78,7 +79,7 @@ namespace CPS_App
 
             GenUtil.dataGridAttrName<DeliveryNoteObj>(datagridview, new List<string>() { "not_shown" });
         }
-        private void btnreceive_Click(object sender, EventArgs e)
+        private async void btnreceive_Click(object sender, EventArgs e)
         {
             if (selectId == 0)
             {
@@ -86,7 +87,40 @@ namespace CPS_App
                 return;
             }
             DeliveryNoteObj readytoConfirm = dnObj.Where(x => x.bi_dn_id == selectId).FirstOrDefault();
+            await CreateUpdateObj(readytoConfirm);
+            await UpdateRecordAsync();
 
+            bool flag = false;
+            List<RequestMappingReqObj> reqObj = await OutstandingReqObj();
+            foreach (RequestMappingReqObj row in reqObj)
+            {
+                if (row.itemLists.Any(x => x.i_remain_req_qty == 0 || x.bi_po_status_id == 2 || x.i_hd_map_stat_id == 2))
+                {
+                    flag = true;
+                }
+                else
+                {
+                    flag = false;
+                }
+                if(flag)
+                {
+                    updateObj updateObj = new updateObj()
+                    {
+                        table = "tb_request",
+                        updater = new Dictionary<string, string>
+                        {
+                            { "i_map_stat_id", "2"}
+                        },
+                        selecter = new Dictionary<string, string>
+                        {
+                            {nameof(row.bi_req_id), row.bi_req_id.ToString()}
+                        }
+                    };
+                    _updateObjs.Add(updateObj);
+                }
+                
+            }
+            await UpdateRecordAsync();
         }
 
         private void btncancel_Click(object sender, EventArgs e)
@@ -126,7 +160,77 @@ namespace CPS_App
         }
         public async Task CreateUpdateObj(DeliveryNoteObj readytoConfirm)
         {
+            updateObj updateObj = new updateObj()
+            {
+                table = "tb_delivery_note",
+                updater = new Dictionary<string, string>
+                {
+                    {nameof(readytoConfirm.i_dn_type_id),"2" },
+                },
+                selecter = new Dictionary<string, string>
+                {
+                    {nameof(readytoConfirm.bi_dn_id),readytoConfirm.bi_dn_id.ToString()},
+                    {nameof(readytoConfirm.bi_item_id),readytoConfirm.bi_item_id.ToString()}
+                }
+            };
+            _updateObjs.Add(updateObj);
 
+            //find qty
+            selectObj selObj = new selectObj()
+            {
+                table = "tb_request_detail",
+                selecter = new Dictionary<string, string>
+                {
+                    {nameof(readytoConfirm.bi_req_id) ,readytoConfirm.bi_req_id.ToString()},
+                    {nameof(readytoConfirm.bi_item_id), readytoConfirm.bi_item_id.ToString() },
+                }
+
+            };
+            DbResObj selres = await _dbServices.SelectWhereAsync(selObj);
+            if (selres.resCode != 1)
+            {
+
+                MessageBox.Show("update request detail order error");
+            }
+            List<List<KeyValuePair<string, object>>> kvp = GenUtil.DbResulttoKVP(selres.result);
+            var qty = kvp.ElementAt(0).FirstOrDefault(x => x.Key == "i_remain_req_qty").Value;
+            int realqty = GenUtil.ConvertObjtoType<int>(qty) - readytoConfirm.i_item_qty;
+
+
+            updateObj updateReq = new updateObj()
+            {
+                table = "tb_request_detail",
+                updater = new Dictionary<string, string>
+                {
+                    {"i_remain_req_qty" ,realqty<=0? "0":realqty.ToString()},
+                    {"bi_po_status_id", "2" },
+                    {"i_hd_map_stat_id", "2" }
+                }
+            };
+            _updateObjs.Add(updateReq);
+
+            
+        }
+        public async Task<List<RequestMappingReqObj>> OutstandingReqObj()
+        {
+            searchObj reqse = new searchObj()
+            {
+                searchWords = new Dictionary<string, List<string>>
+                {
+                    {"i_map_stat_id", new List<string>(){"1","3"} },                    
+                }
+            };
+            //string addSearch = " i_remain_req_qty > 0";
+            RequestMappingReqObj viewObj = new RequestMappingReqObj();
+            try
+            {
+                var res = await _genericTableViewWorker.GetGenericWorker<RequestMappingReqObj, ItemRequest>(viewObj.GetSqlQuery(), nameof(viewObj.bi_req_id), null, reqse);
+                return res;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }

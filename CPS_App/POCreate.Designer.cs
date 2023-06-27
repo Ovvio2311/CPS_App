@@ -713,7 +713,7 @@ namespace CPS_App
             Controls.Add(pn2);
             Name = "POCreate";
             Text = "POCreate";
-            Load += POACreate_Load;
+            Load += POCreate_Load;
             ((System.ComponentModel.ISupportInitialize)pn1).EndInit();
             pn1.ResumeLayout(false);
             pn1.PerformLayout();

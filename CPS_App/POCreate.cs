@@ -56,7 +56,7 @@ namespace CPS_App
             PPO = new List<POTableObj>();
         }
 
-        private async void POACreate_Load(object sender, EventArgs e)
+        private async void POCreate_Load(object sender, EventArgs e)
         {
             pn2.Hide();
             pn2.Enabled = false;
@@ -187,6 +187,7 @@ namespace CPS_App
             else
             {
                 await GenUtil.AddingInputToObject<POTableObj>(pn1, obj);
+                obj.bi_req_id = _requestMappingReqObj.ElementAt(0).bi_req_id.ToString();
                 switch (obj.ti_po_type_id)
                 {
                     case 1:
@@ -279,7 +280,11 @@ namespace CPS_App
             cbxuom.Enabled = false;
             txtam.Enabled = false;
         }
-        //submit btn
+        /// <summary>
+        /// ///////////////////////////////////////////////////////////////////submit btn
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void btnsubmit_Click(object sender, EventArgs e)
         {
             try

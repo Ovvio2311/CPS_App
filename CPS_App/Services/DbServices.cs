@@ -902,7 +902,8 @@ namespace CPS_App.Services
         }
         public async Task<DbResObj> GetDiliveryNote(string loc = null, searchObj obj = null)
         {
-            string sql = $@"select * from (
+            string sql = $@"set sql_mode = 'STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION'; 
+                          select * from (
                           select dn.bi_dn_id, bi_po_id, dn.i_dn_type_id, ty.vc_dn_type_desc, dn.bi_req_id, dn.bi_item_id, v.bi_item_vid,
                           it.vc_item_desc, dn.i_item_qty, dn.bi_location_id, loc.vc_location_desc, dn.dt_exp_deli_date, dn.dt_created_date, dn.dt_updated_datetime
                           from tb_delivery_note dn

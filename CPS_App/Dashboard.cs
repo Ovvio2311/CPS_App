@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using static CPS_App.Models.CPSModel;
 using Krypton.Toolkit;
 using Microsoft.Extensions.Configuration;
+using Krypton.Toolkit.Suite.Extended.Data.Visualisation.ScottPlot;
 
 namespace CPS_App
 {
@@ -156,6 +157,14 @@ namespace CPS_App
                 Login login = new Login(_configuration, _authService, this, _scheduleTask);
                 login.Show();
             }
+        }
+
+        private void btndn_Click(object sender, EventArgs e)
+        {
+            DNView dnview = new DNView(_dbServices);
+            dnview.MdiParent = this;
+            dnview.AutoScroll = true;
+            dnview.Show();
         }
 
 

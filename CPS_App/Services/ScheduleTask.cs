@@ -59,23 +59,23 @@ namespace CPS_App.Services
             try
             {
                 //Mapping Process Warehouse
-                List<DispatchInstruction> dis = await MappingProcessWarehouse();
-                await CreateDispatchAsync(dis);
-                await UpdateRecordAsync();
+                //List<DispatchInstruction> dis = await MappingProcessWarehouse();
+                //await CreateDispatchAsync(dis);
+                //await UpdateRecordAsync();
 
                 //Mapping process P1
                 List<POTableObj> newPo1 = await MappingScheduler_P1();
                 newPo1.ForEach(async x => await _createPoServices.CreatePoASync(x));
                 await UpdateRecordAsync();
-                
+
                 //Mapping process p2
                 List<POTableObj> newPo2 = await MappingScheduler_P1();
                 await UpdateRecordAsync();
 
                 //Mapping Process Warehouse p3
-                //List<DispatchInstruction> dis = await MappingProcessWarehouse();
-                //await CreateDispatchAsync(dis);
-                //await UpdateRecordAsync();
+                List<DispatchInstruction> dis = await MappingProcessWarehouse();
+                await CreateDispatchAsync(dis);
+                await UpdateRecordAsync();
 
                 //Record remaining req to fail
                 await UpdateMappRecordtoFail();
@@ -365,7 +365,7 @@ namespace CPS_App.Services
                                 tempDis.i_di_status_id = 1;
                                 tempDis.i_item_qty = item.i_item_qty >= reqitem.i_remain_req_qty ? reqitem.i_remain_req_qty : item.i_item_qty;
                                 createDispatch.Add(tempDis);
-                                
+
                             });
                         }
 
@@ -413,12 +413,14 @@ namespace CPS_App.Services
         }
         public async Task CreateDispatchAsync(List<DispatchInstruction> disObj)
         {
-            foreach (DispatchInstruction instruction in disObj)
+            if (disObj.Count > 0)
             {
-                insertObj inObj = new insertObj()
+                foreach (DispatchInstruction instruction in disObj)
                 {
-                    table = "tb_dispatch_instruction",
-                    inserter = new Dictionary<string, string>
+                    insertObj inObj = new insertObj()
+                    {
+                        table = "tb_dispatch_instruction",
+                        inserter = new Dictionary<string, string>
                 {
                     //{nameof(disObj.bi_di_id),disObj.bi_di_id.ToString() },
                     {nameof(instruction.bi_req_id),instruction.bi_req_id.ToString() },
@@ -429,20 +431,26 @@ namespace CPS_App.Services
                     {nameof(instruction.dt_exp_deli_date),instruction.dt_exp_deli_date},
                     {nameof(instruction.bi_location_id),instruction.bi_location_id.ToString() }
                 }
-                };
-                DbResObj res = await _services.InsertAsync(inObj);
-                if (res.resCode != 1)
-                {
-                    MessageBox.Show("insert Dispatch error");
-                    return;
+                    };
+                    DbResObj res = await _services.InsertAsync(inObj);
+                    if (res.resCode != 1)
+                    {
+                        MessageBox.Show("insert Dispatch error");
+                        return;
+                    }
+                    if (res.err_msg != null)
+                    {
+                        MessageBox.Show(res.err_msg);
+                        return;
+                    }
                 }
-                if (res.err_msg != null)
-                {
-                    MessageBox.Show(res.err_msg);
-                    return;
-                }
+                MessageBox.Show("Insert Dispatch success");
             }
-            MessageBox.Show("Insert Dispatch success");
+            else
+            {
+                MessageBox.Show("No Dispatch order");
+            }
+
         }
         public async Task UpdateRecordAsync()
         {
@@ -470,13 +478,13 @@ namespace CPS_App.Services
             {
                 throw new Exception(ex.Message);
             }
-            
+
         }
         public async Task CreateUpdateObject(List<RequestMappingReqObj> reqRemain)
         {
             try
             {
-                foreach(RequestMappingReqObj row in  reqRemain)
+                foreach (RequestMappingReqObj row in reqRemain)
                 {
                     updateObj updateObj = new updateObj()
                     {
@@ -511,10 +519,11 @@ namespace CPS_App.Services
                         };
                         _updateObjects.Add(updateObj);
                     });
-                    
+
                 }
 
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }

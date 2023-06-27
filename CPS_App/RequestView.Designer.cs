@@ -56,6 +56,7 @@ namespace CPS_App
             pnsearch2 = new KryptonPanel();
             kryptonPalettepanel = new KryptonPalette(components);
             pnsearch1 = new KryptonPanel();
+            btnOrderMap = new KryptonButton();
             ((System.ComponentModel.ISupportInitialize)createdbBindingSource).BeginInit();
             ((System.ComponentModel.ISupportInitialize)datagridview).BeginInit();
             ((System.ComponentModel.ISupportInitialize)datagridviewitem).BeginInit();
@@ -117,7 +118,7 @@ namespace CPS_App
             // btnEdit
             // 
             btnEdit.CornerRoundingRadius = -1F;
-            btnEdit.Location = new Point(422, 79);
+            btnEdit.Location = new Point(509, 79);
             btnEdit.Name = "btnEdit";
             btnEdit.Palette = kryptonPalettebtn;
             btnEdit.PaletteMode = PaletteMode.Custom;
@@ -164,7 +165,7 @@ namespace CPS_App
             // btnAdd
             // 
             btnAdd.CornerRoundingRadius = -1F;
-            btnAdd.Location = new Point(562, 79);
+            btnAdd.Location = new Point(633, 79);
             btnAdd.Name = "btnAdd";
             btnAdd.Palette = kryptonPalettebtn;
             btnAdd.PaletteMode = PaletteMode.Custom;
@@ -201,7 +202,7 @@ namespace CPS_App
             // btncancel
             // 
             btncancel.CornerRoundingRadius = -1F;
-            btncancel.Location = new Point(694, 79);
+            btncancel.Location = new Point(756, 79);
             btncancel.Name = "btncancel";
             btncancel.Palette = kryptonPalettebtn;
             btncancel.PaletteMode = PaletteMode.Custom;
@@ -281,13 +282,26 @@ namespace CPS_App
             pnsearch1.Size = new Size(261, 28);
             pnsearch1.TabIndex = 21;
             // 
+            // btnOrderMap
+            // 
+            btnOrderMap.CornerRoundingRadius = -1F;
+            btnOrderMap.Location = new Point(278, 79);
+            btnOrderMap.Name = "btnOrderMap";
+            btnOrderMap.Palette = kryptonPalettebtn;
+            btnOrderMap.PaletteMode = PaletteMode.Custom;
+            btnOrderMap.Size = new Size(205, 37);
+            btnOrderMap.TabIndex = 22;
+            btnOrderMap.Values.Text = "Purchase Order Mapping";
+            btnOrderMap.Click += btnOrderMap_Click;
+            // 
             // RequestView
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoScroll = true;
             BackColor = Color.White;
-            ClientSize = new Size(1473, 514);
+            ClientSize = new Size(1541, 514);
+            Controls.Add(btnOrderMap);
             Controls.Add(pnsearch1);
             Controls.Add(pnsearch2);
             Controls.Add(lblnoresult);
@@ -341,5 +355,7 @@ namespace CPS_App
         private KryptonPalette kryptonPalettepanel;
         private KryptonPanel pnsearch1;
         private KryptonPalette kryptonPalettedatagridview;
+        private KryptonButton kryptonButton1;
+        private KryptonButton btnOrderMap;
     }
 }

@@ -133,8 +133,8 @@ namespace CPS_App.Services
                         throw new Exception("insert po line error");
                     }
                     MessageBox.Show($"po line id: {resitem.result}");
-
-                    if (obj.ti_po_type_id == 4)
+                    // update planned purchase order quantity
+                    if (obj.bi_po_status_id == 4 && obj.ti_po_type_id == 4)
                     {
                         var poId = obj.vc_ref_id.Split(':').ElementAt(1).Trim();
                         var respo = await _services.GetOriginalPoQty(poId);
@@ -161,7 +161,7 @@ namespace CPS_App.Services
 
                         };
                         var resorin = await _services.UpdateAsync(updObj);
-                        if (resitem.resCode != 1 || resitem.result == null)
+                        if (resorin.resCode != 1 || resorin.result == null)
                         {
                             //_logger.LogDebug("insert error");
                             throw new Exception("Update Planned Purchase order error");
@@ -173,7 +173,7 @@ namespace CPS_App.Services
                 {
                     MessageBox.Show(e.Message);
                 }
-
+             
             }
             return true;
         }

@@ -28,12 +28,13 @@ namespace CPS_App
         private ScheduleTask _scheduleTask;
         private GenericTableViewWorker _genericTableViewWorker;
         private CreatePoServices _createPoServices;
+        private ManualMappingProcess _manualMappingProcess;
 
         public Dashboard(Register register, AuthService authService, 
             RequestMapping requestMapp, DbServices dbServices, 
             StockLevelWorker stockWorker, RegisterServices registerServices, 
             POAWorker pOAWorker, SearchFunc searchFunc, IConfiguration configuration,
-            ScheduleTask scheduleTask, GenericTableViewWorker genericTableViewWorker, CreatePoServices createPoServices)
+            ScheduleTask scheduleTask, GenericTableViewWorker genericTableViewWorker, CreatePoServices createPoServices, ManualMappingProcess manualMappingProcess)
         {
             _authService = authService;
             _register = register;
@@ -49,6 +50,7 @@ namespace CPS_App
             _scheduleTask = scheduleTask;
             _genericTableViewWorker = genericTableViewWorker;
             _createPoServices = createPoServices;
+            _manualMappingProcess = manualMappingProcess;
         }
         private async void Dashboard_Load(object sender, EventArgs e)
         {
@@ -106,7 +108,7 @@ namespace CPS_App
 
         private void stripreq_Click(object sender, EventArgs e)
         {
-            RequestView reqView = new RequestView(_dbServices, _requestMapp,_searchFunc, _genericTableViewWorker);
+            RequestView reqView = new RequestView(_dbServices, _requestMapp,_searchFunc, _genericTableViewWorker, _createPoServices, _manualMappingProcess);
             reqView.MdiParent = this;            
             reqView.AutoScroll = true;
             reqView.Show();
@@ -130,7 +132,7 @@ namespace CPS_App
 
         private void strippo_Click(object sender, EventArgs e)
         {
-            POView poView = new POView(_dbServices, _pOAWorker, _searchFunc, _genericTableViewWorker,_createPoServices);
+            POView poView = new POView(_dbServices, _pOAWorker, _searchFunc, _genericTableViewWorker,_createPoServices,_manualMappingProcess);
             poView.MdiParent = this;
             poView.AutoScroll = true;
             poView.Show();

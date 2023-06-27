@@ -28,26 +28,30 @@ namespace CPS_App
         public ClaimsIdentity userIden;
         private readonly DbServices _dbServices;
         public List<POTableObj> poObj;
-        //private POAWorker _pOAWorker;
         private Dictionary<string, string> searchWords;
         private SearchFunc _searchFunc;
         private GenericTableViewWorker _genericTableViewWorker;
         private CreatePoServices _createPoServices;
-        public POView(DbServices dbServices, POAWorker pOAWorker, SearchFunc searchFunc, GenericTableViewWorker genericTableViewWorker,CreatePoServices createPoServices)
+        private ManualMappingProcess _manualMappingProcess;
+        private string userLoc;
+        private List<POTableObj> _confirmppo;
+        public POView(DbServices dbServices, POAWorker pOAWorker, SearchFunc searchFunc, GenericTableViewWorker genericTableViewWorker, CreatePoServices createPoServices, ManualMappingProcess manualMappingProcess)
         {
             InitializeComponent();
             _dbServices = dbServices;
             poObj = new List<POTableObj>();
-            //_pOAWorker = pOAWorker;
             searchWords = new Dictionary<string, string>();
             _searchFunc = searchFunc;
             _genericTableViewWorker = genericTableViewWorker;
             _createPoServices = createPoServices;
+            _manualMappingProcess = manualMappingProcess;
+            _confirmppo = new List<POTableObj>();
         }
 
         private async void POAView_Load(object sender, EventArgs e)
         {
             userIden = AuthService._userClaim;
+            btnconfirmppo.Hide();
             if (userIden == null)
             {
                 //throw new Exception("user claim is null");                
@@ -62,18 +66,25 @@ namespace CPS_App
             else
                 btnedit.Hide();
             if (await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "po", "write" } }))
+            {
                 btnadd.Show();
+                if (await CheckPPOconfirmation())
+                {
+                    btnconfirmppo.Show();
+                }
+            }
             else
                 btnadd.Hide();
-            var userLoc = userIden.Claims.FirstOrDefault(x => x.Type == "location_id").Value.ToString();
+
+            userLoc = userIden.Claims.FirstOrDefault(x => x.Type == "location_id").Value.ToString();
             await LoadViewTable(userLoc);
-            await GetSearchWords(userIden,"po");
+            await GetSearchWords(userIden, "po");
 
 
         }
         private async Task LoadViewTable(string loc = null, searchObj obj = null)
         {
-            
+
             lblnoresult.Hide();
             kryptonDataGridViewpo.DataSource = null;
             //poObj = await _pOAWorker.GetPoaWorker(loc, obj);
@@ -121,7 +132,7 @@ namespace CPS_App
                 var observableItems = new ObservableCollection<PoItemList>(itemViewSelect);
                 BindingList<PoItemList> source = observableItems.ToBindingList();
                 kryptonDataGridViewitem.DataSource = source;
-                GenUtil.dataGridAttrName<PoItemList>(kryptonDataGridViewitem, new List<string>() { "not_shown" });                
+                GenUtil.dataGridAttrName<PoItemList>(kryptonDataGridViewitem, new List<string>() { "not_shown" });
             }
         }
         //edit PO and PO header
@@ -146,7 +157,7 @@ namespace CPS_App
 
         private void btnadd_Click(object sender, EventArgs e)
         {
-            POCreate poCre = new POCreate(_dbServices,_genericTableViewWorker,_createPoServices);
+            POCreate poCre = new POCreate(_dbServices, _genericTableViewWorker, _createPoServices, _manualMappingProcess);
             poCre.MdiParent = this.MdiParent;
             poCre.AutoScroll = true;
             poCre.Show();
@@ -169,7 +180,7 @@ namespace CPS_App
             lblnoresult.Hide();
             lblsubitemtitle.Hide();
             kryptonDataGridViewpo.DataSource = null;
-            string userLoc = userIden.Claims.FirstOrDefault(x => x.Type == "location_id").Value.ToString();
+            //string userLoc = userIden.Claims.FirstOrDefault(x => x.Type == "location_id").Value.ToString();
 
             if (txtsearch1.Text == string.Empty && txtsearch2.Text == string.Empty)
             {
@@ -208,6 +219,37 @@ namespace CPS_App
             searchWords = words;
             cbxsearch1.DataSource = words.Keys.ToList();
             cbxsearch2.DataSource = words.Keys.ToList();
+        }
+
+        private void btnconfirmppo_Click(object sender, EventArgs e)
+        {
+
+        }
+        private async Task<bool> CheckPPOconfirmation()
+        {
+            try
+            {
+                POTableObj viewObj = new POTableObj();
+                searchObj searchObj = new searchObj()
+                {
+                    searchWords = new Dictionary<string, List<string>>
+                {
+                    { nameof(viewObj.ti_po_type_id), new List<string>(){"4"} },
+                    {nameof(viewObj.bi_po_status_id), new List<string>(){"4"} },
+                    {nameof(viewObj.bi_deli_loc_id),new List<string>(){ userLoc } },
+                }
+                };
+                _confirmppo = await _genericTableViewWorker.GetGenericWorker<POTableObj, PoItemList>(viewObj.GetSqlQuery(), nameof(viewObj.bi_po_header_id),
+                     null, searchObj);
+                return _confirmppo != null ? true : false;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return false;
+            }
+
+
         }
     }
 }

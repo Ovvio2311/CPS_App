@@ -824,7 +824,7 @@ namespace CPS_App.Models
             public int i_uom_id { get; set; }
             [Display(Name = "Unit of Measurement")]
             public string vc_uom_desc { get; set; }
-            [Display(Name = "Min Qty")]
+            [Display(Name = "not_shown")]
             public int i_min_qty { get; set; }
             [Display(Name = "Price")]
             public int i_price { get; set; }

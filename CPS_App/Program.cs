@@ -13,6 +13,7 @@ using System.Security.Principal;
 using CommonDBUtils;
 using Serilog;
 using static CPS_App.Models.CPSModel;
+using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel;
 
 namespace CPS_App
 {
@@ -35,7 +36,7 @@ namespace CPS_App
             //Application.Run(ServiceProvider.GetRequiredService<Request_Create>());
             //Application.Run(ServiceProvider.GetRequiredService<Register>());
         }
-        [STAThread]
+        
         static async Task MainAsync(string[] args)
         {
             Log.Logger = new LoggerConfiguration()
@@ -87,6 +88,7 @@ namespace CPS_App
             services.AddScoped<RequestMapping>();
             services.AddScoped<POAWorker>();
             services.AddScoped<SearchFunc>();
+            services.AddScoped<ManualMappingProcess>();
             services.AddScoped<GenericTableViewWorker>();
             services.AddSingleton<ScheduleTask>();
             services.AddScoped<StockLevelWorker>();

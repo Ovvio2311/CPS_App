@@ -22,7 +22,12 @@ namespace CPS_App
         private SearchFunc _searchFunc;
         private Dictionary<string, string> searchWords;
         private GenericTableViewWorker _genericTableViewWorker;
-        public RequestView(DbServices dbServices, RequestMapping mapping, SearchFunc searchFunc, GenericTableViewWorker genericTableViewWorker)
+        private int selectdId;
+        private CreatePoServices _createPoServices;
+        private ManualMappingProcess _manualMappingProcess;
+        public RequestView(DbServices dbServices, RequestMapping mapping, SearchFunc searchFunc, 
+            GenericTableViewWorker genericTableViewWorker, CreatePoServices createPoServices,
+            ManualMappingProcess manualMappingProcess)
         {
             InitializeComponent();
             defPage = new List<RequestMappingReqObj>();
@@ -31,6 +36,8 @@ namespace CPS_App
             _searchFunc = searchFunc;
             searchWords = new Dictionary<string, string>();
             _genericTableViewWorker = genericTableViewWorker;
+            _createPoServices = createPoServices;
+            _manualMappingProcess = manualMappingProcess;
 
         }
 
@@ -111,7 +118,7 @@ namespace CPS_App
             if (e.RowIndex == datagridview.CurrentRow.Index)
             {
                 lblitem.Show();
-                int selectdId = GenUtil.ConvertObjtoType<int>(datagridview.CurrentRow.Cells["bi_req_id"].Value);
+                selectdId = GenUtil.ConvertObjtoType<int>(datagridview.CurrentRow.Cells["bi_req_id"].Value);
                 datagridviewitem.DataSource = null;
                 List<ItemRequest> itemViewSelect = defPage.Where(x => x.bi_req_id == selectdId).FirstOrDefault().itemLists;
 
@@ -125,7 +132,7 @@ namespace CPS_App
 
         private void btnEdit_Click(object sender, EventArgs e)
         {
-            int selectdId = GenUtil.ConvertObjtoType<int>(datagridview.CurrentRow.Cells["bi_req_id"].Value);
+            selectdId = GenUtil.ConvertObjtoType<int>(datagridview.CurrentRow.Cells["bi_req_id"].Value);
 
             RequestEdit reqEdit = new RequestEdit(selectdId, defPage, _dbServices, _requestMapp, _genericTableViewWorker);
             reqEdit.MdiParent = this.MdiParent;
@@ -190,10 +197,10 @@ namespace CPS_App
             await LoadViewTable(userLoc, obj);
 
         }
-        private async Task GetSearchWords(ClaimsIdentity identity,string part)
+        private async Task GetSearchWords(ClaimsIdentity identity, string part)
         {
 
-            IEnumerable<tb_search_gen> searchString = await _searchFunc.SearchParaGenerator(identity,part);
+            IEnumerable<tb_search_gen> searchString = await _searchFunc.SearchParaGenerator(identity, part);
             if (searchString == null)
             {
                 return;
@@ -208,6 +215,21 @@ namespace CPS_App
         private void datagridview_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
+        }
+
+        private void btnOrderMap_Click(object sender, EventArgs e)
+        {
+            if (selectdId == 0)
+            {
+                MessageBox.Show("Please select an item to mapping");
+                return;
+            }
+            var reqtoMap = defPage.Where(x => x.bi_req_id == selectdId).ToList();
+            POCreate pOCreate = new POCreate(_dbServices,_genericTableViewWorker,_createPoServices,_manualMappingProcess, reqtoMap);
+            pOCreate.MdiParent = this.MdiParent;
+            pOCreate.AutoScroll = true;
+            //this.Close();
+            pOCreate.Show();
         }
     }
 }

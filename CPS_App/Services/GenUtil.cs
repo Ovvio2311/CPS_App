@@ -209,7 +209,7 @@ namespace CPS_App.Services
                 {
                     if (p.Tag != null && p.Tag.ToString() == x.Name)
                     {
-                        if (x.GetValue(obj).ToString() != null && x.GetValue(obj) != "")
+                        if (x.GetValue(obj) != null && x.GetValue(obj) != "")
                         {
                             p.Text = GenUtil.ConvertObjtoType<string>(x.GetValue(obj, null));
                         }
@@ -219,7 +219,7 @@ namespace CPS_App.Services
                 {
                     if (c.Tag != null && c.Tag.ToString() == x.Name)
                     {
-                        if (x.GetValue(obj).ToString() != null && x.GetValue(obj) != "")
+                        if (x.GetValue(obj) != null && x.GetValue(obj) != "")
                         {
                             var value = x.GetValue(obj);
                             c.SelectedItem = c.Items.ToDynamicList<string>().Where(x => x.Contains(value.ToString())).FirstOrDefault();

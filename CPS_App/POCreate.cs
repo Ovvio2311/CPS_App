@@ -31,12 +31,16 @@ namespace CPS_App
         private POTableObj obj;
         private List<PoItemList> itemList;
         private Validator _validator;
-        //private Dictionary<string, string> poaRefType;
         private GenericTableViewWorker _genericTableViewWorker;
         private PoCreateRefList preHandleList;
         private CreatePoServices _createPoServices;
-        private RequestMappingReqObj _requestMappingReqObj;
-        public POCreate(DbServices dbServices, GenericTableViewWorker genericTableViewWorker, CreatePoServices createPoServices)
+        private List<RequestMappingReqObj> _requestMappingReqObj;
+        private ManualMappingProcess _manualMappingProcess;
+        private List<POTableObj> PPO;
+
+        public POCreate(DbServices dbServices, GenericTableViewWorker genericTableViewWorker,
+            CreatePoServices createPoServices, ManualMappingProcess manualMappingProcess,
+            List<RequestMappingReqObj> requestMappingReqObj = null)
         {
             InitializeComponent();
             obj = new POTableObj();
@@ -47,7 +51,9 @@ namespace CPS_App
             _genericTableViewWorker = genericTableViewWorker;
             preHandleList = new PoCreateRefList();
             _createPoServices = createPoServices;
-            _requestMappingReqObj = new RequestMappingReqObj();
+            _requestMappingReqObj = requestMappingReqObj;
+            _manualMappingProcess = manualMappingProcess;
+            PPO = new List<POTableObj>();
         }
 
         private async void POACreate_Load(object sender, EventArgs e)
@@ -61,24 +67,43 @@ namespace CPS_App
             }
 
             disableValidation();
-
-            cbxreffrom.Items.Add("New");
-            var poa_type = await _dbServices.SelectAllAsync<lut_poa_type>();
-            List<lut_poa_type> poatype = JsonConvert.DeserializeObject<List<lut_poa_type>>(JsonConvert.SerializeObject(poa_type.result));
-            poatype.ForEach(x =>
+            if (_requestMappingReqObj.Count() > 0)
             {
-                if (x.b_is_ref_type)
-                    cbxreffrom.Items.Add(x.vc_poa_type_desc);
-            });
-
-            var po_type = await _dbServices.SelectAllAsync<tb_po_type>();
-            List<tb_po_type> potype = JsonConvert.DeserializeObject<List<tb_po_type>>(JsonConvert.SerializeObject(po_type.result));
-            potype.ForEach(x =>
+                PPO = await _manualMappingProcess.CheckforOtherPurchaseOrder(_requestMappingReqObj);
+                if (PPO.Count() > 0)
+                {
+                    //cbxreffrom.Items.Add("New");
+                    cbxreffrom.Items.Add("Contract Purchase Agreement");
+                    cbxreffrom.Items.Add("Planned Purchase Order");
+                    cbxtype.Items.Add($"3: Standard Purchase Order");
+                    cbxtype.Items.Add($"4: Schedule Release");
+                }
+                else
+                {
+                    cbxreffrom.Items.Add("Contract Purchase Agreement");
+                    cbxtype.Items.Add($"3: Standard Purchase Order");
+                }
+            }
+            else
             {
-                if (x.b_is_ref_type)
-                    cbxreffrom.Items.Add(x.vc_po_type_desc);
-                cbxtype.Items.Add($"{x.ti_po_type_id}: {x.vc_po_type_desc}");
-            });
+                cbxreffrom.Items.Add("New");
+                var poa_type = await _dbServices.SelectAllAsync<lut_poa_type>();
+                List<lut_poa_type> poatype = JsonConvert.DeserializeObject<List<lut_poa_type>>(JsonConvert.SerializeObject(poa_type.result));
+                poatype.ForEach(x =>
+                {
+                    if (x.b_is_ref_type)
+                        cbxreffrom.Items.Add(x.vc_poa_type_desc);
+                });
+
+                var po_type = await _dbServices.SelectAllAsync<tb_po_type>();
+                List<tb_po_type> potype = JsonConvert.DeserializeObject<List<tb_po_type>>(JsonConvert.SerializeObject(po_type.result));
+                potype.ForEach(x =>
+                {
+                    if (x.b_is_ref_type)
+                        cbxreffrom.Items.Add(x.vc_po_type_desc);
+                    cbxtype.Items.Add($"{x.ti_po_type_id}: {x.vc_po_type_desc}");
+                });
+            }
 
             var locType = await _dbServices.SelectAllAsync<tb_location>();
             List<tb_location> loc = JsonConvert.DeserializeObject<List<tb_location>>(JsonConvert.SerializeObject(locType.result));
@@ -123,7 +148,7 @@ namespace CPS_App
             btnsubmit.Enabled = false;
 
         }
-
+        //next btn
         private async void btnnext_Click(object sender, EventArgs e)
         {
             if (!Checkpn1Validate())
@@ -162,7 +187,22 @@ namespace CPS_App
             else
             {
                 await GenUtil.AddingInputToObject<POTableObj>(pn1, obj);
-                obj.bi_po_status_id = 1;
+                switch (obj.ti_po_type_id)
+                {
+                    case 1:
+                        obj.bi_po_status_id = 1;
+                        break;
+                    case 2:
+                    case 3:
+                        obj.bi_po_status_id = 3;
+                        break;
+                    case 4:
+                        obj.bi_po_status_id = 4;
+                        break;
+                    default:
+                        obj.bi_po_status_id = 3;
+                        break;
+                }                
             }
 
             //if (obj.ti_po_type_id != 1)
@@ -176,7 +216,7 @@ namespace CPS_App
             pn2.Show();
             pn2.Enabled = true;
         }
-
+        //add btn
         private async void btnAdd_Click(object sender, EventArgs e)
         {
             if (!await ValidateCheck())
@@ -239,6 +279,7 @@ namespace CPS_App
             cbxuom.Enabled = false;
             txtam.Enabled = false;
         }
+        //submit btn
         private async void btnsubmit_Click(object sender, EventArgs e)
         {
             try
@@ -268,7 +309,7 @@ namespace CPS_App
                     pn1.Show();
                     //await InsertTableHeader();                    
 
-                    
+
                 }
             }
             catch (Exception ex)
@@ -277,21 +318,13 @@ namespace CPS_App
             }
 
         }
-
+        //clear btn
         private async void btnclear_Click(object sender, EventArgs e)
         {
             await ReturnToAddNewPage();
         }
-        private async Task ClearContent()
-        {
-            pn1.Controls.OfType<KryptonTextBox>().ToList().ForEach(t => t.Clear());
-            pn1.Controls.OfType<KryptonComboBox>().ToList().ForEach(t => t.SelectedIndex = -1);
-            pn2.Controls.OfType<KryptonTextBox>().ToList().ForEach(t => t.Clear());
-            pn2.Controls.OfType<KryptonComboBox>().ToList().ForEach(t => t.SelectedIndex = -1);
-        }
 
-
-
+        //cancel btn
         private void btncancel_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -324,6 +357,7 @@ namespace CPS_App
 
 
         }
+        //panel 1 check data
         private bool Checkpn1Validate()
         {
             try
@@ -385,16 +419,7 @@ namespace CPS_App
             return availablePn1 == 1 && availablePn2 == 6 && selectedComboBoxpn1 <= 8 && selectedComboBoxpn1 >= 7 && selectedComboBoxpn2 == 2;
 
         }
-
-        private async Task ReturnToAddNewPage()
-        {
-            await GenUtil.ResumeBlankPage<POTableObj>(pn1);
-            await GenUtil.ResumeBlankPage<PoItemList>(pn2);
-            cbxuom.Enabled = false;
-            txtam.Enabled = false;
-            itemList.Clear();
-            obj = new POTableObj();
-        }
+        //ref from 
         private async void cbxreffrom_SelectedIndexChanged(object sender, EventArgs e)
         {
             cbxreforderid.FormattingEnabled = true;
@@ -418,7 +443,7 @@ namespace CPS_App
             cbxreforderid.Enabled = true;
 
             DbResObj poaRes = await selectWhere(nameof(lut_poa_type), new Dictionary<string, string> { { "vc_poa_type_desc", selectedRef } });
-
+            //search po type table  have value
             if (poaRes.resCode == 1 && poaRes.result.Count == 1)
             {
                 List<List<KeyValuePair<string, object>>> kvp = poaRes.result;
@@ -436,23 +461,35 @@ namespace CPS_App
                     });
                 }
             }
+            //search po type table have no value
             else if (poaRes.resCode == 1 && poaRes.result.Count == 0)
             {
-                var pores = await selectWhere(nameof(tb_po_type), new Dictionary<string, string> { { "vc_po_type_desc", selectedRef } });
-                if (pores.resCode == 1 && pores.result.Count == 1)
+                if (PPO.Count > 0)
                 {
-                    List<List<KeyValuePair<string, object>>> kvp = pores.result;
-                    DbResObj poIdRes = await selectWhere("tb_po", new Dictionary<string, string> { { "ti_po_type_id",
-                            kvp.ElementAt(0).FirstOrDefault(x => x.Key == "ti_po_type_id").Value.ToString() } });
-                    if (poIdRes.resCode == 1 && poIdRes.result.Count > 0)
+                    PPO.ForEach(x =>
                     {
-                        List<List<KeyValuePair<string, object>>> kvppoId = poIdRes.result;
-                        kvppoId.ToList().ForEach(row =>
+                        cbxreforderid.Items.Add($"Po Id: {x.bi_po_id}");
+                    });
+                }
+                else
+                {
+                    var pores = await selectWhere(nameof(tb_po_type), new Dictionary<string, string> { { "vc_po_type_desc", selectedRef } });
+                    if (pores.resCode == 1 && pores.result.Count == 1)
+                    {
+                        List<List<KeyValuePair<string, object>>> kvp = pores.result;
+                        DbResObj poIdRes = await selectWhere("tb_po", new Dictionary<string, string> { { "ti_po_type_id",
+                            kvp.ElementAt(0).FirstOrDefault(x => x.Key == "ti_po_type_id").Value.ToString() } });
+                        if (poIdRes.resCode == 1 && poIdRes.result.Count > 0)
                         {
-                            cbxreforderid.Items.Add($"Po Id: {row.FirstOrDefault(col => col.Key == "bi_po_id").Value}");
-                        });
+                            List<List<KeyValuePair<string, object>>> kvppoId = poIdRes.result;
+                            kvppoId.ToList().ForEach(row =>
+                            {
+                                cbxreforderid.Items.Add($"Po Id: {row.FirstOrDefault(col => col.Key == "bi_po_id").Value}");
+                            });
+                        }
                     }
                 }
+
             }
             cbxtype.Items.Clear();
             var po_type = await _dbServices.SelectAllAsync<tb_po_type>();
@@ -467,32 +504,8 @@ namespace CPS_App
 
             });
         }
-        public async Task<DbResObj> selectWhere(string table, Dictionary<string, string> obj)
-        {
-            DbResObj res = new DbResObj()
-            {
-                resCode = 0,
-                result = null,
-                err_msg = null
-            };
-            try
-            {
-                var selectObj = new selectObj();
-                selectObj.table = table;
-                selectObj.selecter = obj;
-                res = await _dbServices.SelectWhereAsync(selectObj);
-                if (res.resCode == 1 && res.result.Count > 0)
-                {
-                    res.result = GenUtil.DbResulttoKVP(res.result);
-                }
-                return res;
-            }
-            catch (Exception ex)
-            {
-                return res;
-            }
-        }
 
+        //reference order id
         private async void cbxRefOrderId_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cbxreforderid.SelectedIndex != -1)
@@ -537,10 +550,7 @@ namespace CPS_App
                 }
             }
         }
-        private async Task AllocatePrehandleList<T>(List<T> obj)
-        {
-            await GenUtil.AutoLabelAddingTextBox<T>(pn1, obj, "vc_ref_id");
-        }
+
         //item id reference
         private async void cbxitid_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -568,16 +578,13 @@ namespace CPS_App
                         await GenUtil.AutoLabelAddingTextBox<PoItemList>(pn2, itemRef);
                         txtref.Enabled = true;
                         txtactqty.Enabled = true;
-                        
+
                         break;
                     }
                 }
-
-
-
             }
         }
-
+        //Po type
         private async void cbxtype_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cbxreforderid.SelectedIndex != -1 && cbxtype.SelectedIndex != -1)
@@ -595,9 +602,47 @@ namespace CPS_App
 
                 }
             }
-            if(cbxreffrom.SelectedItem.ToString().Contains("Planned Purchase Order"))
+            if (cbxreffrom.SelectedItem.ToString().Contains("Planned Purchase Order"))
             {
-               cbxloc.Enabled= true;
+                cbxloc.Enabled = true;
+            }
+        }
+        private async Task ReturnToAddNewPage()
+        {
+            await GenUtil.ResumeBlankPage<POTableObj>(pn1);
+            await GenUtil.ResumeBlankPage<PoItemList>(pn2);
+            cbxuom.Enabled = false;
+            txtam.Enabled = false;
+            itemList.Clear();
+            obj = new POTableObj();
+        }
+        private async Task AllocatePrehandleList<T>(List<T> obj)
+        {
+            await GenUtil.AutoLabelAddingTextBox<T>(pn1, obj, "vc_ref_id");
+        }
+        public async Task<DbResObj> selectWhere(string table, Dictionary<string, string> obj)
+        {
+            DbResObj res = new DbResObj()
+            {
+                resCode = 0,
+                result = null,
+                err_msg = null
+            };
+            try
+            {
+                var selectObj = new selectObj();
+                selectObj.table = table;
+                selectObj.selecter = obj;
+                res = await _dbServices.SelectWhereAsync(selectObj);
+                if (res.resCode == 1 && res.result.Count > 0)
+                {
+                    res.result = GenUtil.DbResulttoKVP(res.result);
+                }
+                return res;
+            }
+            catch (Exception ex)
+            {
+                return res;
             }
         }
     }

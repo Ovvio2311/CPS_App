@@ -92,12 +92,21 @@ namespace CPS_App
             int selectdId = GenUtil.ConvertObjtoType<int>(kryptonDataGridViewit.CurrentRow.Cells["bi_poa_line_id"].Value);
             POATableObj poaView = poaObj.Where(x => x.bi_poa_header_id == headId).FirstOrDefault();
             PoaItemList readyToEdit = poaView.itemLists.Where(x => x.bi_poa_line_id == selectdId).FirstOrDefault();
-            //var readyToEdit = itemList.Where(x => x.bi_poa_line_id == selectdId).FirstOrDefault();
+            //var readyToEdit = itemList.Where(x => x.bi_poa_line_id == selectId).FirstOrDefault();
 
             string poast = cbxst.SelectedItem.ToString();
             if (poast != null) { poast = poast.Split(":").ElementAt(0); }
             var delisc = cbxdelisc.SelectedItem.ToString();
             if (delisc != null) { delisc = delisc.Split(":").ElementAt(0); }
+            
+            var avaltext = this.Controls.OfType<KryptonTextBox>().ToList().Where(x => x.Enabled && x.Tag != "vc_reference" &&
+            GenUtil.ConvertObjtoType<int>(x.Text.Trim()) != null && GenUtil.ConvertObjtoType<int>(x.Text.Trim()) > 0).Count();
+            var avalbox = this.Controls.OfType<KryptonComboBox>().ToList().Where(x => x.Enabled && x.SelectedIndex != -1).Count();
+            if (avaltext != 3 && avalbox != 2)
+            {
+                MessageBox.Show("Please enter correct format");
+                return;
+            }
 
             if (txtmin.Text == readyToEdit.i_min_qty.ToString() && txtp.Text == readyToEdit.i_price.ToString() &&
                 txtam.Text == readyToEdit.i_amount.ToString() && txtref.Text == readyToEdit.vc_reference.ToString() &&
@@ -205,7 +214,7 @@ namespace CPS_App
                 int selectdId = GenUtil.ConvertObjtoType<int>(kryptonDataGridViewit.CurrentRow.Cells["bi_poa_line_id"].Value);
                 POATableObj poaView = poaObj.Where(x => x.bi_poa_header_id == headId).FirstOrDefault();
                 PoaItemList readyToEdit = poaView.itemLists.Where(x => x.bi_poa_line_id == selectdId).FirstOrDefault();
-                //var readyToEdit = itemList.Where(x => x.bi_poa_line_id == selectdId).FirstOrDefault();
+                //var readyToEdit = itemList.Where(x => x.bi_poa_line_id == selectId).FirstOrDefault();
                 await GenUtil.AutoLabelAddingfromTextBox<POATableObj>(this, poaView);
                 await GenUtil.AutoLabelAddingfromTextBox<PoaItemList>(this, readyToEdit);
                 //txtline.Text = readyToEdit.bi_poa_line_id.ToString();

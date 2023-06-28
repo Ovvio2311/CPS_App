@@ -32,7 +32,7 @@ namespace CPS_App
         private Dictionary<string, string> searchWords;
         private SearchFunc _searchFunc;
         private GenericTableViewWorker _genericTableViewWorker;
-        private int currentIndex;
+        private int selectId;
         public POAView(DbServices dbServices, POAWorker pOAWorker, SearchFunc searchFunc, GenericTableViewWorker genericTableViewWorker)
         {
             InitializeComponent();
@@ -92,7 +92,7 @@ namespace CPS_App
             {
                 kryptonDataGridViewpoa.Columns.Clear();
                 lblnoresult.Show();
-                btnadd.Hide();
+                
                 btnedit.Hide();
                 return;
             }
@@ -112,7 +112,7 @@ namespace CPS_App
             if (e.RowIndex == kryptonDataGridViewpoa.CurrentRow.Index)
             {
                 lblsubitemtitle.Show();
-                int selectdId = GenUtil.ConvertObjtoType<int>(kryptonDataGridViewpoa.CurrentRow.Cells["bi_poa_header_id"].Value);
+                selectId = GenUtil.ConvertObjtoType<int>(kryptonDataGridViewpoa.CurrentRow.Cells["bi_poa_header_id"].Value);
 
                 kryptonDataGridViewitem.DataSource = null;
                 if (GenUtil.ConvertObjtoType<int>(kryptonDataGridViewpoa.CurrentRow.Cells["ti_poa_type_id"].Value) == 2)
@@ -120,7 +120,7 @@ namespace CPS_App
                     lblsubitemtitle.Hide();
                     return;
                 }
-                List<PoaItemList> itemViewSelect = poaObj.Where(x => x.bi_poa_header_id == selectdId).FirstOrDefault().itemLists;
+                List<PoaItemList> itemViewSelect = poaObj.Where(x => x.bi_poa_header_id == selectId).FirstOrDefault().itemLists;
                 var observableItems = new ObservableCollection<PoaItemList>(itemViewSelect);
                 BindingList<PoaItemList> source = observableItems.ToBindingList();
                 kryptonDataGridViewitem.DataSource = source;
@@ -144,17 +144,17 @@ namespace CPS_App
         //edit POA and POA header
         private async void btnedit_Click(object sender, EventArgs e)
         {
-            if ( currentIndex == 0) return;
-            currentIndex = GenUtil.ConvertObjtoType<int>(kryptonDataGridViewpoa.CurrentRow.Cells["bi_poa_header_id"].Value);
+            if (selectId == 0) return;
+            selectId = GenUtil.ConvertObjtoType<int>(kryptonDataGridViewpoa.CurrentRow.Cells["bi_poa_header_id"].Value);
             var currentpoaType = GenUtil.ConvertObjtoType<int>(kryptonDataGridViewpoa.CurrentRow.Cells["ti_poa_type_id"].Value);
             if (currentpoaType == 2)
             {
                 MessageBox.Show("Contract Agreement has no items to update");
                 return;
             }
-            var readyToEdit = poaObj.Where(x => x.bi_poa_header_id == currentIndex).ToList();
+            var readyToEdit = poaObj.Where(x => x.bi_poa_header_id == selectId).ToList();
 
-            POAEdit poaEdit = new POAEdit(currentIndex, readyToEdit, _dbServices, _pOAWorker,_genericTableViewWorker);
+            POAEdit poaEdit = new POAEdit(selectId, readyToEdit, _dbServices, _pOAWorker,_genericTableViewWorker);
             poaEdit.MdiParent = this.MdiParent;
             poaEdit.AutoScroll = true;
             poaEdit.Show();
@@ -177,7 +177,7 @@ namespace CPS_App
         }
         private async void btnsearch_Click(object sender, EventArgs e)
         {
-            btnadd.Show();
+            
             btnedit.Show();
             if (cbxsearch1.SelectedItem == cbxsearch2.SelectedItem && txtsearch1.Text != "" && txtsearch2.Text != "")
             {

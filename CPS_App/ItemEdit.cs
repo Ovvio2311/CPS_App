@@ -89,7 +89,7 @@ namespace CPS_App
             //var reit = stock.ToList().ElementAt(dataGridViewitem.CurrentRow.Index);
             int selectdId = GenUtil.ConvertObjtoType<int>(dataGridViewitem.CurrentRow.Cells["bi_item_id"].Value);
             StockLevelSubItem readyToEdit = stockList.Where(x => x.bi_item_id == selectdId).FirstOrDefault();
-            if (txtqty.Text.Equals(string.Empty))
+            if (txtqty.Text.Equals(string.Empty) || GenUtil.ConvertObjtoType<int>(txtqty.Text.Trim()) < 0 || GenUtil.ConvertObjtoType<int>(txtqty.Text.Trim()) == null)
             {
                 MessageBox.Show("Please enter qty");
                 return;

@@ -161,7 +161,7 @@ namespace CPS_App
 
         private void btndn_Click(object sender, EventArgs e)
         {
-            DNView dnview = new DNView(_dbServices);
+            DNView dnview = new DNView(_dbServices, _genericTableViewWorker);
             dnview.MdiParent = this;
             dnview.AutoScroll = true;
             dnview.Show();

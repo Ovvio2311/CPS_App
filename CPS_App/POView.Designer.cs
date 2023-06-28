@@ -73,6 +73,7 @@
             this.kryptonDataGridViewpo.RowTemplate.Height = 25;
             this.kryptonDataGridViewpo.Size = new System.Drawing.Size(647, 221);
             this.kryptonDataGridViewpo.TabIndex = 0;
+            this.kryptonDataGridViewpo.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.kryptonDataGridViewpoa_CellClick);
             // 
             // kryptonPalettedatagridview
             // 
@@ -102,6 +103,7 @@
             this.btnedit.Size = new System.Drawing.Size(100, 35);
             this.btnedit.TabIndex = 2;
             this.btnedit.Values.Text = "Update";
+            this.btnedit.Click += new System.EventHandler(this.btnedit_Click);
             // 
             // kryptonPalettebtn
             // 
@@ -144,6 +146,7 @@
             this.btnadd.Size = new System.Drawing.Size(100, 35);
             this.btnadd.TabIndex = 25;
             this.btnadd.Values.Text = "Add";
+            this.btnadd.Click += new System.EventHandler(this.btnadd_Click);
             // 
             // btncancel
             // 
@@ -155,6 +158,7 @@
             this.btncancel.Size = new System.Drawing.Size(100, 35);
             this.btncancel.TabIndex = 27;
             this.btncancel.Values.Text = "Cancel";
+            this.btncancel.Click += new System.EventHandler(this.btncancel_Click);
             // 
             // pnsearch1
             // 
@@ -223,6 +227,7 @@
             this.btnsearch.TabIndex = 29;
             this.btnsearch.Values.Image = ((System.Drawing.Image)(resources.GetObject("btnsearch.Values.Image")));
             this.btnsearch.Values.Text = "";
+            this.btnsearch.Click += new System.EventHandler(this.btnsearch_Click);
             // 
             // lblsearch
             // 
@@ -273,6 +278,7 @@
             this.btnconfirmppo.Size = new System.Drawing.Size(143, 35);
             this.btnconfirmppo.TabIndex = 35;
             this.btnconfirmppo.Values.Text = "Re-Confirm Order";
+            this.btnconfirmppo.Click += new System.EventHandler(this.btnconfirmppo_Click);
             // 
             // POView
             // 
@@ -294,6 +300,7 @@
             this.Controls.Add(this.kryptonDataGridViewpo);
             this.Name = "POView";
             this.Text = "POView";
+            this.Load += new System.EventHandler(this.POView_Load);
             ((System.ComponentModel.ISupportInitialize)(this.kryptonDataGridViewpo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.kryptonDataGridViewitem)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pnsearch1)).EndInit();

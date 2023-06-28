@@ -314,7 +314,7 @@ namespace CPS_App
             var sup = cbxsup.SelectedItem;
             if (sup != null) { sup = sup.ToString().Split(":").ElementAt(0); }
             var qty = GenUtil.ConvertObjtoType<int>(txtqty.Text);
-            return qty != null && loc != null && sup != null ? true : false;
+            return qty != null && loc != null && sup != null && qty > 0 ? true : false;
 
         }
         private void requiredFieldCheck(object sender, EventArgs e)

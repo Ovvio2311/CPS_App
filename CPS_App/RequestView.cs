@@ -100,7 +100,7 @@ namespace CPS_App
             {
                 datagridview.Columns.Clear();
                 lblnoresult.Show();
-                btnAdd.Hide();
+                
                 btnEdit.Hide();
                 return;
             }
@@ -164,8 +164,7 @@ namespace CPS_App
 
         private async void btnsearch_Click(object sender, EventArgs e)
         {
-            btnAdd.Show();
-            btnEdit.Show();
+            btnEdit.Hide();
             if (cbxsearch1.SelectedItem == cbxsearch2.SelectedItem && txtsearch1.Text != "" && txtsearch2.Text != "")
             {
                 MessageBox.Show("Duplicate Search criteria");

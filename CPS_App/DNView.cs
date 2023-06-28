@@ -26,11 +26,12 @@ namespace CPS_App
         private int selectId;
         private string userLoc;
         private List<updateObj> _updateObjs;
-        public DNView(DbServices dbServices)
+        public DNView(DbServices dbServices, GenericTableViewWorker genericTableViewWorker)
         {
             InitializeComponent();
             _dbServices = dbServices;
             _updateObjs = new List<updateObj>();
+            _genericTableViewWorker = genericTableViewWorker;
         }
 
 
@@ -90,19 +91,14 @@ namespace CPS_App
             await CreateUpdateObj(readytoConfirm);
             await UpdateRecordAsync();
 
-            bool flag = false;
+            int count = 0;
             List<RequestMappingReqObj> reqObj = await OutstandingReqObj();
             foreach (RequestMappingReqObj row in reqObj)
             {
-                if (row.itemLists.Any(x => x.i_remain_req_qty == 0 || x.bi_po_status_id == 2 || x.i_hd_map_stat_id == 2))
-                {
-                    flag = true;
-                }
-                else
-                {
-                    flag = false;
-                }
-                if(flag)
+              
+                count = row.itemLists.Where(x => x.i_remain_req_qty != 0 || x.bi_po_status_id != 2 || x.i_hd_map_stat_id != 2).Count();
+                
+                if (count == 0)
                 {
                     updateObj updateObj = new updateObj()
                     {
@@ -118,9 +114,10 @@ namespace CPS_App
                     };
                     _updateObjs.Add(updateObj);
                 }
-                
+
             }
             await UpdateRecordAsync();
+            await LoadViewTable(userLoc);
         }
 
         private void btncancel_Click(object sender, EventArgs e)
@@ -205,25 +202,32 @@ namespace CPS_App
                     {"i_remain_req_qty" ,realqty<=0? "0":realqty.ToString()},
                     {"bi_po_status_id", "2" },
                     {"i_hd_map_stat_id", "2" }
+                },
+                selecter = new Dictionary<string, string>
+                {
+                    {nameof(readytoConfirm.bi_req_id),readytoConfirm.bi_req_id.ToString() },
+                    {nameof(readytoConfirm.bi_item_id),readytoConfirm.bi_item_id.ToString() },
                 }
             };
             _updateObjs.Add(updateReq);
 
-            
+
         }
         public async Task<List<RequestMappingReqObj>> OutstandingReqObj()
         {
-            searchObj reqse = new searchObj()
-            {
-                searchWords = new Dictionary<string, List<string>>
-                {
-                    {"i_map_stat_id", new List<string>(){"1","3"} },                    
-                }
-            };
-            //string addSearch = " i_remain_req_qty > 0";
-            RequestMappingReqObj viewObj = new RequestMappingReqObj();
             try
             {
+                searchObj reqse = new searchObj()
+                {
+                    searchWords = new Dictionary<string, List<string>>
+                {
+                    {"i_map_stat_id", new List<string>(){"1","3"} },
+                }
+                };
+                //string addSearch = " i_remain_req_qty > 0";
+
+
+                RequestMappingReqObj viewObj = new RequestMappingReqObj();
                 var res = await _genericTableViewWorker.GetGenericWorker<RequestMappingReqObj, ItemRequest>(viewObj.GetSqlQuery(), nameof(viewObj.bi_req_id), null, reqse);
                 return res;
             }

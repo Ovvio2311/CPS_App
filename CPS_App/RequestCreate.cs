@@ -88,7 +88,8 @@ namespace CPS_App
             //{
             //    MessageBox.Show(GenUtil.ArrayToString(validator.errors()), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             //}
-            if (cbxname.SelectedItem == null || !int.TryParse(txtQty.Text, out var b) || dateTimePicker.Value <= DateTime.Now)
+            if (cbxname.SelectedItem == null || !int.TryParse(txtQty.Text, out var b) || dateTimePicker.Value <= DateTime.Now ||
+                GenUtil.ConvertObjtoType<int>(txtQty.Text.Trim()) <= 0)
             {
                 //_logger.LogDebug("Please Enter Correct Format");
                 MessageBox.Show("Please Enter Correct Format");

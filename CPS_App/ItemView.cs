@@ -97,7 +97,7 @@ namespace CPS_App
                 dataGridViewitem.Columns.Clear();
                 lblnoresult.Show();
                 btncreate.Hide();
-                btnupdate.Hide();
+                
                 return;
             }
             var observableItems = new ObservableCollection<StockLevelViewObj>(stock);
@@ -160,7 +160,7 @@ namespace CPS_App
 
         private async void btnsearch_Click(object sender, EventArgs e)
         {
-            btncreate.Show();
+            
             btnupdate.Show();
             if (cbxsearch1.SelectedItem == cbxsearch2.SelectedItem && txtsearch1.Text != "" && txtsearch2.Text != "")
             {

@@ -48,7 +48,7 @@ namespace CPS_App
             _confirmppo = new List<POTableObj>();
         }
 
-        private async void POAView_Load(object sender, EventArgs e)
+        private async void POView_Load(object sender, EventArgs e)
         {
             userIden = AuthService._userClaim;
             btnconfirmppo.Hide();
@@ -56,10 +56,18 @@ namespace CPS_App
             {
                 //throw new Exception("user claim is null");                
             }
+            userLoc = userIden.Claims.FirstOrDefault(x => x.Type == "location_id").Value.ToString();
             if (!await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "po", "read" } }))
             {
                 MessageBox.Show("No Access Permission");
                 this.BeginInvoke(new MethodInvoker(this.Close));
+            }
+            else
+            {
+                if (await CheckPPOconfirmation())
+                {
+                    btnconfirmppo.Show();
+                }
             }
             if (await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "po", "update" } }))
                 btnedit.Show();
@@ -67,16 +75,12 @@ namespace CPS_App
                 btnedit.Hide();
             if (await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "po", "write" } }))
             {
-                btnadd.Show();
-                if (await CheckPPOconfirmation())
-                {
-                    btnconfirmppo.Show();
-                }
+                btnadd.Show();               
             }
             else
                 btnadd.Hide();
 
-            userLoc = userIden.Claims.FirstOrDefault(x => x.Type == "location_id").Value.ToString();
+            
             await LoadViewTable(userLoc);
             await GetSearchWords(userIden, "po");
 
@@ -223,13 +227,14 @@ namespace CPS_App
 
         private void btnconfirmppo_Click(object sender, EventArgs e)
         {
-
+            ///////////
         }
         private async Task<bool> CheckPPOconfirmation()
         {
             try
             {
                 POTableObj viewObj = new POTableObj();
+                
                 searchObj searchObj = new searchObj()
                 {
                     searchWords = new Dictionary<string, List<string>>

@@ -54,9 +54,9 @@ namespace CPS_App
             List<lut_poa_type> poatype = JsonConvert.DeserializeObject<List<lut_poa_type>>(JsonConvert.SerializeObject(type.result));
             poatype.ForEach(x => cbxtype.Items.Add($"{x.ti_poa_type_id}: {x.vc_poa_type_desc}"));
 
-            var locType = await _dbServices.SelectAllAsync<tb_location>();
-            List<tb_location> loc = JsonConvert.DeserializeObject<List<tb_location>>(JsonConvert.SerializeObject(locType.result));
-            loc.ForEach(x => cbxloc.Items.Add($"{x.bi_location_id}: {x.vc_location_desc}"));
+            //var locType = await _dbServices.SelectAllAsync<tb_location>();
+            //List<tb_location> loc = JsonConvert.DeserializeObject<List<tb_location>>(JsonConvert.SerializeObject(locType.result));
+            //loc.ForEach(x => cbxloc.Items.Add($"{x.bi_location_id}: {x.vc_location_desc}"));
 
             var supType = await _dbServices.SelectAllAsync<tb_supplier>();
             List<tb_supplier> sup = JsonConvert.DeserializeObject<List<tb_supplier>>(JsonConvert.SerializeObject(supType.result));
@@ -104,8 +104,8 @@ namespace CPS_App
 
             var poatype = cbxtype.SelectedItem;
             if (poatype != null) { poatype = poatype.ToString().Split(":").ElementAt(0); }
-            var loc = cbxloc.SelectedItem;
-            if (loc != null) { loc = loc.ToString().Split(":").ElementAt(0); }
+            //var loc = cbxloc.SelectedItem;
+            //if (loc != null) { loc = loc.ToString().Split(":").ElementAt(0); }
             var tc = cbxtc.SelectedItem;
             if (tc != null) { tc = tc.ToString().Split(":").ElementAt(0); }
             var delisc = cbxselisc.SelectedItem;
@@ -126,7 +126,7 @@ namespace CPS_App
 
             var availableItem = pn1.Controls.OfType<KryptonTextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
 
-            if (availableItem != 1 || selectedComboBoxpn1 != 6)
+            if (availableItem != 1 || selectedComboBoxpn1 != 5)
             {
                 MessageBox.Show("Please enter correct info");
                 return;
@@ -310,7 +310,8 @@ namespace CPS_App
         {
             try
             {
-                if (txtpri.Text != string.Empty && txtproqty.Text != string.Empty)
+                if (GenUtil.ConvertObjtoType<int>(txtpri.Text) != null && GenUtil.ConvertObjtoType<int>(txtpri.Text) > 0 &&
+                    GenUtil.ConvertObjtoType<int>(txtproqty.Text) != null && GenUtil.ConvertObjtoType<int>(txtproqty.Text) > 0)
                 {
                     var dec = GenUtil.ConvertObjtoType<int>(txtpri.Text) * GenUtil.ConvertObjtoType<int>(txtproqty.Text);
                     txtam.Text = dec.ToString();
@@ -349,7 +350,10 @@ namespace CPS_App
             var selectedComboBoxpn2 = pn2.Controls.OfType<KryptonComboBox>().Where(n => n.Text != string.Empty).Count();
             var availablePn1 = pn1.Controls.OfType<KryptonTextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
             var availablePn2 = pn2.Controls.OfType<KryptonTextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
-            return availablePn1 == 1 && availablePn2 == 7 && selectedComboBoxpn1 == 6 && selectedComboBoxpn2 == 2;
+            return availablePn1 == 1 && availablePn2 == 7 && selectedComboBoxpn1 == 5 && selectedComboBoxpn2 == 2 &&
+                GenUtil.ConvertObjtoType<int>(txtproqty.Text.Trim()) != null && GenUtil.ConvertObjtoType<int>(txtproqty.Text.Trim()) > 0 &&
+                GenUtil.ConvertObjtoType<int>(txtminqty.Text.Trim()) != null && GenUtil.ConvertObjtoType<int>(txtminqty.Text.Trim()) > 0 &&
+                GenUtil.ConvertObjtoType<int>(txtpri.Text.Trim()) != null && GenUtil.ConvertObjtoType<int>(txtpri.Text.Trim()) > 0 ; 
 
         }
 
@@ -412,7 +416,8 @@ namespace CPS_App
                     {
                         txtcont.Enabled = false;
                         txtquot.Enabled = false;
-                        txtcont.Text = "Null";
+                        txtcont.Text = "Nil";
+                        txtquot.Text = "Nil";
                     }
                     else
                     {

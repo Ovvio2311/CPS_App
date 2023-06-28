@@ -117,7 +117,7 @@ namespace CPS_App
                 MessageBox.Show("Value haven't change");
                 return;
             }
-            if (!int.TryParse(txtremain.Text, out var a))
+            if (!int.TryParse(txtremain.Text, out var a) || GenUtil.ConvertObjtoType<int>(txtremain.Text.Trim()) < 0)
             {
                 MessageBox.Show("Remain Quantity input type is not correct");
                 return;

@@ -175,7 +175,7 @@ namespace CPS_App.Services
                                 DateTime arrival = DateTime.Now.AddDays(GenUtil.ConvertObjtoType<int>(day.ElementAt(0)));
                                 //poa > request
                                 if (i.i_remain_qty > item.i_remain_req_qty && item.i_remain_req_qty > i.i_min_qty &&
-                                arrival > GenUtil.ConvertObjtoType<DateTime>(item.dt_exp_deli_date))
+                                arrival < GenUtil.ConvertObjtoType<DateTime>(item.dt_exp_deli_date) && GenUtil.ConvertObjtoType<DateTime>(row.dt_effect_date) > DateTime.Now)
                                 {
                                     try
                                     {

@@ -67,7 +67,7 @@ namespace CPS_App
             }
 
             disableValidation();
-            if (_requestMappingReqObj.Count() > 0)
+            if (_requestMappingReqObj != null && _requestMappingReqObj.Count() > 0)
             {
                 PPO = await _manualMappingProcess.CheckforOtherPurchaseOrder(_requestMappingReqObj);
                 if (PPO.Count() > 0)
@@ -101,6 +101,7 @@ namespace CPS_App
                 {
                     if (x.b_is_ref_type)
                         cbxreffrom.Items.Add(x.vc_po_type_desc);
+
                     cbxtype.Items.Add($"{x.ti_po_type_id}: {x.vc_po_type_desc}");
                 });
             }
@@ -187,7 +188,9 @@ namespace CPS_App
             else
             {
                 await GenUtil.AddingInputToObject<POTableObj>(pn1, obj);
-                obj.bi_req_id = _requestMappingReqObj.ElementAt(0).bi_req_id.ToString();
+                if(obj.ti_po_type_id != 1)
+                    obj.bi_req_id = _requestMappingReqObj.ElementAt(0).bi_req_id;
+
                 switch (obj.ti_po_type_id)
                 {
                     case 1:

@@ -327,7 +327,7 @@ namespace CPS_App.Models
             
             [Display(Name = "Request Id")]
             public int bi_req_id { get; set; }
-            [Display(Name = "Staff Id")]
+            [Display(Name = "not_shown")]
             public int i_staff_id { get; set; }
             [Display(Name = "Staff Name")]
             public string vc_staff_name { get; set; }
@@ -548,7 +548,7 @@ namespace CPS_App.Models
             public string vc_cur_desc { get; set; }
             [Display(Name = "not_shown")]
             public int ti_tc_id { get; set; }
-            [Display(Name = "Terms and Conditions")]
+            [Display(Name = "not_shown")]
             public string vc_tc_desc { get; set; }
             [Display(Name = "not_shown")]
             public int ti_deli_sched_id { get; set; }
@@ -556,7 +556,7 @@ namespace CPS_App.Models
             public string vc_deli_sched_desc { get; set; }
             [Display(Name = "Effective Date")]
             public string dt_effect_date { get; set; }
-            [Display(Name = "Contract No")]
+            [Display(Name = "not_shown")]
             public string vc_contract_no { get; set; }
             [Display(Name = "not_shown")]
             public string dt_created_date { get; set; }
@@ -735,10 +735,10 @@ namespace CPS_App.Models
                         
             [Display(Name = "Po Id")]
             public int bi_po_id { get; set; }
-            [Display(Name = "Ref Id")]
+            [Display(Name = "not_shown")]
             public string vc_ref_id { get; set; }
             [Display(Name = "not_shown")]
-            public string bi_req_id { get; set; }
+            public int bi_req_id { get; set; }
             [Display(Name = "not_shown")]
             public int bi_po_header_id { get; set; }
             [Display(Name = "not_shown")]
@@ -763,7 +763,7 @@ namespace CPS_App.Models
             public string vc_cur_desc { get; set; }
             [Display(Name = "not_shown")]
             public int ti_tc_id { get; set; }
-            [Display(Name = "Terms and Conditions")]
+            [Display(Name = "not_shown")]
             public string vc_tc_desc { get; set; }
             [Display(Name = "not_shown")]
             public int ti_deli_sched_id { get; set; }
@@ -773,7 +773,7 @@ namespace CPS_App.Models
             public string dt_expect_delidate { get; set; }
             [Display(Name = "Contract No")]
             public string vc_contract_no { get; set; }
-            [Display(Name = "Effective Date")]
+            [Display(Name = "not_shown")]
             public string dt_effect_date { get; set; }
             [Display(Name = "not_shown")]
             public string dt_created_date { get; set; }

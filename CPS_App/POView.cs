@@ -34,7 +34,7 @@ namespace CPS_App
         private CreatePoServices _createPoServices;
         private ManualMappingProcess _manualMappingProcess;
         private string userLoc;
-        private List<POTableObj> _confirmppo;
+        private List<POTableObj> _confirmSchRelease;
         public POView(DbServices dbServices, POAWorker pOAWorker, SearchFunc searchFunc, GenericTableViewWorker genericTableViewWorker, CreatePoServices createPoServices, ManualMappingProcess manualMappingProcess)
         {
             InitializeComponent();
@@ -45,13 +45,13 @@ namespace CPS_App
             _genericTableViewWorker = genericTableViewWorker;
             _createPoServices = createPoServices;
             _manualMappingProcess = manualMappingProcess;
-            _confirmppo = new List<POTableObj>();
+            _confirmSchRelease = new List<POTableObj>();
         }
 
         private async void POView_Load(object sender, EventArgs e)
         {
             userIden = AuthService._userClaim;
-            btnconfirmppo.Hide();
+            btnconfirmSchRe.Hide();
             if (userIden == null)
             {
                 //throw new Exception("user claim is null");                
@@ -64,9 +64,9 @@ namespace CPS_App
             }
             else
             {
-                if (await CheckPPOconfirmation())
+                if (await CheckSchReleaseconfirmation())
                 {
-                    btnconfirmppo.Show();
+                    btnconfirmSchRe.Show();
                 }
             }
             if (await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "po", "update" } }))
@@ -227,9 +227,18 @@ namespace CPS_App
 
         private void btnconfirmppo_Click(object sender, EventArgs e)
         {
-            ///////////
+            kryptonDataGridViewpo.DataSource = null;
+            kryptonDataGridViewpo.Columns.Clear();
+            var observableItems = new ObservableCollection<POTableObj>(_confirmSchRelease);
+            BindingList<POTableObj> source = observableItems.ToBindingList();
+
+            if (_confirmSchRelease != null)
+                kryptonDataGridViewpo.DataSource = source;
+
+            GenUtil.dataGridAttrName<POTableObj>(kryptonDataGridViewpo, new List<string>() { "not_shown" });
+
         }
-        private async Task<bool> CheckPPOconfirmation()
+        private async Task<bool> CheckSchReleaseconfirmation()
         {
             try
             {
@@ -244,9 +253,9 @@ namespace CPS_App
                     {nameof(viewObj.bi_deli_loc_id),new List<string>(){ userLoc } },
                 }
                 };
-                _confirmppo = await _genericTableViewWorker.GetGenericWorker<POTableObj, PoItemList>(viewObj.GetSqlQuery(), nameof(viewObj.bi_po_header_id),
+                _confirmSchRelease = await _genericTableViewWorker.GetGenericWorker<POTableObj, PoItemList>(viewObj.GetSqlQuery(), nameof(viewObj.bi_po_header_id),
                      null, searchObj);
-                return _confirmppo != null ? true : false;
+                return _confirmSchRelease != null ? true : false;
             }
             catch (Exception ex)
             {

@@ -95,9 +95,9 @@ namespace CPS_App
             List<RequestMappingReqObj> reqObj = await OutstandingReqObj();
             foreach (RequestMappingReqObj row in reqObj)
             {
-              
+
                 count = row.itemLists.Where(x => x.i_remain_req_qty != 0 || x.bi_po_status_id != 2 || x.i_hd_map_stat_id != 2).Count();
-                
+
                 if (count == 0)
                 {
                     updateObj updateObj = new updateObj()
@@ -157,60 +157,14 @@ namespace CPS_App
         }
         public async Task CreateUpdateObj(DeliveryNoteObj readytoConfirm)
         {
-            updateObj updateObj = new updateObj()
-            {
-                table = "tb_delivery_note",
-                updater = new Dictionary<string, string>
-                {
-                    {nameof(readytoConfirm.i_dn_type_id),"2" },
-                },
-                selecter = new Dictionary<string, string>
-                {
-                    {nameof(readytoConfirm.bi_dn_id),readytoConfirm.bi_dn_id.ToString()},
-                    {nameof(readytoConfirm.bi_item_id),readytoConfirm.bi_item_id.ToString()}
-                }
-            };
-            _updateObjs.Add(updateObj);
+            //update tb_delivery_note
+            await UpdateDeliNote(readytoConfirm);
 
-            //find qty
-            selectObj selObj = new selectObj()
-            {
-                table = "tb_request_detail",
-                selecter = new Dictionary<string, string>
-                {
-                    {nameof(readytoConfirm.bi_req_id) ,readytoConfirm.bi_req_id.ToString()},
-                    {nameof(readytoConfirm.bi_item_id), readytoConfirm.bi_item_id.ToString() },
-                }
+            //update tb_request_detail
+            await UpdateReqDetail(readytoConfirm);
 
-            };
-            DbResObj selres = await _dbServices.SelectWhereAsync(selObj);
-            if (selres.resCode != 1)
-            {
-
-                MessageBox.Show("update request detail order error");
-            }
-            List<List<KeyValuePair<string, object>>> kvp = GenUtil.DbResulttoKVP(selres.result);
-            var qty = kvp.ElementAt(0).FirstOrDefault(x => x.Key == "i_remain_req_qty").Value;
-            int realqty = GenUtil.ConvertObjtoType<int>(qty) - readytoConfirm.i_item_qty;
-
-
-            updateObj updateReq = new updateObj()
-            {
-                table = "tb_request_detail",
-                updater = new Dictionary<string, string>
-                {
-                    {"i_remain_req_qty" ,realqty<=0? "0":realqty.ToString()},
-                    {"bi_po_status_id", "2" },
-                    {"i_hd_map_stat_id", "2" }
-                },
-                selecter = new Dictionary<string, string>
-                {
-                    {nameof(readytoConfirm.bi_req_id),readytoConfirm.bi_req_id.ToString() },
-                    {nameof(readytoConfirm.bi_item_id),readytoConfirm.bi_item_id.ToString() },
-                }
-            };
-            _updateObjs.Add(updateReq);
-
+            //update dest stock unit
+            await UpdateDestStockUnit(readytoConfirm);
 
         }
         public async Task<List<RequestMappingReqObj>> OutstandingReqObj()
@@ -235,6 +189,182 @@ namespace CPS_App
             {
                 throw new Exception(ex.Message);
             }
+        }
+        public async Task UpdateDeliNote(DeliveryNoteObj readytoConfirm)
+        {
+            try
+            {
+                updateObj updateObj = new updateObj()
+                {
+                    table = "tb_delivery_note",
+                    updater = new Dictionary<string, string>
+                {
+                    {nameof(readytoConfirm.i_dn_type_id),"2" },
+                },
+                    selecter = new Dictionary<string, string>
+                {
+                    {nameof(readytoConfirm.bi_dn_id),readytoConfirm.bi_dn_id.ToString()},
+                    {nameof(readytoConfirm.bi_item_id),readytoConfirm.bi_item_id.ToString()}
+                }
+                };
+                _updateObjs.Add(updateObj);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+        }
+        public async Task UpdateReqDetail(DeliveryNoteObj readytoConfirm)
+        {
+            try
+            {
+                //find qty
+                selectObj selObj = new selectObj()
+                {
+                    table = "tb_request_detail",
+                    selecter = new Dictionary<string, string>
+                {
+                    {nameof(readytoConfirm.bi_req_id) ,readytoConfirm.bi_req_id.ToString()},
+                    {nameof(readytoConfirm.bi_item_id), readytoConfirm.bi_item_id.ToString() },
+                }
+
+                };
+                DbResObj selres = await _dbServices.SelectWhereAsync(selObj);
+                if (selres.resCode != 1)
+                {
+
+                    MessageBox.Show("update request detail order error");
+                }
+                List<List<KeyValuePair<string, object>>> kvp = GenUtil.DbResulttoKVP(selres.result);
+                var qty = kvp.ElementAt(0).FirstOrDefault(x => x.Key == "i_remain_req_qty").Value;
+                int realqty = GenUtil.ConvertObjtoType<int>(qty) - readytoConfirm.i_item_qty;
+
+
+                updateObj updateReq = new updateObj()
+                {
+                    table = "tb_request_detail",
+                    updater = new Dictionary<string, string>
+                {
+                    {"i_remain_req_qty" ,realqty<=0? "0":realqty.ToString()},
+                    {"bi_po_status_id", "2" },
+                    {"i_hd_map_stat_id", "2" }
+                },
+                    selecter = new Dictionary<string, string>
+                {
+                    {nameof(readytoConfirm.bi_req_id),readytoConfirm.bi_req_id.ToString() },
+                    {nameof(readytoConfirm.bi_item_id),readytoConfirm.bi_item_id.ToString() },
+                }
+                };
+                _updateObjs.Add(updateReq);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+        }
+        public async Task UpdateDestStockUnit(DeliveryNoteObj readytoConfirm)
+        {
+            try
+            {
+                if (readytoConfirm.i_dn_type_id == 1)//warehouse
+                {
+
+                }
+                //find delivery location qty
+                selectObj selObj = new selectObj()
+                {
+                    table = nameof(tb_item_unit),
+                    selecter = new Dictionary<string, string>
+                {
+                    {nameof(readytoConfirm.bi_location_id) ,readytoConfirm.bi_location_id.ToString()},
+                    {nameof(readytoConfirm.bi_item_id), readytoConfirm.bi_item_id.ToString() },
+                }
+
+                };
+                DbResObj selres = await _dbServices.SelectWhereAsync(selObj);
+                if (selres.resCode != 1)
+                {
+
+                    MessageBox.Show("update item unit order error");
+                }
+                List<List<KeyValuePair<string, object>>> kvp = GenUtil.DbResulttoKVP(selres.result);
+                var qty = kvp.ElementAt(0).FirstOrDefault(x => x.Key == "i_item_qty").Value;
+                int realqty = GenUtil.ConvertObjtoType<int>(qty) + readytoConfirm.i_item_qty;
+
+
+                updateObj updateStock = new updateObj()
+                {
+                    table = "tb_item_unit",
+                    selecter = new Dictionary<string, string>
+                {
+                    {nameof(readytoConfirm.bi_item_id), readytoConfirm.bi_item_id.ToString()  },
+                    {nameof(readytoConfirm.bi_location_id), readytoConfirm.bi_location_id.ToString() }
+                },
+                    updater = new Dictionary<string, string>
+                {
+                    {nameof(readytoConfirm.i_item_qty),realqty.ToString() }
+                }
+                };
+                _updateObjs.Add(updateStock);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+        }
+        public async Task UpdateSourceStockUnit(DeliveryNoteObj readytoConfirm)
+        {
+            try
+            {
+                if (readytoConfirm.i_dn_type_id == 1)//warehouse
+                {
+
+                }
+                //find delivery location qty
+                selectObj selObj = new selectObj()
+                {
+                    table = nameof(tb_item_unit),
+                    selecter = new Dictionary<string, string>
+                {
+                    {nameof(readytoConfirm.bi_location_id) ,"71"},
+                    {nameof(readytoConfirm.bi_item_id), readytoConfirm.bi_item_id.ToString() },
+                }
+
+                };
+                DbResObj selres = await _dbServices.SelectWhereAsync(selObj);
+                if (selres.resCode != 1)
+                {
+
+                    MessageBox.Show("update item unit order error");
+                }
+                List<List<KeyValuePair<string, object>>> kvp = GenUtil.DbResulttoKVP(selres.result);
+                var qty = kvp.ElementAt(0).FirstOrDefault(x => x.Key == "i_item_qty").Value;
+                int realqty = GenUtil.ConvertObjtoType<int>(qty) - readytoConfirm.i_item_qty;
+
+
+                updateObj updateStock = new updateObj()
+                {
+                    table = "tb_item_unit",
+                    selecter = new Dictionary<string, string>
+                {
+                    {nameof(readytoConfirm.bi_item_id), readytoConfirm.bi_item_id.ToString()  },
+                    {nameof(readytoConfirm.bi_location_id), "71" }
+                },
+                    updater = new Dictionary<string, string>
+                {
+                    {nameof(readytoConfirm.i_item_qty),realqty.ToString() }
+                }
+                };
+                _updateObjs.Add(updateStock);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
         }
     }
 }

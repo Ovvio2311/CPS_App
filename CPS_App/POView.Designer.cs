@@ -52,7 +52,7 @@
             this.lbltitle = new Krypton.Toolkit.KryptonLabel();
             this.lblnoresult = new Krypton.Toolkit.KryptonLabel();
             this.lblsubitemtitle = new Krypton.Toolkit.KryptonLabel();
-            this.btnconfirmppo = new Krypton.Toolkit.KryptonButton();
+            this.btnconfirmSchRe = new Krypton.Toolkit.KryptonButton();
             ((System.ComponentModel.ISupportInitialize)(this.kryptonDataGridViewpo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.kryptonDataGridViewitem)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pnsearch1)).BeginInit();
@@ -267,25 +267,25 @@
             this.lblsubitemtitle.TabIndex = 34;
             this.lblsubitemtitle.Values.Text = "Sub Item";
             // 
-            // btnconfirmppo
+            // btnconfirmSchRe
             // 
-            this.btnconfirmppo.AutoSize = true;
-            this.btnconfirmppo.CornerRoundingRadius = -1F;
-            this.btnconfirmppo.Location = new System.Drawing.Point(710, 56);
-            this.btnconfirmppo.Name = "btnconfirmppo";
-            this.btnconfirmppo.Palette = this.kryptonPalettebtn;
-            this.btnconfirmppo.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
-            this.btnconfirmppo.Size = new System.Drawing.Size(143, 35);
-            this.btnconfirmppo.TabIndex = 35;
-            this.btnconfirmppo.Values.Text = "Re-Confirm Order";
-            this.btnconfirmppo.Click += new System.EventHandler(this.btnconfirmppo_Click);
+            this.btnconfirmSchRe.AutoSize = true;
+            this.btnconfirmSchRe.CornerRoundingRadius = -1F;
+            this.btnconfirmSchRe.Location = new System.Drawing.Point(710, 56);
+            this.btnconfirmSchRe.Name = "btnconfirmSchRe";
+            this.btnconfirmSchRe.Palette = this.kryptonPalettebtn;
+            this.btnconfirmSchRe.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.btnconfirmSchRe.Size = new System.Drawing.Size(143, 35);
+            this.btnconfirmSchRe.TabIndex = 35;
+            this.btnconfirmSchRe.Values.Text = "Re-Confirm Order";
+            this.btnconfirmSchRe.Click += new System.EventHandler(this.btnconfirmppo_Click);
             // 
             // POView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(881, 638);
-            this.Controls.Add(this.btnconfirmppo);
+            this.Controls.Add(this.btnconfirmSchRe);
             this.Controls.Add(this.lblsubitemtitle);
             this.Controls.Add(this.lbltitle);
             this.Controls.Add(this.lblnoresult);
@@ -340,6 +340,6 @@
         private Krypton.Toolkit.KryptonLabel lbltitle;
         private Krypton.Toolkit.KryptonLabel lblnoresult;
         private Krypton.Toolkit.KryptonLabel lblsubitemtitle;
-        private Krypton.Toolkit.KryptonButton btnconfirmppo;
+        private Krypton.Toolkit.KryptonButton btnconfirmSchRe;
     }
 }

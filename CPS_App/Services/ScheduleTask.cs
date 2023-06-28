@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
@@ -65,7 +66,9 @@ namespace CPS_App.Services
 
                 //Mapping process P1
                 List<POTableObj> newPo1 = await MappingScheduler_P1();
-                newPo1.ForEach(async x => await _createPoServices.CreatePoASync(x));
+                newPo1.ForEach(async x => { 
+                    await _createPoServices.CreatePoAsync(x); 
+                });
                 await UpdateRecordAsync();
 
                 //Mapping process p2
@@ -231,6 +234,7 @@ namespace CPS_App.Services
                                         });
                                         tempPoItem.i_actual_qty = i.i_remain_qty >= item.i_remain_req_qty ? item.i_remain_req_qty : i.i_remain_qty;
                                         tempPoItem.i_actual_amount = tempPoItem.i_actual_qty * tempPoItem.i_price;
+                                        tempPoItem.bi_ln_po_status_id = 1;
                                         tempPoCreate.itemLists.Add(tempPoItem);
                                         tempPoCreate.vc_ref_id = $"Poa Id: {row.bi_poa_id}";
                                         tempPoCreate.ti_po_type_id = 2;
@@ -425,6 +429,7 @@ namespace CPS_App.Services
                     //{nameof(disObj.bi_di_id),disObj.bi_di_id.ToString() },
                     {nameof(instruction.bi_req_id),instruction.bi_req_id.ToString() },
                     {nameof(instruction.bi_item_id),instruction.bi_item_id.ToString() },
+                    {nameof(instruction.bi_item_vid),instruction.bi_item_vid.ToString() },
                     {nameof(instruction.i_di_status_id),instruction.i_di_status_id.ToString() },
                     {nameof(instruction.i_item_qty),instruction.i_item_qty.ToString() },
                     {nameof(instruction.bi_category_id),instruction.bi_category_id.ToString() },
@@ -527,6 +532,45 @@ namespace CPS_App.Services
             {
                 throw new Exception(ex.Message);
             }
+        }
+        public async Task CreateDnObject(POTableObj obj)
+        {
+            List<POTableObj> list = new List<POTableObj>();
+            list.Add(obj);
+            List<DeliveryNoteObj> listDn = new List<DeliveryNoteObj>();
+            
+            foreach(POTableObj it in list)
+            {
+                
+                foreach (PoItemList item in it.itemLists)
+                {
+                    DeliveryNoteObj dnObj = new DeliveryNoteObj();
+                    foreach (PropertyInfo dn in dnObj.GetType().GetProperties())
+                    {
+                        if (nameof(it) == dn.Name)
+                        {
+                            if (it != null)
+                                dn.SetValue(dnObj, Convert.ChangeType(it, dn.PropertyType, null));
+                        }
+                        if (nameof(item) == dn.Name)
+                        {
+                            if (nameof(item) != null)
+                                dn.SetValue(dnObj, Convert.ChangeType(item, dn.PropertyType, null));
+                        }
+                    }
+                    dnObj.i_dn_type_id = 2;
+                    dnObj.i_item_qty = item.i_actual_qty;
+                    dnObj.bi_item_vid = item.vi
+                    listDn.Add(dnObj);
+                }
+               
+            }
+               
+                    
+                
+                
+                       
+            
         }
     }
 }

@@ -260,6 +260,22 @@ namespace CPS_App
             PoItemList req = new PoItemList();
             await GenUtil.AddingInputToObject<PoItemList>(pn2, req);
             req.vc_contract_no = obj.vc_contract_no;
+            switch (obj.ti_po_type_id)
+            {
+                case 1:
+                    req.bi_ln_po_status_id = 1;
+                    break;
+                case 2:
+                case 3:
+                    req.bi_ln_po_status_id = 3;
+                    break;
+                case 4:
+                    req.bi_ln_po_status_id = 4;
+                    break;
+                default:
+                    req.bi_ln_po_status_id = 3;
+                    break;
+            }
             if (itemList.Count > 0 && itemList.Select(x => x.bi_item_id == req.bi_item_id).FirstOrDefault())
             {
                 MessageBox.Show("Item duplicate entry");
@@ -300,7 +316,7 @@ namespace CPS_App
                 DialogResult response = MessageBox.Show(confirmStr1 + confirmStr2, "Confirm", MessageBoxButtons.YesNo);
                 if (response == DialogResult.Yes ? true : false)
                 {
-                    resObj res = await _createPoServices.CreatePoASync(obj);
+                    resObj res = await _createPoServices.CreatePoAsync(obj);
                     if (res.resCode != 1 && res.result != true && res.err_msg == null)
                     {
                         MessageBox.Show("Cannot insert Po");

@@ -156,7 +156,7 @@ namespace CPS_App
                         inserter = new Dictionary<string, string>
                     {
                         //{nameof(readytoAdd.bi_di_id),readytoAdd.bi_di_id.ToString() },
-                        { "i_dn_type_id", "1" },
+                        { "i_dn_status_id", "1" },
                         { nameof(readytoAdd.bi_req_id), readytoAdd.bi_req_id.ToString() },
                         { nameof(readytoAdd.bi_item_id), readytoAdd.bi_item_id.ToString() },
                         { nameof(readytoAdd.bi_item_vid), readytoAdd.bi_item_vid.ToString() },

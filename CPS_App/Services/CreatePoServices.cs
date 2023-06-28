@@ -17,7 +17,7 @@ namespace CPS_App.Services
         {
             _services = services;
         }
-        public async Task<resObj> CreatePoASync(POTableObj obj)
+        public async Task<resObj> CreatePoAsync(POTableObj obj)
         {
             try
             {
@@ -123,7 +123,8 @@ namespace CPS_App.Services
                         {nameof(row.i_actual_amount), row.i_actual_amount.ToString() },
                         {nameof(row.vc_reference), row.vc_reference.ToString() },
                         {nameof(row.vc_quot_no),row.vc_quot_no.ToString() },
-                        {nameof(row.vc_contract_no),row.vc_contract_no }
+                        {nameof(row.vc_contract_no),row.vc_contract_no },
+                        {"bi_po_status_id", row.bi_ln_po_status_id.ToString() }
                         }
                     };
                     var resitem = await _services.InsertAsync(po_line);
@@ -133,6 +134,7 @@ namespace CPS_App.Services
                         throw new Exception("insert po line error");
                     }
                     MessageBox.Show($"po line id: {resitem.result}");
+                   
                     // update planned purchase order quantity
                     if (obj.bi_po_status_id == 4 && obj.ti_po_type_id == 4)
                     {

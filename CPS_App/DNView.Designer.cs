@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             kryptonPalettelbl = new Krypton.Toolkit.KryptonPalette(components);
             kryptonPaletteheader = new Krypton.Toolkit.KryptonPalette(components);
             kryptonPalettereadonly = new Krypton.Toolkit.KryptonPalette(components);
@@ -38,10 +38,11 @@
             kryptonPalettedatagridview = new Krypton.Toolkit.KryptonPalette(components);
             lblnoresult = new Krypton.Toolkit.KryptonLabel();
             btncancel = new Krypton.Toolkit.KryptonButton();
-            btndn = new Krypton.Toolkit.KryptonButton();
             btnreceive = new Krypton.Toolkit.KryptonButton();
             datagridview = new Krypton.Toolkit.KryptonDataGridView();
             lbldnnote = new Krypton.Toolkit.KryptonLabel();
+            btncsv = new Krypton.Toolkit.KryptonButton();
+            kryptonPaletteCsv = new Krypton.Toolkit.KryptonPalette(components);
             ((System.ComponentModel.ISupportInitialize)datagridview).BeginInit();
             SuspendLayout();
             // 
@@ -90,7 +91,7 @@
             // btncancel
             // 
             btncancel.CornerRoundingRadius = -1F;
-            btncancel.Location = new Point(639, 55);
+            btncancel.Location = new Point(479, 55);
             btncancel.Name = "btncancel";
             btncancel.Palette = kryptonPalettebtn;
             btncancel.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
@@ -98,17 +99,6 @@
             btncancel.TabIndex = 24;
             btncancel.Values.Text = "Cancel";
             btncancel.Click += btncancel_Click;
-            // 
-            // btndn
-            // 
-            btndn.CornerRoundingRadius = -1F;
-            btndn.Location = new Point(461, 55);
-            btndn.Name = "btndn";
-            btndn.Palette = kryptonPalettebtn;
-            btndn.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
-            btndn.Size = new Size(151, 37);
-            btndn.TabIndex = 23;
-            btndn.Values.Text = "Add Delivery Note";
             // 
             // btnreceive
             // 
@@ -127,8 +117,8 @@
             // 
             datagridview.AllowUserToAddRows = false;
             datagridview.AllowUserToOrderColumns = true;
-            dataGridViewCellStyle2.BackColor = Color.AliceBlue;
-            datagridview.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.BackColor = Color.AliceBlue;
+            datagridview.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             datagridview.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             datagridview.Location = new Point(54, 108);
             datagridview.Name = "datagridview";
@@ -153,14 +143,39 @@
             lbldnnote.TabIndex = 20;
             lbldnnote.Values.Text = "Delivery Note";
             // 
+            // btncsv
+            // 
+            btncsv.CornerRoundingRadius = -1F;
+            btncsv.Location = new Point(661, 55);
+            btncsv.Name = "btncsv";
+            btncsv.Palette = kryptonPaletteCsv;
+            btncsv.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            btncsv.Size = new Size(65, 37);
+            btncsv.TabIndex = 26;
+            btncsv.Values.Text = "CSV";
+            btncsv.Click += btncsv_Click;
+            // 
+            // kryptonPaletteCsv
+            // 
+            kryptonPaletteCsv.ButtonStyles.ButtonCommon.StateCommon.Back.Color1 = Color.PaleTurquoise;
+            kryptonPaletteCsv.ButtonStyles.ButtonCommon.StateCommon.Back.Color2 = Color.PaleTurquoise;
+            kryptonPaletteCsv.ButtonStyles.ButtonCommon.StateCommon.Border.Color1 = Color.Transparent;
+            kryptonPaletteCsv.ButtonStyles.ButtonCommon.StateCommon.Border.Color2 = Color.FromArgb(64, 64, 0);
+            kryptonPaletteCsv.ButtonStyles.ButtonCommon.StateCommon.Border.DrawBorders = Krypton.Toolkit.PaletteDrawBorders.Top | Krypton.Toolkit.PaletteDrawBorders.Bottom | Krypton.Toolkit.PaletteDrawBorders.Left | Krypton.Toolkit.PaletteDrawBorders.Right;
+            kryptonPaletteCsv.ButtonStyles.ButtonCommon.StateCommon.Border.Rounding = 5F;
+            kryptonPaletteCsv.ButtonStyles.ButtonCommon.StateCommon.Content.LongText.Color1 = Color.Black;
+            kryptonPaletteCsv.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Color1 = Color.SteelBlue;
+            kryptonPaletteCsv.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Font = new Font("Microsoft Tai Le", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
+            kryptonPaletteCsv.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Hint = Krypton.Toolkit.PaletteTextHint.SystemDefault;
+            // 
             // DNView
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(btncsv);
             Controls.Add(lblnoresult);
             Controls.Add(btncancel);
-            Controls.Add(btndn);
             Controls.Add(btnreceive);
             Controls.Add(datagridview);
             Controls.Add(lbldnnote);
@@ -182,9 +197,10 @@
         private Krypton.Toolkit.KryptonPalette kryptonPalettedatagridview;
         private Krypton.Toolkit.KryptonLabel lblnoresult;
         private Krypton.Toolkit.KryptonButton btncancel;
-        private Krypton.Toolkit.KryptonButton btndn;
         private Krypton.Toolkit.KryptonButton btnreceive;
         private Krypton.Toolkit.KryptonDataGridView datagridview;
         private Krypton.Toolkit.KryptonLabel lbldnnote;
+        private Krypton.Toolkit.KryptonButton btncsv;
+        private Krypton.Toolkit.KryptonPalette kryptonPaletteCsv;
     }
 }

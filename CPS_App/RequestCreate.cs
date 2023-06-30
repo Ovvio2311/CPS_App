@@ -17,14 +17,15 @@ namespace CPS_App
         public RequestCreationReq req;
         public List<RequestionCreationItem> itemList;
         public ClaimsIdentity userIden;
-        public RequestCreate(DbServices dbServices)
+        private DbGeneralServices _dbGeneralServices;
+        public RequestCreate(DbServices dbServices, DbGeneralServices dbGeneralServices)
         {
             InitializeComponent();
             _dbServices = dbServices;
             req = new RequestCreationReq();
             itemList = new List<RequestionCreationItem>();
             _validator = new Validator();
-
+            _dbGeneralServices = dbGeneralServices;
         }
 
         private async void RequestCreate_Load(object sender, EventArgs e)
@@ -170,38 +171,24 @@ namespace CPS_App
         }
         private async Task AddUomIdToReqObj()
         {
-            foreach(var row in itemList) {
-                var idFinder = new selectObj();
-                idFinder.table = "tb_item_vid_mapping";
-                idFinder.selecter = new Dictionary<string, string>
-                    {
-                        {nameof(row.bi_item_id), row.bi_item_id.ToString() }
-                    };
-                DbResObj vid = await _dbServices.SelectWhereAsync<tb_item_vid_mapping>(idFinder);
-                if (vid.resCode != 1 || vid.result == null)
+            foreach (var row in itemList)
+            {
+                try
                 {
-                    //_logger.LogDebug("item Id not find");
-                    MessageBox.Show("item Id not find");
-                }
-                tb_item_vid_mapping itemvid = vid.result[0];
-                row.bi_item_vid = itemvid.bi_item_vid;
+                    tb_item_vid_mapping vid = await _dbGeneralServices.GetVidAsync(row.bi_item_id.ToString());
+                    row.bi_item_vid = GenUtil.ConvertObjtoType<int>(vid.bi_item_vid);
 
-                //find uom id
-                var uomFinder = new selectObj();
-                uomFinder.table = "tb_item";
-                uomFinder.selecter = new Dictionary<string, string>
-                    {
-                        {nameof(row.bi_item_id), itemvid.bi_item_id.ToString()}
-                    };
-                DbResObj uomid = await _dbServices.SelectWhereAsync<tb_item>(uomFinder);
-                if (uomid.resCode != 1 || uomid.result == null)
-                {
-                    //_logger.LogDebug("uom Id not find");
-                    MessageBox.Show("uom Id not find");
+                    //find uom id
+                    tb_item uom = await _dbGeneralServices.GetUomAsync(vid.bi_item_id.ToString());
+                    row.i_uom_id = GenUtil.ConvertObjtoType<int>(uom.i_uom_id);
+
+                    req.items.Add(row);
                 }
-                tb_item uomId = uomid.result[0];
-                row.i_uom_id = GenUtil.ConvertObjtoType<int>(uomId.i_uom_id);
-                req.items.Add(row);
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+                
             }
 
         }

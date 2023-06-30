@@ -25,9 +25,10 @@ namespace CPS_App
         private int selectdId;
         private CreatePoServices _createPoServices;
         private ManualMappingProcess _manualMappingProcess;
+        private DbGeneralServices _dbGeneralServices;
         public RequestView(DbServices dbServices, RequestMapping mapping, SearchFunc searchFunc, 
             GenericTableViewWorker genericTableViewWorker, CreatePoServices createPoServices,
-            ManualMappingProcess manualMappingProcess)
+            ManualMappingProcess manualMappingProcess, DbGeneralServices dbGeneralServices)
         {
             InitializeComponent();
             defPage = new List<RequestMappingReqObj>();
@@ -38,7 +39,7 @@ namespace CPS_App
             _genericTableViewWorker = genericTableViewWorker;
             _createPoServices = createPoServices;
             _manualMappingProcess = manualMappingProcess;
-
+            _dbGeneralServices = dbGeneralServices;
         }
 
         private async void RequestView_Load(object sender, EventArgs e)
@@ -149,7 +150,7 @@ namespace CPS_App
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            RequestCreate requestCreate = new RequestCreate(_dbServices);
+            RequestCreate requestCreate = new RequestCreate(_dbServices,_dbGeneralServices);
             requestCreate.MdiParent = this.MdiParent;
             requestCreate.AutoScroll = true;
             this.Close();
@@ -227,7 +228,7 @@ namespace CPS_App
                 MessageBox.Show("Please select an item to mapping");
                 return;
             }
-            var reqtoMap = defPage.Where(x => x.bi_req_id == selectdId).ToList();
+            List<RequestMappingReqObj> reqtoMap = defPage.Where(x => x.bi_req_id == selectdId).ToList();
             POCreate pOCreate = new POCreate(_dbServices,_genericTableViewWorker,_createPoServices,_manualMappingProcess, reqtoMap);
             pOCreate.MdiParent = this.MdiParent;
             pOCreate.AutoScroll = true;

@@ -27,14 +27,17 @@ namespace CPS_App
         private GenericTableViewWorker _genericTableViewWorker;
         private readonly DbServices _dbServices;
         private int selectId;
+        private int poId;
         private string userLoc;
         List<POTableObj> _confirmppo;
-        public SchReleaseConfirm(GenericTableViewWorker genericTableViewWorker, DbServices dbServices)
+        private DbGeneralServices _generalServices;
+        public SchReleaseConfirm(GenericTableViewWorker genericTableViewWorker, DbServices dbServices, DbGeneralServices dbGeneralServices)
         {
             InitializeComponent();
             _genericTableViewWorker = genericTableViewWorker;
             _confirmppo = new List<POTableObj>();
             _dbServices = dbServices;
+            _generalServices = dbGeneralServices;
         }
 
         private async void SchReleaseConfirm_Load(object sender, EventArgs e)
@@ -65,15 +68,18 @@ namespace CPS_App
                 {
                     { nameof(viewObj.ti_po_type_id), new List<string>(){"4"} },
                     {nameof(viewObj.bi_po_status_id), new List<string>(){"4"} },
+                    {"bi_ln_po_status_id", new List<string>(){"4"} },
                     {nameof(viewObj.bi_deli_loc_id),new List<string>(){ userLoc } },
                 }
             };
             _confirmppo = await _genericTableViewWorker.GetGenericWorker<POTableObj, PoItemList>(viewObj.GetSqlQuery(), nameof(viewObj.bi_po_header_id),
                  null, searchObj);
 
-            if (_confirmppo.Count == 0)
+            if (_confirmppo == null)
             {
                 datagridview.Columns.Clear();
+                datagridviewitem.Columns.Clear();
+                lblitem.Hide();
                 lblnoresult.Show();
                 btnconfirm.Hide();
                 btnreject.Hide();
@@ -92,72 +98,65 @@ namespace CPS_App
         {
             try
             {
-                if (selectId == 0)
+                if (poId == 0)
                 {
-                    MessageBox.Show("Please select item to Add");
+                    MessageBox.Show("Please select item to Confirm");
                     return;
                 }
+                int itemid = GenUtil.ConvertObjtoType<int>(datagridviewitem.CurrentRow.Cells["bi_item_id"].Value);
                 POTableObj readytoConfirm = _confirmppo.Where(x => x.bi_po_header_id == selectId).FirstOrDefault();
-                await UpdatePlannedPurchase(readytoConfirm);
+                PoItemList itemtoConfirm = readytoConfirm.itemLists.Where(x=>x.bi_po_line_id == poId).FirstOrDefault();
+                await UpdatePlannedPurchase(readytoConfirm, poId);
+                await UpdatePoLine(readytoConfirm, poId, "3");
+                List<POTableObj> outstandingPo = await _generalServices.OutstandingPoObj();
+                var tar = outstandingPo.Where(x => x.bi_po_header_id == selectId).FirstOrDefault();
+                await UpdatePo(tar, 3);
+                List<RequestMappingReqObj> outreq = await _generalServices.OutstandingReqObj();
+                RequestMappingReqObj tarReq = outreq.Where(x=>x.bi_req_id == readytoConfirm.bi_req_id).FirstOrDefault();
+                ItemRequest tarItem = tarReq.itemLists.Where(x=>x.bi_item_id == itemid).FirstOrDefault();
+                await UpdateReqDetail(tarReq, tarItem);
+
+                MessageBox.Show("Process Completed");
+                await LoadViewTable(userLoc);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
         }
-        private async Task UpdatePlannedPurchase(POTableObj readytoConfirm)
+        private async Task UpdatePlannedPurchase(POTableObj readytoConfirm, int itemId)
         {
             try
             {
-                foreach (var itemlist in readytoConfirm.itemLists)
-                {
-                    var ppoId = readytoConfirm.vc_ref_id.Split(':')[1].Trim();
-                    var respo = await _dbServices.GetOriginalPoQty(ppoId);
-                    if (respo.resCode != 1)
-                    {
-                        MessageBox.Show("update planned purchase order error");
-                    }
-                    List<List<KeyValuePair<string, object>>> kvp = respo.result;
-                    var actQty = kvp.ElementAt(0).FirstOrDefault(x => x.Key == "i_actual_qty").Value;
-                    var actheader = kvp.ElementAt(0).FirstOrDefault(x => x.Key == "bi_po_header_id").Value.ToString();
-                    int relQty = GenUtil.ConvertObjtoType<int>(actQty) - itemlist.i_actual_qty;
+                PoItemList itemtoConfirm = readytoConfirm.itemLists.Where(x => x.bi_po_line_id == itemId).FirstOrDefault();
 
-                    updateObj updObj = new updateObj()
-                    {
-                        table = "tb_po_line",
-                        updater = new Dictionary<string, string>
-                            {
-                                { nameof(itemlist.i_actual_qty), relQty.ToString()  }
-                            },
-                        selecter = new Dictionary<string, string>
-                            {
-                                { nameof(itemlist.bi_po_header_id), actheader },
-                                { nameof(itemlist.bi_item_id), itemlist.bi_item_id.ToString() }
-                            }
-                    };
-                    var resorin = await _dbServices.UpdateAsync(updObj);
-                    if (resorin.resCode != 1 || resorin.result == null)
-                    {
-                        //_logger.LogDebug("insert error");
-                        throw new Exception("Update Planned Purchase order error");
-                    }
-                  
-                }
-                updateObj updateReleaseStatus = new updateObj()
+                var ppoId = readytoConfirm.vc_ref_id.Split(':')[1].Trim();
+                var respo = await _dbServices.GetOriginalPoQty(ppoId);
+                if (respo.resCode != 1)
                 {
-                    table = "tb_po",
+                    MessageBox.Show("update planned purchase order error");
+                }
+                List<List<KeyValuePair<string, object>>> kvp = respo.result;
+                var actQty = kvp.ElementAt(0).FirstOrDefault(x => x.Key == "i_actual_qty").Value;
+                var actheader = kvp.ElementAt(0).FirstOrDefault(x => x.Key == "bi_po_header_id").Value.ToString();
+                int relQty = GenUtil.ConvertObjtoType<int>(actQty) - itemtoConfirm.i_actual_qty;
+
+                updateObj updObj = new updateObj()
+                {
+                    table = "tb_po_line",
                     updater = new Dictionary<string, string>
-                    {
-                        { nameof(readytoConfirm.bi_po_status_id), "3" }
-                    },
+                            {
+                                { nameof(itemtoConfirm.i_actual_qty), relQty.ToString()  },
+
+                            },
                     selecter = new Dictionary<string, string>
-                    {
-                        { nameof(readytoConfirm.bi_po_id), readytoConfirm.bi_po_id.ToString() },
-                        { nameof(readytoConfirm.bi_po_status_id), "4" }
-                    }
+                            {
+                                { nameof(itemtoConfirm.bi_po_header_id), actheader },
+                                { nameof(itemtoConfirm.bi_item_id), itemtoConfirm.bi_item_id.ToString() }
+                            }
                 };
-                DbResObj upstatus = await _dbServices.UpdateAsync(updateReleaseStatus);
-                if (upstatus.resCode != 1 || upstatus.result == null)
+                var resorin = await _dbServices.UpdateAsync(updObj);
+                if (resorin.resCode != 1 || resorin.result == null)
                 {
                     //_logger.LogDebug("insert error");
                     throw new Exception("Update Planned Purchase order error");
@@ -168,27 +167,23 @@ namespace CPS_App
                 throw new Exception(ex.Message);
             }
         }
-        private async void btnreject_Click(object sender, EventArgs e)
+        public async Task UpdatePoLine(POTableObj readytoConfirm, int itemId, string bi_po_status_id)
         {
             try
             {
-                if (selectId == 0)
-                {
-                    MessageBox.Show("Please select item to Reject");
-                    return;
-                }
-                POTableObj readytoReject = _confirmppo.Where(x => x.bi_po_header_id == selectId).FirstOrDefault();
+                PoItemList itemtoConfirm = readytoConfirm.itemLists.Where(x => x.bi_po_line_id == itemId).FirstOrDefault();
                 updateObj updateReleaseStatus = new updateObj()
                 {
-                    table = "tb_po",
+                    table = "tb_po_line",
                     updater = new Dictionary<string, string>
                     {
-                        { nameof(readytoReject.bi_po_status_id), "5" }
+                        { "bi_po_status_id", bi_po_status_id }
                     },
                     selecter = new Dictionary<string, string>
                     {
-                        { nameof(readytoReject.bi_po_id), readytoReject.bi_po_id.ToString() },
-                        { nameof(readytoReject.bi_po_status_id), "4" }
+                        { nameof(itemtoConfirm.bi_item_id), itemtoConfirm.bi_item_id.ToString() },
+                        { "bi_po_status_id", "4" },
+                        {nameof(itemtoConfirm.bi_po_line_id),itemtoConfirm.bi_po_line_id.ToString() }
                     }
                 };
                 DbResObj upstatus = await _dbServices.UpdateAsync(updateReleaseStatus);
@@ -202,8 +197,101 @@ namespace CPS_App
             {
                 throw new Exception(ex.Message);
             }
-           
-            
+
+        }
+        public async Task UpdatePo(POTableObj tar, int bi_po_status_id)
+        {
+            int count = tar.itemLists.Where(x => x.bi_ln_po_status_id != bi_po_status_id).Count();
+
+            if (count == 0)
+            {
+                updateObj updateObj = new updateObj()
+                {
+                    table = "tb_po",
+                    updater = new Dictionary<string, string>
+                        {
+                            { "bi_po_status_id", bi_po_status_id.ToString()}
+                        },
+                    selecter = new Dictionary<string, string>
+                        {
+                            {nameof(tar.bi_po_id), tar.bi_po_id.ToString()}
+                        }
+                };
+                var updatePo = await _dbServices.UpdateAsync(updateObj);
+                if (updatePo.resCode != 1 || updatePo.result == null)
+                {
+                    //_logger.LogDebug("insert error");
+                    throw new Exception("Update Po order error");
+                }
+            }
+        }
+        public async Task UpdateReqDetail(RequestMappingReqObj reqObj, ItemRequest item)
+        {
+            updateObj tempUpdate = new updateObj()
+            {
+                table = "tb_request_detail",
+                selecter = new Dictionary<string, string>
+                                            {
+                                                { nameof(reqObj.bi_req_id), reqObj.bi_req_id.ToString() },
+                                                { nameof(item.bi_item_id), item.bi_item_id.ToString() },
+                                            },
+                updater = new Dictionary<string, string>
+                                            {
+                                                { nameof(item.i_remain_req_qty), "0"},
+                                                { nameof(item.i_hd_map_stat_id), "2" },
+                                                { nameof(item.bi_po_status_id), "3" },
+                                            }
+            };
+            var updatereq = await _dbServices.UpdateAsync(tempUpdate);
+            if (updatereq.resCode != 1 || updatereq.result == null)
+            {
+                //_logger.LogDebug("insert error");
+                throw new Exception("Update req detail order error");
+            }
+        }
+        private async void btnreject_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (poId == 0)
+                {
+                    MessageBox.Show("Please select item to Reject");
+                    return;
+                }
+                POTableObj readytoReject = _confirmppo.Where(x => x.bi_po_header_id == selectId).FirstOrDefault();
+                PoItemList itemtoReject = readytoReject.itemLists.Where(x => x.bi_po_line_id == poId).FirstOrDefault();
+                await UpdatePoLine(readytoReject, poId, "5");
+                List<POTableObj> outstandingPo = await _generalServices.OutstandingPoObj();
+                var tar = outstandingPo.Where(x => x.bi_po_header_id == selectId).FirstOrDefault();
+                await UpdatePo(tar, 5);
+
+                await LoadViewTable(userLoc);
+                //updateObj updateReleaseStatus = new updateObj()
+                //{
+                //    table = "tb_po",
+                //    updater = new Dictionary<string, string>
+                //    {
+                //        { nameof(readytoReject.bi_po_status_id), "5" }
+                //    },
+                //    selecter = new Dictionary<string, string>
+                //    {
+                //        { nameof(readytoReject.bi_po_id), readytoReject.bi_po_id.ToString() },
+                //        { nameof(readytoReject.bi_po_status_id), "4" }
+                //    }
+                //};
+                //DbResObj upstatus = await _dbServices.UpdateAsync(updateReleaseStatus);
+                //if (upstatus.resCode != 1 || upstatus.result == null)
+                //{
+                //    //_logger.LogDebug("insert error");
+                //    throw new Exception("Update Planned Purchase order error");
+                //}
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+
         }
 
         private void btncancel_Click(object sender, EventArgs e)
@@ -230,7 +318,20 @@ namespace CPS_App
                 datagridviewitem.DataSource = source;
                 GenUtil.dataGridAttrName<PoItemList>(datagridviewitem, new List<string>() { "not_shown" });
 
+            }
+        }
 
+        private void datagridviewitem_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex < 0 || e.RowIndex < 0)
+            {
+                return;
+            }  // header clicked
+
+            if (e.RowIndex == datagridviewitem.CurrentRow.Index)
+            {
+
+                poId = GenUtil.ConvertObjtoType<int>(datagridviewitem.CurrentRow.Cells["bi_po_line_id"].Value);
             }
         }
         

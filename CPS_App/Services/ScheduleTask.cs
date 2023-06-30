@@ -24,10 +24,12 @@ namespace CPS_App.Services
         private List<updateObj> _updateObjects;
         private CreatePoServices _createPoServices;
         private SearchFunc _searchFunc;
+        private DbGeneralServices _dbGeneralServices;
+        private CreateDNServices _createDNServices;
 
         public ScheduleTask(DbServices dbServices, ILogger<ScheduleTask> logger, POAWorker pOAWorker,
             RequestMapping requestMapping, GenericTableViewWorker genericTableViewWorker,
-            CreatePoServices createPoServices, SearchFunc searchFunc)
+            CreatePoServices createPoServices, SearchFunc searchFunc, DbGeneralServices dbGeneralServices, CreateDNServices createDNServices)
         {
             _services = dbServices;
             _logger = logger;
@@ -37,6 +39,8 @@ namespace CPS_App.Services
             _updateObjects = new List<updateObj>();
             _createPoServices = createPoServices;
             _searchFunc = searchFunc;
+            _dbGeneralServices = dbGeneralServices;
+            _createDNServices = createDNServices;
         }
         public async Task RequestMappingScheduler()
         {
@@ -67,22 +71,33 @@ namespace CPS_App.Services
                 //Mapping process P1
                 List<POTableObj> newPo1 = await MappingScheduler_P1();
                 newPo1.ForEach(async x => { 
-                    await _createPoServices.CreatePoAsync(x); 
+                    await _createPoServices.CreatePoAsync(x);                    
                 });
-                await UpdateRecordAsync();
+                await _dbGeneralServices.UpdateRecordAsync(_updateObjects);
+                _updateObjects.Clear();
 
-                //Mapping process p2
-                List<POTableObj> newPo2 = await MappingScheduler_P1();
-                await UpdateRecordAsync();
+                //create delivery note
+                List<DeliveryNoteObj> listDn  = await CreateDnObject(newPo1);
+                resObj res = await _createDNServices.CreateDnAsync(listDn);
+                if(res.resCode != 1)
+                {
+                    _logger.LogDebug("Create Dn Async with error");
+                }
+
+                ////Mapping process p2
+                //List<POTableObj> newPo2 = await MappingScheduler_P1();
+                //await UpdateRecordAsync();
 
                 //Mapping Process Warehouse p3
                 List<DispatchInstruction> dis = await MappingProcessWarehouse();
                 await CreateDispatchAsync(dis);
-                await UpdateRecordAsync();
+                await _dbGeneralServices.UpdateRecordAsync(_updateObjects);
+                _updateObjects.Clear();
 
                 //Record remaining req to fail
                 await UpdateMappRecordtoFail();
-                await UpdateRecordAsync();
+                await _dbGeneralServices.UpdateRecordAsync(_updateObjects);
+                _updateObjects.Clear();
             }
             catch (Exception ex)
             {
@@ -172,7 +187,7 @@ namespace CPS_App.Services
                     {
                         if (row.itemLists.Count > 0)
                         {
-                            row.itemLists.Where(x => x.bi_item_id == item.bi_item_id).ToList().ForEach(i =>
+                            row.itemLists.Where(x => x.bi_item_id == item.bi_item_id).ToList().ForEach(async i =>
                             {
                                 var day = i.vc_deli_sched_desc.Split(' ');
                                 DateTime arrival = DateTime.Now.AddDays(GenUtil.ConvertObjtoType<int>(day.ElementAt(0)));
@@ -182,6 +197,7 @@ namespace CPS_App.Services
                                 {
                                     try
                                     {
+
                                         updateObj tempUpdate = new updateObj()
                                         {
                                             table = "tb_request_detail",
@@ -237,6 +253,7 @@ namespace CPS_App.Services
                                         tempPoItem.bi_ln_po_status_id = 1;
                                         tempPoCreate.itemLists.Add(tempPoItem);
                                         tempPoCreate.vc_ref_id = $"Poa Id: {row.bi_poa_id}";
+                                        tempPoCreate.bi_req_id = reqObj.bi_req_id;
                                         tempPoCreate.ti_po_type_id = 2;
                                         tempPoCreate.bi_deli_loc_id = reqObj.bi_location_id;
                                         tempPoCreate.bi_po_status_id = 1;
@@ -366,14 +383,13 @@ namespace CPS_App.Services
                                 //        }
                                 //    });
                                 //});
+                                tempDis.bi_supp_id = item.bi_supp_id;
                                 tempDis.i_di_status_id = 1;
                                 tempDis.i_item_qty = item.i_item_qty >= reqitem.i_remain_req_qty ? reqitem.i_remain_req_qty : item.i_item_qty;
                                 createDispatch.Add(tempDis);
 
                             });
                         }
-
-
                     });
                 });
             });
@@ -434,7 +450,8 @@ namespace CPS_App.Services
                     {nameof(instruction.i_item_qty),instruction.i_item_qty.ToString() },
                     {nameof(instruction.bi_category_id),instruction.bi_category_id.ToString() },
                     {nameof(instruction.dt_exp_deli_date),instruction.dt_exp_deli_date},
-                    {nameof(instruction.bi_location_id),instruction.bi_location_id.ToString() }
+                    {nameof(instruction.bi_location_id),instruction.bi_location_id.ToString() },
+                    {nameof(instruction.bi_supp_id),instruction.bi_supp_id.ToString() }
                 }
                     };
                     DbResObj res = await _services.InsertAsync(inObj);
@@ -457,21 +474,7 @@ namespace CPS_App.Services
             }
 
         }
-        public async Task UpdateRecordAsync()
-        {
-            if (_updateObjects.Any())
-            {
-                foreach (var obj in _updateObjects)
-                {
-                    DbResObj res = await _services.UpdateAsync(obj);
-                    if (res.resCode != 1 || res.err_msg != null)
-                    {
-                        _logger.LogDebug($"Process update Db Error: {res.err_msg}");
-                    }
-                }
-                _updateObjects.Clear();
-            }
-        }
+       
         public async Task UpdateMappRecordtoFail()
         {
             try
@@ -533,43 +536,37 @@ namespace CPS_App.Services
                 throw new Exception(ex.Message);
             }
         }
-        public async Task CreateDnObject(POTableObj obj)
+        public async Task<List<DeliveryNoteObj>> CreateDnObject(List<POTableObj> obj)
         {
-            List<POTableObj> list = new List<POTableObj>();
-            list.Add(obj);
-            List<DeliveryNoteObj> listDn = new List<DeliveryNoteObj>();
-            
-            foreach(POTableObj it in list)
+            try
             {
-                
-                foreach (PoItemList item in it.itemLists)
+                List<DeliveryNoteObj> listDn = new List<DeliveryNoteObj>();
+
+                foreach (POTableObj it in obj)
                 {
-                    DeliveryNoteObj dnObj = new DeliveryNoteObj();
-                    foreach (PropertyInfo dn in dnObj.GetType().GetProperties())
+                    foreach (PoItemList item in it.itemLists)
                     {
-                        if (nameof(it) == dn.Name)
-                        {
-                            if (it != null)
-                                dn.SetValue(dnObj, Convert.ChangeType(it, dn.PropertyType, null));
-                        }
-                        if (nameof(item) == dn.Name)
-                        {
-                            if (nameof(item) != null)
-                                dn.SetValue(dnObj, Convert.ChangeType(item, dn.PropertyType, null));
-                        }
+                        DeliveryNoteObj dnObj = new DeliveryNoteObj();
+                        tb_item_vid_mapping vid = await _dbGeneralServices.GetVidAsync(item.bi_item_id.ToString());
+                        dnObj.bi_po_id = it.bi_po_id;
+                        dnObj.bi_req_id = it.bi_req_id;
+                        dnObj.i_dn_status_id = 3;
+                        dnObj.i_dn_type_id = 2;
+                        dnObj.bi_item_id = item.bi_item_id;
+                        dnObj.bi_item_vid = GenUtil.ConvertObjtoType<int>(vid.bi_item_vid);
+                        dnObj.i_item_qty = item.i_actual_qty;
+                        dnObj.bi_location_id = it.bi_deli_loc_id;
+                        dnObj.dt_exp_deli_date = it.dt_expect_delidate;
+                        listDn.Add(dnObj);
                     }
-                    dnObj.i_dn_type_id = 2;
-                    dnObj.i_item_qty = item.i_actual_qty;
-                    dnObj.bi_item_vid = item.vi
-                    listDn.Add(dnObj);
+
                 }
-               
+                return listDn;
             }
-               
-                    
-                
-                
-                       
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
             
         }
     }

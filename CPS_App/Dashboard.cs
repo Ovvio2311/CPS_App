@@ -30,12 +30,13 @@ namespace CPS_App
         private GenericTableViewWorker _genericTableViewWorker;
         private CreatePoServices _createPoServices;
         private ManualMappingProcess _manualMappingProcess;
+        private DbGeneralServices _dbGeneralServices;
 
         public Dashboard(Register register, AuthService authService,
             RequestMapping requestMapp, DbServices dbServices,
             StockLevelWorker stockWorker, RegisterServices registerServices,
             POAWorker pOAWorker, SearchFunc searchFunc, IConfiguration configuration,
-            ScheduleTask scheduleTask, GenericTableViewWorker genericTableViewWorker, CreatePoServices createPoServices, ManualMappingProcess manualMappingProcess)
+            ScheduleTask scheduleTask, GenericTableViewWorker genericTableViewWorker, CreatePoServices createPoServices, ManualMappingProcess manualMappingProcess, DbGeneralServices dbGeneralServices)
         {
             _authService = authService;
             _register = register;
@@ -52,6 +53,7 @@ namespace CPS_App
             _genericTableViewWorker = genericTableViewWorker;
             _createPoServices = createPoServices;
             _manualMappingProcess = manualMappingProcess;
+            _dbGeneralServices = dbGeneralServices;
         }
         private async void Dashboard_Load(object sender, EventArgs e)
         {
@@ -109,7 +111,7 @@ namespace CPS_App
 
         private void stripreq_Click(object sender, EventArgs e)
         {
-            RequestView reqView = new RequestView(_dbServices, _requestMapp, _searchFunc, _genericTableViewWorker, _createPoServices, _manualMappingProcess);
+            RequestView reqView = new RequestView(_dbServices, _requestMapp, _searchFunc, _genericTableViewWorker, _createPoServices, _manualMappingProcess,_dbGeneralServices);
             reqView.MdiParent = this;
             reqView.AutoScroll = true;
             reqView.Show();
@@ -133,7 +135,7 @@ namespace CPS_App
 
         private void strippo_Click(object sender, EventArgs e)
         {
-            POView poView = new POView(_dbServices, _pOAWorker, _searchFunc, _genericTableViewWorker, _createPoServices, _manualMappingProcess);
+            POView poView = new POView(_dbServices, _pOAWorker, _searchFunc, _genericTableViewWorker, _createPoServices, _manualMappingProcess,_dbGeneralServices);
             poView.MdiParent = this;
             poView.AutoScroll = true;
             poView.Show();
@@ -161,7 +163,7 @@ namespace CPS_App
 
         private void btndn_Click(object sender, EventArgs e)
         {
-            DNView dnview = new DNView(_dbServices, _genericTableViewWorker);
+            DNView dnview = new DNView(_dbServices, _genericTableViewWorker,_dbGeneralServices);
             dnview.MdiParent = this;
             dnview.AutoScroll = true;
             dnview.Show();

@@ -1,6 +1,7 @@
 ﻿using Krypton.Toolkit;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Newtonsoft.Json;
+using ScintillaNET;
 using System;
 using System.CodeDom;
 using System.Collections;
@@ -12,6 +13,7 @@ using System.Dynamic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -91,7 +93,7 @@ namespace CPS_App.Services
             string sql = $"select {res} from {typeof(T).Name} " +
                          $" where {req} = {req}";
         }
-
+   
         public static void dataGridAttrName<T>(KryptonDataGridView grid, List<string> invisibleList = null)
         {
             grid.Columns.ToDynamicList().ForEach(col =>
@@ -427,11 +429,131 @@ namespace CPS_App.Services
 
                     });
                 });
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
-            
+
+        }
+        public enum KnownFolder
+        {
+            Contacts,
+            Downloads,
+            Favorites,
+            Links,
+            SavedGames,
+            SavedSearches
+        }
+
+        public static class KnownFolders
+        {
+            private static readonly Dictionary<KnownFolder, Guid> _guids = new()
+            {
+                [KnownFolder.Contacts] = new("56784854-C6CB-462B-8169-88E350ACB882"),
+                [KnownFolder.Downloads] = new("374DE290-123F-4565-9164-39C4925E467B"),
+                [KnownFolder.Favorites] = new("1777F761-68AD-4D8A-87BD-30B759FA33DD"),
+                [KnownFolder.Links] = new("BFB9D5E0-C6A9-404C-B2B2-AE6DB6AF4968"),
+                [KnownFolder.SavedGames] = new("4C5C32FF-BB9D-43B0-B5B4-2D72E54EAAA4"),
+                [KnownFolder.SavedSearches] = new("7D1D3A04-DEBB-4115-95CF-2F29DA2920DA")
+            };
+
+            public static string GetPath(KnownFolder knownFolder)
+            {
+                return SHGetKnownFolderPath(_guids[knownFolder], 0);
+            }
+
+            [DllImport("shell32",
+                CharSet = CharSet.Unicode, ExactSpelling = true, PreserveSig = false)]
+            private static extern string SHGetKnownFolderPath(
+                [MarshalAs(UnmanagedType.LPStruct)] Guid rfid, uint dwFlags,
+                nint hToken = 0);
+        }
+        public async Task<bool> ExportCsv(List<List<KeyValuePair<string, object>>> result, string fileFolder, string fileName)
+        {
+            Directory.CreateDirectory(fileFolder);
+            var filepath = $"{fileFolder}\\{fileName}";
+            StringBuilder csv = new StringBuilder();
+            var rowIndex = 0;
+            try
+            {
+                foreach (List<KeyValuePair<string, object>> row in result)
+                {
+                    foreach (KeyValuePair<string, object> col in row)
+                    {
+                        if (rowIndex == 0)
+                        {
+
+                            csv.Append(string.Format("\"{0}\",", col.Key.ToString()));
+                        }
+                        else
+                        {
+                            var value = col.Value != null ? $"\"{col.Value.ToString()}\"" : "null";
+                            csv.Append(string.Format("{0},", value));
+                        }
+                    }
+                    csv.AppendLine("");
+                    rowIndex++;
+                }
+
+                File.WriteAllText(filepath, csv.ToString());
+                return true;
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"Fail to export {filepath} \n Error msg is {e.Message}");
+                //return false;
+                //throw new Exception(e.Message);
+            }
+
+        }
+        public static async Task ConvertObjtoReportFormat<T>(List<T> obj) where T : new()
+        {
+            var newList = new List<T>();
+
+            foreach (T r in obj)
+            {
+                T temp = new T();
+                var attname = temp.GetType().GetProperties().ToList()
+                    .Where(x => x.Name == nameof(r))
+                 .Select(x => x.GetCustomAttribute<DisplayAttribute>())
+                 .Where(x => x.Name != "not_shown")
+                 .Select(x => x.Name.ToString()).FirstOrDefault();
+            }
+        }
+        public static async Task<bool> ExportCsv<T>(List<T> result, string table) where T : new()
+        {
+            var folder = KnownFolders.GetPath(KnownFolder.Downloads);
+            var filepath = $@"{folder}{table}_{DateTime.Now.ToString("yyyy-MM-dd")}.csv";
+            StringBuilder csv = new StringBuilder();
+
+            try
+            {
+                T pName = new T();
+                int index = 0;
+                foreach (var x in pName.GetType().GetProperties())
+                {
+                    var displayAttribute = (DisplayAttribute)x.GetCustomAttributes().First(a => a is DisplayAttribute);
+                    var props = displayAttribute.GetType().GetProperties(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public).ToList();
+                    props.Single(p => p.Name != "not_shown").SetValue(displayAttribute, index);
+                    csv.Append($"\"{x.Name}\",");
+                }
+                csv.AppendLine("");
+                foreach (var x in result)
+                {
+
+                }
+
+                File.WriteAllText(filepath, csv.ToString());
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Fail to export {filepath} \n Error msg is {e.Message}");
+                return false;
+                //throw new Exception(e.Message);
+            }
+
         }
     }
 }

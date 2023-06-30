@@ -1,4 +1,3 @@
-using CCS_API.Data;
 using CPS_App.Models;
 using CPS_App.Services;
 using CPS_App.Helpers;
@@ -14,6 +13,7 @@ using CommonDBUtils;
 using Serilog;
 using static CPS_App.Models.CPSModel;
 using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel;
+using CPS_App.Data;
 
 namespace CPS_App
 {
@@ -87,10 +87,12 @@ namespace CPS_App
             services.AddSingleton<DbServices>();
             services.AddScoped<ClaimsManager>();
             services.AddScoped<RequestMapping>();
+            services.AddScoped<DbGeneralServices>();
             services.AddScoped<POAWorker>();
             services.AddScoped<SearchFunc>();
             services.AddScoped<ManualMappingProcess>();
             services.AddScoped<GenericTableViewWorker>();
+            services.AddScoped<CreateDNServices>();
             services.AddSingleton<ScheduleTask>();
             services.AddScoped<StockLevelWorker>();
             services.AddScoped<CreatePoServices>();

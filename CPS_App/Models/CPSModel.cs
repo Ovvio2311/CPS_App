@@ -433,6 +433,8 @@ namespace CPS_App.Models
                                  uom.vc_uom_desc,
                                  uni.bi_location_id,
                                  loc.vc_location_desc,
+                                 uni.bi_supp_id,
+                                 supp.vc_supp_desc,
                                  i_item_qty,
                                  it.dt_created_date,
                                  it.dt_updated_datetime
@@ -443,6 +445,7 @@ namespace CPS_App.Models
                          LEFT JOIN tb_item_unit uni ON it.bi_item_id = uni.bi_item_id
                          LEFT JOIN tb_location loc ON uni.bi_location_id = loc.bi_location_id
                          LEFT JOIN lut_uom_type uom ON it.i_uom_id = uom.i_uom_id
+                         left join tb_supplier supp on uni.bi_supp_id = supp.bi_supp_id
                          inner join (
                          select * from tb_item_vid_mapping group by bi_item_id, bi_item_vid
                          )v on it.bi_item_id = v.bi_item_id
@@ -480,6 +483,10 @@ namespace CPS_App.Models
             public string vc_location_desc { get; set; }
             [Display(Name = "Quantity")]
             public int i_item_qty { get; set; }
+            [Display(Name = "Supplier Id")]
+            public int bi_supp_id { get; set; }
+            [Display(Name = "Supplier")]
+            public string vc_supp_desc { get; set; }
             [Display(Name = "not_shown")]
             public string items_group { get; set; }
             [Display(Name = "not_shown")]
@@ -880,6 +887,10 @@ namespace CPS_App.Models
             [Display(Name = "Location")]
             public string vc_location_desc { get; set; }
             [Display(Name = "not_shown")]
+            public int bi_supp_id { get; set; }
+            [Display(Name = "Supplier")]
+            public string vc_supp_desc { get; set; }
+            [Display(Name = "not_shown")]
             public string dt_created_date { get; set; }
             [Display(Name = "Expected Delievery Date")]
             public string dt_exp_deli_date { get; set; }
@@ -888,13 +899,14 @@ namespace CPS_App.Models
                 StringBuilder sb = new StringBuilder();
                 sb.Append(@"select * from (
                 select di.bi_di_id, di.bi_item_id, di.bi_item_vid, di.bi_req_id, it.vc_item_desc, di.i_di_status_id, dist.vc_di_status_desc, 
-                di.i_item_qty, di.bi_category_id, cat.vc_category_desc, di.bi_location_id, loc.vc_location_desc, 
+                di.i_item_qty, di.bi_category_id, cat.vc_category_desc, di.bi_location_id, loc.vc_location_desc, di.bi_supp_id, supp.vc_supp_desc,
                 DATE_FORMAT(di.dt_exp_deli_date, '%Y-%m-%d %H:%i:%s') dt_exp_deli_date, di.dt_created_date 
                 from tb_dispatch_instruction di
                 left join tb_item it on di.bi_item_id = it.bi_item_id
                 left join lut_di_status dist on di.i_di_status_id = dist.i_di_status_id
                 left join tb_item_category cat on di.bi_category_id = cat.bi_category_id
                 left join tb_location loc on di.bi_location_id = loc.bi_location_id
+                left Join tb_supplier supp on di.bi_supp_id = supp.bi_supp_id
                 ) a ");
                 return sb.ToString();
             }
@@ -907,6 +919,8 @@ namespace CPS_App.Models
             public int bi_po_id { get; set; }
             [Display(Name = "Ref Req Id")]
             public int bi_req_id { get; set; }
+            [Display(Name = "not_shown")]
+            public int i_dn_status_id { get; set; }
             [Display(Name = "not_shown")]
             public int i_dn_type_id { get; set; }
             [Display(Name = "Type")]
@@ -923,6 +937,10 @@ namespace CPS_App.Models
             public int bi_location_id { get; set; }
             [Display(Name = "Location")]
             public string vc_location_desc { get; set; }
+            [Display(Name = "not_shown")]
+            public int bi_supp_id { get; set; }
+            [Display(Name = "Supplier")]
+            public string vc_supp_desc { get; set;}
             [Display(Name = "Expected Delievery Date")]
             public string dt_exp_deli_date { get; set; }
             [Display(Name = "not_shown")]
@@ -932,11 +950,12 @@ namespace CPS_App.Models
                 StringBuilder sb = new StringBuilder();
                 sb.Append(@"select * from (
                           select dn.bi_dn_id, bi_po_id, dn.i_dn_type_id, ty.vc_dn_type_desc, dn.bi_req_id, dn.bi_item_id, v.bi_item_vid,
-                          it.vc_item_desc, dn.i_item_qty, dn.bi_location_id, loc.vc_location_desc, dn.dt_exp_deli_date, dn.dt_created_date, dn.dt_updated_datetime
+                          dn.bi_supp_id, supp.vc_supp_desc, it.vc_item_desc, dn.i_item_qty, dn.bi_location_id, loc.vc_location_desc, dn.dt_exp_deli_date, dn.dt_created_date, dn.dt_updated_datetime
                           from tb_delivery_note dn
                           left join lut_dn_type ty on dn.i_dn_type_id = ty.i_dn_type_id 
                           left join tb_item it on dn.bi_item_id = it.bi_item_id
                           left join tb_location loc on dn.bi_location_id = loc.bi_location_id
+                          left join tb_supplier supp on dn.bi_supp_id = supp.bi_supp_id
                           inner join (
                           select * from tb_item_vid_mapping group by bi_item_id, bi_item_vid
                           )v on it.bi_item_id = v.bi_item_id

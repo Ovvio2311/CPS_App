@@ -13,9 +13,13 @@ namespace CPS_App.Services
     public class CreatePoServices
     {
         public DbServices _services;
-        public CreatePoServices(DbServices services)
+        private DbGeneralServices _generalServices;
+        private CreateDNServices _createDNServices;
+        public CreatePoServices(DbServices services, DbGeneralServices generalServices, CreateDNServices createDNServices)
         {
             _services = services;
+            _generalServices = generalServices;
+            _createDNServices = createDNServices;
         }
         public async Task<resObj> CreatePoAsync(POTableObj obj)
         {
@@ -33,7 +37,19 @@ namespace CPS_App.Services
                     res.err_msg = null;
 
                 }
+                if (obj.ti_po_type_id == 1 || obj.ti_po_type_id == 4)
+                {
 
+                }
+                await UpdateReqDetail(obj);
+                List<POTableObj> list = new List<POTableObj>();
+                list.Add(obj);
+                List<DeliveryNoteObj> dnO = await CreateDnObject(list);
+                if (await _createDNServices.InsertDeliveryNote(dnO))
+                {
+                    res.resCode = 1;
+                    res.result = true;
+                }
                 return res;
             }
             catch (Exception e)
@@ -54,7 +70,8 @@ namespace CPS_App.Services
                     {
                         {nameof(obj.ti_po_type_id),obj.ti_po_type_id.ToString() },
                         {nameof(obj.bi_po_status_id), obj.bi_po_status_id.ToString() },
-                        {nameof(obj.vc_ref_id), obj.vc_ref_id != string.Empty?obj.vc_ref_id:"null" }
+                        {nameof(obj.vc_ref_id), obj.vc_ref_id != string.Empty?obj.vc_ref_id:"null" },
+                        {nameof(obj.bi_req_id),obj.bi_req_id.ToString() }
                     },
                 };
                 var respoa = await _services.InsertAsync(tb_po);
@@ -134,50 +151,143 @@ namespace CPS_App.Services
                         throw new Exception("insert po line error");
                     }
                     MessageBox.Show($"po line id: {resitem.result}");
-                   
+
                     // update planned purchase order quantity
-                    if (obj.bi_po_status_id == 4 && obj.ti_po_type_id == 4)
-                    {
-                        var poId = obj.vc_ref_id.Split(':').ElementAt(1).Trim();
-                        var respo = await _services.GetOriginalPoQty(poId);
-                        if (respo.resCode != 1)
-                        {
-                            MessageBox.Show("update planned purchase order error");
-                        }
-                        List<List<KeyValuePair<string, object>>> kvp = respo.result;
-                        var actQty = kvp.ElementAt(0).FirstOrDefault(x => x.Key == "i_actual_qty").Value;
-                        var actheader = kvp.ElementAt(0).FirstOrDefault(x => x.Key == "bi_po_header_id").Value.ToString();
-                        int relQty = GenUtil.ConvertObjtoType<int>(actQty) - row.i_actual_qty;
-                        updateObj updObj = new updateObj()
-                        {
-                            table = "tb_po_line",
-                            updater = new Dictionary<string, string>
-                            {
-                                { nameof(row.i_actual_qty), relQty.ToString()  }
-                            },
-                            selecter = new Dictionary<string, string>
-                            {
-                                { nameof(row.bi_po_header_id), actheader },
-                                { nameof(row.bi_item_id), row.bi_item_id.ToString() }
-                            }
+                    //if (obj.bi_po_status_id == 4 && obj.ti_po_type_id == 4)
+                    //{
+                    //    var poId = obj.vc_ref_id.Split(':').ElementAt(1).Trim();
+                    //    var respo = await _services.GetOriginalPoQty(poId);
+                    //    if (respo.resCode != 1)
+                    //    {
+                    //        MessageBox.Show("update planned purchase order error");
+                    //    }
+                    //    List<List<KeyValuePair<string, object>>> kvp = respo.result;
+                    //    var actQty = kvp.ElementAt(0).FirstOrDefault(x => x.Key == "i_actual_qty").Value;
+                    //    var actheader = kvp.ElementAt(0).FirstOrDefault(x => x.Key == "bi_po_header_id").Value.ToString();
+                    //    int relQty = GenUtil.ConvertObjtoType<int>(actQty) - row.i_actual_qty;
+                    //    updateObj updObj = new updateObj()
+                    //    {
+                    //        table = "tb_po_line",
+                    //        updater = new Dictionary<string, string>
+                    //        {
+                    //            { nameof(row.i_actual_qty), relQty.ToString()  }
+                    //        },
+                    //        selecter = new Dictionary<string, string>
+                    //        {
+                    //            { nameof(row.bi_po_header_id), actheader },
+                    //            { nameof(row.bi_item_id), row.bi_item_id.ToString() }
+                    //        }
 
-                        };
-                        var resorin = await _services.UpdateAsync(updObj);
-                        if (resorin.resCode != 1 || resorin.result == null)
-                        {
-                            //_logger.LogDebug("insert error");
-                            throw new Exception("Update Planned Purchase order error");
-                        }
+                    //    };
+                    //    var resorin = await _services.UpdateAsync(updObj);
+                    //    if (resorin.resCode != 1 || resorin.result == null)
+                    //    {
+                    //        //_logger.LogDebug("insert error");
+                    //        throw new Exception("Update Planned Purchase order error");
+                    //    }
 
-                    }
+                    //}
                 }
                 catch (Exception e)
                 {
                     MessageBox.Show(e.Message);
                 }
-             
+
             }
             return true;
+        }
+        public async Task UpdateReqDetail(POTableObj readytoConfirm)
+        {
+            try
+            {
+                foreach (var i in readytoConfirm.itemLists)
+                {
+                    //find qty
+                    selectObj selObj = new selectObj()
+                    {
+                        table = "tb_request_detail",
+                        selecter = new Dictionary<string, string>
+                {
+                    {nameof(readytoConfirm.bi_req_id) ,readytoConfirm.bi_req_id.ToString()},
+                    {nameof(i.bi_item_id), i.bi_item_id.ToString() },
+                }
+
+                    };
+                    DbResObj selres = await _services.SelectWhereAsync(selObj);
+                    if (selres.resCode != 1)
+                    {
+
+                        MessageBox.Show("update request detail order error");
+                        return;
+                    }
+                    List<List<KeyValuePair<string, object>>> kvp = GenUtil.DbResulttoKVP(selres.result);
+                    var qty = kvp.ElementAt(0).FirstOrDefault(x => x.Key == "i_remain_req_qty").Value;
+                    int realqty = GenUtil.ConvertObjtoType<int>(qty) - i.i_actual_qty;
+
+
+                    updateObj updateReq = new updateObj()
+                    {
+                        table = "tb_request_detail",
+                        updater = new Dictionary<string, string>
+                {
+                    {"i_remain_req_qty" ,realqty<=0? "0":realqty.ToString()},
+                    {"bi_po_status_id", "3" },
+                    {"i_hd_map_stat_id", "2" }
+                },
+                        selecter = new Dictionary<string, string>
+                {
+                    {nameof(readytoConfirm.bi_req_id),readytoConfirm.bi_req_id.ToString() },
+                    {nameof(i.bi_item_id),i.bi_item_id.ToString() },
+                }
+                    };
+                    var resorin = await _services.UpdateAsync(updateReq);
+                    if (resorin.resCode != 1 || resorin.result == null)
+                    {
+                        //_logger.LogDebug("insert error");
+                        throw new Exception("Update Planned Purchase order error");
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+        }
+        public async Task<List<DeliveryNoteObj>> CreateDnObject(List<POTableObj> obj)
+        {
+            try
+            {
+                List<DeliveryNoteObj> listDn = new List<DeliveryNoteObj>();
+
+                foreach (POTableObj it in obj)
+                {
+                    foreach (PoItemList item in it.itemLists)
+                    {
+                        DeliveryNoteObj dnObj = new DeliveryNoteObj();
+                        tb_item_vid_mapping vid = await _generalServices.GetVidAsync(item.bi_item_id.ToString());
+                        dnObj.bi_po_id = it.bi_po_id;
+                        dnObj.bi_req_id = it.bi_req_id;
+                        dnObj.i_dn_status_id = 3;
+                        dnObj.i_dn_type_id = 2;
+                        dnObj.bi_item_id = item.bi_item_id;
+                        dnObj.bi_item_vid = GenUtil.ConvertObjtoType<int>(vid.bi_item_vid);
+                        dnObj.i_item_qty = item.i_actual_qty;
+                        dnObj.bi_location_id = it.bi_deli_loc_id;
+                        dnObj.dt_exp_deli_date = it.dt_expect_delidate;
+                        dnObj.bi_supp_id = it.bi_supp_id;
+                        listDn.Add(dnObj);
+                    }
+
+                }
+                return listDn;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
         }
     }
 }

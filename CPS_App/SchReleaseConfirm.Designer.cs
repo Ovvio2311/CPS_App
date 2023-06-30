@@ -162,6 +162,7 @@
             datagridviewitem.StateCommon.Background.Color2 = Color.Black;
             datagridviewitem.StateCommon.BackStyle = Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
             datagridviewitem.TabIndex = 24;
+            datagridviewitem.CellClick += datagridviewitem_CellClick;
             // 
             // lblitem
             // 

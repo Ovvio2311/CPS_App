@@ -35,7 +35,9 @@ namespace CPS_App
         private ManualMappingProcess _manualMappingProcess;
         private string userLoc;
         private List<POTableObj> _confirmSchRelease;
-        public POView(DbServices dbServices, POAWorker pOAWorker, SearchFunc searchFunc, GenericTableViewWorker genericTableViewWorker, CreatePoServices createPoServices, ManualMappingProcess manualMappingProcess)
+        private DbGeneralServices _generalServices;
+        public POView(DbServices dbServices, POAWorker pOAWorker, SearchFunc searchFunc, GenericTableViewWorker genericTableViewWorker, 
+            CreatePoServices createPoServices, ManualMappingProcess manualMappingProcess, DbGeneralServices generalServices)
         {
             InitializeComponent();
             _dbServices = dbServices;
@@ -46,6 +48,7 @@ namespace CPS_App
             _createPoServices = createPoServices;
             _manualMappingProcess = manualMappingProcess;
             _confirmSchRelease = new List<POTableObj>();
+            _generalServices = generalServices;
         }
 
         private async void POView_Load(object sender, EventArgs e)
@@ -227,15 +230,21 @@ namespace CPS_App
 
         private void btnconfirmppo_Click(object sender, EventArgs e)
         {
-            kryptonDataGridViewpo.DataSource = null;
-            kryptonDataGridViewpo.Columns.Clear();
-            var observableItems = new ObservableCollection<POTableObj>(_confirmSchRelease);
-            BindingList<POTableObj> source = observableItems.ToBindingList();
+            SchReleaseConfirm schRelesaseForm = new SchReleaseConfirm(_genericTableViewWorker,_dbServices,_generalServices);
+            schRelesaseForm.MdiParent = this.MdiParent;
+            schRelesaseForm.AutoScroll = true;
+            schRelesaseForm.Show();
+            this.Close();
 
-            if (_confirmSchRelease != null)
-                kryptonDataGridViewpo.DataSource = source;
+            //kryptonDataGridViewpo.DataSource = null;
+            //kryptonDataGridViewpo.Columns.Clear();
+            //var observableItems = new ObservableCollection<POTableObj>(_confirmSchRelease);
+            //BindingList<POTableObj> source = observableItems.ToBindingList();
 
-            GenUtil.dataGridAttrName<POTableObj>(kryptonDataGridViewpo, new List<string>() { "not_shown" });
+            //if (_confirmSchRelease != null)
+            //    kryptonDataGridViewpo.DataSource = source;
+
+            //GenUtil.dataGridAttrName<POTableObj>(kryptonDataGridViewpo, new List<string>() { "not_shown" });
 
         }
         private async Task<bool> CheckSchReleaseconfirmation()

@@ -515,18 +515,21 @@ namespace CPS_App
                 }
 
             }
-            cbxtype.Items.Clear();
-            var po_type = await _dbServices.SelectAllAsync<tb_po_type>();
-            List<tb_po_type> potype = JsonConvert.DeserializeObject<List<tb_po_type>>(JsonConvert.SerializeObject(po_type.result));
-            potype.ForEach(x =>
-            {
-
-                if (cbxreffrom.SelectedIndex != -1 && x.vc_derive_order.Contains(selectedRef))
+            if(_requestMappingReqObj == null){
+                cbxtype.Items.Clear();
+                var po_type = await _dbServices.SelectAllAsync<tb_po_type>();
+                List<tb_po_type> potype = JsonConvert.DeserializeObject<List<tb_po_type>>(JsonConvert.SerializeObject(po_type.result));
+                potype.ForEach(x =>
                 {
-                    cbxtype.Items.Add($"{x.ti_po_type_id}: {x.vc_po_type_desc}");
-                }
 
-            });
+                    if (cbxreffrom.SelectedIndex != -1 && x.vc_derive_order.Contains(selectedRef))
+                    {
+                        cbxtype.Items.Add($"{x.ti_po_type_id}: {x.vc_po_type_desc}");
+                    }
+
+                });
+            }
+           
         }
 
         //reference order id

@@ -472,5 +472,60 @@ namespace CPS_App
             cbxvidmaploc.SelectedIndex = -1;
             cbxvidmapitemid.SelectedIndex = -1;
         }
+
+        private void btneditcat_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btneditroleclaim_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btneditsupp_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btneditpotype_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btneditloc_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnedituom_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnedittc_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btneditpoatype_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnEditdelic_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btneditrole_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnaddcat_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

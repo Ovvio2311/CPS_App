@@ -1,5 +1,6 @@
 ﻿using Krypton.Toolkit;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.Primitives;
 using Newtonsoft.Json;
 using ScintillaNET;
 using System;
@@ -93,7 +94,7 @@ namespace CPS_App.Services
             string sql = $"select {res} from {typeof(T).Name} " +
                          $" where {req} = {req}";
         }
-   
+
         public static void dataGridAttrName<T>(KryptonDataGridView grid, List<string> invisibleList = null)
         {
             grid.Columns.ToDynamicList().ForEach(col =>
@@ -469,10 +470,10 @@ namespace CPS_App.Services
                 [MarshalAs(UnmanagedType.LPStruct)] Guid rfid, uint dwFlags,
                 nint hToken = 0);
         }
-        public async Task<bool> ExportCsv(List<List<KeyValuePair<string, object>>> result, string fileFolder, string fileName)
+        public async Task<bool> ExportCsv(List<List<KeyValuePair<string, object>>> result, string filename)
         {
-            Directory.CreateDirectory(fileFolder);
-            var filepath = $"{fileFolder}\\{fileName}";
+            var folder = KnownFolders.GetPath(KnownFolder.Downloads);
+            var filepath = $@"{folder}\{filename}_{DateTime.Now.ToString("yyyyMMddHHmmss")}.csv";
             StringBuilder csv = new StringBuilder();
             var rowIndex = 0;
             try
@@ -521,28 +522,47 @@ namespace CPS_App.Services
                  .Select(x => x.Name.ToString()).FirstOrDefault();
             }
         }
-        public static async Task<bool> ExportCsv<T>(List<T> result, string table) where T : new()
+        public static async Task<bool> ExportCsv<T>(List<T> result, string filename) where T : new()
         {
             var folder = KnownFolders.GetPath(KnownFolder.Downloads);
-            var filepath = $@"{folder}{table}_{DateTime.Now.ToString("yyyy-MM-dd")}.csv";
+            var filepath = $@"{folder}\{filename}_{DateTime.Now.ToString("yyyyMMddHHmmss")}.csv";
             StringBuilder csv = new StringBuilder();
 
             try
             {
-                T pName = new T();
+                T obj = new T();
+                List<T> list = new List<T>();
                 int index = 0;
-                foreach (var x in pName.GetType().GetProperties())
+                //header
+                foreach (PropertyInfo x in obj.GetType().GetProperties())
                 {
-                    var displayAttribute = (DisplayAttribute)x.GetCustomAttributes().First(a => a is DisplayAttribute);
-                    var props = displayAttribute.GetType().GetProperties(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public).ToList();
-                    props.Single(p => p.Name != "not_shown").SetValue(displayAttribute, index);
-                    csv.Append($"\"{x.Name}\",");
+                    var display = x.GetCustomAttributes<DisplayAttribute>();
+                    csv.Append(display.Where(x => x.Name != "not_shown").Select(x => x.Name.ToString()).FirstOrDefault());
+                    csv.Append(',');
+                    //var props = displayAttribute.GetType().GetProperties(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public).ToList();
+                    //props.Single(p => p.Name != "not_shown").SetValue(displayAttribute, index);
+                    //csv.Append($"\"{x.Name}\",");
                 }
                 csv.AppendLine("");
-                foreach (var x in result)
+                //content
+                foreach (T re in result)
                 {
+                    obj.GetType().GetProperties().ToList().ForEach(x =>
+                    {
+                        //List display
+                        var display = x.GetCustomAttributes<DisplayAttribute>();
+                        //x.SetValue(obj, Convert.ChangeType(, x.PropertyType, null));
+                        //var iii = display.Where(x => x.Name != "not_shown").Select(p => $"{x.GetValue(re)}, ").FirstOrDefault();
+                        csv.Append(display.Where(x => x.Name != "not_shown").Select(p => $"{x.GetValue(re)}, ").FirstOrDefault());
+                        index++;
 
+                    });
+                    csv.AppendLine("");
+
+                    list.Add(obj);
                 }
+               
+
 
                 File.WriteAllText(filepath, csv.ToString());
                 return true;
@@ -553,7 +573,77 @@ namespace CPS_App.Services
                 return false;
                 //throw new Exception(e.Message);
             }
+        }
+        public static async Task<bool> ExportCsv<T, I>(T view, List<I> item, string filename)
+            where T : new()
+            where I : new()
+        {
+            var folder = KnownFolders.GetPath(KnownFolder.Downloads);
+            var filepath = $@"{folder}\{filename}_{DateTime.Now.ToString("yyyyMMddHHmmss")}.csv";
+            StringBuilder csv = new StringBuilder();
+
+            try
+            {
+                T obj = new T();                
+                int index = 0;
+                //header title
+
+                obj.GetType().GetProperties().ToList().ForEach(x =>
+                {
+                    List<DisplayAttribute> display = x.GetCustomAttributes<DisplayAttribute>().ToList();
+                    csv.Append(display.Where(x => x.Name != "not_shown").Select(x => x.Name.ToString()).FirstOrDefault());
+                    csv.Append(',');
+                    //var props = displayAttribute.GetType().GetProperties(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public).ToList();
+                    //props.Single(p => p.Name != "not_shown").SetValue(displayAttribute, index);
+                    //csv.Append($"\"{x.Name}\",");
+                });
+                csv.AppendLine("");
+                
+                //header content
+                obj.GetType().GetProperties().ToList().ForEach(x =>
+                {
+                    List<DisplayAttribute> display = x.GetCustomAttributes<DisplayAttribute>().ToList();
+                    //x.SetValue(obj, Convert.ChangeType(, x.PropertyType, null));
+                    //var iii = display.Where(x => x.Name != "not_shown").Select(p => $"{x.GetValue(re)}, ").FirstOrDefault();
+                    csv.Append(display.Where(x => x.Name != "not_shown").Select(p => $"{x.GetValue(view)}, ").FirstOrDefault());
+                    index++;
+
+                });
+                csv.AppendLine("");
+                csv.AppendLine("");
+                I iobj = new I();
+                //line title
+                iobj.GetType().GetProperties().ToList().ForEach(x =>
+                {
+                    List<DisplayAttribute> display = x.GetCustomAttributes<DisplayAttribute>().ToList();
+                    csv.Append(display.Where(x => x.Name != "not_shown").Select(x => x.Name.ToString()).FirstOrDefault());
+                    csv.Append(',');
+                    
+                });
+                csv.AppendLine("");
+                foreach (var it in item)
+                {
+                    //line content
+                    iobj.GetType().GetProperties().ToList().ForEach(x =>
+                    {
+                        List<DisplayAttribute> display = x.GetCustomAttributes<DisplayAttribute>().ToList();
+                        csv.Append(display.Where(x => x.Name != "not_shown").Select(p => $"{x.GetValue(it)}, ").FirstOrDefault());
+                        index++;
+
+                    });
+                    csv.AppendLine("");
+                }
+                
+                File.WriteAllText(filepath, csv.ToString());
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Fail to export {filepath} \n Error msg is {e.Message}");
+                return false;
+            }
 
         }
+
     }
 }

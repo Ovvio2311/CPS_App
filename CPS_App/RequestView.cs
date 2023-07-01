@@ -216,10 +216,7 @@ namespace CPS_App
             cbxsearch2.DataSource = words.Keys.ToList();
         }
 
-        private void datagridview_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
+     
 
         private void btnOrderMap_Click(object sender, EventArgs e)
         {
@@ -234,6 +231,28 @@ namespace CPS_App
             pOCreate.AutoScroll = true;
             //this.Close();
             pOCreate.Show();
+        }
+
+        private async void btncsv_Click(object sender, EventArgs e)
+        {
+            if (selectdId == 0)
+            {
+                MessageBox.Show("Please select a request to export");
+                return;
+            }
+            var exportObj =  defPage.Where(x => x.bi_req_id == selectdId).FirstOrDefault();
+            await CsvAsync(exportObj, $"Request_Order_id_{exportObj.bi_req_id}");
+        }
+        public async Task CsvAsync(RequestMappingReqObj exportObj, string table)
+        {
+            if (await GenUtil.ExportCsv<RequestMappingReqObj, ItemRequest>(exportObj, exportObj.itemLists, table))
+            {
+                MessageBox.Show("CSV Generated");
+            }
+            else
+            {
+                MessageBox.Show("CSV Generated Fail");
+            }
         }
     }
 }

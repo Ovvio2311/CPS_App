@@ -36,7 +36,8 @@ namespace CPS_App
         private string userLoc;
         private List<POTableObj> _confirmSchRelease;
         private DbGeneralServices _generalServices;
-        public POView(DbServices dbServices, POAWorker pOAWorker, SearchFunc searchFunc, GenericTableViewWorker genericTableViewWorker, 
+        private int selectId;
+        public POView(DbServices dbServices, POAWorker pOAWorker, SearchFunc searchFunc, GenericTableViewWorker genericTableViewWorker,
             CreatePoServices createPoServices, ManualMappingProcess manualMappingProcess, DbGeneralServices generalServices)
         {
             InitializeComponent();
@@ -78,12 +79,12 @@ namespace CPS_App
                 btnedit.Hide();
             if (await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "po", "write" } }))
             {
-                btnadd.Show();               
+                btnadd.Show();
             }
             else
                 btnadd.Hide();
 
-            
+
             await LoadViewTable(userLoc);
             await GetSearchWords(userIden, "po");
 
@@ -126,7 +127,7 @@ namespace CPS_App
             if (e.RowIndex == kryptonDataGridViewpo.CurrentRow.Index)
             {
                 lblsubitemtitle.Show();
-                int selectdId = GenUtil.ConvertObjtoType<int>(kryptonDataGridViewpo.CurrentRow.Cells["bi_po_header_id"].Value);
+                selectId = GenUtil.ConvertObjtoType<int>(kryptonDataGridViewpo.CurrentRow.Cells["bi_po_header_id"].Value);
 
                 kryptonDataGridViewitem.DataSource = null;
                 //prevent po do not hv items
@@ -135,7 +136,7 @@ namespace CPS_App
                 //    lblsubitemtitle.Hide();
                 //    return;
                 //}
-                List<PoItemList> itemViewSelect = poObj.Where(x => x.bi_po_header_id == selectdId).FirstOrDefault().itemLists;
+                List<PoItemList> itemViewSelect = poObj.Where(x => x.bi_po_header_id == selectId).FirstOrDefault().itemLists;
                 var observableItems = new ObservableCollection<PoItemList>(itemViewSelect);
                 BindingList<PoItemList> source = observableItems.ToBindingList();
                 kryptonDataGridViewitem.DataSource = source;
@@ -230,7 +231,7 @@ namespace CPS_App
 
         private void btnconfirmppo_Click(object sender, EventArgs e)
         {
-            SchReleaseConfirm schRelesaseForm = new SchReleaseConfirm(_genericTableViewWorker,_dbServices,_generalServices);
+            SchReleaseConfirm schRelesaseForm = new SchReleaseConfirm(_genericTableViewWorker, _dbServices, _generalServices);
             schRelesaseForm.MdiParent = this.MdiParent;
             schRelesaseForm.AutoScroll = true;
             schRelesaseForm.Show();
@@ -252,7 +253,7 @@ namespace CPS_App
             try
             {
                 POTableObj viewObj = new POTableObj();
-                
+
                 searchObj searchObj = new searchObj()
                 {
                     searchWords = new Dictionary<string, List<string>>
@@ -273,6 +274,29 @@ namespace CPS_App
             }
 
 
+        }
+
+        private async void btncsv_Click(object sender, EventArgs e)
+        {
+            if (selectId == 0)
+            {
+                MessageBox.Show("Please select a request to export");
+                return;
+            }
+            var exportObj = poObj.Where(x => x.bi_po_header_id == selectId).FirstOrDefault();
+            await CsvAsync(exportObj, $"Purchase_Order_id_{exportObj.bi_po_id}");
+        }
+
+        public async Task CsvAsync(POTableObj exportObj, string table)
+        {
+            if (await GenUtil.ExportCsv<POTableObj, PoItemList>(exportObj, exportObj.itemLists, table))
+            {
+                MessageBox.Show("CSV Generated");
+            }
+            else
+            {
+                MessageBox.Show("CSV Generated Fail");
+            }
         }
     }
 }

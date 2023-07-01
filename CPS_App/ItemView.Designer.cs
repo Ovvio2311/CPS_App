@@ -54,6 +54,9 @@ namespace CPS_App
             this.lblsearch = new Krypton.Toolkit.KryptonLabel();
             this.kryptonPalettelbl = new Krypton.Toolkit.KryptonPalette(this.components);
             this.btndispatch = new Krypton.Toolkit.KryptonButton();
+            this.kryptonPaletteCsv = new Krypton.Toolkit.KryptonPalette(this.components);
+            this.kryptonPalette1 = new Krypton.Toolkit.KryptonPalette(this.components);
+            this.btncsv = new Krypton.Toolkit.KryptonButton();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewitem)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.kryptonDataGridViewsubitem)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pnsearch1)).BeginInit();
@@ -89,13 +92,13 @@ namespace CPS_App
             // btncreate
             // 
             this.btncreate.CornerRoundingRadius = -1F;
-            this.btncreate.Location = new System.Drawing.Point(463, 68);
+            this.btncreate.Location = new System.Drawing.Point(319, 69);
             this.btncreate.Name = "btncreate";
             this.btncreate.Palette = this.kryptonPalettebtn;
             this.btncreate.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
             this.btncreate.Size = new System.Drawing.Size(93, 36);
             this.btncreate.TabIndex = 3;
-            this.btncreate.Values.Text = "Create";
+            this.btncreate.Values.Text = "Add";
             this.btncreate.Click += new System.EventHandler(this.btncreate_Click);
             // 
             // kryptonPalettebtn
@@ -112,7 +115,7 @@ namespace CPS_App
             // btnupdate
             // 
             this.btnupdate.CornerRoundingRadius = -1F;
-            this.btnupdate.Location = new System.Drawing.Point(586, 68);
+            this.btnupdate.Location = new System.Drawing.Point(447, 69);
             this.btnupdate.Name = "btnupdate";
             this.btnupdate.Palette = this.kryptonPalettebtn;
             this.btnupdate.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
@@ -132,7 +135,7 @@ namespace CPS_App
             // btncancel
             // 
             this.btncancel.CornerRoundingRadius = -1F;
-            this.btncancel.Location = new System.Drawing.Point(704, 68);
+            this.btncancel.Location = new System.Drawing.Point(569, 68);
             this.btncancel.Name = "btncancel";
             this.btncancel.Palette = this.kryptonPalettebtn;
             this.btncancel.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
@@ -275,7 +278,7 @@ namespace CPS_App
             // btndispatch
             // 
             this.btndispatch.CornerRoundingRadius = -1F;
-            this.btndispatch.Location = new System.Drawing.Point(348, 68);
+            this.btndispatch.Location = new System.Drawing.Point(204, 68);
             this.btndispatch.Name = "btndispatch";
             this.btndispatch.Palette = this.kryptonPalettebtn;
             this.btndispatch.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
@@ -284,11 +287,54 @@ namespace CPS_App
             this.btndispatch.Values.Text = "Dispatch";
             this.btndispatch.Click += new System.EventHandler(this.btndispatch_Click);
             // 
+            // kryptonPaletteCsv
+            // 
+            this.kryptonPaletteCsv.ButtonStyles.ButtonCommon.StateCommon.Back.Color1 = System.Drawing.Color.PaleTurquoise;
+            this.kryptonPaletteCsv.ButtonStyles.ButtonCommon.StateCommon.Back.Color2 = System.Drawing.Color.PaleTurquoise;
+            this.kryptonPaletteCsv.ButtonStyles.ButtonCommon.StateCommon.Border.Color1 = System.Drawing.Color.Transparent;
+            this.kryptonPaletteCsv.ButtonStyles.ButtonCommon.StateCommon.Border.Color2 = System.Drawing.Color.Transparent;
+            this.kryptonPaletteCsv.ButtonStyles.ButtonCommon.StateCommon.Border.DrawBorders = ((Krypton.Toolkit.PaletteDrawBorders)((((Krypton.Toolkit.PaletteDrawBorders.Top | Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.kryptonPaletteCsv.ButtonStyles.ButtonCommon.StateCommon.Border.Rounding = 5F;
+            this.kryptonPaletteCsv.ButtonStyles.ButtonCommon.StateCommon.Content.LongText.Color1 = System.Drawing.Color.Black;
+            this.kryptonPaletteCsv.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Color1 = System.Drawing.Color.SteelBlue;
+            this.kryptonPaletteCsv.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Microsoft Tai Le", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.kryptonPaletteCsv.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Hint = Krypton.Toolkit.PaletteTextHint.SystemDefault;
+            // 
+            // kryptonPalette1
+            // 
+            this.kryptonPalette1.ButtonStyles.ButtonCommon.StateCommon.Back.Color1 = System.Drawing.Color.PaleTurquoise;
+            this.kryptonPalette1.ButtonStyles.ButtonCommon.StateCommon.Back.Color2 = System.Drawing.Color.PaleTurquoise;
+            this.kryptonPalette1.ButtonStyles.ButtonCommon.StateCommon.Border.Color1 = System.Drawing.Color.Transparent;
+            this.kryptonPalette1.ButtonStyles.ButtonCommon.StateCommon.Border.Color2 = System.Drawing.Color.Transparent;
+            this.kryptonPalette1.ButtonStyles.ButtonCommon.StateCommon.Border.DrawBorders = ((Krypton.Toolkit.PaletteDrawBorders)((((Krypton.Toolkit.PaletteDrawBorders.Top | Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.kryptonPalette1.ButtonStyles.ButtonCommon.StateCommon.Border.Rounding = 5F;
+            this.kryptonPalette1.ButtonStyles.ButtonCommon.StateCommon.Content.LongText.Color1 = System.Drawing.Color.Black;
+            this.kryptonPalette1.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Color1 = System.Drawing.Color.SteelBlue;
+            this.kryptonPalette1.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Microsoft Tai Le", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.kryptonPalette1.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Hint = Krypton.Toolkit.PaletteTextHint.SystemDefault;
+            // 
+            // btncsv
+            // 
+            this.btncsv.CornerRoundingRadius = -1F;
+            this.btncsv.Location = new System.Drawing.Point(685, 68);
+            this.btncsv.Name = "btncsv";
+            this.btncsv.Palette = this.kryptonPalettebtn;
+            this.btncsv.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.btncsv.Size = new System.Drawing.Size(65, 37);
+            this.btncsv.TabIndex = 29;
+            this.btncsv.Values.Text = "CSV";
+            this.btncsv.Click += new System.EventHandler(this.btncsv_Click);
+            // 
             // ItemView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(851, 532);
+            this.Controls.Add(this.btncsv);
             this.Controls.Add(this.btndispatch);
             this.Controls.Add(this.pnsearch1);
             this.Controls.Add(this.pnsearch2);
@@ -344,5 +390,8 @@ namespace CPS_App
         private KryptonPalette kryptonPalettelbl;
         private KryptonPalette kryptonPalettepanel;
         private KryptonButton btndispatch;
+        private KryptonPalette kryptonPaletteCsv;
+        private KryptonPalette kryptonPalette1;
+        private KryptonButton btncsv;
     }
 }

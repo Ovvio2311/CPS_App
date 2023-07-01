@@ -437,11 +437,14 @@ namespace CPS_App
 
         private async void btncsv_Click(object sender, EventArgs e)
         {
-            await CsvAsync();
+            await CsvAsync(dnObj);
         }
-        public async Task CsvAsync()
+        public async Task CsvAsync(List<DeliveryNoteObj> obj)
         {
-            var bo = await GenUtil.ExportCsv<DeliveryNoteObj>(dnObj, "DeliveryNoteObj");
+            if(await GenUtil.ExportCsv<DeliveryNoteObj>(obj, $"Delivery_Note"))
+            {
+                MessageBox.Show("CSV Generated");
+            }
         }
     }
 }

@@ -62,13 +62,13 @@ namespace CPS_App
                 btncreate.Hide();
                 btndispatch.Hide();
             }
-                
-          
+
+
             lblnoresult.Hide();
             var userLoc = userIden.Claims.FirstOrDefault(x => x.Type == "location_id").Value.ToString();
 
             await LoadViewTable(userLoc);
-            await GetSearchWords(userIden,"item");
+            await GetSearchWords(userIden, "item");
             //stock = await _stockWorker.GetStockLevelWorker(userLoc);
             //if (stock != null)
             //{
@@ -97,7 +97,7 @@ namespace CPS_App
                 dataGridViewitem.Columns.Clear();
                 lblnoresult.Show();
                 btncreate.Hide();
-                
+
                 return;
             }
             var observableItems = new ObservableCollection<StockLevelViewObj>(stock);
@@ -116,7 +116,7 @@ namespace CPS_App
                 MessageBox.Show("Please select an item to update");
                 return;
             }
-            ItemEdit itemEdit = new ItemEdit(stock, _dbServices, selectId, _stockWorker,_genericTableViewWorker);
+            ItemEdit itemEdit = new ItemEdit(stock, _dbServices, selectId, _stockWorker, _genericTableViewWorker);
             itemEdit.MdiParent = this.MdiParent;
             itemEdit.AutoScroll = true;
             itemEdit.Show();
@@ -145,7 +145,7 @@ namespace CPS_App
 
         private void btncreate_Click(object sender, EventArgs e)
         {
-            ItemCreate itemCreate = new ItemCreate(_dbServices,_genericTableViewWorker);
+            ItemCreate itemCreate = new ItemCreate(_dbServices, _genericTableViewWorker);
             itemCreate.MdiParent = this.MdiParent;
             itemCreate.AutoScroll = true;
             itemCreate.Show();
@@ -160,7 +160,7 @@ namespace CPS_App
 
         private async void btnsearch_Click(object sender, EventArgs e)
         {
-            
+
             btnupdate.Show();
             if (cbxsearch1.SelectedItem == cbxsearch2.SelectedItem && txtsearch1.Text != "" && txtsearch2.Text != "")
             {
@@ -214,11 +214,35 @@ namespace CPS_App
 
         private void btndispatch_Click(object sender, EventArgs e)
         {
-            DisPatch disform = new DisPatch(_genericTableViewWorker,_dbServices);
+            DisPatch disform = new DisPatch(_genericTableViewWorker, _dbServices);
             disform.MdiParent = this.MdiParent;
             disform.AutoScroll = true;
             disform.Show();
             this.Close();
+        }
+
+        private async void btncsv_Click(object sender, EventArgs e)
+        {
+            if (selectId == 0)
+            {
+                MessageBox.Show("Please select a request to export");
+                return;
+            }
+            var exportObj = stock.Where(x => x.bi_item_id == selectId).FirstOrDefault();
+
+            await CsvAsync(exportObj, $"Stock_Data_id_{exportObj.bi_item_id}");
+        }
+
+        public async Task CsvAsync(StockLevelViewObj exportObj, string table)
+        {
+            if (await GenUtil.ExportCsv<StockLevelViewObj, StockLevelSubItem>(exportObj, exportObj.itemLists, table))
+            {
+                MessageBox.Show("CSV Generated");
+            }
+            else
+            {
+                MessageBox.Show("CSV Generated Fail");
+            }
         }
     }
 }

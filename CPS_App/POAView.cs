@@ -77,7 +77,7 @@ namespace CPS_App
         }
         private async Task LoadViewTable(string loc = null, searchObj obj = null)
         {
-           
+
             lblnoresult.Hide();
             kryptonDataGridViewpoa.DataSource = null;
             POATableObj viewObj = new POATableObj();
@@ -92,7 +92,7 @@ namespace CPS_App
             {
                 kryptonDataGridViewpoa.Columns.Clear();
                 lblnoresult.Show();
-                
+
                 btnedit.Hide();
                 return;
             }
@@ -154,7 +154,7 @@ namespace CPS_App
             }
             var readyToEdit = poaObj.Where(x => x.bi_poa_header_id == selectId).ToList();
 
-            POAEdit poaEdit = new POAEdit(selectId, readyToEdit, _dbServices, _pOAWorker,_genericTableViewWorker);
+            POAEdit poaEdit = new POAEdit(selectId, readyToEdit, _dbServices, _pOAWorker, _genericTableViewWorker);
             poaEdit.MdiParent = this.MdiParent;
             poaEdit.AutoScroll = true;
             poaEdit.Show();
@@ -177,7 +177,7 @@ namespace CPS_App
         }
         private async void btnsearch_Click(object sender, EventArgs e)
         {
-            
+
             btnedit.Show();
             if (cbxsearch1.SelectedItem == cbxsearch2.SelectedItem && txtsearch1.Text != "" && txtsearch2.Text != "")
             {
@@ -226,6 +226,28 @@ namespace CPS_App
             searchWords = words;
             cbxsearch1.DataSource = words.Keys.ToList();
             cbxsearch2.DataSource = words.Keys.ToList();
+        }
+
+        private async void btncsv_Click(object sender, EventArgs e)
+        {
+            if (selectId == 0)
+            {
+                MessageBox.Show("Please select a request to export");
+                return;
+            }
+            var exportObj = poaObj.Where(x => x.bi_poa_header_id == selectId).FirstOrDefault();
+            await CsvAsync(exportObj, $"Purchase_Order_Agreement_id_{exportObj.bi_poa_id}");
+        }
+        public async Task CsvAsync(POATableObj exportObj, string table)
+        {
+            if (await GenUtil.ExportCsv<POATableObj, PoaItemList>(exportObj, exportObj.itemLists, table))
+            {
+                MessageBox.Show("CSV Generated");
+            }
+            else
+            {
+                MessageBox.Show("CSV Generated Fail");
+            }
         }
     }
 }

@@ -53,6 +53,8 @@
             this.lblnoresult = new Krypton.Toolkit.KryptonLabel();
             this.lblsubitemtitle = new Krypton.Toolkit.KryptonLabel();
             this.btnconfirmSchRe = new Krypton.Toolkit.KryptonButton();
+            this.kryptonPaletteCsv = new Krypton.Toolkit.KryptonPalette(this.components);
+            this.btncsv = new Krypton.Toolkit.KryptonButton();
             ((System.ComponentModel.ISupportInitialize)(this.kryptonDataGridViewpo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.kryptonDataGridViewitem)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pnsearch1)).BeginInit();
@@ -96,7 +98,7 @@
             // btnedit
             // 
             this.btnedit.CornerRoundingRadius = -1F;
-            this.btnedit.Location = new System.Drawing.Point(460, 56);
+            this.btnedit.Location = new System.Drawing.Point(338, 56);
             this.btnedit.Name = "btnedit";
             this.btnedit.Palette = this.kryptonPalettebtn;
             this.btnedit.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
@@ -139,7 +141,7 @@
             // btnadd
             // 
             this.btnadd.CornerRoundingRadius = -1F;
-            this.btnadd.Location = new System.Drawing.Point(333, 56);
+            this.btnadd.Location = new System.Drawing.Point(201, 56);
             this.btnadd.Name = "btnadd";
             this.btnadd.Palette = this.kryptonPalettebtn;
             this.btnadd.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
@@ -151,7 +153,7 @@
             // btncancel
             // 
             this.btncancel.CornerRoundingRadius = -1F;
-            this.btncancel.Location = new System.Drawing.Point(589, 56);
+            this.btncancel.Location = new System.Drawing.Point(474, 56);
             this.btncancel.Name = "btncancel";
             this.btncancel.Palette = this.kryptonPalettebtn;
             this.btncancel.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
@@ -280,11 +282,39 @@
             this.btnconfirmSchRe.Values.Text = "Re-Confirm Order";
             this.btnconfirmSchRe.Click += new System.EventHandler(this.btnconfirmppo_Click);
             // 
+            // kryptonPaletteCsv
+            // 
+            this.kryptonPaletteCsv.ButtonStyles.ButtonCommon.StateCommon.Back.Color1 = System.Drawing.Color.PaleTurquoise;
+            this.kryptonPaletteCsv.ButtonStyles.ButtonCommon.StateCommon.Back.Color2 = System.Drawing.Color.PaleTurquoise;
+            this.kryptonPaletteCsv.ButtonStyles.ButtonCommon.StateCommon.Border.Color1 = System.Drawing.Color.Transparent;
+            this.kryptonPaletteCsv.ButtonStyles.ButtonCommon.StateCommon.Border.Color2 = System.Drawing.Color.Transparent;
+            this.kryptonPaletteCsv.ButtonStyles.ButtonCommon.StateCommon.Border.DrawBorders = ((Krypton.Toolkit.PaletteDrawBorders)((((Krypton.Toolkit.PaletteDrawBorders.Top | Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.kryptonPaletteCsv.ButtonStyles.ButtonCommon.StateCommon.Border.Rounding = 5F;
+            this.kryptonPaletteCsv.ButtonStyles.ButtonCommon.StateCommon.Content.LongText.Color1 = System.Drawing.Color.Black;
+            this.kryptonPaletteCsv.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Color1 = System.Drawing.Color.SteelBlue;
+            this.kryptonPaletteCsv.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Microsoft Tai Le", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.kryptonPaletteCsv.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Hint = Krypton.Toolkit.PaletteTextHint.SystemDefault;
+            // 
+            // btncsv
+            // 
+            this.btncsv.CornerRoundingRadius = -1F;
+            this.btncsv.Location = new System.Drawing.Point(613, 54);
+            this.btncsv.Name = "btncsv";
+            this.btncsv.Palette = this.kryptonPalettebtn;
+            this.btncsv.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.btncsv.Size = new System.Drawing.Size(65, 37);
+            this.btncsv.TabIndex = 36;
+            this.btncsv.Values.Text = "CSV";
+            this.btncsv.Click += new System.EventHandler(this.btncsv_Click);
+            // 
             // POView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(881, 638);
+            this.Controls.Add(this.btncsv);
             this.Controls.Add(this.btnconfirmSchRe);
             this.Controls.Add(this.lblsubitemtitle);
             this.Controls.Add(this.lbltitle);
@@ -341,5 +371,7 @@
         private Krypton.Toolkit.KryptonLabel lblnoresult;
         private Krypton.Toolkit.KryptonLabel lblsubitemtitle;
         private Krypton.Toolkit.KryptonButton btnconfirmSchRe;
+        private Krypton.Toolkit.KryptonPalette kryptonPaletteCsv;
+        private Krypton.Toolkit.KryptonButton btncsv;
     }
 }

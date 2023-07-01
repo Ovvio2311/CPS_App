@@ -6,6 +6,7 @@ using static CPS_App.Models.CPSModel;
 using static CPS_App.Models.DbModels;
 using System.Security.Claims;
 using Krypton.Toolkit;
+using System.Data.Common;
 
 namespace CPS_App
 {
@@ -13,15 +14,18 @@ namespace CPS_App
     {
         private DbServices _dbServices;
         private Validator _validator = new Validator();
-        public static RequestCreationReq req;
+        public RequestCreationReq req;
+        public List<RequestionCreationItem> itemList;
         public ClaimsIdentity userIden;
-        public RequestCreate(DbServices dbServices)
+        private DbGeneralServices _dbGeneralServices;
+        public RequestCreate(DbServices dbServices, DbGeneralServices dbGeneralServices)
         {
             InitializeComponent();
             _dbServices = dbServices;
             req = new RequestCreationReq();
+            itemList = new List<RequestionCreationItem>();
             _validator = new Validator();
-
+            _dbGeneralServices = dbGeneralServices;
         }
 
         private async void RequestCreate_Load(object sender, EventArgs e)
@@ -67,7 +71,26 @@ namespace CPS_App
 
         private async void btnAdd_Click(object sender, EventArgs e)
         {
-            if (cbxname.SelectedItem == null || !int.TryParse(txtQty.Text, out var b) || dateTimePicker.Value <= DateTime.Now)
+            //dynamic request = new
+            //{
+            //    name = cbxname.SelectedItem,
+            //    quantity = txtQty.Text,
+
+            //};
+            //Validator validator = new Validator();
+            //validator.make(request,
+            //new
+            //{
+            //    name /*key*/= "required" /*fieldRule*/,
+            //    quantity = "int",
+
+            //});
+            //if (!validator.passes())
+            //{
+            //    MessageBox.Show(GenUtil.ArrayToString(validator.errors()), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //}
+            if (cbxname.SelectedItem == null || !int.TryParse(txtQty.Text, out var b) || dateTimePicker.Value <= DateTime.Now ||
+                GenUtil.ConvertObjtoType<int>(txtQty.Text.Trim()) <= 0)
             {
                 //_logger.LogDebug("Please Enter Correct Format");
                 MessageBox.Show("Please Enter Correct Format");
@@ -75,13 +98,14 @@ namespace CPS_App
             }
             var itemId = cbxname.SelectedItem;
             if (itemId != null) { itemId = itemId.ToString().Split(":").ElementAt(0); }
-
+            var itemName = cbxname.SelectedItem.ToString().Split(":").ElementAt(1);
             var item = new RequestionCreationItem
             {
                 bi_item_id = GenUtil.ConvertObjtoType<int>(itemId),
+                vc_item_desc = itemName,
                 i_item_req_qty = GenUtil.ConvertObjtoType<int>(txtQty.Text),
                 vc_remark = txtremark.Text,
-                dt_exp_deli_date = dateTimePicker.Value,
+                dt_exp_deli_date = dateTimePicker.Value.ToString("yyyy-MM-dd HH:mm:ss"),
 
             };
             var selectObj = new selectObj();
@@ -93,13 +117,13 @@ namespace CPS_App
             var result = await _dbServices.SelectWhereAsync(selectObj);
             if (result.resCode == 1 && result.result.Count > 0)
             {
-                if (req.items.Count > 0 && req.items.Select(x => x.bi_item_id == item.bi_item_id).FirstOrDefault())
+                if (itemList.Count > 0 && itemList.Select(x => x.bi_item_id == item.bi_item_id).FirstOrDefault())
                 {
-                    MessageBox.Show("Duplicated ID");
+                    MessageBox.Show("Duplicated Item Id");
                 }
                 else
                 {
-                    req.items.Add(item);
+                    itemList.Add(item);
                     MessageBox.Show("item added");
                 }
             }
@@ -110,48 +134,69 @@ namespace CPS_App
             txtremark.Clear();
             txtQty.Clear();
             cbxname.SelectedIndex = 0;
-
+            ValidationCheck();
         }
-        //private void requiredFieldCheck(object sender, EventArgs e)
-        //{
-        //    if (req.items.Count > 0)
-        //    {
-        //        enableValidation();
-        //        //MessageBox.Show($"confirm Submit with {req.items.Count} item?");
-        //        return;
-        //    }
-        //    var datepick = dateTimePicker.Value;
-        //    var id = cbxname.SelectedItem;
-        //    if (id != null) { id = id.ToString().Split(":").ElementAt(0); }
-        //    var avaliableItemBox = panelItem.Controls.OfType<KryptonTextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
-        //    var availableTxtBox = panelInfo.Controls.OfType<KryptonTextBox>().Where(n => !GenUtil.isNull(n.Text)).Count();
-        //    if (availableTxtBox != 2 || avaliableItemBox != 2 || datepick < DateTime.Now || id == null)
-        //    {
 
-        //        disableValidation();
-        //    }
-        //    else
-        //    {
-        //        enableValidation();
-        //    }
-        //}
 
         private async void btnSubmit_Click(object sender, EventArgs e)
         {
-            req.i_staff_id = GenUtil.ConvertObjtoType<int>(txtStaff.Text);
-            //var res = await _dbServices.GetLocationDesc<string>(cbxLoc.SelectedItem.ToString());
-            //tb_location re = JsonConvert.DeserializeObject<tb_location>(JsonConvert.SerializeObject(res.result));
-            //req.bi_location_id = re.bi_location_id;
+            string confirmStr = await GenUtil.ConfirmListAttach<RequestionCreationItem>(panelItem, itemList);
 
-            if (!await CreateRequestAsync(req))
+            if (confirmStr != string.Empty)
             {
-                MessageBox.Show("Request creation error\nPlease create again");
-            };
-            req.items.Clear();
-            disableValidation();
+                DialogResult response = MessageBox.Show(confirmStr, "Confirm", MessageBoxButtons.YesNo);
+                if (response == DialogResult.Yes ? true : false)
+                {
+                    req.i_staff_id = GenUtil.ConvertObjtoType<int>(txtStaff.Text);
+                    //var res = await _dbServices.GetLocationDesc<string>(cbxLoc.SelectedItem.ToString());
+                    //tb_location re = JsonConvert.DeserializeObject<tb_location>(JsonConvert.SerializeObject(res.result));
+                    //req.bi_location_id = re.bi_location_id;
+
+                    if (!await CreateRequestAsync())
+                    {
+                        MessageBox.Show("Request creation error\nPlease create again");
+                    };
+                    itemList.Clear();
+                    disableValidation();
+                }
+            }
+            else
+            {
+                MessageBox.Show("confirmStr is null");
+            }
+
+
+
+
         }
-        private async Task<bool> CreateRequestAsync(RequestCreationReq req)
+        private async Task AddUomIdToReqObj()
         {
+            foreach (var row in itemList)
+            {
+                try
+                {
+                    tb_item_vid_mapping vid = await _dbGeneralServices.GetVidAsync(row.bi_item_id.ToString());
+                    row.bi_item_vid = GenUtil.ConvertObjtoType<int>(vid.bi_item_vid);
+
+                    //find uom id
+                    tb_item uom = await _dbGeneralServices.GetUomAsync(vid.bi_item_id.ToString());
+                    row.i_uom_id = GenUtil.ConvertObjtoType<int>(uom.i_uom_id);
+
+                    req.items.Add(row);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+                
+            }
+
+        }
+        private async Task<bool> CreateRequestAsync()
+        {
+            //Checking insert tb_request_detail data correct
+            await AddUomIdToReqObj();
+
             DbResObj res1 = new DbResObj();
             try
             {
@@ -174,57 +219,26 @@ namespace CPS_App
             {
                 MessageBox.Show(e.Message);
                 return false;
+
             }
-
-
             //insert tb_request_detail
             req.items.ForEach(async row =>
             {
                 try
                 {
-                    //find item vid
-                    var idFinder = new selectObj();
-                    idFinder.table = "tb_item_vid_mapping";
-                    idFinder.selecter = new Dictionary<string, string>
-                    {
-                        {nameof(row.bi_item_id), row.bi_item_id.ToString() }
-                    };
-                    var vid = await _dbServices.SelectWhereAsync<tb_item_vid_mapping>(idFinder);
-                    if (vid.resCode != 1 || vid.result == null)
-                    {
-                        //_logger.LogDebug("item Id not find");
-                        MessageBox.Show("item Id not find");
-                    }
-                    tb_item_vid_mapping itemvid = vid.result[0];
-
-                    //find uom id
-                    var uomFinder = new selectObj();
-                    uomFinder.table = "tb_item";
-                    uomFinder.selecter = new Dictionary<string, string>
-                    {
-                        {nameof(row.bi_item_id), itemvid.bi_item_id.ToString()}
-                    };
-                    var uomid = await _dbServices.SelectWhereAsync<tb_item>(uomFinder);
-                    if (uomid.resCode != 1 || uomid.result == null)
-                    {
-                        //_logger.LogDebug("uom Id not find");
-                        MessageBox.Show("uom Id not find");
-                    }
-                    tb_item uomId = uomid.result[0];
-
                     var tb_detail = new insertObj();
                     tb_detail.table = "tb_request_detail";
                     tb_detail.inserter = new Dictionary<string, string>
                     {
                         {nameof(row.bi_req_id), res1.result.ToString()},
-                        {nameof(row.bi_item_id),  itemvid.bi_item_id.ToString()},
+                        {nameof(row.bi_item_id),  row.bi_item_id.ToString()},
                         {nameof(row.i_item_req_qty), row.i_item_req_qty.ToString() },
                         {nameof(row.i_remain_req_qty),row.i_item_req_qty.ToString() },
-                        {nameof(row.i_uom_id), uomId.i_uom_id.ToString() },
-                        {nameof(row.i_map_stat_id), "1" },
+                        {nameof(row.i_uom_id), row.i_uom_id.ToString() },
+                        {nameof(row.i_hd_map_stat_id), "1" },
                         {nameof(row.bi_po_status_id), "1" },
                         {nameof(row.vc_remark),row.vc_remark != ""? row.vc_remark:null},
-                        {nameof(row.dt_exp_deli_date),row.dt_exp_deli_date.ToString("yyyy-MM-ddTHH:mm:ss")}
+                        {nameof(row.dt_exp_deli_date),row.dt_exp_deli_date.ToString()}
                     };
 
                     var res2 = await _dbServices.InsertAsync(tb_detail);
@@ -235,20 +249,28 @@ namespace CPS_App
                         throw new Exception("insert error");
                     }
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
-                    MessageBox.Show(e.Message);
-
+                    MessageBox.Show(ex.Message);
                 }
+
             });
+
             MessageBox.Show($"Your Request has been created!\nRequest Id: {res1.result}");
             return true;
         }
-       
+
 
         private void requiredFieldCheck(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (req.items.Count > 0)
+
+            ValidationCheck();
+
+        }
+        private void ValidationCheck()
+        {
+
+            if (itemList.Count > 0)
             {
                 enableValidation();
                 //MessageBox.Show($"confirm Submit with {req.items.Count} item?");
@@ -269,7 +291,6 @@ namespace CPS_App
                 enableValidation();
             }
         }
-
         private void btncancel_Click(object sender, EventArgs e)
         {
             this.Close();

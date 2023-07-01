@@ -205,6 +205,11 @@ namespace CPS_App.Services
                     return false;
                 }
                 var claimValue = identity.Claims.FirstOrDefault(x => x.Type == keyValue.ElementAt(0).Key).Value;
+                if (claimValue.Contains(','))
+                {
+                    List<string> claimArr = claimValue.Split(',').ToList();
+                    return claimArr.Any(x => x.Trim().ToLower() == keyValue.ElementAt(0).Value.ToLower().Trim());
+                }
                 return claimValue.ToLower().Trim() == keyValue.ElementAt(0).Value.ToLower().Trim();
             }
             catch (Exception ex)

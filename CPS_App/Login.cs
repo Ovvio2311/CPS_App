@@ -22,16 +22,17 @@ namespace CPS_App
         
         private IConfiguration _configuration;
         public Dashboard _dashboard { get; set; }
+        private ScheduleTask _scheduleTask;
         
-        public Login(IConfiguration configuration, AuthService authService, Dashboard dashboard)
+        public Login(IConfiguration configuration, AuthService authService, Dashboard dashboard, ScheduleTask scheduleTask)
         {
             InitializeComponent();
             
             
             _configuration = configuration;
             _authService = authService;
-            _dashboard = dashboard;
-            
+            _dashboard = dashboard;            
+            _scheduleTask = scheduleTask;
         }
 
 
@@ -50,7 +51,7 @@ namespace CPS_App
                     Usename = txtusername.Text,
                     Password = txtpass.Text
                 };
-                if(await _authService.Login("LoChunFai"/*loginRequest.Usename*/, "123456Aa!"/*loginRequest.Password)*/))
+                if(await _authService.Login("manhowong"/*loginRequest.Usename*/, "123456Aa!"/*loginRequest.Password)*/))
                 {
                     MessageBox.Show("login Success");
                     //Form3 form3 = new Form3(_configuration,_db);
@@ -58,6 +59,15 @@ namespace CPS_App
                     //form3.ShowDialog();
                     this.Hide();
                     _dashboard.Show();
+                    foreach (var x in _dashboard.MdiChildren)
+                    {
+                        if (x.GetType() == typeof(Form))
+                        {
+                            x.Dispose();
+                        }
+                    }
+                    _dashboard.RefreshDashborad();
+                   
                     
                 }
                 else
@@ -74,7 +84,20 @@ namespace CPS_App
 
         private async void Login_Load(object sender, EventArgs e)
         {
-            
+          //await  _scheduleTask.RequestMappingScheduler();
+        }
+
+
+        private void btnclear_Click(object sender, EventArgs e)
+        {
+            txtusername.Text = string.Empty;
+            txtpass.Text = string.Empty;
+        }
+
+        private void btnclose_Click(object sender, EventArgs e)
+        {
+            //this.Close();
+            Application.Exit();
         }
     }
 }

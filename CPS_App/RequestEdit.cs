@@ -16,34 +16,41 @@ namespace CPS_App
         public List<RequestMappingReqObj> defPage;
         public BindingList<ItemRequest> itemsReq;
         private readonly DbServices _dbServices;
-        public RequestEdit(int reqID, List<RequestMappingReqObj> defPage, DbServices dbServices)
+        private RequestMapping _requestMapp;
+        private GenericTableViewWorker _genericTableViewWorker;
+        public RequestEdit(int reqID, List<RequestMappingReqObj> defPage,
+            DbServices dbServices, RequestMapping requestMapp, GenericTableViewWorker genericTableViewWorker)
         {
             InitializeComponent();
             this.reqID = reqID;
             this.defPage = defPage;
             _dbServices = dbServices;
             itemsReq = new BindingList<ItemRequest>();
+            _requestMapp = requestMapp;
+            _genericTableViewWorker = genericTableViewWorker;
         }
 
-        private void RequestEdit_Load(object sender, EventArgs e)
+        private async void RequestEdit_Load(object sender, EventArgs e)
         {
             if (defPage.Count() == 0)
             {
                 MessageBox.Show("error");
                 return;
             }
-            RequestMappingReqObj edititems = defPage.ToList().Where(x => x.bi_req_id == reqID).FirstOrDefault();
-            txtreqid.Text = edititems.bi_req_id.ToString();
-            txtstaName.Text = GenUtil.ConvertObjtoType<string>(edititems.vc_staff_name);
-            txtloc.Text = edititems.vc_location_desc.ToString();
-            txtcrDate.Text = edititems.dt_created_date.ToString();
+            //initial load
+            await ReqEditInitialLoad();
+            //RequestMappingReqObj edititems = defPage.ToList().Where(x => x.bi_req_id == reqID).FirstOrDefault();
+            //txtreqid.Text = edititems.bi_req_id.ToString();
+            //txtstaName.Text = GenUtil.ConvertObjtoType<string>(edititems.vc_staff_name);
+            //txtloc.Text = edititems.vc_location_desc.ToString();
+            //txtcrDate.Text = edititems.dt_created_date.ToString();
 
-            var observableItems = new ObservableCollection<ItemRequest>(edititems.item);
-            itemsReq = observableItems.ToBindingList();
-            datagridviewitem.DataSource = itemsReq;
+            //var observableItems = new ObservableCollection<ItemRequest>(edititems.itemLists);
+            //itemsReq = observableItems.ToBindingList();
+            //datagridviewitem.DataSource = itemsReq;
 
             //change header name and hide column
-            GenUtil.dataGridAttrName<ItemRequest>(datagridviewitem, new List<string>() { "not_shown" });
+            //GenUtil.dataGridAttrName<ItemRequest>(datagridviewitem, new List<string>() { "not_shown" });
             //datagridviewitem.Columns.ToDynamicList().ForEach(col =>
             //{
             //    DataGridViewColumn column = col;
@@ -60,22 +67,39 @@ namespace CPS_App
             //});
 
         }
-        private void datagridviewitem_CellClick(object sender, DataGridViewCellEventArgs e)
+        private async Task ReqEditInitialLoad()
+        {
+            RequestMappingReqObj edititems = defPage.ToList().Where(x => x.bi_req_id == reqID).FirstOrDefault();
+            txtreqid.Text = edititems.bi_req_id.ToString();
+            txtstaName.Text = GenUtil.ConvertObjtoType<string>(edititems.vc_staff_name);
+            txtloc.Text = edititems.vc_location_desc.ToString();
+            txtcrDate.Text = edititems.dt_created_date.ToString();
+
+            var observableItems = new ObservableCollection<ItemRequest>(edititems.itemLists);
+            itemsReq = observableItems.ToBindingList();
+            datagridviewitem.Columns.Clear();
+            datagridviewitem.DataSource = itemsReq;
+
+            //change header name and hide column
+            GenUtil.dataGridAttrName<ItemRequest>(datagridviewitem, new List<string>() { "not_shown" });
+        }
+        private async void datagridviewitem_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.ColumnIndex < 0 || e.RowIndex < 0) return; // header clicked
 
             if (e.RowIndex == datagridviewitem.CurrentRow.Index)
             {
                 int selectdId = GenUtil.ConvertObjtoType<int>(datagridviewitem.CurrentRow.Cells["bi_item_id"].Value);
-                var readyToEdit = itemsReq.Where(x => x.bi_item_id == selectdId).FirstOrDefault();
-                txtvid.Text = readyToEdit.bi_item_vid.ToString();
-                txtrs.Text = GenUtil.ConvertObjtoType<string>(readyToEdit.bi_po_status_id);
-                txtremain.Text = readyToEdit.i_remain_req_qty.ToString();
-                txtqty.Text = readyToEdit.i_item_req_qty.ToString();
-                dateTimePickerEDD.Value = DateTime.Now; // for testing only
-                txtitname.Text = GenUtil.ConvertObjtoType<string>(readyToEdit.vc_item_desc);
-                txtcat.Text = readyToEdit.vc_category_desc.ToString();
-                txtreqst.Text = GenUtil.ConvertObjtoType<string>(readyToEdit.item_mapping_status);
+                ItemRequest readyToEdit = itemsReq.Where(x => x.bi_item_id == selectdId).FirstOrDefault();
+                await GenUtil.AutoLabelAddingfromTextBox<ItemRequest>(this, readyToEdit);
+                //txtvid.Text = readyToEdit.bi_item_vid.ToString();
+                //txtrs.Text = GenUtil.ConvertObjtoType<string>(readyToEdit.vc_po_status_desc);
+                //txtremain.Text = readyToEdit.i_remain_req_qty.ToString();
+                //txtqty.Text = readyToEdit.i_item_req_qty.ToString();
+                dateTimePickerEDD.Value = GenUtil.ConvertObjtoType<DateTime>(readyToEdit.dt_exp_deli_date); // for testing only
+                //txtitname.Text = GenUtil.ConvertObjtoType<string>(readyToEdit.vc_item_desc);
+                //txtcat.Text = readyToEdit.vc_category_desc.ToString();
+                //txtreqst.Text = GenUtil.ConvertObjtoType<string>(readyToEdit.item_mapping_status);
             }
         }
 
@@ -87,33 +111,84 @@ namespace CPS_App
         private async void btnchange_Click(object sender, EventArgs e)
         {
             int selectdId = GenUtil.ConvertObjtoType<int>(datagridviewitem.CurrentRow.Cells["bi_item_id"].Value);
-            var readyToEdit = itemsReq.Where(x => x.bi_item_id == selectdId).FirstOrDefault();
-            if (txtremain.Text == readyToEdit.i_remain_req_qty.ToString() && dateTimePickerEDD.Value == readyToEdit.dt_exp_deli_date)
+            ItemRequest readyToEdit = itemsReq.Where(x => x.bi_item_id == selectdId).FirstOrDefault();
+            if (txtremain.Text == readyToEdit.i_remain_req_qty.ToString() && dateTimePickerEDD.Value ==GenUtil.ConvertObjtoType<DateTime>( readyToEdit.dt_exp_deli_date))
             {
-                MessageBox.Show("Remain Qty and expected delivery date haven't change");
+                MessageBox.Show("Value haven't change");
                 return;
             }
-            if (int.TryParse(txtremain.Text, out var a))
+            if (!int.TryParse(txtremain.Text, out var a) || GenUtil.ConvertObjtoType<int>(txtremain.Text.Trim()) < 0)
             {
-                var updateObj = new updateObj();
-                updateObj.table = "tb_request_detail";
-                updateObj.updater.Add(nameof(readyToEdit.i_remain_req_qty), txtremain.Text.ToString());
-                updateObj.updater.Add(nameof(readyToEdit.dt_exp_deli_date), dateTimePickerEDD.Value.ToString("yyyy-MM-ddTHH:mm:ss"));
-                updateObj.selecter.Add(nameof(readyToEdit.bi_req_id), readyToEdit.bi_req_id.ToString());
-                updateObj.selecter.Add(nameof(readyToEdit.bi_item_id), readyToEdit.bi_item_id.ToString());
-                var res = await _dbServices.UpdateAsync(updateObj);
-                if (res.resCode != 1)
+                MessageBox.Show("Remain Quantity input type is not correct");
+                return;
+            }
+            if (GenUtil.ConvertObjtoType<int>(txtremain.Text) > readyToEdit.i_item_req_qty)
+            {
+                MessageBox.Show("Remain Quantity cannot larger than Request Quantity");
+                return;
+            }
+            string confirmStr = await GenUtil.ConfirmListAttach(this);
+            if (confirmStr != string.Empty)
+            {
+                DialogResult response = MessageBox.Show(confirmStr, "Confirm", MessageBoxButtons.YesNo);
+                if (response == DialogResult.Yes ? true : false)
                 {
-                    MessageBox.Show("update error");
-                }
-                else
-                {
-                    MessageBox.Show("Update Success");
-                    this.Controls.OfType<KryptonTextBox>().ToList().ForEach(x => x.Clear());
+                    var updateObj = new updateObj();
+                    updateObj.table = "tb_request_detail";
+                    updateObj.updater.Add(nameof(readyToEdit.i_remain_req_qty), txtremain.Text.ToString());
+                    updateObj.updater.Add(nameof(readyToEdit.dt_exp_deli_date), dateTimePickerEDD.Value.ToString("yyyy-MM-ddTHH:mm:ss"));
+                    updateObj.selecter.Add(nameof(readyToEdit.bi_req_id), readyToEdit.bi_req_id.ToString());
+                    updateObj.selecter.Add(nameof(readyToEdit.bi_item_id), readyToEdit.bi_item_id.ToString());
+                    var res = await _dbServices.UpdateAsync(updateObj);
+                    if (res.resCode != 1)
+                    {
+                        MessageBox.Show("update error");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Update Success");
+                        this.Controls.OfType<KryptonTextBox>().ToList().ForEach(x => x.Clear());
+                        await RefreshItemEditTable();
+                    }
                 }
             }
-        }
+            else
+            {
+                MessageBox.Show("confirmStr is null");
+            }
 
+
+
+        }
+        //private async Task<bool> ConfirmListAttach()
+        //{
+        //    var confirmObj = new Dictionary<string, string>();
+        //    this.Controls.OfType<KryptonTextBox>().ToList().ForEach(x =>
+        //    {
+        //        if (x.ReadOnly == false)
+        //        {
+        //            this.Controls.OfType<KryptonLabel>().ToList().ForEach(p =>
+        //            {
+        //                if (p.Tag != null && p.Tag.ToString() == x.Tag.ToString())
+        //                {
+        //                    confirmObj.Add(p.Text, x.Text);
+        //                }
+        //            });
+        //        }
+        //    });
+        //    string confirmStr = string.Join(Environment.NewLine, confirmObj.Select(x => $"{x.Key} = {x.Value}").ToList());
+
+        //    DialogResult response = MessageBox.Show(confirmStr, "Confirm", MessageBoxButtons.YesNo);
+        //    return response == DialogResult.Yes ? true : false;
+        //}
+        private async Task RefreshItemEditTable()
+        {
+            RequestMappingReqObj viewObj = new RequestMappingReqObj();
+            defPage = await _genericTableViewWorker.GetGenericWorker<RequestMappingReqObj, ItemRequest>(viewObj.GetSqlQuery(), nameof(viewObj.bi_req_id));
+
+            //defPage = await _requestMapp.RequestMappingObjGetter();
+            await ReqEditInitialLoad();
+        }
         private void btncancel_Click(object sender, EventArgs e)
         {
             this.Close();

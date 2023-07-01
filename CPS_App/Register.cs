@@ -41,19 +41,19 @@ namespace CPS_App
             var res = await _dbServices.SelectAllAsync<tb_location>();            
             List<tb_location> loc = JsonConvert.DeserializeObject<List<tb_location>>(JsonConvert.SerializeObject(res.result));
             loc.ForEach(x => locDesc.Items.Add(x.vc_location_desc));
-            dynamic request = new
-            {
-                name = "admin",
-                password = "123456Aa!",
-                re_password = "123456Aa!",
-                role = "Admin",
-                email = "233@ddd.com",
-                empid = "1234",
-                location = "South Ellie",
-                staffRole = "admin"
+//            dynamic request = new
+//            {
+//                name = "admin",
+//                password = "123456Aa!",
+//                re_password = "123456Aa!",
+//                role = "Admin",
+//                email = "233@ddd.com",
+//                empid = "1234",
+//                location = "South Ellie",
+//                staffRole = "admin"
 
-,
-            };
+//,
+//            };
 
             //submit_Click(sender, e);
            // await _registerServices.CreateUserAsync(request);
@@ -77,32 +77,32 @@ namespace CPS_App
         private async void submit_Click(object sender, EventArgs e)
         {
 
-            //dynamic request = new
-            //{
-            //    name = txtName.Text,
-            //    password = txtPassword.Text,
-            //    re_password = txtRePw.Text,
-            //    role = GroupType.SelectedItem,
-            //    email = txtEmail.Text,
-            //    empid = txtEmpID.Text,
-            //    staffRole = txtStaffRole.Text,
-            //    location = locDesc.SelectedItem,
-            //    staffName = txtstaffname.Text
-            //};
             dynamic request = new
             {
-                name = "LoChunFai",
-                password = "123456Aa!",
-                re_password = "123456Aa!",
-                role = "Restaurant",
-                email = "LoChunFai@yummy.com",
-                empid = "358",
-                location = "Tai Po Road",
-                staffRole = "Manager",
-                staffName = "LoChunFai"
-
-,
+                name = txtName.Text,
+                password = txtPassword.Text,
+                re_password = txtRePw.Text,
+                role = GroupType.SelectedItem,
+                email = txtEmail.Text,
+                empid = txtEmpID.Text,
+                staffRole = txtStaffRole.Text,
+                location = locDesc.SelectedItem,
+                staffName = txtstaffname.Text
             };
+            //            dynamic request = new
+            //            {
+            //                name = "LoChunFai",
+            //                password = "123456Aa!",
+            //                re_password = "123456Aa!",
+            //                role = "Restaurant",
+            //                email = "LoChunFai@yummy.com",
+            //                empid = "358",
+            //                location = "Tai Po Road",
+            //                staffRole = "Manager",
+            //                staffName = "LoChunFai"
+
+            //,
+            //            };
             Validator validator = new Validator();
             validator.make(request,
             new

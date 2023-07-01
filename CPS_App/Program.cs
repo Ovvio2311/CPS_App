@@ -1,4 +1,3 @@
-using CCS_API.Data;
 using CPS_App.Models;
 using CPS_App.Services;
 using CPS_App.Helpers;
@@ -13,6 +12,8 @@ using System.Security.Principal;
 using CommonDBUtils;
 using Serilog;
 using static CPS_App.Models.CPSModel;
+using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel;
+using CPS_App.Data;
 
 namespace CPS_App
 {
@@ -24,7 +25,20 @@ namespace CPS_App
 
         static void Main(string[] args)
         {
+            MainAsync(args).GetAwaiter().GetResult();
 
+            
+            
+            
+            
+            //Application.Run(ServiceProvider.GetRequiredService<ScheduleTask>());
+            //Application.Run(ServiceProvider.GetRequiredService<Dashboard>());
+            //Application.Run(ServiceProvider.GetRequiredService<Request_Create>());
+            //Application.Run(ServiceProvider.GetRequiredService<Register>());
+        }
+        
+        static async Task MainAsync(string[] args)
+        {
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Override("Microsoft", Serilog.Events.LogEventLevel.Information)
                 .Enrich.FromLogContext()
@@ -50,12 +64,11 @@ namespace CPS_App
                             .Build();
 
             var ServiceProvider = host.Services;
-           Application.Run(ServiceProvider.GetRequiredService<Login>());
-           //Application.Run(ServiceProvider.GetRequiredService<Dashboard>());
-            //Application.Run(ServiceProvider.GetRequiredService<Request_Create>());
-            //Application.Run(ServiceProvider.GetRequiredService<Register>());
+            var scheduler = ServiceProvider.GetRequiredService<ScheduleTask>();
+            //await scheduler.RequestMappingScheduler();
+            Application.Run(ServiceProvider.GetRequiredService<Login>());
+            
         }
-
 
         private static void ConfigureServices(IServiceCollection services)
         {
@@ -74,9 +87,15 @@ namespace CPS_App
             services.AddSingleton<DbServices>();
             services.AddScoped<ClaimsManager>();
             services.AddScoped<RequestMapping>();
+            services.AddScoped<DbGeneralServices>();
             services.AddScoped<POAWorker>();
             services.AddScoped<SearchFunc>();
+            services.AddScoped<ManualMappingProcess>();
+            services.AddScoped<GenericTableViewWorker>();
+            services.AddScoped<CreateDNServices>();
+            services.AddSingleton<ScheduleTask>();
             services.AddScoped<StockLevelWorker>();
+            services.AddScoped<CreatePoServices>();
             services.Configure<IdentityOptions>(options =>
             {
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);

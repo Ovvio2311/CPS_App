@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using static CPS_App.Models.CPSModel;
 using Krypton.Toolkit;
 using Microsoft.Extensions.Configuration;
+using Krypton.Toolkit.Suite.Extended.Data.Visualisation.ScottPlot;
 
 namespace CPS_App
 {
@@ -25,11 +26,17 @@ namespace CPS_App
         private POAWorker _pOAWorker;
         private SearchFunc _searchFunc;
         private IConfiguration _configuration;
+        private ScheduleTask _scheduleTask;
+        private GenericTableViewWorker _genericTableViewWorker;
+        private CreatePoServices _createPoServices;
+        private ManualMappingProcess _manualMappingProcess;
+        private DbGeneralServices _dbGeneralServices;
 
-        public Dashboard(Register register, AuthService authService, 
-            RequestMapping requestMapp, DbServices dbServices, 
-            StockLevelWorker stockWorker, RegisterServices registerServices, 
-            POAWorker pOAWorker, SearchFunc searchFunc, IConfiguration configuration)
+        public Dashboard(Register register, AuthService authService,
+            RequestMapping requestMapp, DbServices dbServices,
+            StockLevelWorker stockWorker, RegisterServices registerServices,
+            POAWorker pOAWorker, SearchFunc searchFunc, IConfiguration configuration,
+            ScheduleTask scheduleTask, GenericTableViewWorker genericTableViewWorker, CreatePoServices createPoServices, ManualMappingProcess manualMappingProcess, DbGeneralServices dbGeneralServices)
         {
             _authService = authService;
             _register = register;
@@ -42,26 +49,44 @@ namespace CPS_App
             _pOAWorker = pOAWorker;
             _searchFunc = searchFunc;
             _configuration = configuration;
+            _scheduleTask = scheduleTask;
+            _genericTableViewWorker = genericTableViewWorker;
+            _createPoServices = createPoServices;
+            _manualMappingProcess = manualMappingProcess;
+            _dbGeneralServices = dbGeneralServices;
         }
         private async void Dashboard_Load(object sender, EventArgs e)
         {
-            
+            RefreshDashborad();
+            //userIden = AuthService._userClaim;
+            //if (userIden != null)
+            //{
+            //    var roleName = userIden.Claims.FirstOrDefault(x => x.Type == "role").Value;
+            //    var staName = userIden.Claims.FirstOrDefault(x => x.Type == "staff_name").Value;
+            //    striplblwelcome.Text = $"Welcome {staName},{roleName}";
+            //    if (userIden.Claims.FirstOrDefault(x => x.Type == "role").Value.ToLower() == "admin")
+            //    {
+
+            //    }
+            //}
+            //defPage = await _requestMapp.RequestMappingObjGetter();
+            //HomePage.DataSource = defPage;
+        }
+        public void RefreshDashborad()
+        {
             userIden = AuthService._userClaim;
             if (userIden != null)
             {
+                striplblwelcome.Text = string.Empty;
+                var roleName = userIden.Claims.FirstOrDefault(x => x.Type == "role").Value;
                 var staName = userIden.Claims.FirstOrDefault(x => x.Type == "staff_name").Value;
-                striplblwelcome.Text = $"Welcome Back {staName}";
+                striplblwelcome.Text = $"Welcome {staName},{roleName}";
                 if (userIden.Claims.FirstOrDefault(x => x.Type == "role").Value.ToLower() == "admin")
                 {
 
                 }
             }
-            //defPage = await _requestMapp.RequestMappingObjGetter();
-            //HomePage.DataSource = defPage;
-
-
         }
-
         //private void HomePage_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         //{
         //    if (e.ColumnIndex == _previousIndex)
@@ -78,7 +103,7 @@ namespace CPS_App
         //        list.OrderBy(_ => _.GetType().GetProperty(column).GetValue(_)).ToList() :
         //        list.OrderByDescending(_ => _.GetType().GetProperty(column).GetValue(_)).ToList();
         //}
-       
+
 
 
 
@@ -86,15 +111,15 @@ namespace CPS_App
 
         private void stripreq_Click(object sender, EventArgs e)
         {
-            RequestView reqView = new RequestView(_dbServices, _requestMapp,_searchFunc);
-            reqView.MdiParent = this;            
+            RequestView reqView = new RequestView(_dbServices, _requestMapp, _searchFunc, _genericTableViewWorker, _createPoServices, _manualMappingProcess,_dbGeneralServices);
+            reqView.MdiParent = this;
             reqView.AutoScroll = true;
             reqView.Show();
         }
 
         private void stripitem_Click(object sender, EventArgs e)
         {
-            ItemView itemView = new ItemView(_dbServices, _stockWorker);
+            ItemView itemView = new ItemView(_dbServices, _stockWorker, _searchFunc, _genericTableViewWorker);
             itemView.MdiParent = this;
             itemView.AutoScroll = true;
             itemView.Show();
@@ -102,7 +127,7 @@ namespace CPS_App
 
         private void strippoa_Click(object sender, EventArgs e)
         {
-            POAView poaView = new POAView(_dbServices, _pOAWorker);
+            POAView poaView = new POAView(_dbServices, _pOAWorker, _searchFunc, _genericTableViewWorker);
             poaView.MdiParent = this;
             poaView.AutoScroll = true;
             poaView.Show();
@@ -110,7 +135,10 @@ namespace CPS_App
 
         private void strippo_Click(object sender, EventArgs e)
         {
-
+            POView poView = new POView(_dbServices, _pOAWorker, _searchFunc, _genericTableViewWorker, _createPoServices, _manualMappingProcess,_dbGeneralServices);
+            poView.MdiParent = this;
+            poView.AutoScroll = true;
+            poView.Show();
         }
 
         private void stripset_Click(object sender, EventArgs e)
@@ -123,14 +151,22 @@ namespace CPS_App
 
         private async void striplogout_Click(object sender, EventArgs e)
         {
-            DialogResult dialogResult= MessageBox.Show("Are You sure want to Logout?", "Confirm",MessageBoxButtons.YesNo);
-            if(dialogResult == DialogResult.Yes)
+            DialogResult dialogResult = MessageBox.Show("Are You sure want to Logout?", "Confirm", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
             {
                 userIden = null;
-                this.Close();
-                Login login = new Login(_configuration, _authService, this);
+                this.Hide();
+                Login login = new Login(_configuration, _authService, this, _scheduleTask);
                 login.Show();
             }
+        }
+
+        private void btndn_Click(object sender, EventArgs e)
+        {
+            DNView dnview = new DNView(_dbServices, _genericTableViewWorker,_dbGeneralServices);
+            dnview.MdiParent = this;
+            dnview.AutoScroll = true;
+            dnview.Show();
         }
 
 

@@ -13,7 +13,7 @@ namespace CPS_App.Helpers
     }
 }
 
-
+//https://www.ikea.com.hk/zh/products/sideboards/bookcases/billy-oxberg-spr-59483671
 
 //use cps_db;
 //CREATE TABLE `tb_users` (
@@ -195,13 +195,13 @@ namespace CPS_App.Helpers
 //  `bi_poa_header_id` bigint(20) NOT NULL,  
 //  `bi_poa_line_id` bigint(20) not NULL AUTO_INCREMENT,  
 //  `bi_item_id` bigint(20) DEFAULT NULL,  
-//  `dc_promise_qty` decimal(5,2) DEFAULT NULL,
+//  `i_promise_qty` decimal(5,2) DEFAULT NULL,
 //  `i_uom_id` int(11) DEFAULT NULL,
-//  `dc_min_qty` decimal(5,2) default NULL,  
-//  `dc_price` decimal(10,2) DEFAULT NULL,  
-//  `dc_amount` decimal(5,2) DEFAULT NULL,
+//  `i_min_qty` decimal(5,2) default NULL,  
+//  `i_price` decimal(10,2) DEFAULT NULL,  
+//  `i_amount` decimal(5,2) DEFAULT NULL,
 //  `vc_reference` varchar(45) DEFAULT NULL,
-//  `bi_quot_no` bigint(20) default NULL,    
+//  `vc_quot_no` bigint(20) default NULL,    
 //  `dt_created_date` datetime NOT NULL DEFAULT current_timestamp(),
 //  `dt_updated_datetime` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp(),
 //  PRIMARY key(bi_poa_line_id),
@@ -288,10 +288,10 @@ namespace CPS_App.Helpers
 //  `bi_supp_item_id` bigint(20) DEFAULT NULL,  
 //  `bi_item_id` bigint(20) DEFAULT NULL,    
 //  `i_uom_id` int(11) DEFAULT NULL,
-//  `dc_price` decimal(10,2) DEFAULT NULL,  
-//  `dc_actual_amount` decimal(5,2) DEFAULT NULL,
+//  `i_price` decimal(10,2) DEFAULT NULL,  
+//  `i_actual_amount` decimal(5,2) DEFAULT NULL,
 //  `vc_reference` varchar(45) DEFAULT NULL,
-//  `bi_quot_no` bigint(20) default NULL,
+//  `vc_quot_no` bigint(20) default NULL,
 //  `bi_contract_no` bigint(20) DEFAULT NULL,    
 //  `dc_actual_qty` decimal(5,2) DEFAULT NULL,
 //  `dt_created_date` datetime NOT NULL DEFAULT current_timestamp(),

@@ -40,6 +40,8 @@ namespace CPS_App
             this.lblvid = new Krypton.Toolkit.KryptonLabel();
             this.lbluom = new Krypton.Toolkit.KryptonLabel();
             this.pnit = new Krypton.Toolkit.KryptonPanel();
+            this.chkcrloc = new Krypton.Toolkit.KryptonCheckBox();
+            this.chkstock = new Krypton.Toolkit.KryptonCheckBox();
             this.txtqty = new Krypton.Toolkit.KryptonTextBox();
             this.lblqty = new Krypton.Toolkit.KryptonLabel();
             this.cbxsup = new Krypton.Toolkit.KryptonComboBox();
@@ -52,6 +54,7 @@ namespace CPS_App
             this.cbxloc = new Krypton.Toolkit.KryptonComboBox();
             this.cbxcat = new Krypton.Toolkit.KryptonComboBox();
             this.btnitcr = new Krypton.Toolkit.KryptonButton();
+            this.cbxitid = new Krypton.Toolkit.KryptonComboBox();
             this.kryptonPalettepanel = new Krypton.Toolkit.KryptonPalette(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pnit)).BeginInit();
             this.pnit.SuspendLayout();
@@ -60,6 +63,7 @@ namespace CPS_App
             ((System.ComponentModel.ISupportInitialize)(this.cbxvid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cbxloc)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cbxcat)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cbxitid)).BeginInit();
             this.SuspendLayout();
             // 
             // txtitname
@@ -67,7 +71,8 @@ namespace CPS_App
             this.txtitname.Location = new System.Drawing.Point(184, 124);
             this.txtitname.Name = "txtitname";
             this.txtitname.Size = new System.Drawing.Size(177, 23);
-            this.txtitname.TabIndex = 2;
+            this.txtitname.TabIndex = 1;
+            this.txtitname.Tag = "vc_item_desc";
             // 
             // lblcrit
             // 
@@ -92,6 +97,7 @@ namespace CPS_App
             this.lblitname.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
             this.lblitname.Size = new System.Drawing.Size(53, 21);
             this.lblitname.TabIndex = 4;
+            this.lblitname.Tag = "vc_item_desc";
             this.lblitname.Values.Text = "Name";
             // 
             // kryptonPalettelbl
@@ -107,40 +113,46 @@ namespace CPS_App
             this.lblcat.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
             this.lblcat.Size = new System.Drawing.Size(74, 21);
             this.lblcat.TabIndex = 5;
+            this.lblcat.Tag = "vc_category_desc";
             this.lblcat.Values.Text = "Category";
             // 
             // lblloc
             // 
-            this.lblloc.Location = new System.Drawing.Point(67, 231);
+            this.lblloc.Location = new System.Drawing.Point(403, 231);
             this.lblloc.Name = "lblloc";
             this.lblloc.Palette = this.kryptonPalettelbl;
             this.lblloc.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
             this.lblloc.Size = new System.Drawing.Size(70, 21);
             this.lblloc.TabIndex = 6;
+            this.lblloc.Tag = "vc_location_desc";
             this.lblloc.Values.Text = "Location";
             // 
             // lblvid
             // 
-            this.lblvid.Location = new System.Drawing.Point(83, 280);
+            this.lblvid.Location = new System.Drawing.Point(91, 231);
             this.lblvid.Name = "lblvid";
             this.lblvid.Palette = this.kryptonPalettelbl;
             this.lblvid.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
             this.lblvid.Size = new System.Drawing.Size(37, 21);
             this.lblvid.TabIndex = 7;
+            this.lblvid.Tag = "bi_item_vid";
             this.lblvid.Values.Text = "VID";
             // 
             // lbluom
             // 
-            this.lbluom.Location = new System.Drawing.Point(3, 322);
+            this.lbluom.Location = new System.Drawing.Point(3, 285);
             this.lbluom.Name = "lbluom";
             this.lbluom.Palette = this.kryptonPalettelbl;
             this.lbluom.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
             this.lbluom.Size = new System.Drawing.Size(155, 21);
             this.lbluom.TabIndex = 8;
+            this.lbluom.Tag = "vc_uom_desc";
             this.lbluom.Values.Text = "Unit of Measurement";
             // 
             // pnit
             // 
+            this.pnit.Controls.Add(this.chkcrloc);
+            this.pnit.Controls.Add(this.chkstock);
             this.pnit.Controls.Add(this.txtqty);
             this.pnit.Controls.Add(this.lblqty);
             this.pnit.Controls.Add(this.cbxsup);
@@ -157,8 +169,9 @@ namespace CPS_App
             this.pnit.Controls.Add(this.lblloc);
             this.pnit.Controls.Add(this.cbxloc);
             this.pnit.Controls.Add(this.cbxcat);
-            this.pnit.Controls.Add(this.txtitname);
             this.pnit.Controls.Add(this.btnitcr);
+            this.pnit.Controls.Add(this.cbxitid);
+            this.pnit.Controls.Add(this.txtitname);
             this.pnit.Location = new System.Drawing.Point(-5, 0);
             this.pnit.Name = "pnit";
             this.pnit.Palette = this.kryptonPalettepanel;
@@ -166,12 +179,32 @@ namespace CPS_App
             this.pnit.Size = new System.Drawing.Size(755, 448);
             this.pnit.TabIndex = 13;
             // 
+            // chkcrloc
+            // 
+            this.chkcrloc.Location = new System.Drawing.Point(184, 98);
+            this.chkcrloc.Name = "chkcrloc";
+            this.chkcrloc.Size = new System.Drawing.Size(184, 20);
+            this.chkcrloc.TabIndex = 19;
+            this.chkcrloc.Values.Text = "Existing Stock Create location";
+            this.chkcrloc.CheckedChanged += new System.EventHandler(this.chkcrloc_CheckedChanged);
+            // 
+            // chkstock
+            // 
+            this.chkstock.Location = new System.Drawing.Point(405, 65);
+            this.chkstock.Name = "chkstock";
+            this.chkstock.Size = new System.Drawing.Size(152, 20);
+            this.chkstock.TabIndex = 18;
+            this.chkstock.Values.Text = "Insert Stock Import Info";
+            this.chkstock.CheckedChanged += new System.EventHandler(this.chkstock_CheckedChanged);
+            // 
             // txtqty
             // 
+            this.txtqty.Enabled = false;
             this.txtqty.Location = new System.Drawing.Point(479, 176);
             this.txtqty.Name = "txtqty";
             this.txtqty.Size = new System.Drawing.Size(177, 23);
-            this.txtqty.TabIndex = 18;
+            this.txtqty.TabIndex = 7;
+            this.txtqty.Tag = "i_item_qty";
             // 
             // lblqty
             // 
@@ -181,18 +214,21 @@ namespace CPS_App
             this.lblqty.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
             this.lblqty.Size = new System.Drawing.Size(69, 21);
             this.lblqty.TabIndex = 17;
+            this.lblqty.Tag = "i_item_qty";
             this.lblqty.Values.Text = "Quantity";
             // 
             // cbxsup
             // 
             this.cbxsup.CornerRoundingRadius = -1F;
             this.cbxsup.DropDownWidth = 177;
+            this.cbxsup.Enabled = false;
             this.cbxsup.FormattingEnabled = true;
             this.cbxsup.IntegralHeight = false;
             this.cbxsup.Location = new System.Drawing.Point(479, 124);
             this.cbxsup.Name = "cbxsup";
             this.cbxsup.Size = new System.Drawing.Size(177, 21);
-            this.cbxsup.TabIndex = 15;
+            this.cbxsup.TabIndex = 6;
+            this.cbxsup.Tag = "bi_supp_id:vc_supp_desc";
             // 
             // btnitsb
             // 
@@ -202,7 +238,7 @@ namespace CPS_App
             this.btnitsb.Palette = this.kryptonPalettebtn;
             this.btnitsb.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
             this.btnitsb.Size = new System.Drawing.Size(94, 48);
-            this.btnitsb.TabIndex = 1;
+            this.btnitsb.TabIndex = 10;
             this.btnitsb.Values.Text = "Submit";
             this.btnitsb.Click += new System.EventHandler(this.btnitsb_Click);
             // 
@@ -225,6 +261,7 @@ namespace CPS_App
             this.lblsup.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
             this.lblsup.Size = new System.Drawing.Size(68, 21);
             this.lblsup.TabIndex = 14;
+            this.lblsup.Tag = "vc_supp_desc";
             this.lblsup.Values.Text = "Supplier";
             // 
             // btncancel
@@ -235,7 +272,7 @@ namespace CPS_App
             this.btncancel.Palette = this.kryptonPalettebtn;
             this.btncancel.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
             this.btncancel.Size = new System.Drawing.Size(94, 48);
-            this.btncancel.TabIndex = 16;
+            this.btncancel.TabIndex = 8;
             this.btncancel.Values.Text = "Cancel";
             this.btncancel.Click += new System.EventHandler(this.btncancel_Click);
             // 
@@ -245,10 +282,11 @@ namespace CPS_App
             this.cbxuom.DropDownWidth = 177;
             this.cbxuom.FormattingEnabled = true;
             this.cbxuom.IntegralHeight = false;
-            this.cbxuom.Location = new System.Drawing.Point(184, 322);
+            this.cbxuom.Location = new System.Drawing.Point(184, 285);
             this.cbxuom.Name = "cbxuom";
             this.cbxuom.Size = new System.Drawing.Size(177, 21);
             this.cbxuom.TabIndex = 5;
+            this.cbxuom.Tag = "i_uom_id:vc_uom_desc";
             // 
             // cbxvid
             // 
@@ -256,21 +294,25 @@ namespace CPS_App
             this.cbxvid.DropDownWidth = 177;
             this.cbxvid.FormattingEnabled = true;
             this.cbxvid.IntegralHeight = false;
-            this.cbxvid.Location = new System.Drawing.Point(184, 280);
+            this.cbxvid.Location = new System.Drawing.Point(184, 231);
             this.cbxvid.Name = "cbxvid";
             this.cbxvid.Size = new System.Drawing.Size(177, 21);
             this.cbxvid.TabIndex = 4;
+            this.cbxvid.Tag = "bi_item_vid";
             // 
             // cbxloc
             // 
             this.cbxloc.CornerRoundingRadius = -1F;
+            this.cbxloc.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbxloc.DropDownWidth = 177;
+            this.cbxloc.Enabled = false;
             this.cbxloc.FormattingEnabled = true;
             this.cbxloc.IntegralHeight = false;
-            this.cbxloc.Location = new System.Drawing.Point(184, 231);
+            this.cbxloc.Location = new System.Drawing.Point(479, 231);
             this.cbxloc.Name = "cbxloc";
             this.cbxloc.Size = new System.Drawing.Size(177, 21);
             this.cbxloc.TabIndex = 3;
+            this.cbxloc.Tag = "bi_location_id:vc_location_desc";
             // 
             // cbxcat
             // 
@@ -282,6 +324,7 @@ namespace CPS_App
             this.cbxcat.Name = "cbxcat";
             this.cbxcat.Size = new System.Drawing.Size(177, 21);
             this.cbxcat.TabIndex = 2;
+            this.cbxcat.Tag = "bi_category_id:vc_category_desc";
             // 
             // btnitcr
             // 
@@ -291,9 +334,23 @@ namespace CPS_App
             this.btnitcr.Palette = this.kryptonPalettebtn;
             this.btnitcr.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
             this.btnitcr.Size = new System.Drawing.Size(94, 48);
-            this.btnitcr.TabIndex = 0;
+            this.btnitcr.TabIndex = 9;
             this.btnitcr.Values.Text = "Clear";
             this.btnitcr.Click += new System.EventHandler(this.btnitcr_Click);
+            // 
+            // cbxitid
+            // 
+            this.cbxitid.CornerRoundingRadius = -1F;
+            this.cbxitid.DropDownWidth = 177;
+            this.cbxitid.Enabled = false;
+            this.cbxitid.FormattingEnabled = true;
+            this.cbxitid.IntegralHeight = false;
+            this.cbxitid.Location = new System.Drawing.Point(184, 126);
+            this.cbxitid.Name = "cbxitid";
+            this.cbxitid.Size = new System.Drawing.Size(177, 21);
+            this.cbxitid.TabIndex = 20;
+            this.cbxitid.Tag = "bi_item_id:vc_item_desc";
+            this.cbxitid.SelectedIndexChanged += new System.EventHandler(this.cbxitid_SelectedIndexChanged);
             // 
             // kryptonPalettepanel
             // 
@@ -317,6 +374,7 @@ namespace CPS_App
             ((System.ComponentModel.ISupportInitialize)(this.cbxvid)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cbxloc)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cbxcat)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cbxitid)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -345,5 +403,8 @@ namespace CPS_App
         private KryptonButton btncancel;
         private KryptonTextBox txtqty;
         private KryptonLabel lblqty;
+        private KryptonCheckBox chkstock;
+        private KryptonCheckBox chkcrloc;
+        private KryptonComboBox cbxitid;
     }
 }

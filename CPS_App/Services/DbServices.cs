@@ -13,6 +13,7 @@ using System.Security.Cryptography;
 using System.CodeDom;
 using System.Xml.Linq;
 using static CPS_App.Models.DbModels;
+using System.Windows.Controls;
 
 namespace CPS_App.Services
 {
@@ -83,11 +84,13 @@ namespace CPS_App.Services
                 {
                     res.result = result;
                     res.resCode = 1;
+                    res.err_msg = null;
                 }
                 else
                 {
                     res.result = null;
                     res.resCode = 0;
+                    res.err_msg = null;
                 }
             }
             catch (Exception ex)
@@ -104,6 +107,7 @@ namespace CPS_App.Services
 
             var res = new DbResObj();
             res.resCode = 0;
+            res.err_msg = null;
             try
             {
                 var wName = obj.selecter.Keys.FirstOrDefault();
@@ -130,6 +134,8 @@ namespace CPS_App.Services
         {
             var res = new DbResObj();
             res.resCode = 0;
+            res.err_msg = null;
+            res.result = null;
             try
             {
                 string inserter = string.Join(",", obj.inserter.Select(x => x.Key).ToList());
@@ -151,6 +157,7 @@ namespace CPS_App.Services
                 res.result = null;
                 res.resCode = 0;
                 res.err_msg = ex.Message;
+                throw new Exception(ex.Message);
             }
             return res;
         }
@@ -158,6 +165,8 @@ namespace CPS_App.Services
         {
             var res = new DbResObj();
             res.resCode = 0;
+            res.err_msg = null;
+            res.result = null;
             try
             {
 
@@ -173,7 +182,7 @@ namespace CPS_App.Services
                              "SELECT LAST_INSERT_ID();";
 
                 var result = await _db.ExecuteAsync(sql, obj);
-                if (result > 0)
+                if (result != null)
                 {
                     res.result = result;
                     res.resCode = 1;
@@ -191,10 +200,14 @@ namespace CPS_App.Services
 
         public async Task<DbResObj> UpdateAsync(updateObj obj)
         {
+            var res = new DbResObj();
+            res.resCode = 0;
+            res.result = null;
+            res.err_msg = null;
             try
             {
-                var res = new DbResObj();
-                res.resCode = 0;
+                
+
                 string updateValue = string.Join(",", obj.updater.Select(x => $"{x.Key} = \'{x.Value}\'").ToList());
                 string selecter = string.Join(" and ", obj.selecter.Select(x => $"{x.Key}= \'{x.Value}\'").ToList());
                 string sql = $"update {obj.table} set {updateValue} where {selecter}; ";
@@ -204,13 +217,67 @@ namespace CPS_App.Services
                 {
                     res.result = result;
                     res.resCode = 1;
+                    res.err_msg = null;
                 }
                 return res;
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                res.result = null;
+                res.resCode = 0;
+                res.err_msg = ex.Message;
+                return res;
             }
+        }
+        public async Task<DbResObj> DeleteAsync(deleteObj obj)
+        {
+            var res = new DbResObj();
+            res.resCode = 0;
+            try
+            {
+                string sql = $"delete from {obj.table} where ";
+
+                DynamicParameters para = new DynamicParameters();
+                List<string> vari = new List<string>();
+                obj.deleter.ToList().ForEach(x =>
+                {
+                    vari.Add($"{x.Key} = @{x.Key}");
+                    para.Add($"@{x.Key}", x.Value.ToString());
+                });
+                if (vari.Count > 1)
+                {
+                    sql += string.Join(" and ", vari);
+                    sql += " ;";
+                }
+                else
+                {
+                    sql += vari[0] + " ;";
+                }
+
+                //para.Add($"@{wName}", obj.selecter.Values.FirstOrDefault());
+                var result = await _db.ExecuteAsync(sql, para);
+
+                if (result > 0)
+                {
+                    res.result = result;
+                    res.resCode = 1;
+                    res.err_msg = null;
+                }
+                else
+                {
+                    res.result = null;
+                    res.resCode = 0;
+                    res.err_msg = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                res.result = null;
+                res.resCode = 0;
+                res.err_msg = ex.Message;
+            }
+
+            return res;
         }
         public async Task<DbResObj> GetReqMappingObj(string userloc = null, searchObj obj = null)
         {
@@ -218,8 +285,8 @@ namespace CPS_App.Services
 
             string sql = $@"SELECT * FROM
                          (SELECT 
-                             req.bi_req_id, req.i_staff_id, sta.vc_staff_name, sta.vc_staff_role, stat.vc_status_desc vc_req_status, 
-                             sta.bi_location_id, loc.vc_location_desc, 
+                             req.bi_req_id, req.i_staff_id, sta.vc_staff_name, sta.vc_staff_role, req.i_map_stat_id, 
+                             stat.vc_status_desc vc_req_status, sta.bi_location_id, loc.vc_location_desc, 
                              loc.vc_location_addr, req.dt_created_date, req.dt_updated_datetime
                          FROM
                              tb_request req
@@ -231,34 +298,32 @@ namespace CPS_App.Services
                          (SELECT * FROM
                              (SELECT 
                              det.bi_req_id det_bi_req_id, mapp.bi_item_vid, det.bi_item_id, det.i_item_req_qty, det.i_remain_req_qty, det.i_uom_id, 
-                             stat.vc_status_desc item_mapping_status, postat.bi_po_status_id, postat.vc_po_status_desc, det.dt_exp_deli_date, 
-                             uom.vc_uom_desc, it.vc_item_desc, 
+                             det.i_hd_map_stat_id, stat.vc_status_desc item_mapping_status, postat.bi_po_status_id, 
+                             postat.vc_po_status_desc, det.dt_exp_deli_date, uom.vc_uom_desc, it.vc_item_desc, 
                              it.bi_category_id, cat.vc_category_desc
                          FROM
                              tb_request_detail det
 	                     LEFT JOIN tb_item it ON det.bi_item_id = it.bi_item_id
                          INNER JOIN tb_item_category cat ON it.bi_category_id = cat.bi_category_id
                          left join lut_uom_type uom on det.i_uom_id = uom.i_uom_id
-                         left join lut_mapping_status stat on det.i_map_stat_id = stat.i_map_stat_id
+                         left join lut_mapping_status stat on det.i_hd_map_stat_id = stat.i_map_stat_id
                          left join lut_po_status postat on det.bi_po_status_id = postat.bi_po_status_id
                          LEFT JOIN tb_item_vid_mapping mapp ON it.bi_item_id = mapp.bi_item_id) b) c 
                          ON a.bi_req_id = det_bi_req_id ";
             if (obj != null)
             {
-                string seasrchList = string.Join(" and ", obj.searchWords.Select(x => $"{x.Key}= \'{x.Value}\'").ToList());
+
+                string seasrchList = string.Join(" and ", obj.searchWords.Select(x => $"{x.Key} in ({string.Join(",", x.Value.ToList().Select(i => $"'{i}'").ToList())})").ToList());
                 sql += $"where {seasrchList} ";
             }
             if (userloc != null)
             {
-                sql += $"order by bi_location_id = '{userloc}' desc; ";
+                sql += $"order by bi_location_id in ('{userloc}') desc; ";
             }
             else
             {
                 sql += ";";
             }
-
-
-
             try
             {
                 var result = await _db.QueryAsync<dynamic>(sql, null);
@@ -286,12 +351,17 @@ namespace CPS_App.Services
         {
             var res = new resObj();
             res.resCode = 0;
+            res.result = null;
+            res.err_msg = null;
+            try
+            {
+               
 
-            string sql = @$"select * from (
+                string sql = @$"select * from (
 	                     select p.bi_poa_id, p.ti_poa_type_id, pl.bi_item_id, p.vc_poa_status, ph.vc_order_revision, ph.bi_deli_loc_id, 
-                         ph.ti_tc_id, ph.bi_supp_id, ph.vc_currency, ph.dt_effect_date, ph.bi_contract_no, 
-                         pl.dc_promise_qty, pl.i_uom_id, pl.dc_min_qty, pl.dc_price, pl.dc_amount, pl.vc_reference,
-                         pl.bi_quot_no, p.dt_created_date, p.dt_updated_datetime
+                         ph.ti_tc_id, ph.bi_supp_id, ph.vc_currency, ph.dt_effect_date, ph.vc_contract_no, 
+                         pl.i_promise_qty, pl.i_uom_id, pl.i_min_qty, pl.i_price, pl.i_amount, pl.vc_reference,
+                         pl.vc_quot_no, p.dt_created_date, p.dt_updated_datetime
                          from tb_poa p
                          left join tb_poa_header ph on p.bi_poa_id = ph.bi_poa_id
                          left join tb_poa_line pl on ph.bi_poa_header_id = pl.bi_poa_header_id
@@ -307,14 +377,26 @@ namespace CPS_App.Services
                          ) a)c 
                          on a.bi_item_id = c.bi_item_id;";
 
-            var result = await _db.QueryAsync<T>(sql, null);
+                var result = await _db.QueryAsync<T>(sql, null);
 
-            if (result != null)
-            {
-                res.result = result;
-                res.resCode = 1;
+                if (result.Count() > 0)
+                {
+                    res.result = result;
+                    res.resCode = 1;
+                }
+                else
+                {
+                    res.resCode = 0;
+                }
+                return res;
             }
-            return res;
+            catch(Exception e)
+            {
+                res.err_msg = e.Message;
+                return res;
+            }
+            
+            
         }
         public async Task<DbResObj> GetInStockQty()
         {
@@ -388,7 +470,7 @@ namespace CPS_App.Services
                          )a ";
                 if (obj != null)
                 {
-                    string seasrchList = string.Join(" and ", obj.searchWords.Select(x => $"{x.Key}= \'{x.Value}\'").ToList());
+                    string seasrchList = string.Join(" and ", obj.searchWords.Select(x => $"{x.Key} in ({string.Join(",", x.Value.ToList().Select(i => $"'{i}'").ToList())})").ToList());
                     sql += $"where {seasrchList} ";
                 }
                 if (userloc != null)
@@ -399,11 +481,11 @@ namespace CPS_App.Services
                 {
                     sql += ";";
                 }
-                var result = await _db.QueryAsync<StockLevelViewObj>(sql, null);
+                var result = await _db.QueryAsync<dynamic>(sql, null);
 
                 if (result.Count() > 0)
                 {
-                    res.result = result;
+                    res.result = GenUtil.DbResulttoKVP(result);
                     res.resCode = 1;
                 }
                 else
@@ -428,17 +510,21 @@ namespace CPS_App.Services
             {
                 string sql = @"set sql_mode = 'STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
-                             select * , group_concat(vc_item_desc separator ', ') as items_group from (
-                             select bi_item_vid, vid.bi_item_id, vc_item_desc, it.bi_category_id, vc_category_desc, uni.bi_location_id, loc.vc_location_desc
+                             select *  , 
+                             group_concat(concat('Item Id',': ',bi_item_id,', ', 'Item',': ',vc_item_desc,', ', 'Location Id',': ',bi_prefer_loc_id,', ', 'Location',': ',vc_location_desc) separator ';') as prefer_loc_group ,
+                             group_concat(vc_item_desc separator ',') as items_group,
+                             group_concat(concat(bi_item_id,',',bi_prefer_loc_id) separator ';') as item_loc_id_group
+                             from (
+                             select bi_item_vid, vid.bi_item_id, vc_item_desc, it.bi_category_id, vc_category_desc, 
+                             vid.bi_prefer_loc_id, loc.vc_location_desc
                              from tb_item_vid_mapping vid
                              left join tb_item it on vid.bi_item_id = it.bi_item_id
-                             left join tb_item_category cat on it.bi_category_id = cat.bi_category_id
-                             left join tb_item_unit uni on vid.bi_item_id = uni.bi_item_id
-                             left join tb_location loc on uni.bi_location_id = loc.bi_location_id)a
+                             left join tb_item_category cat on it.bi_category_id = cat.bi_category_id                             
+                             left join tb_location loc on vid.bi_prefer_loc_id = loc.bi_location_id)a
                              group by bi_item_vid
                              order by bi_item_vid;";
 
-                var result = await _db.QueryAsync<StockLevelViewObj>(sql, null);
+                var result = await _db.QueryAsync<VidMappingObj>(sql, null);
 
                 if (result != null)
                 {
@@ -454,15 +540,75 @@ namespace CPS_App.Services
             }
             return res;
         }
-        public async Task<DbResObj> GetPoaList()
+        public async Task<DbResObj> GetGenericViewTable(string sql, Dictionary<string, string> loc = null, searchObj obj = null,string addionalSearch=null)
+        {
+            var res = new DbResObj();
+            res.resCode = 0;
+            
+            if (obj != null)
+            {
+                string searchList = string.Join(" and ", obj.searchWords.Select(x => $"{x.Key} in ({string.Join(",", x.Value.ToList().Select(i => $"'{i}'").ToList())})").ToList());
+                sql += $"where {searchList} ";
+            }
+            if(addionalSearch != null)
+            {
+                if (obj == null)
+                    sql += " where ";
+                else
+                    sql += " and ";
+                sql += $" {addionalSearch} ";
+            }            
+            if (loc != null)
+            {
+                sql += $"order by {loc.ElementAt(0).Key} = '{loc.ElementAt(0).Value}' desc; ";
+            }
+            else
+            {
+                sql += ";";
+            }
+            try
+            {
+                var result = await _db.QueryAsync<dynamic>(sql, null);
+                if (result.Count() > 0)
+                {
+
+                    return new DbResObj
+                    {
+                        resCode = 1,
+                        result = GenUtil.DbResulttoKVP(result),
+                        err_msg = null
+                    };
+
+                }
+                else
+                {
+                    return new DbResObj
+                    {
+                        resCode = 0,
+                        result = null,
+                        err_msg = null
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new DbResObj
+                {
+                    resCode = 0,
+                    result = null,
+                    err_msg = ex.Message
+                };
+            }
+        }
+        public async Task<DbResObj> GetPoaList(string loc = null, searchObj obj = null)
         {
             //var res = new DbResObj();
 
             string sql = $@"select * from (
 	                     select poa.bi_poa_id, poa.ti_poa_type_id, poatype.vc_poa_type_desc, poa.bi_poa_status_id, poast.vc_poa_status_desc, hd.bi_poa_header_id,
-                         hd.bi_deli_loc_id, loc.vc_location_desc, hd.bi_supp_id, sup.vc_supp_desc, hd.vc_currency, hd.ti_tc_id, tc.vc_tc_desc, hd.ti_deli_sched_id, delisc.vc_deli_sched_desc, 
-                         hd.dt_effect_date, hd.bi_contract_no,
-	                     ln.bi_poa_line_id, ln.bi_item_id, it.vc_item_desc, ln.bi_supp_item_id, ln.dc_promise_qty, uom.vc_uom_desc, ln.i_uom_id, ln.dc_min_qty, ln.dc_price, ln.dc_amount, ln.vc_reference, ln.bi_quot_no,
+                         hd.bi_supp_id, sup.vc_supp_desc, hd.i_cur_id, cur.vc_cur_desc , hd.ti_tc_id, tc.vc_tc_desc, 
+                         hd.ti_deli_sched_id, delisc.vc_deli_sched_desc, hd.dt_effect_date, hd.vc_contract_no, ln.bi_poa_line_id, ln.bi_item_id, it.vc_item_desc, 
+                         ln.bi_supp_item_id, ln.i_promise_qty, uom.vc_uom_desc, ln.i_uom_id, ln.i_remain_qty, ln.i_min_qty, ln.i_price, ln.i_amount, ln.vc_reference, ln.vc_quot_no,
                          poa.dt_created_date, poa.dt_updated_datetime
                          from tb_poa poa
                          inner join tb_poa_header hd on poa.bi_poa_id = hd.bi_poa_id
@@ -472,10 +618,23 @@ namespace CPS_App.Services
                          inner join lut_deli_schedule_type delisc on hd.ti_deli_sched_id = delisc.ti_deli_sched_id
                          left join tb_item it on ln.bi_item_id = it.bi_item_id
                          left join lut_uom_type uom on ln.i_uom_id = uom.i_uom_id
-                         left join lut_poa_type poatype on poa.ti_poa_type_id = poatype.ti_poa_type_id
-                         inner join tb_location loc on hd.bi_deli_loc_id = loc.bi_location_id
+                         left join lut_poa_type poatype on poa.ti_poa_type_id = poatype.ti_poa_type_id                         
                          left join lut_poa_status poast on poa.bi_poa_status_id = poast.bi_poa_status_id
-                         ) a;";
+                         left join lut_currency cur on hd.i_cur_id = cur.i_cur_id
+                         ) a ";
+            if (obj != null)
+            {
+                string seasrchList = string.Join(" and ", obj.searchWords.Select(x => $"{x.Key} in ({string.Join(",", x.Value.ToList().Select(i => $"'{i}'").ToList())})").ToList());
+                sql += $"where {seasrchList} ";
+            }
+            if (loc != null)
+            {
+                //sql += $"order by bi_deli_loc_id = '{loc}' desc; ";
+            }
+            else
+            {
+                sql += ";";
+            }
             try
             {
                 var result = await _db.QueryAsync<dynamic>(sql, null);
@@ -520,8 +679,8 @@ namespace CPS_App.Services
             select.table = typeof(T).Name;
             select.selecter.Add(value.ElementAt(0).Key, value.ElementAt(0).Value.ToLower().Trim());
 
-            var result = await SelectWhereAsync<T>(select);
-            if (result.result.Count > 0)
+            DbResObj result = await SelectWhereAsync<T>(select);
+            if (result.resCode == 1 && result.result == null)
             {
                 MessageBox.Show("Name has been used");
                 return;
@@ -614,5 +773,195 @@ namespace CPS_App.Services
             }
             return true;
         }
+        public async Task<DbResObj> CheckVidmapDupItemId(selectObj obj)
+        {
+            var res = new DbResObj();
+            res.resCode = 0;
+            try
+            {
+                //var wName = obj.selecter.Keys.FirstOrDefault();
+                string selectsql = $"set sql_mode = 'STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';" +
+                                   $"select * from tb_item_vid_mapping where bi_item_id = @bi_item_id " +
+                                   $"group by bi_item_id, bi_item_vid ;";
+                DynamicParameters para = new DynamicParameters();
+                para.Add($"@bi_item_id", obj.selecter.Values.FirstOrDefault());
+                var result = await _db.QueryAsync<tb_item_vid_mapping>(selectsql, para);
+                if (result.Count() >0)
+                {
+                    res.result = result;
+                    res.resCode = 1;
+                    res.err_msg = null;
+                }
+                else
+                {
+                    res.result = null;
+                    res.resCode = 0;
+                    res.err_msg = null;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                res.result = null;
+                res.resCode = 0;
+                res.err_msg = ex.Message;
+            }
+            return res;
+        }
+        public async Task<DbResObj> GetDisPatchObj(string loc = null, searchObj obj = null)
+        {
+            string sql = $@"select * from (
+                select di.bi_di_id,di.bi_item_id, di.bi_item_vid, di.bi_req_id, it.vc_item_desc, di.i_di_status_id, dist.vc_di_status_desc, 
+                di.i_item_qty, di.bi_category_id, cat.vc_category_desc, di.bi_location_id, loc.vc_location_desc, 
+                DATE_FORMAT(di.dt_exp_deli_date, '%Y-%m-%d %H:%i:%s') dt_exp_deli_date, di.dt_created_date
+                from tb_dispatch_instruction di
+                left join tb_item it on di.bi_item_id = it.bi_item_id
+                left join lut_di_status dist on di.i_di_status_id = dist.i_di_status_id
+                left join tb_item_category cat on di.bi_category_id = cat.bi_category_id
+                left join tb_location loc on di.bi_location_id = loc.bi_location_id
+                ) a  ";
+            if (obj != null)
+            {
+                string seasrchList = string.Join(" and ", obj.searchWords.Select(x => $"{x.Key} in ({string.Join(",", x.Value.ToList().Select(i => $"'{i}'").ToList())})").ToList());
+                sql += $"where {seasrchList} ";
+            }
+            if (loc != null)
+            {
+                //sql += $"order by bi_deli_loc_id = '{loc}' desc; ";
+            }
+            else
+            {
+                sql += ";";
+            }
+            try
+            {
+                var result = await _db.QueryAsync<DispatchInstruction>(sql, null);
+                if (result.Count() > 0)
+                {
+
+                    return new DbResObj
+                    {
+                        resCode = 1,
+                        result = result,
+                        err_msg = null
+                    };
+
+                }
+                else
+                {
+                    return new DbResObj
+                    {
+                        resCode = 0,
+                        result = null,
+                        err_msg = null
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new DbResObj
+                {
+                    resCode = 0,
+                    result = null,
+                    err_msg = ex.Message
+                };
+            }
+        }
+        public async Task<DbResObj> GetOriginalPoQty(string poId)
+        {
+            var res = new DbResObj();
+            res.resCode = 0;
+            res.result = null;
+            res.err_msg = null;
+            try
+            {
+
+
+                string sql = @$"select i_actual_qty , ln.bi_po_header_id from tb_po_line ln
+                            left join tb_po_header hd on hd.bi_po_header_id = ln.bi_po_header_id
+                            where bi_po_id = @bi_po_id ;";
+                DynamicParameters para = new DynamicParameters();
+                para.Add($"bi_po_id", poId);
+                var result = await _db.QueryAsync<dynamic>(sql, para);
+
+                if (result.Count() > 0)
+                {
+                    res.result = GenUtil.DbResulttoKVP(result);
+                    res.resCode = 1;
+                }
+                else
+                {
+                    res.resCode = 0;
+                }
+                return res;
+            }
+            catch (Exception e)
+            {
+                res.err_msg = e.Message;
+                return res;
+            }
+        }
+        public async Task<DbResObj> GetDiliveryNote(string loc = null, searchObj obj = null)
+        {
+            string sql = $@"set sql_mode = 'STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION'; 
+                          select * from (
+                          select dn.bi_dn_id, bi_po_id, dn.i_dn_type_id, dn.i_dn_status_id, ty.vc_dn_type_desc, dn.bi_req_id, dn.bi_item_id, v.bi_item_vid,
+                          it.vc_item_desc, dn.i_item_qty, dn.bi_location_id, loc.vc_location_desc, dn.dt_exp_deli_date, dn.dt_created_date, dn.dt_updated_datetime
+                          from tb_delivery_note dn
+                          left join lut_dn_type ty on dn.i_dn_type_id = ty.i_dn_type_id 
+                          left join tb_item it on dn.bi_item_id = it.bi_item_id
+                          left join tb_location loc on dn.bi_location_id = loc.bi_location_id
+                          inner join (
+                          select * from tb_item_vid_mapping group by bi_item_id, bi_item_vid
+                          )v on it.bi_item_id = v.bi_item_id
+                          )a ";
+            if (obj != null)
+            {
+                string seasrchList = string.Join(" and ", obj.searchWords.Select(x => $"{x.Key} in ({string.Join(",", x.Value.ToList().Select(i => $"'{i}'").ToList())})").ToList());
+                sql += $"where {seasrchList} ";
+            }
+            if (loc != null)
+            {
+                //sql += $"order by bi_deli_loc_id = '{loc}' desc; ";
+            }
+            else
+            {
+                sql += ";";
+            }
+            try
+            {
+                var result = await _db.QueryAsync<DeliveryNoteObj>(sql, null);
+                if (result.Count() > 0)
+                {
+
+                    return new DbResObj
+                    {
+                        resCode = 1,
+                        result = result,
+                        err_msg = null
+                    };
+
+                }
+                else
+                {
+                    return new DbResObj
+                    {
+                        resCode = 0,
+                        result = null,
+                        err_msg = null
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new DbResObj
+                {
+                    resCode = 0,
+                    result = null,
+                    err_msg = ex.Message
+                };
+            }
+        }
+       
     }
 }

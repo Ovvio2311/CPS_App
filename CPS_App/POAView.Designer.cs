@@ -29,7 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(POAView));
             this.kryptonDataGridViewpoa = new Krypton.Toolkit.KryptonDataGridView();
+            this.kryptonPalettedatagridview = new Krypton.Toolkit.KryptonPalette(this.components);
             this.kryptonDataGridViewitem = new Krypton.Toolkit.KryptonDataGridView();
             this.btnedit = new Krypton.Toolkit.KryptonButton();
             this.kryptonPalettebtn = new Krypton.Toolkit.KryptonPalette(this.components);
@@ -39,15 +41,33 @@
             this.kryptonPalettepanel = new Krypton.Toolkit.KryptonPalette(this.components);
             this.btnadd = new Krypton.Toolkit.KryptonButton();
             this.btncancel = new Krypton.Toolkit.KryptonButton();
-            this.kryptonPalettedatagridview = new Krypton.Toolkit.KryptonPalette(this.components);
+            this.pnsearch1 = new Krypton.Toolkit.KryptonPanel();
+            this.txtsearch1 = new Krypton.Toolkit.KryptonTextBox();
+            this.cbxsearch1 = new Krypton.Toolkit.KryptonComboBox();
+            this.pnsearch2 = new Krypton.Toolkit.KryptonPanel();
+            this.cbxsearch2 = new Krypton.Toolkit.KryptonComboBox();
+            this.txtsearch2 = new Krypton.Toolkit.KryptonTextBox();
+            this.btnsearch = new Krypton.Toolkit.KryptonButton();
+            this.lblsearch = new Krypton.Toolkit.KryptonLabel();
+            this.lbltitle = new Krypton.Toolkit.KryptonLabel();
+            this.lblnoresult = new Krypton.Toolkit.KryptonLabel();
+            this.lblsubitemtitle = new Krypton.Toolkit.KryptonLabel();
+            this.kryptonPaletteCsv = new Krypton.Toolkit.KryptonPalette(this.components);
+            this.btncsv = new Krypton.Toolkit.KryptonButton();
             ((System.ComponentModel.ISupportInitialize)(this.kryptonDataGridViewpoa)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.kryptonDataGridViewitem)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pnsearch1)).BeginInit();
+            this.pnsearch1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.cbxsearch1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pnsearch2)).BeginInit();
+            this.pnsearch2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.cbxsearch2)).BeginInit();
             this.SuspendLayout();
             // 
             // kryptonDataGridViewpoa
             // 
             this.kryptonDataGridViewpoa.AllowUserToAddRows = false;
-            this.kryptonDataGridViewpoa.Location = new System.Drawing.Point(72, 97);
+            this.kryptonDataGridViewpoa.Location = new System.Drawing.Point(31, 123);
             this.kryptonDataGridViewpoa.Name = "kryptonDataGridViewpoa";
             this.kryptonDataGridViewpoa.Palette = this.kryptonPalettedatagridview;
             this.kryptonDataGridViewpoa.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
@@ -56,10 +76,15 @@
             this.kryptonDataGridViewpoa.TabIndex = 0;
             this.kryptonDataGridViewpoa.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.kryptonDataGridViewpoa_CellClick);
             // 
+            // kryptonPalettedatagridview
+            // 
+            this.kryptonPalettedatagridview.Common.StateCommon.Back.Color1 = System.Drawing.Color.Transparent;
+            this.kryptonPalettedatagridview.Common.StateCommon.Back.Color2 = System.Drawing.Color.Transparent;
+            // 
             // kryptonDataGridViewitem
             // 
             this.kryptonDataGridViewitem.AllowUserToAddRows = false;
-            this.kryptonDataGridViewitem.Location = new System.Drawing.Point(72, 365);
+            this.kryptonDataGridViewitem.Location = new System.Drawing.Point(31, 394);
             this.kryptonDataGridViewitem.Name = "kryptonDataGridViewitem";
             this.kryptonDataGridViewitem.Palette = this.kryptonPalettedatagridview;
             this.kryptonDataGridViewitem.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
@@ -70,7 +95,7 @@
             // btnedit
             // 
             this.btnedit.CornerRoundingRadius = -1F;
-            this.btnedit.Location = new System.Drawing.Point(190, 56);
+            this.btnedit.Location = new System.Drawing.Point(403, 54);
             this.btnedit.Name = "btnedit";
             this.btnedit.Palette = this.kryptonPalettebtn;
             this.btnedit.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
@@ -113,7 +138,7 @@
             // btnadd
             // 
             this.btnadd.CornerRoundingRadius = -1F;
-            this.btnadd.Location = new System.Drawing.Point(72, 56);
+            this.btnadd.Location = new System.Drawing.Point(275, 54);
             this.btnadd.Name = "btnadd";
             this.btnadd.Palette = this.kryptonPalettebtn;
             this.btnadd.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
@@ -125,7 +150,7 @@
             // btncancel
             // 
             this.btncancel.CornerRoundingRadius = -1F;
-            this.btncancel.Location = new System.Drawing.Point(619, 56);
+            this.btncancel.Location = new System.Drawing.Point(528, 54);
             this.btncancel.Name = "btncancel";
             this.btncancel.Palette = this.kryptonPalettebtn;
             this.btncancel.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
@@ -134,16 +159,153 @@
             this.btncancel.Values.Text = "Cancel";
             this.btncancel.Click += new System.EventHandler(this.btncancel_Click);
             // 
-            // kryptonPalettedatagridview
+            // pnsearch1
             // 
-            this.kryptonPalettedatagridview.Common.StateCommon.Back.Color1 = System.Drawing.Color.Transparent;
-            this.kryptonPalettedatagridview.Common.StateCommon.Back.Color2 = System.Drawing.Color.Transparent;
+            this.pnsearch1.Controls.Add(this.txtsearch1);
+            this.pnsearch1.Controls.Add(this.cbxsearch1);
+            this.pnsearch1.Location = new System.Drawing.Point(97, 12);
+            this.pnsearch1.Name = "pnsearch1";
+            this.pnsearch1.Palette = this.kryptonPalettepanel;
+            this.pnsearch1.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.pnsearch1.Size = new System.Drawing.Size(261, 28);
+            this.pnsearch1.TabIndex = 31;
+            // 
+            // txtsearch1
+            // 
+            this.txtsearch1.Location = new System.Drawing.Point(127, 3);
+            this.txtsearch1.Name = "txtsearch1";
+            this.txtsearch1.Size = new System.Drawing.Size(131, 23);
+            this.txtsearch1.TabIndex = 16;
+            // 
+            // cbxsearch1
+            // 
+            this.cbxsearch1.CornerRoundingRadius = -1F;
+            this.cbxsearch1.DropDownWidth = 121;
+            this.cbxsearch1.FormattingEnabled = true;
+            this.cbxsearch1.IntegralHeight = false;
+            this.cbxsearch1.Location = new System.Drawing.Point(3, 3);
+            this.cbxsearch1.Name = "cbxsearch1";
+            this.cbxsearch1.Size = new System.Drawing.Size(121, 21);
+            this.cbxsearch1.TabIndex = 8;
+            // 
+            // pnsearch2
+            // 
+            this.pnsearch2.Controls.Add(this.cbxsearch2);
+            this.pnsearch2.Controls.Add(this.txtsearch2);
+            this.pnsearch2.Location = new System.Drawing.Point(382, 13);
+            this.pnsearch2.Name = "pnsearch2";
+            this.pnsearch2.Palette = this.kryptonPalettepanel;
+            this.pnsearch2.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.pnsearch2.Size = new System.Drawing.Size(256, 27);
+            this.pnsearch2.TabIndex = 30;
+            // 
+            // cbxsearch2
+            // 
+            this.cbxsearch2.CornerRoundingRadius = -1F;
+            this.cbxsearch2.DropDownWidth = 121;
+            this.cbxsearch2.FormattingEnabled = true;
+            this.cbxsearch2.IntegralHeight = false;
+            this.cbxsearch2.Location = new System.Drawing.Point(0, 3);
+            this.cbxsearch2.Name = "cbxsearch2";
+            this.cbxsearch2.Size = new System.Drawing.Size(121, 21);
+            this.cbxsearch2.TabIndex = 15;
+            // 
+            // txtsearch2
+            // 
+            this.txtsearch2.Location = new System.Drawing.Point(125, 3);
+            this.txtsearch2.Name = "txtsearch2";
+            this.txtsearch2.Size = new System.Drawing.Size(131, 23);
+            this.txtsearch2.TabIndex = 17;
+            // 
+            // btnsearch
+            // 
+            this.btnsearch.CornerRoundingRadius = -1F;
+            this.btnsearch.Location = new System.Drawing.Point(644, 16);
+            this.btnsearch.Name = "btnsearch";
+            this.btnsearch.Size = new System.Drawing.Size(25, 21);
+            this.btnsearch.TabIndex = 29;
+            this.btnsearch.Values.Image = ((System.Drawing.Image)(resources.GetObject("btnsearch.Values.Image")));
+            this.btnsearch.Values.Text = "";
+            this.btnsearch.Click += new System.EventHandler(this.btnsearch_Click);
+            // 
+            // lblsearch
+            // 
+            this.lblsearch.Location = new System.Drawing.Point(31, 12);
+            this.lblsearch.Name = "lblsearch";
+            this.lblsearch.Palette = this.kryptonPalettelbl;
+            this.lblsearch.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.lblsearch.Size = new System.Drawing.Size(60, 21);
+            this.lblsearch.TabIndex = 28;
+            this.lblsearch.Values.Text = "Search";
+            // 
+            // lbltitle
+            // 
+            this.lbltitle.Location = new System.Drawing.Point(31, 68);
+            this.lbltitle.Name = "lbltitle";
+            this.lbltitle.Palette = this.kryptonPaletteheader;
+            this.lbltitle.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.lbltitle.Size = new System.Drawing.Size(221, 23);
+            this.lbltitle.TabIndex = 33;
+            this.lbltitle.Values.Text = "Purchase Order Agreement";
+            // 
+            // lblnoresult
+            // 
+            this.lblnoresult.Location = new System.Drawing.Point(31, 97);
+            this.lblnoresult.Name = "lblnoresult";
+            this.lblnoresult.Size = new System.Drawing.Size(64, 20);
+            this.lblnoresult.TabIndex = 32;
+            this.lblnoresult.Values.Text = "No Result";
+            // 
+            // lblsubitemtitle
+            // 
+            this.lblsubitemtitle.Location = new System.Drawing.Point(31, 365);
+            this.lblsubitemtitle.Name = "lblsubitemtitle";
+            this.lblsubitemtitle.Palette = this.kryptonPaletteheader;
+            this.lblsubitemtitle.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.lblsubitemtitle.Size = new System.Drawing.Size(79, 23);
+            this.lblsubitemtitle.TabIndex = 34;
+            this.lblsubitemtitle.Values.Text = "Sub Item";
+            // 
+            // kryptonPaletteCsv
+            // 
+            this.kryptonPaletteCsv.ButtonStyles.ButtonCommon.StateCommon.Back.Color1 = System.Drawing.Color.PaleTurquoise;
+            this.kryptonPaletteCsv.ButtonStyles.ButtonCommon.StateCommon.Back.Color2 = System.Drawing.Color.PaleTurquoise;
+            this.kryptonPaletteCsv.ButtonStyles.ButtonCommon.StateCommon.Border.Color1 = System.Drawing.Color.Transparent;
+            this.kryptonPaletteCsv.ButtonStyles.ButtonCommon.StateCommon.Border.Color2 = System.Drawing.Color.Transparent;
+            this.kryptonPaletteCsv.ButtonStyles.ButtonCommon.StateCommon.Border.DrawBorders = ((Krypton.Toolkit.PaletteDrawBorders)((((Krypton.Toolkit.PaletteDrawBorders.Top | Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.kryptonPaletteCsv.ButtonStyles.ButtonCommon.StateCommon.Border.Rounding = 5F;
+            this.kryptonPaletteCsv.ButtonStyles.ButtonCommon.StateCommon.Content.LongText.Color1 = System.Drawing.Color.Black;
+            this.kryptonPaletteCsv.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Color1 = System.Drawing.Color.SteelBlue;
+            this.kryptonPaletteCsv.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Microsoft Tai Le", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.kryptonPaletteCsv.ButtonStyles.ButtonCommon.StateCommon.Content.ShortText.Hint = Krypton.Toolkit.PaletteTextHint.SystemDefault;
+            // 
+            // btncsv
+            // 
+            this.btncsv.CornerRoundingRadius = -1F;
+            this.btncsv.Location = new System.Drawing.Point(656, 54);
+            this.btncsv.Name = "btncsv";
+            this.btncsv.Palette = this.kryptonPalettebtn;
+            this.btncsv.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
+            this.btncsv.Size = new System.Drawing.Size(65, 37);
+            this.btncsv.TabIndex = 35;
+            this.btncsv.Values.Text = "CSV";
+            this.btncsv.Click += new System.EventHandler(this.btncsv_Click);
             // 
             // POAView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(881, 638);
+            this.Controls.Add(this.btncsv);
+            this.Controls.Add(this.lblsubitemtitle);
+            this.Controls.Add(this.lbltitle);
+            this.Controls.Add(this.lblnoresult);
+            this.Controls.Add(this.pnsearch1);
+            this.Controls.Add(this.pnsearch2);
+            this.Controls.Add(this.btnsearch);
+            this.Controls.Add(this.lblsearch);
             this.Controls.Add(this.btncancel);
             this.Controls.Add(this.btnadd);
             this.Controls.Add(this.btnedit);
@@ -154,7 +316,16 @@
             this.Load += new System.EventHandler(this.POAView_Load);
             ((System.ComponentModel.ISupportInitialize)(this.kryptonDataGridViewpoa)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.kryptonDataGridViewitem)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pnsearch1)).EndInit();
+            this.pnsearch1.ResumeLayout(false);
+            this.pnsearch1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.cbxsearch1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pnsearch2)).EndInit();
+            this.pnsearch2.ResumeLayout(false);
+            this.pnsearch2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.cbxsearch2)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -171,5 +342,18 @@
         private Krypton.Toolkit.KryptonButton btnadd;
         private Krypton.Toolkit.KryptonButton btncancel;
         private Krypton.Toolkit.KryptonPalette kryptonPalettedatagridview;
+        private Krypton.Toolkit.KryptonPanel pnsearch1;
+        private Krypton.Toolkit.KryptonTextBox txtsearch1;
+        private Krypton.Toolkit.KryptonComboBox cbxsearch1;
+        private Krypton.Toolkit.KryptonPanel pnsearch2;
+        private Krypton.Toolkit.KryptonComboBox cbxsearch2;
+        private Krypton.Toolkit.KryptonTextBox txtsearch2;
+        private Krypton.Toolkit.KryptonButton btnsearch;
+        private Krypton.Toolkit.KryptonLabel lblsearch;
+        private Krypton.Toolkit.KryptonLabel lbltitle;
+        private Krypton.Toolkit.KryptonLabel lblnoresult;
+        private Krypton.Toolkit.KryptonLabel lblsubitemtitle;
+        private Krypton.Toolkit.KryptonPalette kryptonPaletteCsv;
+        private Krypton.Toolkit.KryptonButton btncsv;
     }
 }

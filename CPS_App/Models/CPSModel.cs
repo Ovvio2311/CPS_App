@@ -38,7 +38,7 @@ namespace CPS_App.Models
             [Display(Name = "Role_id")]
             public string vc_role_id { get; set; }
             [Display(Name = "Role Name")]
-            public string vc_role_name { get;set; }
+            public string vc_role_name { get; set; }
             [Display(Name = "Role Type")]
             public string vc_claim_type { get; set; }
             [Display(Name = "Role value")]
@@ -50,6 +50,17 @@ namespace CPS_App.Models
             public int bi_poa_status_id { get; set; }
             [Display(Name = "Name")]
             public string vc_poa_status_desc { get; set; }
+            [Display(Name = "Create Date")]
+            public string dt_created_date { get; set; }
+            [Display(Name = "Update Date")]
+            public string dt_updated_datetime { get; set; }
+        }
+        public class lut_po_status
+        {
+            [Display(Name = "ID")]
+            public int bi_po_status_id { get; set; }
+            [Display(Name = "Name")]
+            public string vc_po_status_desc { get; set; }
             [Display(Name = "Create Date")]
             public string dt_created_date { get; set; }
             [Display(Name = "Update Date")]
@@ -110,12 +121,20 @@ namespace CPS_App.Models
             public string dt_created_date { get; set; }
             public string dt_updated_datetime { get; set; }
         }
-
+        public class lut_currency : CPSModelBase
+        {
+            [Display(Name = "ID")]
+            public int i_cur_id { get; set; }
+            [Display(Name = "currency")]
+            public string vc_cur_desc { get; set; }
+            public string dt_created_date { get; set; }
+            public string dt_updated_datetime { get; set; }
+        }
         public class tb_item_vid_mapping : CPSModelBase
         {
             public int bi_item_id { get; set; }
             public int bi_item_vid { get; set; }
-            public string vc_prefer_loc_id { get; set; }
+            public string bi_prefer_loc_id { get; set; }
             public string dt_created_date { get; set; }
             public string dt_updated_datetime { get; set; }
         }
@@ -154,6 +173,8 @@ namespace CPS_App.Models
             public int ti_poa_type_id { get; set; }
             [Display(Name = "Name")]
             public string vc_poa_type_desc { get; set; }
+            [Display(Name = "is_ref")]
+            public bool b_is_ref_type { get; set; }
             [Display(Name = "Create Date")]
             public string dt_created_date { get; set; }
             [Display(Name = "Update Date")]
@@ -205,6 +226,10 @@ namespace CPS_App.Models
             public int ti_po_type_id { get; set; }
             [Display(Name = "Name")]
             public string vc_po_type_desc { get; set; }
+            [Display(Name = "is_ref")]
+            public bool b_is_ref_type { get; set; }
+            [Display(Name = "not_shown")]
+            public string vc_derive_order { get; set; }
             [Display(Name = "Create Date")]
             public string dt_created_date { get; set; }
             [Display(Name = "Update Date")]
@@ -217,7 +242,9 @@ namespace CPS_App.Models
             [Display(Name = "Role Id")]
             public string vc_role_id { get; set; }
             [Display(Name = "Json")]
-            public string js_search_para { get; set; }            
+            public string js_search_para { get; set; }
+            [Display(Name = "Search Part")]
+            public string vc_search_part { get; set; }
             [Display(Name = "Create Date")]
             public string dt_created_date { get; set; }
             [Display(Name = "Update Date")]
@@ -225,7 +252,7 @@ namespace CPS_App.Models
         }
         public class JsonResponse : CPSModelBase
         {
-            public Dictionary<string,string> jsonRes { get; set; }
+            public Dictionary<string, string> jsonRes { get; set; }
         }
         //public class CustomRole
         //{
@@ -270,35 +297,44 @@ namespace CPS_App.Models
             public int bi_item_vid { get; set; }
             [Display(Name = "Item Id")]
             public int bi_item_id { get; set; }
+            [Display(Name = "Item Name")]
+            public string vc_item_desc { get; set; }
             [Display(Name = "Request Quantity")]
             public int i_item_req_qty { get; set; }
             [Display(Name = "Remain Quanity")]
-            public int i_remain_req_qty { get; set; } //need update sql
+            public int i_remain_req_qty { get; set; }
             [Display(Name = "i_uom_id")]
-            public int i_uom_id { get; set; } //need update sql
-            [Display(Name = "")]
+            public int i_uom_id { get; set; }
+            [Display(Name = "not_shown")]
             public int bi_supp_id { get; set; }
             [Display(Name = "Mapping Id")]
-            public int i_map_stat_id { get; set; }
+            public int i_hd_map_stat_id { get; set; }
             [Display(Name = "Po Status Id")]
             public int bi_po_status_id { get; set; }
             [Display(Name = "Remark")]
             public string vc_remark { get; set; }
             [Display(Name = "Expected Delievery Date")]
-            public DateTime dt_exp_deli_date { get; set; }
+            public string dt_exp_deli_date { get; set; }
         }
 
         //req view
         public class RequestMappingReqObj
         {
+            public RequestMappingReqObj() 
+            {
+                itemLists = new List<ItemRequest>();
+            }
+            
             [Display(Name = "Request Id")]
             public int bi_req_id { get; set; }
-            [Display(Name = "Staff Id")]
+            [Display(Name = "not_shown")]
             public int i_staff_id { get; set; }
             [Display(Name = "Staff Name")]
             public string vc_staff_name { get; set; }
             [Display(Name = "Staff Role")]
             public string vc_staff_role { get; set; }
+            [Display(Name = "not_shown")]
+            public int i_map_stat_id { get; set; }
             [Display(Name = "Mapping Status")]
             public string vc_req_status { get; set; }
             [Display(Name = "not_shown")]
@@ -306,14 +342,46 @@ namespace CPS_App.Models
             [Display(Name = "Location")]
             public string vc_location_desc { get; set; }
             [Display(Name = "not_shown")]
-            public string vc_location_addr { get; set; }            
+            public string vc_location_addr { get; set; }
             [Display(Name = "not_shown")]
-            public List<ItemRequest> item { get; set; }
+            public List<ItemRequest> itemLists { get; set; }
             [Display(Name = "not_shown")]
             public string dt_created_date { get; set; }
             [Display(Name = "not_shown")]
             public string dt_updated_datetime { get; set; }
+            public string GetSqlQuery()
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.Append($@"SELECT * FROM
+                         (SELECT 
+                             req.bi_req_id, req.i_staff_id, sta.vc_staff_name, sta.vc_staff_role, req.i_map_stat_id, 
+                             stat.vc_status_desc vc_req_status, sta.bi_location_id, loc.vc_location_desc, 
+                             loc.vc_location_addr, req.dt_created_date, req.dt_updated_datetime
+                         FROM
+                             tb_request req
+                         INNER JOIN tb_staff sta ON req.i_staff_id = sta.i_staff_id
+                         INNER JOIN tb_location loc ON sta.bi_location_id = loc.bi_location_id
+                         left join lut_mapping_status stat on req.i_map_stat_id = stat.i_map_stat_id
+                         ) a
+                             LEFT JOIN
+                         (SELECT * FROM
+                             (SELECT 
+                             det.bi_req_id det_bi_req_id, mapp.bi_item_vid, det.bi_item_id, det.i_item_req_qty, det.i_remain_req_qty, det.i_uom_id, 
+                             det.i_hd_map_stat_id, stat.vc_status_desc item_mapping_status, postat.bi_po_status_id, 
+                             postat.vc_po_status_desc, DATE_FORMAT(det.dt_exp_deli_date, '%Y-%m-%d %H:%i:%s') dt_exp_deli_date, uom.vc_uom_desc, it.vc_item_desc, 
+                             it.bi_category_id, cat.vc_category_desc
+                         FROM
+                             tb_request_detail det
+	                     LEFT JOIN tb_item it ON det.bi_item_id = it.bi_item_id
+                         INNER JOIN tb_item_category cat ON it.bi_category_id = cat.bi_category_id
+                         left join lut_uom_type uom on det.i_uom_id = uom.i_uom_id
+                         left join lut_mapping_status stat on det.i_hd_map_stat_id = stat.i_map_stat_id
+                         left join lut_po_status postat on det.bi_po_status_id = postat.bi_po_status_id
+                         LEFT JOIN tb_item_vid_mapping mapp ON it.bi_item_id = mapp.bi_item_id) b) c 
+                         ON a.bi_req_id = det_bi_req_id ");
 
+                return sb.ToString();
+            }
         }
 
         public class ItemRequest
@@ -336,6 +404,8 @@ namespace CPS_App.Models
             public int bi_category_id { get; set; }
             [Display(Name = "Category")]
             public string vc_category_desc { get; set; }
+            [Display(Name = "not_shown")]
+            public int i_hd_map_stat_id { get; set; }
             [Display(Name = "Mapping Status")]
             public string item_mapping_status { get; set; }
             [Display(Name = "not_shown")]
@@ -343,12 +413,46 @@ namespace CPS_App.Models
             [Display(Name = "PO Status")]
             public string vc_po_status_desc { get; set; }
             [Display(Name = "Expected Delievery Date")]
-            public DateTime dt_exp_deli_date { get; set; }
+            public string dt_exp_deli_date { get; set; }
         }
 
         //item view
         public class StockLevelViewObj
         {
+            public StockLevelViewObj() {
+                itemLists = new List<StockLevelSubItem>();
+                sql = @"set sql_mode = 'STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+                        SELECT * FROM
+                         (SELECT 
+                             it.bi_item_id,
+                                 v.bi_item_vid,
+                                 vc_item_desc,
+                                 it.bi_category_id,
+                                 cat.vc_category_desc,
+                                 it.i_uom_id,
+                                 uom.vc_uom_desc,
+                                 uni.bi_location_id,
+                                 loc.vc_location_desc,
+                                 uni.bi_supp_id,
+                                 supp.vc_supp_desc,
+                                 i_item_qty,
+                                 it.dt_created_date,
+                                 it.dt_updated_datetime
+                         FROM
+                             tb_item it
+                         INNER JOIN tb_item_category cat ON it.bi_category_id = cat.bi_category_id
+                         -- INNER JOIN tb_item_vid_mapping vid ON it.bi_item_id = vid.bi_item_id
+                         LEFT JOIN tb_item_unit uni ON it.bi_item_id = uni.bi_item_id
+                         LEFT JOIN tb_location loc ON uni.bi_location_id = loc.bi_location_id
+                         LEFT JOIN lut_uom_type uom ON it.i_uom_id = uom.i_uom_id
+                         left join tb_supplier supp on uni.bi_supp_id = supp.bi_supp_id
+                         inner join (
+                         select * from tb_item_vid_mapping group by bi_item_id, bi_item_vid
+                         )v on it.bi_item_id = v.bi_item_id
+                         )a ";
+            }
+            [Display(Name = "not_shown")]
+            public string sql { get; set; }
             [Display(Name = "Item Id")]
             public int bi_item_id { get; set; }
             [Display(Name = "Item Vid")]
@@ -364,25 +468,67 @@ namespace CPS_App.Models
             [Display(Name = "Unit of Measurement")]
             public string vc_uom_desc { get; set; }
             [Display(Name = "not_shown")]
+            public List<StockLevelSubItem> itemLists { get; set; }
+
+        }
+        public class StockLevelSubItem
+        {
+            [Display(Name = "Item Id")]
+            public int bi_item_id { get; set; }
+            [Display(Name = "Item Name")]
+            public string vc_item_desc { get; set; }
+            [Display(Name = "not_shown")]
             public int bi_location_id { get; set; }
             [Display(Name = "Location")]
             public string vc_location_desc { get; set; }
             [Display(Name = "Quantity")]
             public int i_item_qty { get; set; }
+            [Display(Name = "Supplier Id")]
+            public int bi_supp_id { get; set; }
+            [Display(Name = "Supplier")]
+            public string vc_supp_desc { get; set; }
             [Display(Name = "not_shown")]
             public string items_group { get; set; }
             [Display(Name = "not_shown")]
-            public DateTime dt_created_date { get; set; }
+            public string dt_created_date { get; set; }
             [Display(Name = "not_shown")]
-            public DateTime dt_updated_datetime { get; set; }
+            public string dt_updated_datetime { get; set; }
         }
-
+        public class CreateStockObj
+        {
+            [Display(Name = "Item Id")]
+            public int bi_item_id { get; set; }
+            [Display(Name = "Item Vid")]
+            public int bi_item_vid { get; set; }
+            [Display(Name = "Item Name")]
+            public string vc_item_desc { get; set; }
+            [Display(Name = "not_shown")]
+            public int bi_category_id { get; set; }
+            [Display(Name = "Category")]
+            public string vc_category_desc { get; set; }
+            [Display(Name = "not_shown")]
+            public int bi_location_id { get; set; }
+            [Display(Name = "Location")]
+            public string vc_location_desc { get; set; }
+            [Display(Name = "not_shown")]
+            public int i_uom_id { get; set; }
+            [Display(Name = "Unit of Measurement")]
+            public string vc_uom_desc { get; set; }
+            [Display(Name = "Supplier Id")]
+            public int bi_supp_id { get; set; }
+            [Display(Name = "Supplier")]
+            public string vc_supp_desc { get; set; }
+            [Display(Name = "Quantity")]
+            public int i_item_qty { get; set; }
+        }
         public class POATableObj
         {
             public POATableObj()
             {
-                itemLists = new List<PoaItemList>();
+                itemLists = new List<PoaItemList>();             
             }
+            [Display(Name = "not_shown")]
+            public string sql { get; set; }
             [Display(Name = "Poa Id")]
             public int bi_poa_id { get; set; }
             [Display(Name = "not_shown")]
@@ -395,65 +541,427 @@ namespace CPS_App.Models
             public long bi_poa_status_id { get; set; }
             [Display(Name = "Status")]
             public string vc_poa_status_desc { get; set; }
-            [Display(Name = "not_shown")]
-            public int bi_deli_loc_id { get; set; }
-            [Display(Name = "Delivery Location")]
-            public string vc_location_desc { get; set; }
+            //[Display(Name = "not_shown")]
+            //public int bi_deli_loc_id { get; set; }//no need
+            //[Display(Name = "Delivery Location")]
+            //public string vc_location_desc { get; set; }//no need
             [Display(Name = "not_shown")]
             public int bi_supp_id { get; set; }
             [Display(Name = "Supplier")]
             public string vc_supp_desc { get; set; }
+            [Display(Name = "not_shown")]
+            public int i_cur_id { get; set; }
             [Display(Name = "currency")]
-            public string vc_currency { get; set; }
+            public string vc_cur_desc { get; set; }
             [Display(Name = "not_shown")]
             public int ti_tc_id { get; set; }
-            [Display(Name = "Terms and Conditions")]
+            [Display(Name = "not_shown")]
             public string vc_tc_desc { get; set; }
             [Display(Name = "not_shown")]
             public int ti_deli_sched_id { get; set; }
             [Display(Name = "Delivery Schedule")]
             public string vc_deli_sched_desc { get; set; }
             [Display(Name = "Effective Date")]
-            public DateTime dt_effect_date { get; set; }
-            [Display(Name = "Contract No")]
-            public string bi_contract_no { get; set; }
+            public string dt_effect_date { get; set; }
             [Display(Name = "not_shown")]
-            public DateTime dt_created_date { get; set; }
+            public string vc_contract_no { get; set; }
             [Display(Name = "not_shown")]
-            public DateTime dt_updated_datetime { get; set; }
+            public string dt_created_date { get; set; }
+            [Display(Name = "not_shown")]
+            public string dt_updated_datetime { get; set; }
             [Display(Name = "not_shown")]
             public List<PoaItemList> itemLists { get; set; }
+            public string GetSqlQuery()
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.Append(@"select * from (
+	                     select poa.bi_poa_id, poa.ti_poa_type_id, poatype.vc_poa_type_desc, poa.bi_poa_status_id, poast.vc_poa_status_desc, hd.bi_poa_header_id,
+                         hd.bi_supp_id, sup.vc_supp_desc, hd.i_cur_id, cur.vc_cur_desc , hd.ti_tc_id, tc.vc_tc_desc, 
+                         hd.ti_deli_sched_id, delisc.vc_deli_sched_desc, DATE_FORMAT(hd.dt_effect_date, '%Y-%m-%d %H:%i:%s') dt_effect_date, hd.vc_contract_no, ln.bi_poa_line_id, ln.bi_item_id, it.vc_item_desc, 
+                         ln.bi_supp_item_id, ln.i_promise_qty, ln.i_remain_qty, uom.vc_uom_desc, ln.i_uom_id, ln.i_min_qty, ln.i_price, ln.i_amount, ln.vc_reference, ln.vc_quot_no,
+                         poa.dt_created_date, poa.dt_updated_datetime
+                         from tb_poa poa
+                         inner join tb_poa_header hd on poa.bi_poa_id = hd.bi_poa_id
+                         left join tb_poa_line ln on hd.bi_poa_header_id = ln.bi_poa_header_id
+                         inner join tb_supplier sup on hd.bi_supp_id = sup.bi_supp_id
+                         inner join lut_term_and_con tc on hd.ti_tc_id = tc.ti_tc_id
+                         inner join lut_deli_schedule_type delisc on hd.ti_deli_sched_id = delisc.ti_deli_sched_id
+                         left join tb_item it on ln.bi_item_id = it.bi_item_id
+                         left join lut_uom_type uom on ln.i_uom_id = uom.i_uom_id
+                         left join lut_poa_type poatype on poa.ti_poa_type_id = poatype.ti_poa_type_id                         
+                         left join lut_poa_status poast on poa.bi_poa_status_id = poast.bi_poa_status_id
+                         left join lut_currency cur on hd.i_cur_id = cur.i_cur_id
+                         ) a ");
+                return sb.ToString();
+            }
         }
         public class PoaItemList
         {
             [Display(Name = "Poa line Id")]
             public int bi_poa_line_id { get; set; }
             [Display(Name = "not_shown")]
-            public int bi_poa_header_id { get; set; }          
+            public int bi_poa_header_id { get; set; }
             [Display(Name = "Item Id")]
             public int bi_item_id { get; set; }
             [Display(Name = "Item")]
             public string vc_item_desc { get; set; }
             [Display(Name = "Supplier Item Id")]
-            public int bi_supp_item_id { get; set; }
+            public string bi_supp_item_id { get; set; }
             [Display(Name = "Promise Qty")]
-            public decimal dc_promise_qty { get; set; }
+            public int i_promise_qty { get; set; }//add remain qty
+            [Display(Name = "Remain Qty")]
+            public int i_remain_qty { get; set; }
             [Display(Name = "not_shown")]
             public int i_uom_id { get; set; }
             [Display(Name = "Unit of Measurement")]
             public string vc_uom_desc { get; set; }
             [Display(Name = "Min Qty")]
-            public decimal dc_min_qty { get; set; }
+            public int i_min_qty { get; set; }
             [Display(Name = "Price")]
-            public decimal dc_price { get; set; }
+            public int i_price { get; set; }
             [Display(Name = "Amount")]
-            public decimal dc_amount { get; set; }
+            public int i_amount { get; set; }
+            [Display(Name = "not_shown")]
+            public string vc_deli_sched_desc { get; set; }
             [Display(Name = "Reference")]
             public string vc_reference { get; set; }
             [Display(Name = "not_shown")]
-            public string bi_quot_no { get; set; }
+            public string vc_quot_no { get; set; }
 
         }
+        //Vip Mapping Table
+        public class VidMappingObj
+        {
+            [Display(Name = "Item Id")]
+            public int bi_item_id { get; set; }
+            [Display(Name = "Item Vid")]
+            public int bi_item_vid { get; set; }
+            [Display(Name = "Item Name")]
+            public string vc_item_desc { get; set; }
+            [Display(Name = "not_shown")]
+            public int bi_category_id { get; set; }
+            [Display(Name = "Category")]
+            public string vc_category_desc { get; set; }
+            [Display(Name = "not_shown")]
+            public int bi_prefer_loc_id { get; set; }
+            [Display(Name = "Location")]
+            public string vc_location_desc { get; set; }
+            [Display(Name = "not_shown")]
+            public string items_group { get; set; }
+            [Display(Name = "not_shown")]
+            public string prefer_loc_group { get; set; }
+            [Display(Name = "not_shown")]
+            public string item_loc_id_group { get; set; }
+        }
 
+        //public class PoCreateObj
+        //{
+        //    public PoCreateObj()
+        //    {
+        //        itemLists = new List<PoCreateItem>();
+        //    }
+        //    [Display(Name = "Po Id")]
+        //    public int bi_po_id { get; set; }
+        //    [Display(Name = "Poa Id")]
+        //    public int bi_poa_id { get; set; }
+        //    [Display(Name = "not_shown")]
+        //    public int bi_po_header_id { get; set; }
+        //    [Display(Name = "not_shown")]
+        //    public int ti_po_type_id { get; set; }
+        //    [Display(Name = "Type")]
+        //    public string vc_po_type_desc { get; set; }
+        //    [Display(Name = "not_shown")]
+        //    public long bi_po_status_id { get; set; }
+        //    [Display(Name = "Status")]
+        //    public string vc_po_status_desc { get; set; }
+        //    [Display(Name = "not_shown")]
+        //    public int bi_deli_loc_id { get; set; }//no need
+        //    [Display(Name = "Delivery Location")]
+        //    public string vc_location_desc { get; set; }//no need
+        //    [Display(Name = "not_shown")]
+        //    public int bi_supp_id { get; set; }
+        //    [Display(Name = "Supplier")]
+        //    public string vc_supp_desc { get; set; }
+        //    [Display(Name = "not_shown")]
+        //    public int i_cur_id { get; set; }
+        //    [Display(Name = "currency")]
+        //    public string vc_cur_desc { get; set; }
+        //    [Display(Name = "not_shown")]
+        //    public int ti_tc_id { get; set; }
+        //    [Display(Name = "Terms and Conditions")]
+        //    public string vc_tc_desc { get; set; }
+        //    //[Display(Name = "not_shown")]
+        //    //public int ti_deli_sched_id { get; set; }
+        //    //[Display(Name = "Delivery Schedule")]
+        //    //public string vc_deli_sched_desc { get; set; }
+        //    [Display(Name = "Effective Date")]
+        //    public string dt_effect_date { get; set; }
+        //    //[Display(Name = "Contract No")]
+        //    //public string vc_contract_no { get; set; }
+        //    [Display(Name = "not_shown")]
+        //    public string dt_created_date { get; set; }
+        //    [Display(Name = "not_shown")]
+        //    public string dt_updated_datetime { get; set; }
+        //    [Display(Name = "not_shown")]
+        //    public List<PoCreateItem> itemLists { get; set; }
+        //}
+        //public class PoCreateItem
+        //{
+        //    [Display(Name = "Po line Id")]
+        //    public int bi_po_line_id { get; set; }
+        //    [Display(Name = "not_shown")]
+        //    public int bi_po_header_id { get; set; }
+        //    [Display(Name = "Item Id")]
+        //    public int bi_item_id { get; set; }
+        //    [Display(Name = "Item")]
+        //    public string vc_item_desc { get; set; }
+        //    [Display(Name = "Supplier Item Id")]
+        //    public string bi_supp_item_id { get; set; }
+        //    [Display(Name = "Remain Qty")]
+        //    public int i_actual_qty { get; set; }
+        //    [Display(Name = "not_shown")]
+        //    public int i_uom_id { get; set; }
+        //    [Display(Name = "Unit of Measurement")]
+        //    public string vc_uom_desc { get; set; }
+        //    [Display(Name = "Price")]
+        //    public int i_price { get; set; }
+        //    [Display(Name = "Amount")]
+        //    public int dc_act_amount { get; set; }
+        //    [Display(Name = "Reference")]
+        //    public string vc_reference { get; set; }
+        //    [Display(Name = "not_shown")]
+        //    public string vc_quot_no { get; set; }
+
+        //}
+        public class POTableObj
+        {
+            public POTableObj()
+            {
+                itemLists = new List<PoItemList>();               
+            }
+                        
+            [Display(Name = "Po Id")]
+            public int bi_po_id { get; set; }
+            [Display(Name = "not_shown")]
+            public string vc_ref_id { get; set; }
+            [Display(Name = "not_shown")]
+            public int bi_req_id { get; set; }
+            [Display(Name = "not_shown")]
+            public int bi_po_header_id { get; set; }
+            [Display(Name = "not_shown")]
+            public int ti_po_type_id { get; set; }
+            [Display(Name = "Type")]
+            public string vc_po_type_desc { get; set; }
+            [Display(Name = "not_shown")]
+            public long bi_po_status_id { get; set; }
+            [Display(Name = "Status")]
+            public string vc_po_status_desc { get; set; }
+            [Display(Name = "not_shown")]
+            public int bi_deli_loc_id { get; set; }//no need
+            [Display(Name = "Delivery Location")]
+            public string vc_location_desc { get; set; }//no need
+            [Display(Name = "not_shown")]
+            public int bi_supp_id { get; set; }
+            [Display(Name = "Supplier")]
+            public string vc_supp_desc { get; set; }
+            [Display(Name = "not_shown")]
+            public int i_cur_id { get; set; }
+            [Display(Name = "currency")]
+            public string vc_cur_desc { get; set; }
+            [Display(Name = "not_shown")]
+            public int ti_tc_id { get; set; }
+            [Display(Name = "not_shown")]
+            public string vc_tc_desc { get; set; }
+            [Display(Name = "not_shown")]
+            public int ti_deli_sched_id { get; set; }
+            [Display(Name = "Delivery Schedule")]
+            public string vc_deli_sched_desc { get; set; }
+            [Display(Name = "Delivery Date")]
+            public string dt_expect_delidate { get; set; }
+            [Display(Name = "Contract No")]
+            public string vc_contract_no { get; set; }
+            [Display(Name = "not_shown")]
+            public string dt_effect_date { get; set; }
+            [Display(Name = "not_shown")]
+            public string dt_created_date { get; set; }
+            [Display(Name = "not_shown")]
+            public string dt_updated_datetime { get; set; }
+            [Display(Name = "not_shown")]
+            public string vc_quot_no { get; set; }
+            [Display(Name = "not_shown")]
+            public List<PoItemList> itemLists { get; set; }
+            public string GetSqlQuery()
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.Append($@"select * from (
+	                     select po.bi_po_id, po.bi_req_id, po.vc_ref_id, po.ti_po_type_id, potype.vc_po_type_desc, po.bi_po_status_id, post.vc_po_status_desc, hd.bi_po_header_id,
+                         hd.bi_supp_id, sup.vc_supp_desc, hd.i_cur_id, cur.vc_cur_desc ,hd.vc_contract_no, hd.ti_tc_id, tc.vc_tc_desc, hd.bi_deli_loc_id, loc.vc_location_desc,
+                         hd.ti_deli_sched_id, delisc.vc_deli_sched_desc, hd.dt_expect_delidate, hd.dt_effect_date, ln.bi_po_line_id, ln.bi_item_id, it.vc_item_desc, 
+                         ln.bi_supp_item_id, ln.i_actual_qty, uom.vc_uom_desc, ln.i_uom_id, ln.i_price, ln.i_actual_amount, ln.vc_reference, ln.vc_quot_no, ln.bi_po_status_id bi_ln_po_status_id,
+                         postat.vc_po_status_desc vc_po_ln_status, po.dt_created_date, po.dt_updated_datetime
+                         from tb_po po
+                         inner join tb_po_header hd on po.bi_po_id = hd.bi_po_id
+                         left join tb_po_line ln on hd.bi_po_header_id = ln.bi_po_header_id
+                         inner join tb_supplier sup on hd.bi_supp_id = sup.bi_supp_id
+                         inner join lut_term_and_con tc on hd.ti_tc_id = tc.ti_tc_id
+                         inner join lut_deli_schedule_type delisc on hd.ti_deli_sched_id = delisc.ti_deli_sched_id
+                         left join tb_item it on ln.bi_item_id = it.bi_item_id
+                         left join lut_uom_type uom on ln.i_uom_id = uom.i_uom_id
+                         left join tb_po_type potype on po.ti_po_type_id = potype.ti_po_type_id                         
+                         left join lut_po_status post on po.bi_po_status_id = post.bi_po_status_id
+                         left join lut_currency cur on hd.i_cur_id = cur.i_cur_id
+                         left join tb_location loc on hd.bi_deli_loc_id = loc.bi_location_id
+                         left join lut_po_status postat on ln.bi_po_status_id = postat.bi_po_status_id
+                         ) a ");
+                return sb.ToString();
+            }
+        }
+        public class PoItemList
+        {
+            [Display(Name = "po line Id")]
+            public int bi_po_line_id { get; set; }
+            [Display(Name = "not_shown")]
+            public int bi_po_header_id { get; set; }
+            [Display(Name = "Item Id")]
+            public int bi_item_id { get; set; }
+            [Display(Name = "Item")]
+            public string vc_item_desc { get; set; }
+            [Display(Name = "not_shown")]
+            public int bi_ln_po_status_id { get; set; }
+            [Display(Name = "Status")]
+            public string vc_po_ln_status { get; set; }
+            [Display(Name = "Supplier Item Id")]
+            public string bi_supp_item_id { get; set; }
+            [Display(Name = "Quantity")]
+            public int i_actual_qty { get; set; }
+            [Display(Name = "not_shown")]
+            public int i_uom_id { get; set; }
+            [Display(Name = "Unit of Measurement")]
+            public string vc_uom_desc { get; set; }
+            [Display(Name = "not_shown")]
+            public int i_min_qty { get; set; }
+            [Display(Name = "Price")]
+            public int i_price { get; set; }
+            [Display(Name = "Amount")]
+            public int i_actual_amount { get; set; }
+            [Display(Name = "Contract No")]
+            public string vc_contract_no { get; set; }
+            [Display(Name = "Reference")]
+            public string vc_reference { get; set; }
+            [Display(Name = "not_shown")]
+            public string vc_quot_no { get; set; }
+
+        }
+        public class PoCreateRefList
+        {
+            public List<POTableObj> poList { get; set; }
+            public List<POATableObj> poaList { get; set; }
+            public PoCreateRefList()
+            {
+                poList = new List<POTableObj>();
+                poaList= new List<POATableObj>();
+            }
+        }
+        public class DispatchInstruction
+        {
+            [Display(Name = "Dispatch Id")]
+            public int bi_di_id { get; set; }
+            [Display(Name = "Ref Req Id")]
+            public int bi_req_id { get; set; }
+            [Display(Name = "not_shown")]
+            public int i_di_status_id { get; set; }
+            [Display(Name = "Item Id")]
+            public int bi_item_id { get; set; }
+            [Display(Name = "Item Vid")]
+            public int bi_item_vid { get; set; }
+            [Display(Name = "Item Name")]
+            public string vc_item_desc { get; set; }
+            [Display(Name = "Quantity")]
+            public int i_item_qty { get; set; }
+            [Display(Name = "not_shown")]
+            public int bi_category_id { get; set; }
+            [Display(Name = "Category")]
+            public string vc_category_desc { get; set; }
+            [Display(Name = "not_shown")]
+            public int bi_location_id { get; set; }
+            [Display(Name = "Location")]
+            public string vc_location_desc { get; set; }
+            [Display(Name = "not_shown")]
+            public int bi_supp_id { get; set; }
+            [Display(Name = "Supplier")]
+            public string vc_supp_desc { get; set; }
+            [Display(Name = "not_shown")]
+            public string dt_created_date { get; set; }
+            [Display(Name = "Expected Delievery Date")]
+            public string dt_exp_deli_date { get; set; }
+            public string GetSqlQuery()
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.Append(@"select * from (
+                select di.bi_di_id, di.bi_item_id, di.bi_item_vid, di.bi_req_id, it.vc_item_desc, di.i_di_status_id, dist.vc_di_status_desc, 
+                di.i_item_qty, di.bi_category_id, cat.vc_category_desc, di.bi_location_id, loc.vc_location_desc, di.bi_supp_id, supp.vc_supp_desc,
+                DATE_FORMAT(di.dt_exp_deli_date, '%Y-%m-%d %H:%i:%s') dt_exp_deli_date, di.dt_created_date 
+                from tb_dispatch_instruction di
+                left join tb_item it on di.bi_item_id = it.bi_item_id
+                left join lut_di_status dist on di.i_di_status_id = dist.i_di_status_id
+                left join tb_item_category cat on di.bi_category_id = cat.bi_category_id
+                left join tb_location loc on di.bi_location_id = loc.bi_location_id
+                left Join tb_supplier supp on di.bi_supp_id = supp.bi_supp_id
+                ) a ");
+                return sb.ToString();
+            }
+        }
+        public class DeliveryNoteObj
+        {
+            [Display(Name = "Delivery Note Id")]
+            public int bi_dn_id { get; set; }
+            [Display(Name = "Ref Po Id")]
+            public int bi_po_id { get; set; }
+            [Display(Name = "Ref Req Id")]
+            public int bi_req_id { get; set; }
+            [Display(Name = "not_shown")]
+            public int i_dn_status_id { get; set; }
+            [Display(Name = "not_shown")]
+            public int i_dn_type_id { get; set; }
+            [Display(Name = "Type")]
+            public string vc_dn_type_desc { get; set; }                        
+            [Display(Name = "not_shown")]
+            public int bi_item_id { get; set; }
+            [Display(Name = "Item")]
+            public string vc_item_desc { get; set; }
+            [Display(Name = "Item Vid")]
+            public int bi_item_vid { get; set; }            
+            [Display(Name = "Quantity")]
+            public int i_item_qty { get; set; }                  
+            [Display(Name = "not_shown")]
+            public int bi_location_id { get; set; }
+            [Display(Name = "Location")]
+            public string vc_location_desc { get; set; }
+            [Display(Name = "not_shown")]
+            public int bi_supp_id { get; set; }
+            [Display(Name = "Supplier")]
+            public string vc_supp_desc { get; set;}
+            [Display(Name = "Expected Delievery Date")]
+            public string dt_exp_deli_date { get; set; }
+            [Display(Name = "not_shown")]
+            public string dt_created_date { get; set; }
+            public string GetSqlQuery()
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.Append(@"select * from (
+                          select dn.bi_dn_id, bi_po_id, dn.i_dn_type_id, ty.vc_dn_type_desc, dn.bi_req_id, dn.bi_item_id, v.bi_item_vid,
+                          dn.bi_supp_id, supp.vc_supp_desc, it.vc_item_desc, dn.i_item_qty, dn.bi_location_id, loc.vc_location_desc, dn.dt_exp_deli_date, dn.dt_created_date, dn.dt_updated_datetime
+                          from tb_delivery_note dn
+                          left join lut_dn_type ty on dn.i_dn_type_id = ty.i_dn_type_id 
+                          left join tb_item it on dn.bi_item_id = it.bi_item_id
+                          left join tb_location loc on dn.bi_location_id = loc.bi_location_id
+                          left join tb_supplier supp on dn.bi_supp_id = supp.bi_supp_id
+                          inner join (
+                          select * from tb_item_vid_mapping group by bi_item_id, bi_item_vid
+                          )v on it.bi_item_id = v.bi_item_id
+                          )a ");
+                return sb.ToString();
+            }
+        }
     }
 }

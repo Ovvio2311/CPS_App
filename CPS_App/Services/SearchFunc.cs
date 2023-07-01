@@ -17,7 +17,7 @@ namespace CPS_App.Services
         {
             _services = dbServices;
         }
-        public async Task<IEnumerable<tb_search_gen>> SearchParaGenerator(ClaimsIdentity identity)
+        public async Task<IEnumerable<tb_search_gen>> SearchParaGenerator(ClaimsIdentity identity,string part)
         {
             var res = new DbResObj();
             if (identity.Claims.Count() == 0)
@@ -32,7 +32,8 @@ namespace CPS_App.Services
                     table = nameof(tb_search_gen),
                     selecter = new Dictionary<string, string>
                     {
-                        {"vc_role_id",roleId }
+                        {"vc_role_id",roleId },
+                        {"vc_search_part", part}
                     }
                 };
                 res = await _services.SelectWhereAsync<tb_search_gen>(obj);
@@ -47,27 +48,28 @@ namespace CPS_App.Services
                 throw new Exception(res.err_msg);
             }
         }
-        public async Task insertJsonString()
+        public async Task insertJsonString(string vc_role_id, string part, JsonResponse jsonObj)
         {
             try
             {
-                JsonResponse jsonObj = new JsonResponse()
-                {
-                    jsonRes = new Dictionary<string, string>
-                {
-                        { "Request Id", "bi_req_id" },
-                        { "Location","bi_location_id" },
-                        { "Item Name", "vc_item_desc" },
-                        { "Category Type", "vc_category_desc" },
-                        { "Expected Delievery Date","dt_exp_deli_date" },
-                        { "Staff Name","vc_staff_name" }
-                },
-                };
+                //JsonResponse jsonObj = new JsonResponse()
+                //{
+                //    jsonRes = new Dictionary<string, string>
+                //{
+                //        { "Request Id", "bi_req_id" },
+                //        { "Location","bi_location_id" },
+                //        { "Item Name", "vc_item_desc" },
+                //        { "Category Type", "vc_category_desc" },
+                //        { "Expected Delievery Date","dt_exp_deli_date" },
+                //        { "Staff Name","vc_staff_name" }
+                //},
+               // };
                 tb_search_gen obj = new tb_search_gen()
                 {
-                    vc_role_id = "5ac89490-fdb3-4cfa-9adb-a3959e63524a",
+                    vc_role_id = vc_role_id,
                     js_search_para = JsonConvert.SerializeObject(jsonObj.jsonRes),
-                    dt_created_date = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss")
+                    dt_created_date = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss"),
+                    vc_search_part = part,
                 };
                 var res = await _services.InsertAsync<tb_search_gen>(obj);
                 if (res.resCode != 1 || res.err_msg != null)

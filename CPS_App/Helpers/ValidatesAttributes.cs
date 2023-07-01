@@ -23,8 +23,14 @@ namespace CPS_App.Helpers
         protected bool validateInt(string attribute, dynamic value, dynamic parameters, Validator validator)
         {
             if (value == null) { return false; }
-            if (!validateMin(attribute, value, "3", validator)) { return false; }
+            //if (!validateMin(attribute, value, "3", validator)) { return false; }
             return int.TryParse(value, out int valueInt) ? true : false;
+        }
+        protected bool validateDecimal(string attribute, dynamic value, dynamic parameters, Validator validator)
+        {
+            if (value == null) { return false; }
+            //if (!validateMin(attribute, value, "3", validator)) { return false; }
+            return decimal.TryParse(value, out decimal valuedecimal) ? true : false;
         }
         protected bool validatePassword(string attribute, dynamic value, dynamic parameters, Validator validator)
         {

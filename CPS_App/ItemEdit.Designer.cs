@@ -49,13 +49,13 @@ namespace CPS_App
             this.txtupdate = new Krypton.Toolkit.KryptonTextBox();
             this.txtuom = new Krypton.Toolkit.KryptonTextBox();
             this.dataGridViewitem = new Krypton.Toolkit.KryptonDataGridView();
+            this.kryptonPalettedatagridview = new Krypton.Toolkit.KryptonPalette(this.components);
             this.btnmod = new Krypton.Toolkit.KryptonButton();
             this.kryptonPalettebtn = new Krypton.Toolkit.KryptonPalette(this.components);
             this.kryptonPaletteheader = new Krypton.Toolkit.KryptonPalette(this.components);
             this.kryptonPalettepanel = new Krypton.Toolkit.KryptonPalette(this.components);
             this.btncancel = new Krypton.Toolkit.KryptonButton();
             this.btndel = new Krypton.Toolkit.KryptonButton();
-            this.kryptonPalettedatagridview = new Krypton.Toolkit.KryptonPalette(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewitem)).BeginInit();
             this.SuspendLayout();
             // 
@@ -67,6 +67,7 @@ namespace CPS_App
             this.lblid.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
             this.lblid.Size = new System.Drawing.Size(61, 21);
             this.lblid.TabIndex = 0;
+            this.lblid.Tag = "bi_item_id";
             this.lblid.Values.Text = "Item ID";
             // 
             // kryptonPalettelbl
@@ -82,6 +83,7 @@ namespace CPS_App
             this.lblvid.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
             this.lblvid.Size = new System.Drawing.Size(71, 21);
             this.lblvid.TabIndex = 1;
+            this.lblvid.Tag = "bi_item_vid";
             this.lblvid.Values.Text = "Item VID";
             // 
             // lblname
@@ -102,6 +104,7 @@ namespace CPS_App
             this.lblcat.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
             this.lblcat.Size = new System.Drawing.Size(74, 21);
             this.lblcat.TabIndex = 3;
+            this.lblcat.Tag = "vc_category_desc";
             this.lblcat.Values.Text = "Category";
             // 
             // lbluom
@@ -112,6 +115,7 @@ namespace CPS_App
             this.lbluom.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
             this.lbluom.Size = new System.Drawing.Size(155, 21);
             this.lbluom.TabIndex = 4;
+            this.lbluom.Tag = "vc_uom_desc";
             this.lbluom.Values.Text = "Unit of Measurement";
             // 
             // lblloc
@@ -122,7 +126,8 @@ namespace CPS_App
             this.lblloc.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
             this.lblloc.Size = new System.Drawing.Size(113, 21);
             this.lblloc.TabIndex = 5;
-            this.lblloc.Values.Text = "Stock Loaction";
+            this.lblloc.Tag = "vc_location_desc";
+            this.lblloc.Values.Text = "Stock Location";
             // 
             // lblqty
             // 
@@ -132,6 +137,7 @@ namespace CPS_App
             this.lblqty.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
             this.lblqty.Size = new System.Drawing.Size(69, 21);
             this.lblqty.TabIndex = 6;
+            this.lblqty.Tag = "i_item_qty";
             this.lblqty.Values.Text = "Quantity";
             // 
             // lbluptime
@@ -142,10 +148,12 @@ namespace CPS_App
             this.lbluptime.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
             this.lbluptime.Size = new System.Drawing.Size(142, 21);
             this.lbluptime.TabIndex = 7;
+            this.lbluptime.Tag = "dt_updated_datetime";
             this.lbluptime.Values.Text = "Last Updated Time";
             // 
             // txtvid
             // 
+            this.txtvid.Enabled = false;
             this.txtvid.Location = new System.Drawing.Point(96, 259);
             this.txtvid.Name = "txtvid";
             this.txtvid.Palette = this.kryptonPalettereadonly;
@@ -153,6 +161,7 @@ namespace CPS_App
             this.txtvid.ReadOnly = true;
             this.txtvid.Size = new System.Drawing.Size(120, 23);
             this.txtvid.TabIndex = 8;
+            this.txtvid.Tag = "bi_item_vid";
             // 
             // kryptonPalettereadonly
             // 
@@ -161,6 +170,7 @@ namespace CPS_App
             // 
             // txtcat
             // 
+            this.txtcat.Enabled = false;
             this.txtcat.Location = new System.Drawing.Point(350, 259);
             this.txtcat.Name = "txtcat";
             this.txtcat.Palette = this.kryptonPalettereadonly;
@@ -168,9 +178,11 @@ namespace CPS_App
             this.txtcat.ReadOnly = true;
             this.txtcat.Size = new System.Drawing.Size(120, 23);
             this.txtcat.TabIndex = 9;
+            this.txtcat.Tag = "vc_category_desc";
             // 
             // txtname
             // 
+            this.txtname.Enabled = false;
             this.txtname.Location = new System.Drawing.Point(350, 220);
             this.txtname.Name = "txtname";
             this.txtname.Palette = this.kryptonPalettereadonly;
@@ -178,9 +190,11 @@ namespace CPS_App
             this.txtname.ReadOnly = true;
             this.txtname.Size = new System.Drawing.Size(120, 23);
             this.txtname.TabIndex = 10;
+            this.txtname.Tag = "vc_item_desc";
             // 
             // txtid
             // 
+            this.txtid.Enabled = false;
             this.txtid.Location = new System.Drawing.Point(96, 220);
             this.txtid.Name = "txtid";
             this.txtid.Palette = this.kryptonPalettereadonly;
@@ -188,6 +202,7 @@ namespace CPS_App
             this.txtid.ReadOnly = true;
             this.txtid.Size = new System.Drawing.Size(120, 23);
             this.txtid.TabIndex = 11;
+            this.txtid.Tag = "bi_item_id";
             // 
             // txtqty
             // 
@@ -195,17 +210,22 @@ namespace CPS_App
             this.txtqty.Name = "txtqty";
             this.txtqty.Size = new System.Drawing.Size(120, 23);
             this.txtqty.TabIndex = 12;
+            this.txtqty.Tag = "i_item_qty";
             // 
             // txtloc
             // 
+            this.txtloc.Enabled = false;
             this.txtloc.Location = new System.Drawing.Point(653, 259);
             this.txtloc.Name = "txtloc";
-            this.txtloc.ReadOnly = true;
+            this.txtloc.Palette = this.kryptonPalettereadonly;
+            this.txtloc.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
             this.txtloc.Size = new System.Drawing.Size(120, 23);
             this.txtloc.TabIndex = 13;
+            this.txtloc.Tag = "vc_location_desc";
             // 
             // txtupdate
             // 
+            this.txtupdate.Enabled = false;
             this.txtupdate.Location = new System.Drawing.Point(653, 301);
             this.txtupdate.Name = "txtupdate";
             this.txtupdate.Palette = this.kryptonPalettereadonly;
@@ -213,9 +233,11 @@ namespace CPS_App
             this.txtupdate.ReadOnly = true;
             this.txtupdate.Size = new System.Drawing.Size(120, 23);
             this.txtupdate.TabIndex = 14;
+            this.txtupdate.Tag = "dt_updated_datetime";
             // 
             // txtuom
             // 
+            this.txtuom.Enabled = false;
             this.txtuom.Location = new System.Drawing.Point(349, 301);
             this.txtuom.Name = "txtuom";
             this.txtuom.Palette = this.kryptonPalettereadonly;
@@ -223,12 +245,13 @@ namespace CPS_App
             this.txtuom.ReadOnly = true;
             this.txtuom.Size = new System.Drawing.Size(120, 23);
             this.txtuom.TabIndex = 15;
+            this.txtuom.Tag = "vc_uom_desc";
             // 
             // dataGridViewitem
             // 
             this.dataGridViewitem.AllowUserToAddRows = false;
             this.dataGridViewitem.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewitem.Location = new System.Drawing.Point(29, 39);
+            this.dataGridViewitem.Location = new System.Drawing.Point(38, 39);
             this.dataGridViewitem.Name = "dataGridViewitem";
             this.dataGridViewitem.Palette = this.kryptonPalettedatagridview;
             this.dataGridViewitem.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
@@ -237,10 +260,15 @@ namespace CPS_App
             this.dataGridViewitem.TabIndex = 16;
             this.dataGridViewitem.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewitem_CellClick);
             // 
+            // kryptonPalettedatagridview
+            // 
+            this.kryptonPalettedatagridview.Common.StateCommon.Back.Color1 = System.Drawing.Color.Transparent;
+            this.kryptonPalettedatagridview.Common.StateCommon.Back.Color2 = System.Drawing.Color.Transparent;
+            // 
             // btnmod
             // 
             this.btnmod.CornerRoundingRadius = -1F;
-            this.btnmod.Location = new System.Drawing.Point(686, 347);
+            this.btnmod.Location = new System.Drawing.Point(687, 347);
             this.btnmod.Name = "btnmod";
             this.btnmod.Palette = this.kryptonPalettebtn;
             this.btnmod.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
@@ -273,7 +301,7 @@ namespace CPS_App
             // btncancel
             // 
             this.btncancel.CornerRoundingRadius = -1F;
-            this.btncancel.Location = new System.Drawing.Point(433, 347);
+            this.btncancel.Location = new System.Drawing.Point(428, 347);
             this.btncancel.Name = "btncancel";
             this.btncancel.Palette = this.kryptonPalettebtn;
             this.btncancel.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
@@ -293,16 +321,11 @@ namespace CPS_App
             this.btndel.TabIndex = 22;
             this.btndel.Values.Text = "Delete";
             // 
-            // kryptonPalettedatagridview
-            // 
-            this.kryptonPalettedatagridview.Common.StateCommon.Back.Color1 = System.Drawing.Color.Transparent;
-            this.kryptonPalettedatagridview.Common.StateCommon.Back.Color2 = System.Drawing.Color.Transparent;
-            // 
             // ItemEdit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 477);
+            this.ClientSize = new System.Drawing.Size(811, 477);
             this.Controls.Add(this.btndel);
             this.Controls.Add(this.btncancel);
             this.Controls.Add(this.btnmod);

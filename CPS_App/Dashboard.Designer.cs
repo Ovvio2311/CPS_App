@@ -40,6 +40,7 @@ namespace CPS_App
             this.strippo = new System.Windows.Forms.ToolStripButton();
             this.stripset = new System.Windows.Forms.ToolStripButton();
             this.kryptonEnhancedToolStrip3 = new Krypton.Toolkit.Suite.Extended.Tool.Strip.Items.KryptonEnhancedToolStrip();
+            this.btndn = new System.Windows.Forms.ToolStripButton();
             this.striplogout = new System.Windows.Forms.ToolStripButton();
             this.striplblwelcome = new System.Windows.Forms.ToolStripLabel();
             this.kryptonPalettelbl = new Krypton.Toolkit.KryptonPalette(this.components);
@@ -73,8 +74,8 @@ namespace CPS_App
             this.stripreq.Image = ((System.Drawing.Image)(resources.GetObject("stripreq.Image")));
             this.stripreq.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.stripreq.Name = "stripreq";
-            this.stripreq.Padding = new System.Windows.Forms.Padding(30, 5, 30, 5);
-            this.stripreq.Size = new System.Drawing.Size(134, 32);
+            this.stripreq.Padding = new System.Windows.Forms.Padding(20, 5, 20, 5);
+            this.stripreq.Size = new System.Drawing.Size(114, 32);
             this.stripreq.Text = "Request";
             this.stripreq.Click += new System.EventHandler(this.stripreq_Click);
             // 
@@ -85,8 +86,8 @@ namespace CPS_App
             this.stripitem.Image = ((System.Drawing.Image)(resources.GetObject("stripitem.Image")));
             this.stripitem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.stripitem.Name = "stripitem";
-            this.stripitem.Padding = new System.Windows.Forms.Padding(30, 5, 30, 5);
-            this.stripitem.Size = new System.Drawing.Size(104, 32);
+            this.stripitem.Padding = new System.Windows.Forms.Padding(20, 5, 20, 5);
+            this.stripitem.Size = new System.Drawing.Size(84, 32);
             this.stripitem.Text = "Item";
             this.stripitem.Click += new System.EventHandler(this.stripitem_Click);
             // 
@@ -97,8 +98,8 @@ namespace CPS_App
             this.strippoa.Image = ((System.Drawing.Image)(resources.GetObject("strippoa.Image")));
             this.strippoa.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.strippoa.Name = "strippoa";
-            this.strippoa.Padding = new System.Windows.Forms.Padding(30, 5, 30, 5);
-            this.strippoa.Size = new System.Drawing.Size(106, 32);
+            this.strippoa.Padding = new System.Windows.Forms.Padding(20, 5, 20, 5);
+            this.strippoa.Size = new System.Drawing.Size(86, 32);
             this.strippoa.Text = "POA";
             this.strippoa.Click += new System.EventHandler(this.strippoa_Click);
             // 
@@ -109,8 +110,8 @@ namespace CPS_App
             this.strippo.Image = ((System.Drawing.Image)(resources.GetObject("strippo.Image")));
             this.strippo.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.strippo.Name = "strippo";
-            this.strippo.Padding = new System.Windows.Forms.Padding(30, 5, 30, 5);
-            this.strippo.Size = new System.Drawing.Size(96, 32);
+            this.strippo.Padding = new System.Windows.Forms.Padding(20, 5, 20, 5);
+            this.strippo.Size = new System.Drawing.Size(76, 32);
             this.strippo.Text = "PO";
             this.strippo.Click += new System.EventHandler(this.strippo_Click);
             // 
@@ -121,8 +122,8 @@ namespace CPS_App
             this.stripset.Image = ((System.Drawing.Image)(resources.GetObject("stripset.Image")));
             this.stripset.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.stripset.Name = "stripset";
-            this.stripset.Padding = new System.Windows.Forms.Padding(30, 5, 30, 5);
-            this.stripset.Size = new System.Drawing.Size(124, 32);
+            this.stripset.Padding = new System.Windows.Forms.Padding(20, 5, 20, 5);
+            this.stripset.Size = new System.Drawing.Size(104, 32);
             this.stripset.Text = "Setting";
             this.stripset.Click += new System.EventHandler(this.stripset_Click);
             // 
@@ -136,6 +137,7 @@ namespace CPS_App
             this.stripitem,
             this.strippoa,
             this.strippo,
+            this.btndn,
             this.stripset,
             this.striplogout,
             this.striplblwelcome});
@@ -145,6 +147,18 @@ namespace CPS_App
             this.kryptonEnhancedToolStrip3.Size = new System.Drawing.Size(1002, 35);
             this.kryptonEnhancedToolStrip3.TabIndex = 33;
             this.kryptonEnhancedToolStrip3.Text = "kryptonEnhancedToolStrip3";
+            // 
+            // btndn
+            // 
+            this.btndn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.btndn.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.btndn.Image = ((System.Drawing.Image)(resources.GetObject("btndn.Image")));
+            this.btndn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btndn.Name = "btndn";
+            this.btndn.Padding = new System.Windows.Forms.Padding(20, 5, 20, 5);
+            this.btndn.Size = new System.Drawing.Size(153, 32);
+            this.btndn.Text = "Delivery Note";
+            this.btndn.Click += new System.EventHandler(this.btndn_Click);
             // 
             // striplogout
             // 
@@ -162,7 +176,7 @@ namespace CPS_App
             // striplblwelcome
             // 
             this.striplblwelcome.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.striplblwelcome.Font = new System.Drawing.Font("Lucida Sans", 9.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point);
+            this.striplblwelcome.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point);
             this.striplblwelcome.Name = "striplblwelcome";
             this.striplblwelcome.Size = new System.Drawing.Size(0, 32);
             // 
@@ -210,5 +224,6 @@ namespace CPS_App
         private ToolStripLabel striplblwelcome;
         private ToolStripButton striplogout;
         private Krypton.Toolkit.KryptonPalette kryptonPalettelbl;
+        private ToolStripButton btndn;
     }
 }

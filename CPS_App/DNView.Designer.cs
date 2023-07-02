@@ -93,7 +93,7 @@
             // btncancel
             // 
             this.btncancel.CornerRoundingRadius = -1F;
-            this.btncancel.Location = new System.Drawing.Point(523, 55);
+            this.btncancel.Location = new System.Drawing.Point(534, 55);
             this.btncancel.Name = "btncancel";
             this.btncancel.Palette = this.kryptonPalettebtn;
             this.btncancel.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
@@ -106,7 +106,7 @@
             // 
             this.btnreceive.AutoSize = true;
             this.btnreceive.CornerRoundingRadius = -1F;
-            this.btnreceive.Location = new System.Drawing.Point(347, 55);
+            this.btnreceive.Location = new System.Drawing.Point(361, 55);
             this.btnreceive.Name = "btnreceive";
             this.btnreceive.Palette = this.kryptonPalettebtn;
             this.btnreceive.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
@@ -148,11 +148,11 @@
             // btncsv
             // 
             this.btncsv.CornerRoundingRadius = -1F;
-            this.btncsv.Location = new System.Drawing.Point(661, 55);
+            this.btncsv.Location = new System.Drawing.Point(674, 55);
             this.btncsv.Name = "btncsv";
             this.btncsv.Palette = this.kryptonPalettebtn;
             this.btncsv.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
-            this.btncsv.Size = new System.Drawing.Size(65, 37);
+            this.btncsv.Size = new System.Drawing.Size(52, 37);
             this.btncsv.TabIndex = 26;
             this.btncsv.Values.Text = "CSV";
             this.btncsv.Click += new System.EventHandler(this.btncsv_Click);

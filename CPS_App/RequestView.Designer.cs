@@ -319,7 +319,7 @@ namespace CPS_App
             this.btncsv.Name = "btncsv";
             this.btncsv.Palette = this.kryptonPalettebtn;
             this.btncsv.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
-            this.btncsv.Size = new System.Drawing.Size(65, 37);
+            this.btncsv.Size = new System.Drawing.Size(52, 37);
             this.btncsv.TabIndex = 27;
             this.btncsv.Values.Text = "CSV";
             this.btncsv.Click += new System.EventHandler(this.btncsv_Click);
@@ -330,7 +330,7 @@ namespace CPS_App
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1003, 514);
+            this.ClientSize = new System.Drawing.Size(1037, 514);
             this.Controls.Add(this.btncsv);
             this.Controls.Add(this.btnOrderMap);
             this.Controls.Add(this.pnsearch1);

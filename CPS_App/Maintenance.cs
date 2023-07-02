@@ -25,20 +25,52 @@ namespace CPS_App
     {
         private DbServices _dbServices;
         private RegisterServices _registerServices;
+        public ClaimsIdentity userIden;
 
         public Maintenance(DbServices dbServices, RegisterServices registerServices)
         {
             InitializeComponent();
             _dbServices = dbServices;
             _registerServices = registerServices;
+            userIden = AuthService._userClaim;
         }
 
         private async void Maintenance_Load(object sender, EventArgs e)
         {
-            this.multiDetailView.TabPages.Remove(tabPagesup);
+            if (await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "maintenance", "none" } }))
+            {
+                MessageBox.Show("No Access Permission");
+                this.BeginInvoke(new MethodInvoker(this.Close));
+            }
+            if (!await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "maintenance", "role" } }))
+                this.multiDetailView.TabPages.Remove(tabPageRole);
+            if (!await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "maintenance", "user" } }))
+                this.multiDetailView.TabPages.Remove(tabPageUser);
+            if (!await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "maintenance", "delivery_schedule" } }))
+                this.multiDetailView.TabPages.Remove(tabPagedelisc);
+            if (!await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "maintenance", "poa_type" } }))
+                this.multiDetailView.TabPages.Remove(tabPagetpoatype);
+            if (!await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "maintenance", "tc" } }))
+                this.multiDetailView.TabPages.Remove(tabPagetc);
+            if (!await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "maintenance", "uom" } }))
+                this.multiDetailView.TabPages.Remove(tabPageuom);
+            if (!await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "maintenance", "location" } }))
+                this.multiDetailView.TabPages.Remove(tabPageloc);
+            if (!await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "maintenance", "po_type" } }))
+                this.multiDetailView.TabPages.Remove(tabPagepo);
+            if (!await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "maintenance", "roleclaim" } }))
+                this.multiDetailView.TabPages.Remove(tabroleclaim);
+            if (!await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "maintenance", "vid" } }))
+                this.multiDetailView.TabPages.Remove(tabpagevid);
+            if (!await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "maintenance", "category" } }))
+                this.multiDetailView.TabPages.Remove(tabPagecat);
+            if (!await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "maintenance", "supplier" } }))
+                this.multiDetailView.TabPages.Remove(tabPagesup);
+
+            
             var result = await _dbServices.SelectAllAsync<tb_roles>();
             kryptodatagridrole.DataSource = result.result;
-            GenUtil.dataGridAttrName<tb_roles>(kryptodatagridrole);
+            //GenUtil.dataGridAttrName<tb_roles>(kryptodatagridrole);
 
             var userResult = await _dbServices.SelectAllAsync<tb_users>();
             kryptonDataGridViewUser.DataSource = userResult.result;
@@ -76,14 +108,29 @@ namespace CPS_App
             kryptonDataGridViewroleclaim.DataSource = rocl.result;
             GenUtil.dataGridAttrName<role_claim_table>(kryptodatagridrole);
 
+            var cat = await _dbServices.SelectAllAsync<tb_item_category>();
+            kryptonDataGridViewcat.DataSource = cat.result;
+            GenUtil.dataGridAttrName<tb_item_category>(kryptonDataGridViewcat);
+
+
             var roclType = await _dbServices.SelectAllAsync<tb_roles>();
             List<tb_roles> roleclaim = JsonConvert.DeserializeObject<List<tb_roles>>(JsonConvert.SerializeObject(roclType.result));
             roleclaim.ForEach(x => cbxroleinroleclaim.Items.Add($"{x.vc_role_name}"));
+
             //tabpage vid mapping refresh
             await VidMappingInitialLoad();
 
             multiDetailView.Show();
-
+            multiDetailView.Controls.OfType<TabPage>().ToList().ForEach(x =>
+            {
+                x.Controls.OfType<KryptonButton>().ToList().ForEach(x =>
+                {
+                    if (x.Name.Contains("edit"))
+                    {
+                        x.Hide();
+                    }
+                });
+            });
         }
         private async Task VidMappingInitialLoad()
         {
@@ -359,12 +406,12 @@ namespace CPS_App
                     selObj2.selecter.Remove("bi_prefer_loc_id");
                     //find id assign to another vid
                     DbResObj res2 = await _dbServices.CheckVidmapDupItemId(selObj2);
-                    if (res2.resCode==0 && res2.result == null || res2.resCode == 1 && res2.result.Count == 1)
+                    if (res2.resCode == 0 && res2.result == null || res2.resCode == 1 && res2.result.Count == 1)
                     {
 
 
 
-                        if (res2.resCode == 1  && res2.result.Count == 1)
+                        if (res2.resCode == 1 && res2.result.Count == 1)
                         {
                             tb_item_vid_mapping temp1 = res2.result[0];
                             if (temp1.bi_item_vid.ToString() != cbxvidmapvid.SelectedItem.ToString())
@@ -420,11 +467,11 @@ namespace CPS_App
                     MessageBox.Show(selduplicate.err_msg);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
-            
+
         }
 
         private async void btniddrop_Click(object sender, EventArgs e)
@@ -523,9 +570,14 @@ namespace CPS_App
 
         }
 
-        private void btnaddcat_Click(object sender, EventArgs e)
+        private async void btnaddcat_Click(object sender, EventArgs e)
         {
+            Dictionary<string, string> value = new Dictionary<string, string>()
+            {
+                {"vc_category_desc", txtcat.Text },
 
+            };
+            await _dbServices.InsertMaintenance<tb_item_category>(value);
         }
     }
 }

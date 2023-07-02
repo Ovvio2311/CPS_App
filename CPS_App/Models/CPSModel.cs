@@ -151,9 +151,13 @@ namespace CPS_App.Models
 
         public class tb_item_category : CPSModelBase
         {
+            [Display(Name = "ID")]
             public int bi_category_id { get; set; }
+            [Display(Name = "Name")]
             public string vc_category_desc { get; set; }
+            [Display(Name = "Create Date")]
             public string dt_created_date { get; set; }
+            [Display(Name = "Update Date")]
             public string dt_updated_datetime { get; set; }
         }
         public class lut_uom_type : CPSModelBase

@@ -179,7 +179,7 @@
             this.btncsv.Name = "btncsv";
             this.btncsv.Palette = this.kryptonPalettebtn;
             this.btncsv.PaletteMode = Krypton.Toolkit.PaletteMode.Custom;
-            this.btncsv.Size = new System.Drawing.Size(65, 37);
+            this.btncsv.Size = new System.Drawing.Size(51, 37);
             this.btncsv.TabIndex = 27;
             this.btncsv.Values.Text = "CSV";
             this.btncsv.Click += new System.EventHandler(this.btncsv_Click);

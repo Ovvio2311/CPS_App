@@ -157,6 +157,7 @@ namespace CPS_App
                         MessageBox.Show("Request creation error\nPlease create again");
                     };
                     itemList.Clear();
+                    req.items.Clear();
                     disableValidation();
                 }
             }

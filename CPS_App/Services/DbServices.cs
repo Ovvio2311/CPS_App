@@ -813,12 +813,13 @@ namespace CPS_App.Services
             string sql = $@"select * from (
                 select di.bi_di_id,di.bi_item_id, di.bi_item_vid, di.bi_req_id, it.vc_item_desc, di.i_di_status_id, dist.vc_di_status_desc, 
                 di.i_item_qty, di.bi_category_id, cat.vc_category_desc, di.bi_location_id, loc.vc_location_desc, 
-                DATE_FORMAT(di.dt_exp_deli_date, '%Y-%m-%d %H:%i:%s') dt_exp_deli_date, di.dt_created_date
+                DATE_FORMAT(di.dt_exp_deli_date, '%Y-%m-%d %H:%i:%s') dt_exp_deli_date, di.dt_created_date, di.bi_supp_id, sup.vc_supp_desc
                 from tb_dispatch_instruction di
                 left join tb_item it on di.bi_item_id = it.bi_item_id
                 left join lut_di_status dist on di.i_di_status_id = dist.i_di_status_id
                 left join tb_item_category cat on di.bi_category_id = cat.bi_category_id
                 left join tb_location loc on di.bi_location_id = loc.bi_location_id
+                left join tb_supplier sup on sup.bi_supp_id = di.bi_supp_id 
                 ) a  ";
             if (obj != null)
             {

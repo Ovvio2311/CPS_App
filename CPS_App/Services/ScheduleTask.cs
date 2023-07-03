@@ -70,19 +70,30 @@ namespace CPS_App.Services
 
                 //Mapping process P1
                 List<POTableObj> newPo1 = await MappingScheduler_P1();
-                newPo1.ForEach(async x => { 
-                    await _createPoServices.CreatePoAsync(x);                    
-                });
-                await _dbGeneralServices.UpdateRecordAsync(_updateObjects);
-                _updateObjects.Clear();
-
-                //create delivery note
-                List<DeliveryNoteObj> listDn  = await CreateDnObject(newPo1);
-                resObj res = await _createDNServices.CreateDnAsync(listDn);
-                if(res.resCode != 1)
+                if(newPo1 != null)
                 {
-                    _logger.LogDebug("Create Dn Async with error");
+                    newPo1.ForEach(async x => {
+                        await _createPoServices.CreatePoAsync(x);
+                    });
+                    await _dbGeneralServices.UpdateRecordAsync(_updateObjects);
+                    _updateObjects.Clear();
+
+                    //create delivery note
+                    List<DeliveryNoteObj> listDn = await CreateDnObject(newPo1);
+                    if (listDn != null)
+                    {
+                        resObj res = await _createDNServices.CreateDnAsync(listDn);
+                        if (res.resCode != 1)
+                        {
+                            _logger.LogDebug("Create Dn Async with error");
+                        }
+                    }
                 }
+                
+              
+
+               
+                
 
                 ////Mapping process p2
                 //List<POTableObj> newPo2 = await MappingScheduler_P1();
@@ -90,14 +101,18 @@ namespace CPS_App.Services
 
                 //Mapping Process Warehouse p3
                 List<DispatchInstruction> dis = await MappingProcessWarehouse();
-                await CreateDispatchAsync(dis);
-                await _dbGeneralServices.UpdateRecordAsync(_updateObjects);
-                _updateObjects.Clear();
+                if(dis != null)
+                {
+                    await CreateDispatchAsync(dis);
+                    await _dbGeneralServices.UpdateRecordAsync(_updateObjects);
+                    _updateObjects.Clear();
+                }
 
                 //Record remaining req to fail
                 await UpdateMappRecordtoFail();
                 await _dbGeneralServices.UpdateRecordAsync(_updateObjects);
                 _updateObjects.Clear();
+
             }
             catch (Exception ex)
             {
@@ -405,7 +420,15 @@ namespace CPS_App.Services
                 //get poa obj            
                 List<POATableObj> poaObj = await PoaMapObjectGetter();
                 //iterate enough poa 
-                return await iteratePoaProcess(reqObj, poaObj);
+                if(reqObj != null)
+                {
+                    return await iteratePoaProcess(reqObj, poaObj);
+                }
+                else
+                {
+                    return null;
+                }
+                
             }
             catch (Exception ex)
             {
@@ -429,7 +452,15 @@ namespace CPS_App.Services
 
             //get stock in warehouse
             List<StockLevelViewObj> stockObj = await StockMapObjectGetter();
-            return await iterateWarehouseProcess(reqObj, stockObj);
+            if(reqObj != null)
+            {
+                return await iterateWarehouseProcess(reqObj, stockObj);
+            }
+            else
+            {
+                return null;
+            }
+            
         }
         public async Task CreateDispatchAsync(List<DispatchInstruction> disObj)
         {
@@ -480,7 +511,11 @@ namespace CPS_App.Services
             try
             {
                 List<RequestMappingReqObj> reqRemain = await RequestMapObjectGetter();
-                await CreateUpdateObject(reqRemain);
+                if(reqRemain != null)
+                {
+                    await CreateUpdateObject(reqRemain);
+                }
+                
             }
             catch (Exception ex)
             {
@@ -557,6 +592,7 @@ namespace CPS_App.Services
                         dnObj.i_item_qty = item.i_actual_qty;
                         dnObj.bi_location_id = it.bi_deli_loc_id;
                         dnObj.dt_exp_deli_date = it.dt_expect_delidate;
+                        dnObj.bi_supp_id= it.bi_supp_id;
                         listDn.Add(dnObj);
                     }
 

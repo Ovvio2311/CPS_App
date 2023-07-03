@@ -39,7 +39,7 @@ namespace CPS_App.Services
                 }
                 if (obj.ti_po_type_id == 1 || obj.ti_po_type_id == 4)
                 {
-
+                    return res;
                 }
                 await UpdateReqDetail(obj);
                 List<POTableObj> list = new List<POTableObj>();

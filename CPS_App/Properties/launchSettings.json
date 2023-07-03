@@ -1,0 +1,7 @@
+{
+  "profiles": {
+    "CPS_App": {
+      "commandName": "Project"
+    }
+  }
+}

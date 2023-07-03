@@ -86,7 +86,7 @@ namespace CPS_App
             }
             else
             {
-                cbxreffrom.Items.Add("New");
+                //cbxreffrom.Items.Add("New");
                 var poa_type = await _dbServices.SelectAllAsync<lut_poa_type>();
                 List<lut_poa_type> poatype = JsonConvert.DeserializeObject<List<lut_poa_type>>(JsonConvert.SerializeObject(poa_type.result));
                 poatype.ForEach(x =>

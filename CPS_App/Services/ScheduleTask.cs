@@ -70,30 +70,32 @@ namespace CPS_App.Services
 
                 //Mapping process P1
                 List<POTableObj> newPo1 = await MappingScheduler_P1();
-                if(newPo1 != null)
+                if (newPo1 == null)
                 {
-                    newPo1.ForEach(async x => {
-                        await _createPoServices.CreatePoAsync(x);
-                    });
-                    await _dbGeneralServices.UpdateRecordAsync(_updateObjects);
-                    _updateObjects.Clear();
+                    return;
 
-                    //create delivery note
-                    List<DeliveryNoteObj> listDn = await CreateDnObject(newPo1);
-                    if (listDn != null)
-                    {
-                        resObj res = await _createDNServices.CreateDnAsync(listDn);
-                        if (res.resCode != 1)
-                        {
-                            _logger.LogDebug("Create Dn Async with error");
-                        }
-                    }
                 }
-                
-              
+                foreach (POTableObj po in newPo1)
+                {
+                    await _createPoServices.CreatePoAsync(po);
+                }
 
-               
-                
+                await _dbGeneralServices.UpdateRecordAsync(_updateObjects);
+                _updateObjects.Clear();
+
+                //create delivery note
+                //List<DeliveryNoteObj> listDn = await CreateDnObject(newPo1);
+
+                //resObj res = await _createDNServices.CreateDnAsync(listDn);
+                //if (res.resCode != 1)
+                //{
+                //    _logger.LogDebug("Create Dn Async with error");
+                //}
+
+
+
+
+
 
                 ////Mapping process p2
                 //List<POTableObj> newPo2 = await MappingScheduler_P1();
@@ -101,7 +103,7 @@ namespace CPS_App.Services
 
                 //Mapping Process Warehouse p3
                 List<DispatchInstruction> dis = await MappingProcessWarehouse();
-                if(dis != null)
+                if (dis != null)
                 {
                     await CreateDispatchAsync(dis);
                     await _dbGeneralServices.UpdateRecordAsync(_updateObjects);
@@ -202,119 +204,127 @@ namespace CPS_App.Services
                     {
                         if (row.itemLists.Count > 0)
                         {
-                            row.itemLists.Where(x => x.bi_item_id == item.bi_item_id).ToList().ForEach(async i =>
-                            {
-                                var day = i.vc_deli_sched_desc.Split(' ');
-                                DateTime arrival = DateTime.Now.AddDays(GenUtil.ConvertObjtoType<int>(day.ElementAt(0)));
-                                //poa > request
-                                if (i.i_remain_qty > item.i_remain_req_qty && item.i_remain_req_qty > i.i_min_qty &&
-                                arrival < GenUtil.ConvertObjtoType<DateTime>(item.dt_exp_deli_date) && GenUtil.ConvertObjtoType<DateTime>(row.dt_effect_date) > DateTime.Now)
-                                {
-                                    try
-                                    {
+                            //var trueList = row.itemLists.Where(x => x.bi_item_id == item.bi_item_id).ToList();
+                            foreach (PoaItemList i in row.itemLists)
 
-                                        updateObj tempUpdate = new updateObj()
+                            //row.itemLists.Where(x => x.bi_item_id == item.bi_item_id).ToList().ForEach(async i =>
+                            {
+                                if (i.bi_item_id == item.bi_item_id)
+                                {
+
+
+                                    var day = i.vc_deli_sched_desc.Split(' ');
+                                    DateTime arrival = DateTime.Now.AddDays(GenUtil.ConvertObjtoType<int>(day.ElementAt(0)));
+                                    //poa > request
+                                    if (i.i_remain_qty > item.i_remain_req_qty && item.i_remain_req_qty > i.i_min_qty &&
+                                    arrival < GenUtil.ConvertObjtoType<DateTime>(item.dt_exp_deli_date) && GenUtil.ConvertObjtoType<DateTime>(row.dt_effect_date) > DateTime.Now)
+                                    {
+                                        try
                                         {
-                                            table = "tb_request_detail",
-                                            selecter = new Dictionary<string, string>
+
+                                            updateObj tempUpdate = new updateObj()
+                                            {
+                                                table = "tb_request_detail",
+                                                selecter = new Dictionary<string, string>
                                             {
                                                 { nameof(reqObj.bi_req_id), reqObj.bi_req_id.ToString() },
                                                 { nameof(item.bi_item_id), item.bi_item_id.ToString() },
                                             },
-                                            updater = new Dictionary<string, string>
+                                                updater = new Dictionary<string, string>
                                             {
                                                 { nameof(item.i_remain_req_qty), i.i_remain_qty >= item.i_remain_req_qty ? "0": GenUtil.ConvertObjtoType<int>(item.i_remain_req_qty - i.i_remain_qty).ToString() },
                                                 { nameof(item.i_hd_map_stat_id), "2" },
                                                 { nameof(item.bi_po_status_id), "3" },
                                             }
-                                        };
-                                        _updateObjects.Add(tempUpdate);
+                                            };
+                                            _updateObjects.Add(tempUpdate);
 
-                                        POTableObj tempPoCreate = new POTableObj();
-                                        row.GetType().GetProperties().ToList().ForEach(p =>
-                                        {
-                                            tempPoCreate.GetType().GetProperties().ToList().ForEach(t =>
+                                            POTableObj tempPoCreate = new POTableObj();
+                                            row.GetType().GetProperties().ToList().ForEach(p =>
                                             {
-                                                if (t.Name == p.Name && t.Name != "itemLists")
+                                                tempPoCreate.GetType().GetProperties().ToList().ForEach(t =>
                                                 {
-                                                    t.SetValue(tempPoCreate, Convert.ChangeType(p.GetValue(row), p.PropertyType, null));
-                                                }
+                                                    if (t.Name == p.Name && t.Name != "itemLists")
+                                                    {
+                                                        t.SetValue(tempPoCreate, Convert.ChangeType(p.GetValue(row), p.PropertyType, null));
+                                                    }
+                                                });
                                             });
-                                        });
-                                        reqObj.GetType().GetProperties().ToList().ForEach(p =>
-                                        {
-                                            tempPoCreate.GetType().GetProperties().ToList().ForEach(t =>
+                                            reqObj.GetType().GetProperties().ToList().ForEach(p =>
                                             {
-                                                if (t.Name == p.Name && t.Name != "itemLists")
+                                                tempPoCreate.GetType().GetProperties().ToList().ForEach(t =>
                                                 {
-                                                    t.SetValue(tempPoCreate, Convert.ChangeType(p.GetValue(reqObj), p.PropertyType, null));
-                                                }
-                                            });
+                                                    if (t.Name == p.Name && t.Name != "itemLists")
+                                                    {
+                                                        t.SetValue(tempPoCreate, Convert.ChangeType(p.GetValue(reqObj), p.PropertyType, null));
+                                                    }
+                                                });
 
-                                        });
-                                        PoItemList tempPoItem = new PoItemList();
-                                        i.GetType().GetProperties().ToList().ForEach(it =>
-                                        {
-                                            tempPoItem.GetType().GetProperties().ToList().ForEach(y =>
-                                            {
-                                                if (y.Name == it.Name)
-                                                {
-                                                    y.SetValue(tempPoItem, Convert.ChangeType(it.GetValue(i), it.PropertyType, null));
-                                                }
                                             });
-                                        });
-                                        tempPoItem.i_actual_qty = i.i_remain_qty >= item.i_remain_req_qty ? item.i_remain_req_qty : i.i_remain_qty;
-                                        tempPoItem.i_actual_amount = tempPoItem.i_actual_qty * tempPoItem.i_price;
-                                        tempPoItem.bi_ln_po_status_id = 1;
-                                        tempPoCreate.itemLists.Add(tempPoItem);
-                                        tempPoCreate.vc_ref_id = $"Poa Id: {row.bi_poa_id}";
-                                        tempPoCreate.bi_req_id = reqObj.bi_req_id;
-                                        tempPoCreate.ti_po_type_id = 2;
-                                        tempPoCreate.bi_deli_loc_id = reqObj.bi_location_id;
-                                        tempPoCreate.bi_po_status_id = 1;
-                                        tempPoCreate.dt_expect_delidate = (DateTime.Now.AddDays(GenUtil.ConvertObjtoType<int>(tempPoCreate.vc_deli_sched_desc.ToString().Split(' ').ElementAt(0)))).ToString("yyyy-MM-dd");
-                                        if (PoCreateList.Any(x => x.vc_ref_id == tempPoCreate.vc_ref_id && x.bi_deli_loc_id == tempPoCreate.bi_deli_loc_id))
-                                        {
-                                            PoCreateList.Where(x => x.vc_ref_id == tempPoCreate.vc_ref_id && x.bi_deli_loc_id == tempPoCreate.bi_deli_loc_id).FirstOrDefault()!.itemLists.Add(tempPoItem);
-                                        }
-                                        else
-                                        {
-                                            PoCreateList.Add(tempPoCreate);
-                                        }
+                                            PoItemList tempPoItem = new PoItemList();
+                                            i.GetType().GetProperties().ToList().ForEach(it =>
+                                            {
+                                                tempPoItem.GetType().GetProperties().ToList().ForEach(y =>
+                                                {
+                                                    if (y.Name == it.Name)
+                                                    {
+                                                        y.SetValue(tempPoItem, Convert.ChangeType(it.GetValue(i), it.PropertyType, null));
+                                                    }
+                                                });
+                                            });
+                                            tempPoItem.i_actual_qty = i.i_remain_qty >= item.i_remain_req_qty ? item.i_remain_req_qty : i.i_remain_qty;
+                                            tempPoItem.i_actual_amount = tempPoItem.i_actual_qty * tempPoItem.i_price;
+                                            tempPoItem.bi_ln_po_status_id = 1;
+                                            tempPoCreate.itemLists.Add(tempPoItem);
+                                            tempPoCreate.vc_ref_id = $"Poa Id: {row.bi_poa_id}";
+                                            tempPoCreate.bi_req_id = reqObj.bi_req_id;
+                                            tempPoCreate.ti_po_type_id = 2;
+                                            tempPoCreate.bi_deli_loc_id = reqObj.bi_location_id;
+                                            tempPoCreate.bi_po_status_id = 1;
+                                            tempPoCreate.dt_expect_delidate = (DateTime.Now.AddDays(GenUtil.ConvertObjtoType<int>(tempPoCreate.vc_deli_sched_desc.ToString().Split(' ').ElementAt(0)))).ToString("yyyy-MM-dd");
+                                            if (PoCreateList.Any(x => x.vc_ref_id == tempPoCreate.vc_ref_id && x.bi_deli_loc_id == tempPoCreate.bi_deli_loc_id))
+                                            {
+                                                PoCreateList.Where(x => x.vc_ref_id == tempPoCreate.vc_ref_id && x.bi_deli_loc_id == tempPoCreate.bi_deli_loc_id).FirstOrDefault()!.itemLists.Add(tempPoItem);
+                                            }
+                                            else
+                                            {
+                                                PoCreateList.Add(tempPoCreate);
+                                            }
 
-                                        //adjust available items
-                                        i.i_remain_qty = i.i_remain_qty >= item.i_remain_req_qty ? i.i_remain_qty - item.i_remain_req_qty : 0;
-                                        updateObj tempPoaUpdate = new updateObj()
-                                        {
-                                            table = "tb_poa_line",
-                                            updater = new Dictionary<string, string>
+                                            //adjust available items
+                                            i.i_remain_qty = i.i_remain_qty >= item.i_remain_req_qty ? i.i_remain_qty - item.i_remain_req_qty : 0;
+                                            updateObj tempPoaUpdate = new updateObj()
+                                            {
+                                                table = "tb_poa_line",
+                                                updater = new Dictionary<string, string>
                                             {
                                                 {nameof(i.i_remain_qty), i.i_remain_qty.ToString()},
                                             },
-                                            selecter = new Dictionary<string, string>
+                                                selecter = new Dictionary<string, string>
                                                 {
                                                     {nameof(i.bi_poa_header_id), i.bi_poa_header_id.ToString()},
                                                     {nameof(i.bi_poa_line_id), i.bi_poa_line_id.ToString()},
                                                     {nameof(i.bi_item_id), i.bi_item_id.ToString()},
                                                 }
-                                        };
-                                        _updateObjects.Add(tempPoaUpdate);
-                                        //update db
-                                        //further process to po
+                                            };
+                                            _updateObjects.Add(tempPoaUpdate);
+                                            //update db
+                                            //further process to po
+
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            throw new Exception(ex.Message);
+                                        }
 
                                     }
-                                    catch (Exception ex)
-                                    {
-                                        throw new Exception(ex.Message);
-                                    }
-
                                 }
                                 //request > poa
                                 //else if (i.i_remain_qty < item.i_remain_req_qty && item.i_remain_req_qty > i.i_min_qty)
                                 //{
                                 //    couu++;
                                 //}
-                            });
+                            }
                         }
                     });
                 });
@@ -420,7 +430,7 @@ namespace CPS_App.Services
                 //get poa obj            
                 List<POATableObj> poaObj = await PoaMapObjectGetter();
                 //iterate enough poa 
-                if(reqObj != null)
+                if (reqObj != null)
                 {
                     return await iteratePoaProcess(reqObj, poaObj);
                 }
@@ -428,7 +438,7 @@ namespace CPS_App.Services
                 {
                     return null;
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -452,7 +462,7 @@ namespace CPS_App.Services
 
             //get stock in warehouse
             List<StockLevelViewObj> stockObj = await StockMapObjectGetter();
-            if(reqObj != null)
+            if (reqObj != null)
             {
                 return await iterateWarehouseProcess(reqObj, stockObj);
             }
@@ -460,7 +470,7 @@ namespace CPS_App.Services
             {
                 return null;
             }
-            
+
         }
         public async Task CreateDispatchAsync(List<DispatchInstruction> disObj)
         {
@@ -505,17 +515,17 @@ namespace CPS_App.Services
             }
 
         }
-       
+
         public async Task UpdateMappRecordtoFail()
         {
             try
             {
                 List<RequestMappingReqObj> reqRemain = await RequestMapObjectGetter();
-                if(reqRemain != null)
+                if (reqRemain != null)
                 {
                     await CreateUpdateObject(reqRemain);
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -592,18 +602,18 @@ namespace CPS_App.Services
                         dnObj.i_item_qty = item.i_actual_qty;
                         dnObj.bi_location_id = it.bi_deli_loc_id;
                         dnObj.dt_exp_deli_date = it.dt_expect_delidate;
-                        dnObj.bi_supp_id= it.bi_supp_id;
+                        dnObj.bi_supp_id = it.bi_supp_id;
                         listDn.Add(dnObj);
                     }
 
                 }
                 return listDn;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
-            
+
         }
     }
 }

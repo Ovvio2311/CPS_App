@@ -33,26 +33,29 @@ namespace CPS_App.Services
                 }
                 };
                 List<POTableObj> poObj = await _genericTableViewWorker.GetGenericWorker<POTableObj, PoItemList>(pot.GetSqlQuery(), nameof(pot.bi_po_header_id), null, search);
-
-                foreach (RequestMappingReqObj r in req)
+                if(poObj != null)
                 {
-                    r.itemLists.ForEach((y) =>
+                    foreach (RequestMappingReqObj r in req)
                     {
-                        poObj.ForEach(poObj =>
+                        r.itemLists.ForEach((y) =>
                         {
-                            poObj.itemLists.ForEach(c =>
+                            poObj.ForEach(poObj =>
                             {
-                                if(c.bi_item_id == y.bi_item_id)
+                                poObj.itemLists.ForEach(c =>
                                 {
-                                    POTableObj temp = poObj;
-                                    newPoObj.Add(temp);
-                                }
+                                    if (c.bi_item_id == y.bi_item_id)
+                                    {
+                                        POTableObj temp = poObj;
+                                        newPoObj.Add(temp);
+                                    }
+                                });
+
                             });
-                            
+
                         });
-                        
-                    });
+                    }
                 }
+                
                 return newPoObj;
             }
             catch (Exception ex)

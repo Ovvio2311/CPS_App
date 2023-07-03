@@ -105,57 +105,65 @@ namespace CPS_App
             //update tb_request if any
             int count = 0;
             List<RequestMappingReqObj> reqObj = await _generalServices.OutstandingReqObj();
-            foreach (RequestMappingReqObj row in reqObj)
+            if(reqObj != null)
             {
-                count = row.itemLists.Where(x => x.i_remain_req_qty != 0 || x.bi_po_status_id != 2 || x.i_hd_map_stat_id != 2).Count();
-
-                if (count == 0)
+                foreach (RequestMappingReqObj row in reqObj)
                 {
-                    updateObj updateObj = new updateObj()
+                    count = row.itemLists.Where(x => x.i_remain_req_qty != 0 || x.bi_po_status_id != 2 || x.i_hd_map_stat_id != 2).Count();
+
+                    if (count == 0)
                     {
-                        table = "tb_request",
-                        updater = new Dictionary<string, string>
+                        updateObj updateObj = new updateObj()
+                        {
+                            table = "tb_request",
+                            updater = new Dictionary<string, string>
                         {
                             { "i_map_stat_id", "2"}
                         },
-                        selecter = new Dictionary<string, string>
+                            selecter = new Dictionary<string, string>
                         {
                             {nameof(row.bi_req_id), row.bi_req_id.ToString()}
                         }
-                    };
-                    _updateObjs.Add(updateObj);
-                }
+                        };
+                        _updateObjs.Add(updateObj);
+                    }
 
+                }
             }
+            
             await _generalServices.UpdateRecordAsync(_updateObjs);
             _updateObjs.Clear();
 
             //update tb_po if any
             int poCount = 0;
             List<POTableObj> poObj = await _generalServices.OutstandingPoObj();
-            foreach (POTableObj row in poObj)
+            if(poObj != null )
             {
-
-                count = row.itemLists.Where(x => x.bi_ln_po_status_id != 2).Count();
-
-                if (count == 0)
+                foreach (POTableObj row in poObj)
                 {
-                    updateObj updateObj = new updateObj()
+
+                    count = row.itemLists.Where(x => x.bi_ln_po_status_id != 2).Count();
+
+                    if (count == 0)
                     {
-                        table = "tb_po",
-                        updater = new Dictionary<string, string>
+                        updateObj updateObj = new updateObj()
+                        {
+                            table = "tb_po",
+                            updater = new Dictionary<string, string>
                         {
                             { "bi_po_status_id", "2"}
                         },
-                        selecter = new Dictionary<string, string>
+                            selecter = new Dictionary<string, string>
                         {
                             {nameof(row.bi_po_id), row.bi_po_id.ToString()}
                         }
-                    };
-                    _updateObjs.Add(updateObj);
-                }
+                        };
+                        _updateObjs.Add(updateObj);
+                    }
 
+                }
             }
+            
             await _generalServices.UpdateRecordAsync(_updateObjs);
             _updateObjs.Clear();
             MessageBox.Show("Update Completed");

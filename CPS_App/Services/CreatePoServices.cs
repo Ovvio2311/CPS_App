@@ -30,12 +30,18 @@ namespace CPS_App.Services
                 res.err_msg = null;
                 res.result = null;
 
-                if (await InsertTableHeader(obj) && await InsertPoLineAsync(obj))
+                if (await InsertTableHeader(obj))
                 {
                     res.resCode = 1;
                     res.result = true;
                     res.err_msg = null;
 
+                }
+                if(await InsertPoLineAsync(obj))
+                {
+                    res.resCode = 1;
+                    res.result = true;
+                    res.err_msg = null;
                 }
                 if (obj.ti_po_type_id == 1 || obj.ti_po_type_id == 4)
                 {
@@ -192,7 +198,6 @@ namespace CPS_App.Services
                 {
                     MessageBox.Show(e.Message);
                 }
-
             }
             return true;
         }

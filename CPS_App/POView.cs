@@ -92,7 +92,8 @@ namespace CPS_App
         }
         private async Task LoadViewTable(string loc = null, searchObj obj = null)
         {
-
+            searchObj sear = new searchObj();
+            sear.searchWords.Add("bi_po_status_id", new List<string>() { "1", "3", "4" });
             lblnoresult.Hide();
             kryptonDataGridViewpo.DataSource = null;
             //poObj = await _pOAWorker.GetPoaWorker(loc, obj);
@@ -101,7 +102,7 @@ namespace CPS_App
             {
                 {nameof(viewObj.bi_deli_loc_id),loc }
             };
-            poObj = await _genericTableViewWorker.GetGenericWorker<POTableObj, PoItemList>(viewObj.GetSqlQuery(), nameof(viewObj.bi_po_header_id), kvpLoc, obj);
+            poObj = await _genericTableViewWorker.GetGenericWorker<POTableObj, PoItemList>(viewObj.GetSqlQuery(), nameof(viewObj.bi_po_header_id), kvpLoc, sear);
 
             if (poObj == null)
             {

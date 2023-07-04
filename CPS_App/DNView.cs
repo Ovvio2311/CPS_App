@@ -445,7 +445,15 @@ namespace CPS_App
 
         private async void btncsv_Click(object sender, EventArgs e)
         {
-            await CsvAsync(dnObj);
+            if(dnObj != null)
+            {
+                await CsvAsync(dnObj);
+            }
+            else
+            {
+                MessageBox.Show("Empty");
+            }
+            
         }
         public async Task CsvAsync(List<DeliveryNoteObj> obj)
         {

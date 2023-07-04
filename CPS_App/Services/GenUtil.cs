@@ -536,9 +536,9 @@ namespace CPS_App.Services
                 //header
                 foreach (PropertyInfo x in obj.GetType().GetProperties())
                 {
-                    var display = x.GetCustomAttributes<DisplayAttribute>();
-                    csv.Append(display.Where(x => x.Name != "not_shown").Select(x => x.Name.ToString()).FirstOrDefault());
-                    csv.Append(',');
+                    var display = x.GetCustomAttributes<DisplayAttribute>();                    
+                    csv.Append(display.Where(x => x.Name != "not_shown").Select(x => $"{x.Name.ToString()},").FirstOrDefault());
+                    //csv.Append(',');
                     //var props = displayAttribute.GetType().GetProperties(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public).ToList();
                     //props.Single(p => p.Name != "not_shown").SetValue(displayAttribute, index);
                     //csv.Append($"\"{x.Name}\",");
@@ -591,8 +591,8 @@ namespace CPS_App.Services
                 obj.GetType().GetProperties().ToList().ForEach(x =>
                 {
                     List<DisplayAttribute> display = x.GetCustomAttributes<DisplayAttribute>().ToList();
-                    csv.Append(display.Where(x => x.Name != "not_shown").Select(x => x.Name.ToString()).FirstOrDefault());
-                    csv.Append(',');
+                    csv.Append(display.Where(x => x.Name != "not_shown").Select(x => $"{x.Name.ToString()},").FirstOrDefault());
+                    //csv.Append(',');
                     //var props = displayAttribute.GetType().GetProperties(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public).ToList();
                     //props.Single(p => p.Name != "not_shown").SetValue(displayAttribute, index);
                     //csv.Append($"\"{x.Name}\",");
@@ -616,8 +616,8 @@ namespace CPS_App.Services
                 iobj.GetType().GetProperties().ToList().ForEach(x =>
                 {
                     List<DisplayAttribute> display = x.GetCustomAttributes<DisplayAttribute>().ToList();
-                    csv.Append(display.Where(x => x.Name != "not_shown").Select(x => x.Name.ToString()).FirstOrDefault());
-                    csv.Append(',');
+                    csv.Append(display.Where(x => x.Name != "not_shown").Select(x => $"{x.Name.ToString()},").FirstOrDefault());
+                    //csv.Append(',');
                     
                 });
                 csv.AppendLine("");

@@ -29,15 +29,17 @@ namespace CPS_App
         private int selectId;
         private int poId;
         private string userLoc;
-        List<POTableObj> _confirmppo;
+        private List<POTableObj> _confirmppo;
         private DbGeneralServices _generalServices;
-        public SchReleaseConfirm(GenericTableViewWorker genericTableViewWorker, DbServices dbServices, DbGeneralServices dbGeneralServices)
+        private CreateDNServices _createDNServices;
+        public SchReleaseConfirm(GenericTableViewWorker genericTableViewWorker, DbServices dbServices, DbGeneralServices dbGeneralServices, CreateDNServices createDNServices)
         {
             InitializeComponent();
             _genericTableViewWorker = genericTableViewWorker;
             _confirmppo = new List<POTableObj>();
             _dbServices = dbServices;
             _generalServices = dbGeneralServices;
+            _createDNServices = createDNServices;
         }
 
         private async void SchReleaseConfirm_Load(object sender, EventArgs e)
@@ -105,18 +107,25 @@ namespace CPS_App
                 }
                 int itemid = GenUtil.ConvertObjtoType<int>(datagridviewitem.CurrentRow.Cells["bi_item_id"].Value);
                 POTableObj readytoConfirm = _confirmppo.Where(x => x.bi_po_header_id == selectId).FirstOrDefault();
-                PoItemList itemtoConfirm = readytoConfirm.itemLists.Where(x=>x.bi_po_line_id == poId).FirstOrDefault();
+                PoItemList itemtoConfirm = readytoConfirm.itemLists.Where(x => x.bi_po_line_id == poId).FirstOrDefault();
                 await UpdatePlannedPurchase(readytoConfirm, poId);
                 await UpdatePoLine(readytoConfirm, poId, "3");
                 List<POTableObj> outstandingPo = await _generalServices.OutstandingPoObj();
                 var tar = outstandingPo.Where(x => x.bi_po_header_id == selectId).FirstOrDefault();
                 await UpdatePo(tar, 3);
                 List<RequestMappingReqObj> outreq = await _generalServices.OutstandingReqObj();
-                RequestMappingReqObj tarReq = outreq.Where(x=>x.bi_req_id == readytoConfirm.bi_req_id).FirstOrDefault();
-                ItemRequest tarItem = tarReq.itemLists.Where(x=>x.bi_item_id == itemid).FirstOrDefault();
+                RequestMappingReqObj tarReq = outreq.Where(x => x.bi_req_id == readytoConfirm.bi_req_id).FirstOrDefault();
+                ItemRequest tarItem = tarReq.itemLists.Where(x => x.bi_item_id == itemid).FirstOrDefault();
                 await UpdateReqDetail(tarReq, tarItem);
-
-                MessageBox.Show("Process Completed");
+                List<DeliveryNoteObj> listDn = await CreateDnObject(readytoConfirm, itemtoConfirm);
+                if(listDn != null)
+                {
+                   if(await _createDNServices.InsertDeliveryNote(listDn))
+                    {
+                        MessageBox.Show("Process Completed");
+                    }
+                }
+                               
                 await LoadViewTable(userLoc);
             }
             catch (Exception ex)
@@ -334,6 +343,33 @@ namespace CPS_App
                 poId = GenUtil.ConvertObjtoType<int>(datagridviewitem.CurrentRow.Cells["bi_po_line_id"].Value);
             }
         }
-        
+        public async Task<List<DeliveryNoteObj>> CreateDnObject(POTableObj obj, PoItemList itemtoConfirm)
+        {
+            try
+            {
+                List<DeliveryNoteObj> listDn = new List<DeliveryNoteObj>();
+
+                DeliveryNoteObj dnObj = new DeliveryNoteObj();
+                tb_item_vid_mapping vid = await _generalServices.GetVidAsync(itemtoConfirm.bi_item_id.ToString());
+                dnObj.bi_po_id = obj.bi_po_id;
+                dnObj.bi_req_id = obj.bi_req_id;
+                dnObj.i_dn_status_id = 3;
+                dnObj.i_dn_type_id = 2;
+                dnObj.bi_item_id = itemtoConfirm.bi_item_id;
+                dnObj.bi_item_vid = GenUtil.ConvertObjtoType<int>(vid.bi_item_vid);
+                dnObj.i_item_qty = itemtoConfirm.i_actual_qty;
+                dnObj.bi_location_id = obj.bi_deli_loc_id;
+                dnObj.dt_exp_deli_date = obj.dt_expect_delidate;
+                dnObj.bi_supp_id = obj.bi_supp_id;
+                listDn.Add(dnObj);
+
+                return listDn;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+        }
     }
 }

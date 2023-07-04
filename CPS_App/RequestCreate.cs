@@ -67,6 +67,8 @@ namespace CPS_App
             dateTimePicker.ResetText();
             txtQty.Clear();
             txtremark.Clear();
+            itemList.Clear();
+            req.items.Clear();
         }
 
         private async void btnAdd_Click(object sender, EventArgs e)
@@ -159,6 +161,7 @@ namespace CPS_App
                     itemList.Clear();
                     req.items.Clear();
                     disableValidation();
+                    
                 }
             }
             else

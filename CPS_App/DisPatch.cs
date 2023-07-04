@@ -218,10 +218,18 @@ namespace CPS_App
 
         private async void btncsv_Click(object sender, EventArgs e)
         {
-            if (await GenUtil.ExportCsv<DispatchInstruction>(dispatchObj, "Dispatch_Instruction"))
+            if(dispatchObj.Count() > 0)
             {
-                MessageBox.Show("CSV Generated");
+                if (await GenUtil.ExportCsv<DispatchInstruction>(dispatchObj, "Dispatch_Instruction"))
+                {
+                    MessageBox.Show("CSV Generated");
+                }
             }
+            else
+            {
+                MessageBox.Show("Empty");
+            }
+            
         }
     }
 }

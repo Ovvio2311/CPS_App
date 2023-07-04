@@ -37,8 +37,9 @@ namespace CPS_App
         private List<POTableObj> _confirmSchRelease;
         private DbGeneralServices _generalServices;
         private int selectId;
+        private CreateDNServices _CreateDNServices;
         public POView(DbServices dbServices, POAWorker pOAWorker, SearchFunc searchFunc, GenericTableViewWorker genericTableViewWorker,
-            CreatePoServices createPoServices, ManualMappingProcess manualMappingProcess, DbGeneralServices generalServices)
+            CreatePoServices createPoServices, ManualMappingProcess manualMappingProcess, DbGeneralServices generalServices, CreateDNServices createDNServices)
         {
             InitializeComponent();
             _dbServices = dbServices;
@@ -50,6 +51,7 @@ namespace CPS_App
             _manualMappingProcess = manualMappingProcess;
             _confirmSchRelease = new List<POTableObj>();
             _generalServices = generalServices;
+            _CreateDNServices = createDNServices;
         }
 
         private async void POView_Load(object sender, EventArgs e)
@@ -232,7 +234,7 @@ namespace CPS_App
 
         private void btnconfirmppo_Click(object sender, EventArgs e)
         {
-            SchReleaseConfirm schRelesaseForm = new SchReleaseConfirm(_genericTableViewWorker, _dbServices, _generalServices);
+            SchReleaseConfirm schRelesaseForm = new SchReleaseConfirm(_genericTableViewWorker, _dbServices, _generalServices,_CreateDNServices);
             schRelesaseForm.MdiParent = this.MdiParent;
             schRelesaseForm.AutoScroll = true;
             schRelesaseForm.Show();

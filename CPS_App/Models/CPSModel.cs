@@ -800,7 +800,7 @@ namespace CPS_App.Models
                 sb.Append($@"select * from (
 	                     select po.bi_po_id, po.bi_req_id, po.vc_ref_id, po.ti_po_type_id, potype.vc_po_type_desc, po.bi_po_status_id, post.vc_po_status_desc, hd.bi_po_header_id,
                          hd.bi_supp_id, sup.vc_supp_desc, hd.i_cur_id, cur.vc_cur_desc ,hd.vc_contract_no, hd.ti_tc_id, tc.vc_tc_desc, hd.bi_deli_loc_id, loc.vc_location_desc,
-                         hd.ti_deli_sched_id, delisc.vc_deli_sched_desc, hd.dt_expect_delidate, hd.dt_effect_date, ln.bi_po_line_id, ln.bi_item_id, it.vc_item_desc, 
+                         hd.ti_deli_sched_id, delisc.vc_deli_sched_desc, DATE_FORMAT(hd.dt_expect_delidate, '%Y-%m-%d %H:%i:%s') dt_expect_delidate, hd.dt_effect_date, ln.bi_po_line_id, ln.bi_item_id, it.vc_item_desc, 
                          ln.bi_supp_item_id, ln.i_actual_qty, uom.vc_uom_desc, ln.i_uom_id, ln.i_price, ln.i_actual_amount, ln.vc_reference, ln.vc_quot_no, ln.bi_po_status_id bi_ln_po_status_id,
                          postat.vc_po_status_desc vc_po_ln_status, po.dt_created_date, po.dt_updated_datetime
                          from tb_po po

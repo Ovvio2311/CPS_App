@@ -67,7 +67,7 @@ namespace CPS_App
             if (!await AuthService.UserAuthCheck(userIden, new Dictionary<string, string>() { { "maintenance", "supplier" } }))
                 this.multiDetailView.TabPages.Remove(tabPagesup);
 
-            
+
             var result = await _dbServices.SelectAllAsync<tb_roles>();
             kryptodatagridrole.DataSource = result.result;
             //GenUtil.dataGridAttrName<tb_roles>(kryptodatagridrole);

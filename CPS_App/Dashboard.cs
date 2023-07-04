@@ -31,12 +31,14 @@ namespace CPS_App
         private CreatePoServices _createPoServices;
         private ManualMappingProcess _manualMappingProcess;
         private DbGeneralServices _dbGeneralServices;
+        private CreateDNServices _createDNServices;
 
         public Dashboard(Register register, AuthService authService,
             RequestMapping requestMapp, DbServices dbServices,
             StockLevelWorker stockWorker, RegisterServices registerServices,
             POAWorker pOAWorker, SearchFunc searchFunc, IConfiguration configuration,
-            ScheduleTask scheduleTask, GenericTableViewWorker genericTableViewWorker, CreatePoServices createPoServices, ManualMappingProcess manualMappingProcess, DbGeneralServices dbGeneralServices)
+            ScheduleTask scheduleTask, GenericTableViewWorker genericTableViewWorker, CreatePoServices createPoServices, 
+            ManualMappingProcess manualMappingProcess, DbGeneralServices dbGeneralServices, CreateDNServices createDNServices)
         {
             _authService = authService;
             _register = register;
@@ -54,6 +56,7 @@ namespace CPS_App
             _createPoServices = createPoServices;
             _manualMappingProcess = manualMappingProcess;
             _dbGeneralServices = dbGeneralServices;
+            _createDNServices = createDNServices;
         }
         private async void Dashboard_Load(object sender, EventArgs e)
         {
@@ -135,7 +138,7 @@ namespace CPS_App
 
         private void strippo_Click(object sender, EventArgs e)
         {
-            POView poView = new POView(_dbServices, _pOAWorker, _searchFunc, _genericTableViewWorker, _createPoServices, _manualMappingProcess,_dbGeneralServices);
+            POView poView = new POView(_dbServices, _pOAWorker, _searchFunc, _genericTableViewWorker, _createPoServices, _manualMappingProcess,_dbGeneralServices,_createDNServices);
             poView.MdiParent = this;
             poView.AutoScroll = true;
             poView.Show();
